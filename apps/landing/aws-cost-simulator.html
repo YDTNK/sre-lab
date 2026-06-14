@@ -341,37 +341,30 @@
     });
 
     function renderResult(data) {
-      const totalUsd = data?.total?.usd ?? data?.totalUsd ?? 0;
-      const totalJpy = data?.total?.jpy ?? data?.totalJpy ?? 0;
-      const breakdown = data?.breakdown || {};
+      const estimate = normalizeEstimate(data);
 
       result.innerHTML = `
-        <p>入力条件にもとづく月額の概算です。</p>
-        <span class="result-total">$${formatNumber(totalUsd)} / ¥${formatNumber(totalJpy)}</span>
-        <p>${escapeHtml(data.summary || "AWS月額料金の概算を計算しました。")}</p>
+        <p class="result-label">入力条件にもとづく月額の概算です。</p>
+        <span class="result-total">$${formatNumber(estimate.totalUsd)} / ¥${formatNumber(estimate.totalJpy)}</span>
+        <p>${escapeHtml(estimate.summary)}</p>
       `;
-
-      const ec2Usd = breakdown?.ec2?.usd ?? breakdown?.ec2Usd ?? 0;
-      const ebsUsd = breakdown?.ebs?.usd ?? breakdown?.ebsUsd ?? 0;
-      const s3Usd = breakdown?.s3?.usd ?? breakdown?.s3Usd ?? 0;
-      const dataTransferUsd = breakdown?.dataTransfer?.usd ?? breakdown?.dataTransferUsd ?? 0;
 
       breakdownGrid.innerHTML = `
         <div class="breakdown-card">
           <span>EC2</span>
-          <strong>$${formatNumber(ec2Usd)}</strong>
+          <strong>$${formatNumber(estimate.breakdown.ec2)}</strong>
         </div>
         <div class="breakdown-card">
           <span>EBS</span>
-          <strong>$${formatNumber(ebsUsd)}</strong>
+          <strong>$${formatNumber(estimate.breakdown.ebs)}</strong>
         </div>
         <div class="breakdown-card">
           <span>S3</span>
-          <strong>$${formatNumber(s3Usd)}</strong>
+          <strong>$${formatNumber(estimate.breakdown.s3)}</strong>
         </div>
         <div class="breakdown-card">
           <span>Data transfer</span>
-          <strong>$${formatNumber(dataTransferUsd)}</strong>
+          <strong>$${formatNumber(estimate.breakdown.dataTransfer)}</strong>
         </div>
       `;
 
@@ -384,6 +377,96 @@
       } else if (typeof data.assumptions === "string" && data.assumptions.trim()) {
         assumptions.innerHTML = `<p>${escapeHtml(data.assumptions)}</p>`;
       }
+    }
+
+    function normalizeEstimate(data) {
+      const summary = typeof data.summary === "string" && data.summary.trim()
+        ? data.summary.trim()
+        : "AWS月額料金の概算を計算しました。";
+
+      const totalUsd =
+        pickNumber(data?.total?.usd) ??
+        pickNumber(data?.totalUsd) ??
+        pickNumber(data?.estimate?.usd) ??
+        pickNumber(data?.monthlyCostUsd) ??
+        extractUsd(summary) ??
+        0;
+
+      const totalJpy =
+        pickNumber(data?.total?.jpy) ??
+        pickNumber(data?.totalJpy) ??
+        pickNumber(data?.estimate?.jpy) ??
+        pickNumber(data?.monthlyCostJpy) ??
+        extractJpy(summary) ??
+        0;
+
+      const breakdown = data?.breakdown || {};
+
+      return {
+        totalUsd,
+        totalJpy,
+        summary: removeDuplicatedTotalText(summary, totalUsd, totalJpy),
+        breakdown: {
+          ec2:
+            pickNumber(breakdown?.ec2?.usd) ??
+            pickNumber(breakdown?.ec2Usd) ??
+            pickNumber(breakdown?.ec2) ??
+            0,
+          ebs:
+            pickNumber(breakdown?.ebs?.usd) ??
+            pickNumber(breakdown?.ebsUsd) ??
+            pickNumber(breakdown?.ebs) ??
+            0,
+          s3:
+            pickNumber(breakdown?.s3?.usd) ??
+            pickNumber(breakdown?.s3Usd) ??
+            pickNumber(breakdown?.s3) ??
+            0,
+          dataTransfer:
+            pickNumber(breakdown?.dataTransfer?.usd) ??
+            pickNumber(breakdown?.dataTransferUsd) ??
+            pickNumber(breakdown?.dataTransfer) ??
+            0
+        }
+      };
+    }
+
+    function pickNumber(value) {
+      if (typeof value === "number" && Number.isFinite(value)) {
+        return value;
+      }
+
+      if (typeof value === "string" && value.trim()) {
+        const normalized = value.replace(/,/g, "").replace(/[^\d.-]/g, "");
+        const parsed = Number(normalized);
+        return Number.isFinite(parsed) ? parsed : null;
+      }
+
+      return null;
+    }
+
+    function extractUsd(text) {
+      const match = String(text).match(/\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*(?:USD|ドル)?/i);
+      return match ? pickNumber(match[1]) : null;
+    }
+
+    function extractJpy(text) {
+      const match = String(text).match(/¥\s*([0-9][0-9,]*(?:\.[0-9]+)?)/);
+      return match ? pickNumber(match[1]) : null;
+    }
+
+    function removeDuplicatedTotalText(summary, totalUsd, totalJpy) {
+      const hasReadableTotals = totalUsd > 0 || totalJpy > 0;
+      if (!hasReadableTotals) {
+        return summary;
+      }
+
+      const genericTotalSentence = /^月額料金の概算は\s*\$?[0-9,]+(?:\.[0-9]+)?\s*\/\s*¥[0-9,]+(?:\.[0-9]+)?\s*です。?$/;
+      if (genericTotalSentence.test(summary)) {
+        return "サービス別の内訳と前提条件をあわせて確認してください。";
+      }
+
+      return summary;
     }
 
     function formatNumber(value) {

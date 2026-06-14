@@ -2637,3 +2637,136 @@ select:focus {
     transform: none !important;
   }
 }
+
+/* ============================================================
+   Phase 9-H-7: Result display and functional UI cleanup
+   Fix oversized result / notice text and improve estimate display.
+============================================================ */
+
+/* Result panel text hierarchy */
+#result,
+.result-box,
+.result-card__body {
+  font-size: 0.96rem !important;
+  line-height: 1.75 !important;
+}
+
+#result h3,
+.result-box h3,
+.result-card h3 {
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+  font-size: 1.18rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+}
+
+#result h4,
+.result-box h4,
+.result-card h4 {
+  margin-top: 18px !important;
+  margin-bottom: 6px !important;
+  font-size: 1rem !important;
+  font-weight: 760 !important;
+  letter-spacing: -0.02em !important;
+}
+
+#result ul,
+.result-box ul,
+.result-card__body ul {
+  margin-top: 8px !important;
+}
+
+#result li,
+.result-box li,
+.result-card__body li {
+  margin-top: 5px !important;
+}
+
+/* AWS estimate total should be prominent but not absurdly huge */
+.result-label {
+  margin-bottom: 8px !important;
+  color: #64748b !important;
+  font-size: 0.92rem !important;
+}
+
+.result-total,
+.total-amount,
+.page-aws .result-total,
+.page-aws .total-amount {
+  display: block !important;
+  margin: 8px 0 10px !important;
+  font-size: clamp(1.55rem, 3vw, 2.35rem) !important;
+  font-weight: 780 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.04em !important;
+}
+
+/* Breakdown card numbers should not overpower the result */
+.breakdown-card span {
+  font-size: 0.82rem !important;
+}
+
+.breakdown-card strong {
+  font-size: 1.06rem !important;
+  font-weight: 760 !important;
+}
+
+/* Assumptions / notice should be compact, not hero-like */
+#assumptions,
+.notice-card {
+  font-size: 0.92rem !important;
+  line-height: 1.75 !important;
+}
+
+#assumptions ul,
+.notice-card ul,
+.notice-list {
+  margin-top: 10px !important;
+}
+
+#assumptions li,
+.notice-card li,
+.notice-list li {
+  margin-top: 5px !important;
+}
+
+.notice-card__title {
+  font-size: 1.18rem !important;
+  font-weight: 780 !important;
+  letter-spacing: -0.03em !important;
+}
+
+/* Section lead under assumptions should be modest */
+.section__lead {
+  font-size: 0.98rem !important;
+}
+
+/* Footer text compact */
+.site-footer {
+  font-size: 0.92rem !important;
+}
+
+.site-footer p {
+  max-width: 520px !important;
+  font-size: 0.9rem !important;
+  line-height: 1.7 !important;
+}
+
+/* Mobile result readability */
+@media (max-width: 760px) {
+  .result-total,
+  .total-amount,
+  .page-aws .result-total,
+  .page-aws .total-amount {
+    font-size: clamp(1.45rem, 8vw, 2.05rem) !important;
+  }
+
+  #result,
+  .result-box,
+  .result-card__body,
+  #assumptions,
+  .notice-card {
+    font-size: 0.9rem !important;
+  }
+}
