@@ -52,6 +52,13 @@ Grafana Cloud Alerting is configured for the landing page uptime check.
 
 This alert is intended to detect downtime and connect monitoring results to an operational response workflow.
 
+## Incident Management
+
+SRE Lab records operational incidents and follow-up actions in an incident log.
+
+- Incident log: docs/incidents.md
+- Purpose: record alerts, investigations, mitigations, root causes, and reliability improvements
+
 ## Roadmap
 
 1. Build the project foundation
