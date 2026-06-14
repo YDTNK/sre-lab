@@ -96,17 +96,21 @@
     const form = document.getElementById("moving-form");
     const result = document.getElementById("result");
 
-    form.addEventListener("submit", function (event) {
+    const API_ENDPOINT = "http://localhost:8787/api/moving-assistant";
+
+    form.addEventListener("submit", async function (event) {
       event.preventDefault();
 
-      const furniture = document.getElementById("furniture").value.trim();
-      const clothes = document.getElementById("clothes").value.trim();
-      const electronics = document.getElementById("electronics").value.trim();
-      const books = document.getElementById("books").value.trim();
-      const movingDate = document.getElementById("moving-date").value.trim();
-      const notes = document.getElementById("notes").value.trim();
+      const payload = {
+        furniture: document.getElementById("furniture").value.trim(),
+        clothes: document.getElementById("clothes").value.trim(),
+        electronics: document.getElementById("electronics").value.trim(),
+        books: document.getElementById("books").value.trim(),
+        movingDate: document.getElementById("moving-date").value.trim(),
+        notes: document.getElementById("notes").value.trim(),
+      };
 
-      const hasAnyInput = furniture || clothes || electronics || books || movingDate || notes;
+      const hasAnyInput = Object.values(payload).some((value) => value.length > 0);
 
       if (!hasAnyInput) {
         result.innerHTML = `
@@ -120,31 +124,57 @@
       }
 
       result.innerHTML = `
-        <h3>基本チェックリスト</h3>
-        <p><strong>引越し予定日：</strong> ${movingDate || "未入力"}</p>
-
-        <h4>入力内容</h4>
-        <ul>
-          <li><strong>家具：</strong> ${furniture || "未入力"}</li>
-          <li><strong>衣類・収納：</strong> ${clothes || "未入力"}</li>
-          <li><strong>家電・電子機器：</strong> ${electronics || "未入力"}</li>
-          <li><strong>本・書類：</strong> ${books || "未入力"}</li>
-          <li><strong>補足：</strong> ${notes || "未入力"}</li>
-        </ul>
-
-        <h4>初期おすすめ準備</h4>
-        <ul>
-          <li>衣類・本・小物用にダンボールを複数用意してください。</li>
-          <li>家電や音響機器は、緩衝材・タオル・プチプチで保護してください。</li>
-          <li>本やダンベルなど重い物は、小さめの箱に分けて入れてください。</li>
-          <li>建物の搬入経路、エレベーター、駐車スペースを事前確認してください。</li>
-          <li>引越し1週間前までに、最終チェックリストを作成してください。</li>
-        </ul>
-
-        <p>
-          ※これは静的MVP版の診断結果です。今後、AI APIを使ってより個別化された診断に拡張予定です。
-        </p>
+        <h3>診断中です</h3>
+        <p>入力内容をもとにチェックリストを作成しています。</p>
       `;
+
+      try {
+        const response = await fetch(API_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "API request failed");
+        }
+
+        result.innerHTML = `
+          <h3>基本チェックリスト</h3>
+          <p>${data.summary}</p>
+          <p><strong>${data.boxEstimate}</strong></p>
+
+          <h4>必要な梱包資材</h4>
+          <ul>
+            ${data.packingMaterials.map((item) => `<li>${item}</li>`).join("")}
+          </ul>
+
+          <h4>チェックリスト</h4>
+          <ul>
+            ${data.checklist.map((item) => `<li>${item}</li>`).join("")}
+          </ul>
+
+          <h4>注意点</h4>
+          <ul>
+            ${data.riskNotes.map((item) => `<li>${item}</li>`).join("")}
+          </ul>
+
+          <p>${data.disclaimer}</p>
+        `;
+      } catch (error) {
+        result.innerHTML = `
+          <h3>診断に失敗しました</h3>
+          <p>
+            AI引越し診断の生成に失敗しました。
+            APIサーバーが起動しているか確認し、時間をおいて再度お試しください。
+          </p>
+          <p><small>${error.message}</small></p>
+        `;
+      }
     });
   </script>
 </body>
