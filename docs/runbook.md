@@ -170,3 +170,47 @@ If invalid requests return unexpected status codes:
 - Re-run the API safety validation commands
 - Record findings in docs/incidents.md
 
+## Rate Limiting Runbook
+
+Use this section when the Workers API returns 429 Too Many Requests after rate limiting is implemented.
+
+### Expected Behavior
+
+When a client exceeds the configured request limit, the API should return:
+
+- HTTP status: 429
+- Error code: rate_limited
+- Header: Retry-After: 60
+
+Expected response body:
+
+{
+  "error": {
+    "code": "rate_limited",
+    "message": "Too many requests. Please try again later."
+  }
+}
+
+### Initial Limits
+
+| Scope | Limit |
+|---|---:|
+| Per client IP | 10 requests / minute |
+| Per client IP | 50 requests / day |
+
+### Investigation Steps
+
+1. Confirm whether the response is expected rate limiting behavior.
+2. Check if requests are coming from repeated manual curl tests, browser refreshes, or bot-like access.
+3. Confirm valid requests below the limit still return 200.
+4. Confirm Grafana API monitoring remains healthy.
+5. Review recent deployments under apps/api.
+6. If the rate limit is too strict for normal usage, tune limits and document the reason.
+
+### Follow-up Actions
+
+- Record rate limit related findings in docs/incidents.md
+- Review whether the client behavior indicates abuse
+- Review whether future AI API cost controls need stricter limits
+- Consider adding usage and cost tracking before real AI API integration
+

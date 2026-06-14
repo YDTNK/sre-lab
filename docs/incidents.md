@@ -323,3 +323,80 @@ Production API returned expected responses for valid requests and invalid reques
 - [ ] Add estimated cost tracking
 - [ ] Add cost incident runbook
 
+---
+
+### 20260614-004
+
+### Service
+
+SRE Lab Workers API
+
+### Alert Rule
+
+Manual design record / API safety planning
+
+### Summary
+
+Rate limiting design was defined before real AI API integration.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the planned rate limiting approach to reduce abuse and prevent unexpected AI API cost spikes.
+
+### Detection
+
+Manual design review.
+
+### Initial Checks
+
+- API safety hardening was already implemented
+- Standardized error response format was already implemented
+- Request size limit was already implemented
+- Total input length limit was already implemented
+- Real AI API integration has not started yet
+- Rate limiting is required before connecting a paid AI API
+
+### Design Decision
+
+- Rate limiting storage: Cloudflare KV
+- Target endpoint: POST /api/moving-assistant
+- Initial minute limit: 10 requests / minute / client IP
+- Initial daily limit: 50 requests / day / client IP
+- Limit exceeded response: 429 Too Many Requests
+- Error code: rate_limited
+- Retry header: Retry-After: 60
+
+### Timeline
+
+| Time | Event |
+|---|---|
+| 2026-06-14 | Rate limiting requirement was identified |
+| 2026-06-14 | Cloudflare KV was selected as the initial implementation approach |
+| 2026-06-14 | Initial limits were defined |
+| 2026-06-14 | Rate limiting design was documented |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a design and planning record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Create Cloudflare KV namespace for rate limiting
+- [ ] Bind KV namespace to the Workers API
+- [ ] Implement IP-based minute and daily counters
+- [ ] Return 429 / rate_limited when limits are exceeded
+- [ ] Add Retry-After: 60 header
+- [ ] Verify production behavior with curl
+- [ ] Confirm Grafana API check remains healthy
+- [ ] Add usage and cost tracking before real AI API integration
+

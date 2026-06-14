@@ -114,6 +114,41 @@ Follow-up actions:
 - Add cost incident runbook
 - Review API safety behavior after each API deployment
 
+## Rate Limiting Operations
+
+Rate limiting will be introduced before real AI API integration.
+
+### Design Decision
+
+- Storage: Cloudflare KV
+- Target endpoint: POST /api/moving-assistant
+- Initial minute limit: 10 requests / minute / client IP
+- Initial daily limit: 50 requests / day / client IP
+- Error response: 429 / rate_limited
+- Retry header: Retry-After: 60
+
+### Operational Purpose
+
+- Prevent repeated automated POST requests
+- Reduce abuse before public AI API usage
+- Avoid unexpected AI API cost spikes
+- Keep the service safe for low-cost operation
+
+### Operational Checks After Implementation
+
+- Confirm valid requests still return 200
+- Confirm more than 10 requests per minute returns 429
+- Confirm more than 50 requests per day returns 429
+- Confirm Retry-After header is present
+- Confirm standardized JSON error response is returned
+- Confirm Grafana API monitoring remains healthy
+- Record verification results in docs/incidents.md
+
+### Follow-up
+
+Rate limiting must be implemented before connecting OpenAI API, Claude API, or any other paid AI API.
+
+
 ## Incident Response Flow
 
 1. Receive alert

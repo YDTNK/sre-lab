@@ -209,3 +209,89 @@ Follow-up before real AI integration:
 - Add estimated cost tracking
 - Store AI API keys only in Cloudflare Workers Secrets
 
+## Rate Limiting Design Before Real AI Integration
+
+Rate limiting must be implemented before connecting a real AI API.
+
+The purpose is to reduce abuse, prevent repeated automated POST requests, and avoid unexpected AI API cost spikes.
+
+### Decision
+
+Rate limiting will be implemented with Cloudflare KV.
+
+### Target
+
+- Endpoint: POST /api/moving-assistant
+- Preflight OPTIONS requests are excluded from rate limiting
+- Invalid paths and unsupported methods should be rejected before rate limit checks
+
+### Initial Limits
+
+| Scope | Limit |
+|---|---:|
+| Per client IP | 10 requests / minute |
+| Per client IP | 50 requests / day |
+
+### Response on Limit Exceeded
+
+Status:
+
+- 429 Too Many Requests
+
+Headers:
+
+- Retry-After: 60
+
+Response body:
+
+{
+  "error": {
+    "code": "rate_limited",
+    "message": "Too many requests. Please try again later."
+  }
+}
+
+### KV Key Design
+
+Minute window:
+
+- rate:moving-assistant:minute:{ip}:{yyyyMMddHHmm}
+
+Day window:
+
+- rate:moving-assistant:day:{ip}:{yyyyMMdd}
+
+### Client IP
+
+Use Cloudflare's connecting IP header:
+
+- CF-Connecting-IP
+
+If the header is missing, use `unknown` as a fallback key.
+
+### Validation Order
+
+The API should validate requests in the following order:
+
+1. OPTIONS handling
+2. Path validation
+3. Method validation
+4. Content-Type validation
+5. Request size validation
+6. Rate limit check
+7. JSON parse
+8. Input validation
+9. Mock response or future AI API call
+
+### Follow-up Implementation Tasks
+
+- Create a Cloudflare KV namespace for rate limiting
+- Bind the KV namespace to the Worker
+- Add rate limit constants
+- Add client IP extraction
+- Add minute and daily counter logic
+- Return 429 with standardized error response
+- Add Retry-After: 60
+- Add production curl verification
+- Document results in docs/incidents.md
+
