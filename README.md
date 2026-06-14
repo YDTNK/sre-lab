@@ -59,6 +59,14 @@ SRE Lab records operational incidents and follow-up actions in an incident log.
 - Incident log: docs/incidents.md
 - Purpose: record alerts, investigations, mitigations, root causes, and reliability improvements
 
+## Operations
+
+SRE Lab defines basic operational workflows for deployments, monitoring, incident response, and cost control.
+
+- Operations guide: docs/operations.md
+- Daily checks: Cloudflare Pages, Grafana monitoring, alert rules, GitHub Actions
+- Weekly checks: uptime trends, incidents, runbook accuracy, cost and usage
+
 ## Roadmap
 
 1. Build the project foundation
