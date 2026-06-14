@@ -3916,3 +3916,62 @@ If usage logging failed, the exception could break the API request itself.
 - Keep usage/cost logging failure isolated from product API success path.
 - Continue small-step CSS cleanup only after API and frontend display verification.
 
+## 20260615-003: Moving Assistant API fallback recovery
+
+### Type
+
+Operational Record / API Incident Recovery
+
+### Summary
+
+During production verification, `POST /api/moving-assistant` returned HTTP/2 500 with Cloudflare Workers error code 1101.
+
+### Impact
+
+- Moving Assistant frontend could not receive a successful API response.
+- AWS Cost Simulator API remained healthy.
+- Not-found API behavior returned standardized 404 correctly.
+- Frontend static pages remained available.
+
+### Cause
+
+The Moving Assistant endpoint still depended on a more complex AI / cost / rate-limit execution path.  
+During production verification, this path caused an unhandled Workers runtime exception.
+
+### Fix
+
+- Added a deterministic fallback handler for the Moving Assistant endpoint.
+- Routed `/api/moving-assistant` to the fallback handler before the legacy AI execution path.
+- Preserved basic request validation.
+- Returned a stable fallback response with:
+  - `summary`
+  - `boxEstimate`
+  - `packingMaterials`
+  - `checklist`
+  - `riskNotes`
+  - `disclaimer`
+  - `aiStatus`
+  - `fallbackReason`
+  - `receivedInput`
+
+### Verification
+
+- Confirmed `POST /api/moving-assistant` returned HTTP/2 200.
+- Confirmed `POST /api/aws-cost-simulator` returned HTTP/2 200.
+- Confirmed invalid API path returned HTTP/2 404.
+- Confirmed frontend pages returned HTTP/2 200 after redirect.
+
+### Result
+
+Moving Assistant API was restored using deterministic fallback mode.
+
+### Follow-up
+
+- Re-enable real AI integration only after isolating:
+  - cost lookup failures
+  - AI daily limit checks
+  - OpenAI request failures
+  - usage recording failures
+- Add top-level API exception handling to prevent Cloudflare Workers 1101 from leaking to users.
+- Keep fallback response available as a safe degradation path.
+
