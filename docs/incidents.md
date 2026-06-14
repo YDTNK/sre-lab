@@ -1995,3 +1995,79 @@ Not applicable. This is a frontend implementation record.
 - [ ] Confirm aws-cost-simulator.html opens in production
 - [ ] Add AWS Cost Simulator form in the next Phase 8 step
 - [ ] Add monitoring for dedicated service pages later
+
+---
+
+### 20260614-023
+
+### Service
+
+SRE Lab AWS Cost Simulator Frontend
+
+### Alert Rule
+
+Manual documentation record / frontend UI implementation
+
+### Summary
+
+The AWS Cost Simulator placeholder page was updated with the initial frontend UI form.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 8-4 frontend UI implementation for AWS Cost Simulator.
+
+### Detection
+
+Manual implementation and local file verification during Phase 8-4.
+
+### Changes
+
+- Added AWS Cost Simulator input form
+- Added region selector
+- Added EC2 instance type selector
+- Added EC2 instance count input
+- Added EC2 monthly hours input
+- Added EBS storage input
+- Added S3 storage input
+- Added data transfer input
+- Added disabled calculate button for future API integration
+- Added result preview section
+- Added form styles to apps/landing/styles.css
+
+### Design Decision
+
+The AWS Cost Simulator UI is implemented before the Workers API endpoint.
+
+The calculate button remains disabled until the deterministic calculation API is implemented.
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| AWS Cost Simulator form | Present | Passed |
+| Input fields | Present | Passed |
+| Result preview | Present | Passed |
+| Calculate button | Disabled | Passed |
+| CSS form styles | Added | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a frontend UI implementation record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Add Workers API endpoint for AWS Cost Simulator
+- [ ] Implement deterministic calculation logic
+- [ ] Enable calculate button after API integration
+- [ ] Add API safety validation
+- [ ] Add synthetic monitoring after endpoint release

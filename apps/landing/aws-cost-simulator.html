@@ -24,32 +24,56 @@
     </section>
 
     <section class="services">
-      <h2>Planned MVP Scope</h2>
-      <div class="service-grid">
-        <article class="service-card">
-          <h3>Inputs</h3>
-          <ul>
-            <li>Region</li>
-            <li>EC2 instance type</li>
-            <li>EC2 instance count</li>
-            <li>EC2 hours per month</li>
-            <li>EBS storage GB</li>
-            <li>S3 storage GB</li>
-            <li>Data transfer GB</li>
-          </ul>
-        </article>
+      <h2>Cost Estimate Form</h2>
+      <p>
+        Enter a simple AWS configuration. The next implementation phase will connect this form to a Workers API endpoint.
+      </p>
 
-        <article class="service-card">
-          <h3>Outputs</h3>
-          <ul>
-            <li>Estimated monthly USD cost</li>
-            <li>Estimated monthly JPY cost</li>
-            <li>Resource cost breakdown</li>
-            <li>Assumptions</li>
-            <li>Educational disclaimer</li>
-          </ul>
-        </article>
-      </div>
+      <form id="aws-cost-form" class="form-card">
+        <label for="region">Region</label>
+        <select id="region" name="region">
+          <option value="ap-northeast-1">Asia Pacific (Tokyo) / ap-northeast-1</option>
+          <option value="us-east-1">US East (N. Virginia) / us-east-1</option>
+        </select>
+
+        <label for="ec2InstanceType">EC2 instance type</label>
+        <select id="ec2InstanceType" name="ec2InstanceType">
+          <option value="t3.micro">t3.micro</option>
+          <option value="t3.small">t3.small</option>
+          <option value="t3.medium">t3.medium</option>
+        </select>
+
+        <label for="ec2InstanceCount">EC2 instance count</label>
+        <input id="ec2InstanceCount" name="ec2InstanceCount" type="number" min="0" max="20" value="1" />
+
+        <label for="ec2HoursPerMonth">EC2 hours per month</label>
+        <input id="ec2HoursPerMonth" name="ec2HoursPerMonth" type="number" min="0" max="744" value="730" />
+
+        <label for="ebsGb">EBS storage GB</label>
+        <input id="ebsGb" name="ebsGb" type="number" min="0" max="1000" value="30" />
+
+        <label for="s3Gb">S3 storage GB</label>
+        <input id="s3Gb" name="s3Gb" type="number" min="0" max="1000" value="10" />
+
+        <label for="dataTransferGb">Data transfer GB</label>
+        <input id="dataTransferGb" name="dataTransferGb" type="number" min="0" max="1000" value="10" />
+
+        <button type="button" class="button" disabled>Calculate estimate - coming soon</button>
+      </form>
+    </section>
+
+    <section class="operations result-panel">
+      <h2>Result Preview</h2>
+      <p>
+        The calculation result will appear here after the Workers API endpoint is implemented.
+      </p>
+      <ul>
+        <li>Total monthly estimate in USD</li>
+        <li>Total monthly estimate in JPY</li>
+        <li>EC2 / EBS / S3 / data transfer breakdown</li>
+        <li>Pricing assumptions</li>
+        <li>Educational disclaimer</li>
+      </ul>
     </section>
 
     <section class="operations">
