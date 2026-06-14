@@ -1219,3 +1219,91 @@ Not applicable. This is a cost operations documentation record.
 - [ ] Consider Grafana alerting for cost thresholds in the future
 - [ ] Consider D1 for historical cost reporting
 
+---
+
+### 20260614-013
+
+### Service
+
+SRE Lab Workers API / AI Cost Control
+
+### Alert Rule
+
+Manual verification / cost_limit_reached behavior check
+
+### Summary
+
+The cost_limit_reached behavior was manually verified by temporarily setting the monthly estimated cost key to the stop threshold.
+
+### Impact
+
+No user-facing incident occurred.
+
+The production API correctly blocked AI diagnosis when the monthly estimated cost reached the configured stop threshold.
+
+### Detection
+
+Manual production verification using Cloudflare KV and curl.
+
+### Initial Checks
+
+- AI cost tracking was already implemented
+- Cost operations documentation was already added
+- Monthly estimated cost key existed in Cloudflare KV
+- Monthly stop threshold was configured as 500 JPY
+- OpenAI API integration was already working
+
+### Test Procedure
+
+1. Read the current monthly estimated cost value from Cloudflare KV.
+2. Temporarily set cost:moving-assistant:estimated_jpy:202606 to 500.
+3. Send a valid POST request to the production API.
+4. Confirm the API returns 503 / cost_limit_reached.
+5. Restore the monthly estimated cost value to the original value.
+6. Confirm the API no longer returns cost_limit_reached.
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Monthly cost key override | 500 | Passed |
+| Valid POST while cost is at threshold | 503 | Passed |
+| Error code | cost_limit_reached | Passed |
+| OpenAI API call | Not executed | Passed by behavior |
+| Monthly cost key restore | Original value | Passed |
+| Post-restore behavior | Not cost_limit_reached | Passed |
+
+### Expected Production Response During Test
+
+```json
+{
+  "error": {
+    "code": "cost_limit_reached",
+    "message": "AI diagnosis is temporarily unavailable due to usage limits."
+  }
+}
+```
+
+### Root Cause
+
+No incident occurred.
+
+This was a controlled test of the cost stop threshold behavior.
+
+### Mitigation
+
+The monthly estimated cost key was restored to the original value after the test.
+
+### Recovery Validation
+
+After restoring the monthly estimated cost key, the API no longer returned cost_limit_reached.
+
+If the per-IP AI daily limit had already been reached, 429 / ai_limit_reached was accepted as a valid post-restore response.
+
+### Prevention / Follow-up Actions
+
+- [ ] Compare estimated KV cost with OpenAI Platform usage
+- [ ] Review cost threshold values after several days of AI usage
+- [ ] Consider adding automated cost-limit tests for non-production environments
+- [ ] Consider adding Grafana alerting for cost threshold in the future
+
