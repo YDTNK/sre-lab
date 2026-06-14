@@ -79,6 +79,15 @@ The first planned service is:
   - Service design: docs/services.md
   - MVP specification: docs/moving-assistant.md
 
+## AI API Design
+
+SRE Lab plans to add an AI API backend using Cloudflare Workers.
+
+- Target service: AI Moving Assistant
+- Backend design: Cloudflare Workers API
+- Purpose: keep API keys secure, validate requests, handle errors, and control API cost
+- Design document: docs/ai-api-design.md
+
 ## Roadmap
 
 1. Build the project foundation

@@ -26,5 +26,6 @@ jobs:
           test -f docs/operations.md
           test -f docs/services.md
           test -f docs/moving-assistant.md
+          test -f docs/ai-api-design.md
           test -f apps/landing/index.html
           test -f apps/landing/styles.css
