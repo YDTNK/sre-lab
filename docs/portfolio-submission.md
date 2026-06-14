@@ -1,17 +1,17 @@
-# SRE Lab Portfolio Submission Package
+# SRE Lab ポートフォリオ提出用まとめ
 
-## Summary
+## 概要
 
-SRE Lab is a small multi-service operations lab built as an SRE / Platform Engineering portfolio project.
+SRE Lab は、SRE / Platform Engineering向けのポートフォリオとして作成している、小さな複数サービス運用プロジェクトです。
 
-It is not just a web application. It demonstrates how small services are deployed, monitored, alerted, documented, and improved through operational records.
+単なるWebアプリではなく、公開、CI/CD、監視、アラート、Runbook、Operational Record、API安全化、AI APIのコスト管理まで含めて、実運用に近い形でサービスを育てています。
 
-The project currently operates two services:
+現在は以下の2つのサービスを運用しています。
 
-- AI Moving Assistant
-- AWS Cost Simulator
+- AI Moving Assistant / AI引越し診断
+- AWS Cost Simulator / AWS料金試算
 
-## Live URLs
+## 公開URL
 
 Frontend:
 
@@ -21,26 +21,27 @@ Workers API:
 
 https://sre-lab-api.daisan-tanaka.workers.dev
 
-AI Moving Assistant page:
+AI Moving Assistant:
 
 https://sre-lab.pages.dev/moving-assistant.html
 
-AWS Cost Simulator page:
+AWS Cost Simulator:
 
 https://sre-lab.pages.dev/aws-cost-simulator.html
 
-## Services
+## サービス一覧
 
-### AI Moving Assistant
+### AI Moving Assistant / AI引越し診断
 
-AI Moving Assistant is a Japanese moving preparation support service.
+日本語の引越し準備支援サービスです。
 
-Main features:
+主な機能:
 
-- Dedicated frontend page
+- 専用Frontendページ
 - Cloudflare Workers API
-- OpenAI API integration through backend only
-- API key stored as Cloudflare Workers Secret
+- OpenAI APIをBackend経由で利用
+- API keyをCloudflare Workers Secretで管理
+- FrontendにAPI keyを置かない構成
 - Request validation
 - Rate limiting
 - AI-specific daily limit
@@ -50,22 +51,22 @@ Main features:
 - AI response shape validation
 - Grafana Synthetic Monitoring
 - Grafana Alerting
-- Runbook and operational records
+- Runbook and Operational Records
 
 Endpoint:
 
 POST /api/moving-assistant
 
-### AWS Cost Simulator
+### AWS Cost Simulator / AWS料金試算
 
-AWS Cost Simulator is an educational AWS monthly cost estimate service.
+AWS月額料金を教育用に概算するサービスです。
 
-Main features:
+主な機能:
 
-- Dedicated frontend page
+- 専用Frontendページ
 - Cloudflare Workers API
 - Deterministic cost calculation
-- EC2, EBS, S3, and data transfer estimate
+- EC2 / EBS / S3 / Data transfer estimate
 - USD to JPY fixed conversion
 - Region whitelist
 - EC2 instance type whitelist
@@ -74,13 +75,13 @@ Main features:
 - No paid AI API usage
 - Grafana Synthetic Monitoring
 - Grafana Alerting
-- Runbook and operational records
+- Runbook and Operational Records
 
 Endpoint:
 
 POST /api/aws-cost-simulator
 
-## Technical Stack
+## 技術構成
 
 | Area | Technology |
 |---|---|
@@ -95,9 +96,9 @@ POST /api/aws-cost-simulator
 | Documentation | Markdown |
 | Repository | GitHub |
 
-## SRE / Platform Engineering Points
+## SRE / Platform Engineeringとしてのポイント
 
-This project demonstrates the following SRE and platform engineering practices:
+このプロジェクトでは、以下を実装しています。
 
 - Public service operation
 - Frontend and API separation
@@ -121,25 +122,25 @@ This project demonstrates the following SRE and platform engineering practices:
 
 ## Reliability Design
 
-SRE Lab includes reliability controls for both service operation and AI usage.
+SRE Labでは、サービス運用とAI API利用の両方に対して信頼性対策を入れています。
 
-Implemented reliability controls:
+主な信頼性対策:
 
-- Cloudflare Pages for frontend hosting
-- Cloudflare Workers for API isolation
-- GitHub Actions CI before deployment
+- Cloudflare PagesによるFrontend公開
+- Cloudflare WorkersによるAPI分離
+- GitHub Actions CI
 - Workers auto deployment
 - Grafana Synthetic Monitoring from Tokyo
 - Grafana Alerting with pending period
 - Email notification contact point
 - Runbook for first response
-- Operational records for production changes
+- Operational Records for production changes
 - Safe fallback for AI API failure
 - Cost limit behavior for paid AI API usage
 
 ## Monitoring and Alerting
 
-Current monitoring targets:
+現在の監視対象:
 
 | Target | Method | Expected | Alert |
 |---|---|---|---|
@@ -147,7 +148,7 @@ Current monitoring targets:
 | AI Moving Assistant API | POST | 2xx | sre-lab-api-down |
 | AWS Cost Simulator API | POST | 2xx | sre-lab-aws-cost-simulator-api-down |
 
-Common alert behavior:
+共通Alert設定:
 
 - Metric: probe_success
 - Condition: below 0.5
@@ -158,9 +159,9 @@ Common alert behavior:
 
 ## Cost and Safety Design
 
-AI Moving Assistant uses OpenAI API through the backend only.
+AI Moving Assistantでは、OpenAI APIをBackend経由で利用しています。
 
-Cost and safety controls:
+Cost / Safety controls:
 
 - API key is never exposed to frontend JavaScript
 - OpenAI API key is stored as Cloudflare Workers Secret
@@ -171,9 +172,9 @@ Cost and safety controls:
 - Monthly estimated cost limit is enforced
 - OpenAI auto recharge is off
 
-AWS Cost Simulator intentionally avoids paid APIs.
+AWS Cost Simulatorは、意図的に有料APIを使わない構成です。
 
-Cost and safety controls:
+Cost / Safety controls:
 
 - No AWS Pricing API call
 - No OpenAI API call
@@ -183,9 +184,9 @@ Cost and safety controls:
 
 ## Operational Records
 
-The project keeps operational records in docs/incidents.md.
+運用記録は docs/incidents.md に残しています。
 
-Examples of recorded operations:
+記録例:
 
 - Initial production readiness check
 - Worker auto deployment verification
@@ -203,33 +204,29 @@ Examples of recorded operations:
 - AWS Cost Simulator monitoring setup
 - Multi-service documentation polish
 
-## What This Project Proves
+## このプロジェクトで示せること
 
-This project proves that I can do more than build a simple web app.
+このプロジェクトでは、単にアプリを作るだけではなく、以下を示せます。
 
-It demonstrates that I can:
+- 小さなサービスアーキテクチャを設計できる
+- FrontendとAPIの責務を分離できる
+- サービスを公開できる
+- CI/CD workflowを構築できる
+- 監視とアラートを設定できる
+- Runbookを定義できる
+- Operational Recordを残せる
+- API safetyを考慮できる
+- AI APIの利用量とコストを制御できる
+- 複数の小さなサービスを1つのPlatformとして運用できる
+- 継続的に改善できる
 
-- design a small service architecture
-- separate frontend and API responsibilities
-- deploy services publicly
-- build CI/CD workflows
-- add monitoring and alerting
-- define runbooks
-- keep operational records
-- think about API safety
-- control AI API usage and cost
-- operate multiple small services as one platform
-- improve the system iteratively
+## 面談での説明例
 
-## Interview Explanation
+SRE Labは、Cloudflare PagesとWorkers上で複数の小さなサービスを運用するSREポートフォリオです。1つ目はAI引越し診断で、OpenAI APIをBackend経由で安全に呼び出し、Rate limit、Fallback、Cost trackingを実装しています。2つ目はAWS料金試算で、AI APIを使わず固定単価ベースで月額概算を返します。両サービスに対してGrafana Synthetic Monitoring、Alert rule、Runbook、Operational Recordを整備しており、単なるアプリ開発ではなく、運用・監視・改善まで含めた実績として作っています。
 
-A concise explanation for interviews:
+## 現在の状態
 
-SRE Lab is my multi-service SRE portfolio project. I operate two small services on Cloudflare Pages and Workers. The first is AI Moving Assistant, which uses OpenAI API safely from the backend with rate limiting, fallback behavior, and cost tracking. The second is AWS Cost Simulator, which calculates deterministic AWS monthly cost estimates without paid AI API usage. Both services have dedicated frontend pages, API endpoints, Grafana Synthetic Monitoring, alert rules, runbook links, and operational records. The goal is to show not only application development, but production-like operation, reliability design, and continuous improvement.
-
-## Current Status
-
-SRE Lab currently has:
+SRE Labの現在の状態:
 
 - Two production frontend pages
 - Two production API endpoints
@@ -238,19 +235,17 @@ SRE Lab currently has:
 - Grafana Synthetic Monitoring
 - Grafana Alerting
 - Runbook
-- Incident and operational records
+- Incident and Operational Records
 - API safety controls
 - AI API integration
 - Cost tracking
 - Multi-service documentation
 
-## Next Improvements
+## 今後の改善候補
 
-Possible next improvements:
-
-- Add a simple revenue or cost dashboard
-- Add GitHub Issues for improvement task tracking
-- Add AI Incident Summarizer
-- Add more detailed AWS Cost Simulator resources
-- Add D1-based usage and cost storage
-- Add automated weekly operational reports
+- Revenue / Cost Dashboard
+- GitHub Issuesによる改善タスク管理
+- AI Incident Summarizer
+- AWS Cost Simulatorの対応リソース追加
+- Cloudflare D1によるusage / cost storage
+- 週次運用レポートの自動化

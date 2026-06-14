@@ -2589,3 +2589,72 @@ Not applicable. This is a documentation and portfolio packaging record.
 - [ ] Keep portfolio submission package aligned with future service changes
 - [ ] Update interview explanation after adding future services
 - [ ] Add screenshots or architecture visuals in a future polish phase
+
+---
+
+### 20260614-031
+
+### Service
+
+SRE Lab Portfolio Documentation
+
+### Alert Rule
+
+Manual documentation record / Japanese localization
+
+### Summary
+
+README, portfolio submission document, and public service UI were localized toward Japanese presentation.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-D Japanese portfolio localization.
+
+### Detection
+
+Manual portfolio review identified mixed English and Japanese wording across documentation and site UI.
+
+### Changes
+
+- Rewrote README as Japanese-first portfolio documentation
+- Rewrote docs/portfolio-submission.md as Japanese-first submission material
+- Localized SRE Lab top page copy
+- Localized AWS Cost Simulator page copy
+- Kept service names and technical terms in English where appropriate
+- Preserved code, API paths, metrics, alert names, and commit conventions in English
+
+### Design Decision
+
+Public-facing explanations and portfolio materials should be Japanese-first because the primary review context is Japanese interviews and portfolio screening.
+
+Service names and technical terms remain English where they are standard industry terms.
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| README Japanese-first | Updated | Pending review |
+| Portfolio submission Japanese-first | Updated | Pending review |
+| Top page UI Japanese-first | Updated | Pending review |
+| AWS Cost Simulator UI Japanese-first | Updated | Pending review |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a localization and portfolio polish record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Keep future public-facing docs Japanese-first
+- [ ] Keep technical identifiers in English
+- [ ] Review AI Moving Assistant page wording if needed
+- [ ] Review Runbook and Operations docs for future Japanese polish

@@ -10,81 +10,81 @@
   <main class="container">
     <section class="hero">
       <p class="eyebrow">SRE Lab / Phase 8</p>
-      <h1>AWS Cost Simulator</h1>
+      <h1>AWS Cost Simulator / AWS料金試算</h1>
       <p class="lead">
-        AWS Cost Simulator is a planned educational tool for estimating simple AWS monthly costs.
+        AWS Cost Simulatorは、AWS月額料金を教育用に概算する小さなサービスです。
       </p>
       <p>
-        The MVP calculates simple deterministic estimates for EC2, EBS, S3, and data transfer.
-        It will not require a paid AI API in the first version.
+        EC2、EBS、S3、Data transferを固定単価ベースで概算します。
+        このサービスでは有料AI APIを使用しません。
       </p>
       <p>
-        <a class="button secondary" href="index.html">Back to SRE Lab</a>
+        <a class="button secondary" href="index.html">SRE Labへ戻る</a>
       </p>
     </section>
 
     <section class="services">
-      <h2>Cost Estimate Form</h2>
+      <h2>料金試算フォーム</h2>
       <p>
-        Enter a simple AWS configuration and calculate an educational monthly estimate.
+        簡単なAWS構成を入力して、教育用の月額概算を試算します。
       </p>
 
       <form id="aws-cost-form" class="form-card">
-        <label for="region">Region</label>
+        <label for="region">リージョン</label>
         <select id="region" name="region">
           <option value="ap-northeast-1">Asia Pacific (Tokyo) / ap-northeast-1</option>
           <option value="us-east-1">US East (N. Virginia) / us-east-1</option>
         </select>
 
-        <label for="ec2InstanceType">EC2 instance type</label>
+        <label for="ec2InstanceType">EC2インスタンスタイプ</label>
         <select id="ec2InstanceType" name="ec2InstanceType">
           <option value="t3.micro">t3.micro</option>
           <option value="t3.small">t3.small</option>
           <option value="t3.medium">t3.medium</option>
         </select>
 
-        <label for="ec2InstanceCount">EC2 instance count</label>
+        <label for="ec2InstanceCount">EC2台数</label>
         <input id="ec2InstanceCount" name="ec2InstanceCount" type="number" min="0" max="20" value="1" />
 
-        <label for="ec2HoursPerMonth">EC2 hours per month</label>
+        <label for="ec2HoursPerMonth">EC2月間稼働時間</label>
         <input id="ec2HoursPerMonth" name="ec2HoursPerMonth" type="number" min="0" max="744" value="730" />
 
-        <label for="ebsGb">EBS storage GB</label>
+        <label for="ebsGb">EBS容量 GB</label>
         <input id="ebsGb" name="ebsGb" type="number" min="0" max="1000" value="30" />
 
-        <label for="s3Gb">S3 storage GB</label>
+        <label for="s3Gb">S3容量 GB</label>
         <input id="s3Gb" name="s3Gb" type="number" min="0" max="1000" value="10" />
 
         <label for="dataTransferGb">Data transfer GB</label>
         <input id="dataTransferGb" name="dataTransferGb" type="number" min="0" max="1000" value="10" />
 
-        <button id="calculate-button" type="submit" class="button">Calculate estimate</button>
+        <button id="calculate-button" type="submit" class="button">試算する</button>
       </form>
     </section>
 
     <section class="operations result-panel">
-      <h2>Estimate Result</h2>
+      <h2>試算結果</h2>
       <div id="aws-cost-result" class="result-box">
-        <p>Enter values and click Calculate estimate.</p>
+        <p>Enter values and click 試算する.</p>
       </div>
     </section>
 
     <section class="operations">
-      <h2>Implementation Status</h2>
+      <h2>実装状況</h2>
       <ul>
-        <li>Status: Frontend connected to Workers API</li>
-        <li>Current: deterministic estimate via API</li>
-        <li>Implemented: Workers API endpoint</li>
-        <li>Implemented: API safety validation</li>
-        <li>Implemented: synthetic monitoring and alerting</li>
+        <li>Status: Frontend connected to Workers API / 公開中</li>
+        <li>Current: deterministic estimate via API / API経由で固定単価試算</li>
+        <li>Implemented: Workers API endpoint / API実装済み</li>
+        <li>Implemented: API safety validation / 入力検証済み</li>
+        <li>Implemented: synthetic monitoring and alerting / 監視とAlert設定済み</li>
       </ul>
     </section>
 
     <section class="operations">
-      <h2>Disclaimer</h2>
+      <h2>注意事項</h2>
       <p>
-        This page provides approximate educational estimates.
-        They will not replace the official AWS Pricing Calculator or actual AWS billing data.
+        このページの試算は教育用の概算です。
+        AWS公式Pricing Calculatorや実際の請求額の代替ではありません。
       </p>
     </section>
   </main>
@@ -101,7 +101,7 @@
     }
 
     function renderError(message) {
-      resultBox.innerHTML = "<p><strong>Error:</strong> " + escapeHtml(message) + "</p>";
+      resultBox.innerHTML = "<p><strong>エラー:</strong> " + escapeHtml(message) + "</p>";
     }
 
     function renderResult(data) {
@@ -109,15 +109,15 @@
       const assumptions = Array.isArray(data.assumptions) ? data.assumptions : [];
 
       resultBox.innerHTML = [
-        "<p><strong>Total monthly estimate:</strong> $" + data.totalMonthlyUsd + " / ¥" + data.totalMonthlyJpy + "</p>",
-        "<h3>Breakdown</h3>",
+        "<p><strong>月額概算:</strong> $" + data.totalMonthlyUsd + " / ¥" + data.totalMonthlyJpy + "</p>",
+        "<h3>内訳</h3>",
         "<ul>",
         "<li>EC2: $" + breakdown.ec2 + "</li>",
         "<li>EBS: $" + breakdown.ebs + "</li>",
         "<li>S3: $" + breakdown.s3 + "</li>",
         "<li>Data transfer: $" + breakdown.dataTransfer + "</li>",
         "</ul>",
-        "<h3>Assumptions</h3>",
+        "<h3>前提条件</h3>",
         "<ul>",
         assumptions.map((item) => "<li>" + escapeHtml(item) + "</li>").join(""),
         "</ul>",
@@ -148,8 +148,8 @@
       };
 
       calculateButton.disabled = true;
-      calculateButton.textContent = "Calculating...";
-      resultBox.innerHTML = "<p>Calculating estimate...</p>";
+      calculateButton.textContent = "試算中...";
+      resultBox.innerHTML = "<p>試算中...</p>";
 
       try {
         const response = await fetch(AWS_COST_API_URL, {
@@ -163,16 +163,16 @@
         const data = await response.json();
 
         if (!response.ok) {
-          renderError(data.error ? data.error.message : "Failed to calculate estimate.");
+          renderError(data.error ? data.error.message : "試算に失敗しました。");
           return;
         }
 
         renderResult(data);
       } catch {
-        renderError("Network error. Please try again later.");
+        renderError("ネットワークエラーです。時間をおいて再度お試しください。");
       } finally {
         calculateButton.disabled = false;
-        calculateButton.textContent = "Calculate estimate";
+        calculateButton.textContent = "試算する";
       }
     });
   </script>
