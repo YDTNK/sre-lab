@@ -1839,3 +1839,85 @@ Not applicable. This is a second service planning record.
 - [ ] Add synthetic monitoring after implementation
 - [ ] Update README and operational docs after MVP release
 
+---
+
+### 20260614-021
+
+### Service
+
+SRE Lab Frontend Navigation / Second Service Planning
+
+### Alert Rule
+
+Manual documentation record / dedicated service page design
+
+### Summary
+
+A frontend navigation policy was documented for SRE Lab multi-service operation.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the decision to avoid mixing unrelated service forms on a single page.
+
+### Detection
+
+Manual design review during Phase 8-2.
+
+### Design Decision
+
+SRE Lab top page will act as a service directory and each service will have a dedicated page.
+
+Initial structure:
+
+- index.html
+- moving-assistant.html
+- aws-cost-simulator.html
+
+### Reason
+
+- Avoid confusing unrelated service flows
+- Keep each service purpose clear
+- Improve SEO and portfolio storytelling
+- Make page-level and endpoint-level monitoring easier
+- Support future multi-service SRE Lab growth
+
+### Documentation Updated
+
+- README.md
+- docs/frontend-navigation.md
+- docs/aws-cost-simulator.md
+- docs/services.md
+- docs/operations.md
+- docs/incidents.md
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Service navigation policy | Documented | Passed |
+| Dedicated page policy | Documented | Passed |
+| AWS Cost Simulator frontend design | Documented | Passed |
+| README navigation design | Updated | Passed |
+| Operational record | Added | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a frontend navigation design record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Convert or preserve AI Moving Assistant as a dedicated page
+- [ ] Add AWS Cost Simulator dedicated page
+- [ ] Keep top page as a service directory
+- [ ] Add page-level monitoring after implementation
+- [ ] Add AWS Cost Simulator API endpoint after frontend design is stable

@@ -88,6 +88,38 @@ Example policy:
 - Clearly document assumptions
 - Do not claim exact AWS billing accuracy
 
+## Frontend Page Design
+
+AWS Cost Simulator should be implemented as a dedicated service page.
+
+Recommended page:
+
+/aws-cost-simulator.html
+
+This page should not be mixed with AI Moving Assistant form fields.
+
+Initial UI elements:
+
+- Back link to SRE Lab top page
+- Service title
+- Short educational description
+- Region selector
+- EC2 instance type selector
+- EC2 instance count input
+- EC2 hours per month input
+- EBS storage GB input
+- S3 storage GB input
+- Data transfer GB input
+- Calculate button
+- Result summary
+- Cost breakdown
+- Assumptions
+- Educational disclaimer
+
+Related navigation design:
+
+- docs/frontend-navigation.md
+
 ## Proposed API Endpoint
 
 ```text

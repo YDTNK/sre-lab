@@ -209,6 +209,30 @@ Verified behavior:
 - OpenAI Usage mismatch handling policy documented
 - Future usage/cost dashboard design documented
 
+## Service Navigation Design
+
+SRE Lab is designed as a small multi-service operations lab.
+
+The frontend should not mix unrelated service forms on a single page.
+
+Recommended page structure:
+
+- index.html: SRE Lab overview and service cards
+- moving-assistant.html: AI Moving Assistant dedicated page
+- aws-cost-simulator.html: AWS Cost Simulator dedicated page
+
+Design policy:
+
+- Top page acts as the service directory
+- Each service has a dedicated page
+- Each service calls its own API endpoint
+- Monitoring can be added per page and per endpoint
+- Unrelated service forms should not be mixed on one page
+
+Documentation:
+
+- docs/frontend-navigation.md
+
 ## Second Service Plan
 
 The next SRE Lab service is planned as AWS Cost Simulator.

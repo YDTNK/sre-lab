@@ -509,3 +509,27 @@ Related document:
 
 - docs/aws-cost-simulator.md
 
+## Dedicated Service Page Operations Policy
+
+As SRE Lab adds more services, each service should have a dedicated frontend page and API endpoint.
+
+The top page should remain a service directory and portfolio entry point.
+
+Operational benefits:
+
+- Easier service ownership explanation
+- Easier frontend monitoring by page
+- Easier API monitoring by endpoint
+- Cleaner portfolio storytelling
+- Lower risk of confusing unrelated user flows
+
+Initial dedicated pages:
+
+| Service | Page | API Endpoint |
+|---|---|---|
+| AI Moving Assistant | moving-assistant.html | POST /api/moving-assistant |
+| AWS Cost Simulator | aws-cost-simulator.html | POST /api/aws-cost-simulator |
+
+Related document:
+
+- docs/frontend-navigation.md

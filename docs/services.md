@@ -118,3 +118,18 @@ Documentation:
 
 - docs/aws-cost-simulator.md
 
+## Service Navigation Policy
+
+SRE Lab should not mix unrelated service forms on a single page.
+
+The frontend should use the top page as a service directory and provide a dedicated page for each service.
+
+Initial page structure:
+
+- index.html
+- moving-assistant.html
+- aws-cost-simulator.html
+
+Related document:
+
+- docs/frontend-navigation.md
