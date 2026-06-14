@@ -37,6 +37,21 @@ Future improvements:
 - Track uptime and response time trends
 - Record incidents and reliability improvements
 
+## Alerting
+
+Grafana Cloud Alerting is configured for the landing page uptime check.
+
+- Alert rule: sre-lab-uptime-down
+- Metric: probe_success
+- Condition: probe_success < 0.5
+- Probe location: Tokyo, JP (AWS)
+- Evaluation interval: 1m
+- Pending period: 2m
+- Contact point: sre-lab-email
+- Runbook: docs/runbook.md
+
+This alert is intended to detect downtime and connect monitoring results to an operational response workflow.
+
 ## Roadmap
 
 1. Build the project foundation
