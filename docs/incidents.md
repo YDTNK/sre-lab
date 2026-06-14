@@ -1755,3 +1755,87 @@ Not applicable. This is a final documentation update for Phase 7.
 - [ ] Recheck OpenAI Platform Usage later
 - [ ] Decide whether generated reports or dashboard are needed after more usage data
 
+---
+
+### 20260614-020
+
+### Service
+
+SRE Lab Second Service Planning
+
+### Alert Rule
+
+Manual documentation record / Phase 8 second service planning
+
+### Summary
+
+Phase 8 was started and AWS Cost Simulator was selected as the planned second service for SRE Lab.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the start of Phase 8 and the initial design decision for the second service.
+
+### Detection
+
+Manual planning after Phase 7 Usage / Cost Monitoring completion.
+
+### Initial Checks
+
+- Phase 7 Usage / Cost Monitoring was completed
+- AI Moving Assistant had API safety, AI integration, cost tracking, and usage monitoring
+- SRE Lab was ready to move from one service to a multi-service direction
+
+### Design Decision
+
+AWS Cost Simulator was selected as the planned second service.
+
+Reasons:
+
+- Aligns with AWS SAA learning
+- Aligns with Terraform learning
+- Demonstrates cloud cost awareness
+- Adds SRE / FinOps portfolio value
+- Can be implemented without paid AI API dependency in the MVP
+- Can later support SEO, technical articles, and monetization experiments
+
+### Documentation Updated
+
+- README.md
+- docs/services.md
+- docs/operations.md
+- docs/aws-cost-simulator.md
+- docs/incidents.md
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Second service candidate | Selected | Passed |
+| AWS Cost Simulator design | Documented | Passed |
+| Services documentation | Updated | Passed |
+| Operations documentation | Updated | Passed |
+| README | Updated | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a second service planning record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Design AWS Cost Simulator frontend UI
+- [ ] Add Workers API endpoint
+- [ ] Implement deterministic cost calculation
+- [ ] Add API safety validation
+- [ ] Add synthetic monitoring after implementation
+- [ ] Update README and operational docs after MVP release
+

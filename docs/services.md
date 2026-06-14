@@ -94,3 +94,27 @@ MVP success is defined as:
 - AI Learning Coach
 - AWS Cost Estimator
 - Personal Budget Review Assistant
+
+## AWS Cost Simulator
+
+AWS Cost Simulator is the planned second service in SRE Lab.
+
+Purpose:
+
+- Provide a lightweight AWS monthly cost estimation tool
+- Demonstrate cloud cost awareness
+- Connect SRE Lab with AWS SAA, Terraform, and FinOps learning
+- Add a second monitored service to SRE Lab
+
+Initial MVP:
+
+- EC2 monthly estimate
+- EBS estimate
+- S3 estimate
+- Data transfer placeholder
+- Deterministic calculation without AI API dependency
+
+Documentation:
+
+- docs/aws-cost-simulator.md
+

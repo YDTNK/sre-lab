@@ -490,3 +490,22 @@ The next phase is Phase 8: Second Service.
 
 The recommended second service is AWS Cost Simulator because it aligns with AWS, Terraform, SRE cost awareness, and portfolio storytelling.
 
+## Phase 8 Second Service Operations Plan
+
+Phase 8 starts the second service in SRE Lab.
+
+The selected candidate is AWS Cost Simulator.
+
+Initial operation policy:
+
+- Start with deterministic calculation
+- Do not introduce AI API dependency in the MVP
+- Reuse the API safety baseline from AI Moving Assistant
+- Add synthetic monitoring after endpoint implementation
+- Add operational records for each milestone
+- Keep the service small enough to operate continuously
+
+Related document:
+
+- docs/aws-cost-simulator.md
+

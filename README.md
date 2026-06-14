@@ -209,6 +209,32 @@ Verified behavior:
 - OpenAI Usage mismatch handling policy documented
 - Future usage/cost dashboard design documented
 
+## Second Service Plan
+
+The next SRE Lab service is planned as AWS Cost Simulator.
+
+Purpose:
+
+- Add a second small service to SRE Lab
+- Demonstrate AWS cost awareness
+- Connect the project with AWS SAA, Terraform, and FinOps learning
+- Provide a lightweight tool that does not require paid AI API calls in the MVP
+- Extend SRE Lab from one service to a small SaaS group
+
+Initial scope:
+
+- EC2 monthly estimate
+- EBS estimate
+- S3 estimate
+- Data transfer placeholder
+- Deterministic calculation
+- API safety validation
+- Future synthetic monitoring
+
+Documentation:
+
+- docs/aws-cost-simulator.md
+
 ## CI/CD
 
 ### CI
