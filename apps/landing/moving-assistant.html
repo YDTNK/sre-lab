@@ -3,29 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRE Lab - AI引越し診断</title>
+  <title>AI引越し診断 | SRE Lab</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="nav-link">
-    <a href="index.html">← Back to SRE Lab</a>
+    <a href="index.html">← SRE Labトップへ戻る</a>
   </div>
 
   <main>
     <section class="hero">
-      <span class="badge">SRE Portfolio Project</span>
-      <h1>SRE Lab</h1>
+      <span class="badge">AI Moving Assistant</span>
+      <h1>AI引越し診断</h1>
       <p>
-        SRE Labは、AIを活用した小さなWebサービスを構築・運用・監視し、
-        信頼性改善と自動化を実践するための個人プロジェクトです。
+        家具、衣類、家電、本・小物、引越し日、補足メモを入力すると、
+        引越し準備のサマリー、必要な梱包資材、チェックリスト、注意点を整理します。
+      </p>
+      <p>
+        OpenAI APIをバックエンド経由で利用し、fallback response、rate limiting、
+        利用量・推定コスト記録を備えたSRE Labの1つ目のサービスです。
       </p>
     </section>
 
     <section class="card">
-      <h2>AI引越し診断</h2>
+      <h2>引越し情報を入力</h2>
       <p>
-        家具・衣類・家電・本などの情報を入力すると、
-        引越し準備に必要な梱包資材やタスクの目安を確認できます。
+        分かる範囲で入力してください。すべての項目を埋める必要はありません。
+        家具・衣類・家電などの情報が多いほど、より具体的なチェックリストを作成できます。
       </p>
 
       <form id="moving-form">
@@ -84,15 +88,29 @@
           ></textarea>
         </div>
 
-        <button type="submit">引越しチェックリストを作成</button>
+        <button type="submit">チェックリストを作成する</button>
       </form>
     </section>
 
     <section class="card">
       <h2>診断結果</h2>
       <div id="result">
-        <p>入力後、チェックリストを作成できます。</p>
+        <p>入力後、「チェックリストを作成する」を押してください。</p>
       </div>
+    </section>
+
+    <section class="card">
+      <h2>このサービスで実装している運用要素</h2>
+      <ul>
+        <li>Cloudflare Workers API</li>
+        <li>OpenAI APIのバックエンド連携</li>
+        <li>API keyのSecret管理</li>
+        <li>Rate limiting</li>
+        <li>fallback response</li>
+        <li>利用量・推定コスト記録</li>
+        <li>Grafana Synthetic Monitoring</li>
+        <li>Grafana Alerting</li>
+      </ul>
     </section>
   </main>
 
@@ -148,7 +166,7 @@
         }
 
         result.innerHTML = `
-          <h3>基本チェックリスト</h3>
+          <h3>引越し準備サマリー</h3>
           <p>${data.summary}</p>
           <p><strong>${data.boxEstimate}</strong></p>
 

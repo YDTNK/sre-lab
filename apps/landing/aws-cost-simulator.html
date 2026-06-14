@@ -3,37 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AWS Cost Simulator | SRE Lab</title>
+  <title>AWS料金試算 | SRE Lab</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="container">
     <section class="hero">
-      <p class="eyebrow">SRE Lab / Phase 8</p>
-      <h1>AWS Cost Simulator / AWS料金試算</h1>
+      <p class="eyebrow">AWS Cost Simulator</p>
+      <h1>AWS料金試算</h1>
       <p class="lead">
-        AWS Cost Simulatorは、AWS月額料金を教育用に概算する小さなサービスです。
+        EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を計算します。
       </p>
       <p>
-        EC2、EBS、S3、Data transferを固定単価ベースで概算します。
-        このサービスでは有料AI APIを使用しません。
+        このページは学習・ポートフォリオ用の概算ツールです。
+        AWS公式Pricing Calculatorや実際の請求額の代替ではありません。
       </p>
       <p>
-        <a class="button secondary" href="index.html">SRE Labへ戻る</a>
+        <a class="button secondary" href="index.html">SRE Labトップへ戻る</a>
       </p>
     </section>
 
     <section class="services">
-      <h2>料金試算フォーム</h2>
+      <h2>試算条件を入力</h2>
       <p>
-        簡単なAWS構成を入力して、教育用の月額概算を試算します。
+        想定するAWS構成を入力してください。固定単価ベースで、月額料金の目安を計算します。
       </p>
 
       <form id="aws-cost-form" class="form-card">
         <label for="region">リージョン</label>
         <select id="region" name="region">
-          <option value="ap-northeast-1">Asia Pacific (Tokyo) / ap-northeast-1</option>
-          <option value="us-east-1">US East (N. Virginia) / us-east-1</option>
+          <option value="ap-northeast-1">東京リージョン / ap-northeast-1</option>
+          <option value="us-east-1">バージニア北部 / us-east-1</option>
         </select>
 
         <label for="ec2InstanceType">EC2インスタンスタイプ</label>
@@ -58,34 +58,41 @@
         <label for="dataTransferGb">Data transfer量 GB</label>
         <input id="dataTransferGb" name="dataTransferGb" type="number" min="0" max="1000" value="10" />
 
-        <button id="calculate-button" type="submit" class="button">試算する</button>
+        <button id="calculate-button" type="submit" class="button">月額料金を試算する</button>
       </form>
     </section>
 
     <section class="operations result-panel">
       <h2>試算結果</h2>
       <div id="aws-cost-result" class="result-box">
-        <p>値を入力して「試算する」を押してください。</p>
+        <p>条件を入力して「月額料金を試算する」を押してください。</p>
       </div>
     </section>
 
     <section class="operations">
-      <h2>実装状況</h2>
+      <h2>計算について</h2>
+      <p>
+        このツールでは、固定単価をもとにEC2、EBS、S3、Data transferの月額料金を概算します。
+        AWS Pricing APIや有料AI APIは使用していません。
+      </p>
       <ul>
-        <li>公開状態: 公開中</li>
-        <li>現在の機能: API経由で固定単価の料金試算</li>
-        <li>API endpoint: 実装済み</li>
-        <li>入力検証: 実装済み</li>
-        <li>監視・Alert: 設定済み</li>
+        <li>EC2はインスタンスタイプ、台数、月間稼働時間から計算します。</li>
+        <li>EBSとS3は入力された容量をもとに概算します。</li>
+        <li>Data transferは入力された転送量をもとに概算します。</li>
+        <li>表示される金額は学習用の目安です。</li>
       </ul>
     </section>
 
     <section class="operations">
-      <h2>注意事項</h2>
-      <p>
-        このページの試算は教育用の概算です。
-        AWS公式Pricing Calculatorや実際の請求額の代替ではありません。
-      </p>
+      <h2>このサービスで実装している運用要素</h2>
+      <ul>
+        <li>Cloudflare Workers APIによる料金計算</li>
+        <li>入力値の範囲検証</li>
+        <li>標準化されたJSON error response</li>
+        <li>有料AI APIを使わない低コスト設計</li>
+        <li>Grafana Synthetic Monitoring</li>
+        <li>Grafana Alerting</li>
+      </ul>
     </section>
   </main>
 
@@ -172,10 +179,9 @@
         renderError("ネットワークエラーです。時間をおいて再度お試しください。");
       } finally {
         calculateButton.disabled = false;
-        calculateButton.textContent = "試算する";
+        calculateButton.textContent = "月額料金を試算する";
       }
     });
   </script>
-
 </body>
 </html>

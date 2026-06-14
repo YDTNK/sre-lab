@@ -2856,3 +2856,69 @@ Not applicable. This is a documentation rewrite record.
 - [ ] Keep README Japanese-first for portfolio submission
 - [ ] Keep interview scripts outside the main README
 - [ ] Use docs/portfolio-submission.md for detailed interview preparation
+
+---
+
+### 20260614-035
+
+### Service
+
+SRE Lab Public Site
+
+### Alert Rule
+
+Manual documentation record / Japanese-first site rebuild
+
+### Summary
+
+The public site pages were rebuilt as Japanese-first portfolio pages instead of partially translated English-based pages.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the Japanese-first public site rebuild for final portfolio presentation.
+
+### Detection
+
+Manual review identified that the public site still contained English-based wording, outdated status labels, and translation-like structure.
+
+### Changes
+
+- Rebuilt SRE Lab top page copy as Japanese-first portfolio content
+- Rebuilt AI Moving Assistant page copy as Japanese-first service UI
+- Rebuilt AWS Cost Simulator page copy as Japanese-first service UI
+- Removed outdated planned / phase wording from public service pages
+- Preserved form IDs and JavaScript API connections
+- Preserved service names, API paths, and technical terms where appropriate
+- Improved screenshot readiness for portfolio submission
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Top page wording | Japanese-first | Updated |
+| AI Moving Assistant wording | Japanese-first | Updated |
+| AWS Cost Simulator wording | Japanese-first | Updated |
+| Form IDs | Preserved | Passed |
+| API endpoints | Preserved | Passed |
+| JavaScript behavior | Preserved | Pending browser check |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a public site wording and structure rebuild.
+
+### Prevention / Follow-up Actions
+
+- [ ] Run browser check after Cloudflare Pages deployment
+- [ ] Verify AI Moving Assistant form submission
+- [ ] Verify AWS Cost Simulator calculation
+- [ ] Capture final screenshots
