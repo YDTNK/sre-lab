@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRE Lab</title>
+  <title>SRE Lab - AI Moving Assistant</title>
 </head>
 <body>
   <main>
@@ -13,19 +13,127 @@
       monitoring, and improving AI-powered micro services.
     </p>
 
-    <h2>Focus Areas</h2>
-    <ul>
-      <li>CI/CD</li>
-      <li>Monitoring</li>
-      <li>Alerting</li>
-      <li>Runbooks</li>
-      <li>Cost control</li>
-      <li>Reliability improvement</li>
-      <li>Automated monetization experiments</li>
-    </ul>
+    <hr />
 
-    <h2>Current Phase</h2>
-    <p>Phase 1: Landing Page</p>
+    <section>
+      <h2>AI Moving Assistant</h2>
+      <p>
+        Plan your move by estimating packing materials, preparation tasks,
+        and moving-day risks based on your household items.
+      </p>
+
+      <form id="moving-form">
+        <div>
+          <label for="furniture">Furniture list</label><br />
+          <textarea
+            id="furniture"
+            name="furniture"
+            rows="4"
+            placeholder="Example: desk, chair, bed, storage case"
+          ></textarea>
+        </div>
+
+        <div>
+          <label for="clothes">Clothing / storage items</label><br />
+          <input
+            id="clothes"
+            name="clothes"
+            type="text"
+            placeholder="Example: 3 storage boxes, 2 suitcases"
+          />
+        </div>
+
+        <div>
+          <label for="electronics">Electronics</label><br />
+          <input
+            id="electronics"
+            name="electronics"
+            type="text"
+            placeholder="Example: iMac, speakers, audio interface"
+          />
+        </div>
+
+        <div>
+          <label for="books">Books / documents</label><br />
+          <input
+            id="books"
+            name="books"
+            type="text"
+            placeholder="Example: 30 books, documents"
+          />
+        </div>
+
+        <div>
+          <label for="moving-date">Moving date</label><br />
+          <input id="moving-date" name="moving-date" type="date" />
+        </div>
+
+        <div>
+          <label for="notes">Optional notes</label><br />
+          <textarea
+            id="notes"
+            name="notes"
+            rows="4"
+            placeholder="Example: moving alone, need packing materials, gym equipment included"
+          ></textarea>
+        </div>
+
+        <button type="submit">Generate moving checklist</button>
+      </form>
+    </section>
+
+    <hr />
+
+    <section>
+      <h2>Result Preview</h2>
+      <div id="result">
+        <p>Submit the form to generate a basic moving preparation checklist.</p>
+      </div>
+    </section>
   </main>
+
+  <script>
+    const form = document.getElementById("moving-form");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const furniture = document.getElementById("furniture").value || "Not provided";
+      const clothes = document.getElementById("clothes").value || "Not provided";
+      const electronics = document.getElementById("electronics").value || "Not provided";
+      const books = document.getElementById("books").value || "Not provided";
+      const movingDate = document.getElementById("moving-date").value || "Not provided";
+      const notes = document.getElementById("notes").value || "Not provided";
+
+      result.innerHTML = `
+        <h3>Basic Moving Checklist</h3>
+        <p><strong>Moving date:</strong> ${movingDate}</p>
+
+        <h4>Input Summary</h4>
+        <ul>
+          <li><strong>Furniture:</strong> ${furniture}</li>
+          <li><strong>Clothing / storage:</strong> ${clothes}</li>
+          <li><strong>Electronics:</strong> ${electronics}</li>
+          <li><strong>Books / documents:</strong> ${books}</li>
+          <li><strong>Notes:</strong> ${notes}</li>
+        </ul>
+
+        <h4>Initial Recommendations</h4>
+        <ul>
+          <li>Prepare cardboard boxes for clothing, books, and small electronics.</li>
+          <li>Use bubble wrap or towels for fragile electronics and audio equipment.</li>
+          <li>Separate heavy items such as books or training equipment into smaller boxes.</li>
+          <li>Confirm building access, elevator availability, and moving company schedule.</li>
+          <li>Create a final checklist at least one week before moving day.</li>
+        </ul>
+
+        <p>
+          This is a static MVP result. Future versions will use an AI API
+          to generate personalized estimates.
+        </p>
+      `;
+    });
+  </script>
 </body>
 </html>
