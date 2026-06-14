@@ -2770,3 +2770,112 @@ select:focus {
     font-size: 0.9rem !important;
   }
 }
+
+/* ============================================================
+   Phase 9-H-7: Result display and information architecture cleanup
+============================================================ */
+
+/* Result panels should be readable, not hero-sized */
+#result,
+.result-box,
+.result-card__body {
+  font-size: 0.95rem !important;
+  line-height: 1.75 !important;
+}
+
+#result h3,
+.result-box h3,
+.result-card h3 {
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+  font-size: 1.15rem !important;
+  font-weight: 780 !important;
+  letter-spacing: -0.025em !important;
+}
+
+#result h4,
+.result-box h4,
+.result-card h4 {
+  margin-top: 16px !important;
+  margin-bottom: 6px !important;
+  font-size: 0.98rem !important;
+  font-weight: 740 !important;
+  letter-spacing: -0.015em !important;
+}
+
+.result-label {
+  margin-bottom: 8px !important;
+  color: #64748b !important;
+  font-size: 0.9rem !important;
+}
+
+/* AWS total should be clear but not oversized */
+.result-total,
+.total-amount,
+.page-aws .result-total,
+.page-aws .total-amount {
+  display: block !important;
+  margin: 8px 0 10px !important;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem) !important;
+  font-weight: 760 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.035em !important;
+}
+
+/* Breakdown cards are secondary information */
+.breakdown-card span {
+  font-size: 0.82rem !important;
+}
+
+.breakdown-card strong {
+  font-size: 1.04rem !important;
+  font-weight: 740 !important;
+}
+
+/* Assumptions and notices must be compact */
+#assumptions,
+.notice-card {
+  font-size: 0.9rem !important;
+  line-height: 1.72 !important;
+}
+
+#assumptions ul,
+.notice-card ul,
+.notice-list {
+  margin-top: 10px !important;
+}
+
+#assumptions li,
+.notice-card li,
+.notice-list li {
+  margin-top: 5px !important;
+}
+
+.notice-card__title {
+  font-size: 1.15rem !important;
+  font-weight: 760 !important;
+  letter-spacing: -0.025em !important;
+}
+
+/* Remove cross-tool CTA layout assumption on service pages */
+.page-moving .hero__actions,
+.page-aws .hero__actions {
+  justify-content: center !important;
+}
+
+/* Service pages should focus on their own action */
+.page-moving .hero__actions .button,
+.page-aws .hero__actions .button {
+  min-width: 220px !important;
+}
+
+/* Footer text compact */
+.site-footer {
+  font-size: 0.9rem !important;
+}
+
+.site-footer p {
+  max-width: 520px !important;
+  font-size: 0.88rem !important;
+  line-height: 1.7 !important;
+}

@@ -16,7 +16,6 @@
       <a class="site-brand" href="index.html">クラウドとAIの便利ツール集</a>
       <nav class="site-nav" aria-label="主要ナビゲーション">
         <a href="index.html">トップ</a>
-        <a href="moving-assistant.html">AI引越し診断</a>
         <a href="#calculator">試算する</a>
       </nav>
     </div>
@@ -41,7 +40,6 @@
 
           <div class="hero__actions">
             <a class="button" href="#calculator">月額料金を試算する</a>
-            <a class="button secondary" href="moving-assistant.html">AI引越し診断を見る</a>
           </div>
         </div>
 
@@ -288,7 +286,6 @@
       </div>
       <div class="site-footer__links">
         <a href="index.html">トップ</a>
-        <a href="moving-assistant.html">AI引越し診断</a>
         <a href="#notices">ご利用にあたって</a>
       </div>
     </div>
@@ -389,6 +386,8 @@
         pickNumber(data?.totalUsd) ??
         pickNumber(data?.estimate?.usd) ??
         pickNumber(data?.monthlyCostUsd) ??
+        pickNumber(data?.estimatedMonthlyCostUsd) ??
+        pickNumber(data?.estimatedMonthlyCost?.usd) ??
         extractUsd(summary) ??
         0;
 
@@ -397,6 +396,8 @@
         pickNumber(data?.totalJpy) ??
         pickNumber(data?.estimate?.jpy) ??
         pickNumber(data?.monthlyCostJpy) ??
+        pickNumber(data?.estimatedMonthlyCostJpy) ??
+        pickNumber(data?.estimatedMonthlyCost?.jpy) ??
         extractJpy(summary) ??
         0;
 
@@ -446,7 +447,7 @@
     }
 
     function extractUsd(text) {
-      const match = String(text).match(/\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*(?:USD|ドル)?/i);
+      const match = String(text).match(/\$\s*([0-9][0-9,]*(?:\.[0-9]+)?)/);
       return match ? pickNumber(match[1]) : null;
     }
 
