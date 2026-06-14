@@ -3269,3 +3269,75 @@ Not applicable. This is a CSS design improvement record.
 - [ ] Rebuild HTML pages using the final wireframe
 - [ ] Verify public pages after deployment
 - [ ] Capture screenshots after final HTML rebuild
+
+---
+
+### 20260614-042
+
+### Service
+
+Cloud and AI Tools Public Site
+
+### Alert Rule
+
+Manual documentation record / top page HTML rebuild
+
+### Summary
+
+The top page HTML was rebuilt based on the final reference-based wireframe.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-H-4-1 index.html rebuild.
+
+### Detection
+
+Manual design review identified that the top page needed to follow the final reference-based layout rather than a generic landing page structure.
+
+### Changes
+
+- Rebuilt apps/landing/index.html
+- Added shared header
+- Added reference-based hero
+- Added preview cards
+- Added purpose-based tool cards
+- Added usage scenario cards
+- Added notice section
+- Added footer
+- Removed portfolio and SRE wording from public page
+- Preserved existing links to service pages
+- Avoided new external dependencies
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Site name | クラウドとAIの便利ツール集 | Passed |
+| Header | Added | Passed |
+| Hero | Reference-based | Passed |
+| Tool cards | Added | Passed |
+| Usage scenarios | Added | Passed |
+| Notice section | Added | Passed |
+| Footer | Added | Passed |
+| External dependencies | None added | Passed |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a top page HTML rebuild.
+
+### Prevention / Follow-up Actions
+
+- [ ] Rebuild AI Moving Assistant HTML
+- [ ] Rebuild AWS Cost Simulator HTML
+- [ ] Verify public pages after Cloudflare Pages deployment
