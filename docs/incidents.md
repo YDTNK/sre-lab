@@ -3566,3 +3566,82 @@ Not applicable. This is a visual design improvement record.
 - [ ] Verify AI Moving Assistant visual design after deployment
 - [ ] Verify AWS Cost Simulator visual design after deployment
 - [ ] Capture screenshots for Phase 9-H-5
+
+---
+
+### 20260614-046
+
+### Service
+
+Cloud and AI Tools Public Site
+
+### Alert Rule
+
+Manual documentation record / AI Starter Kit visual system
+
+### Summary
+
+The shared public site CSS was rebuilt to align the visual design with the uploaded AI Starter Kit reference while preserving the current static HTML/CSS/JS architecture.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-H-6-2-1 AI Starter Kit style shared CSS application.
+
+### Detection
+
+Manual design review identified that the public pages had improved structure and functionality, but the visual design still lacked the modern AI SaaS look requested for the public site.
+
+### Changes
+
+- Rebuilt apps/landing/styles.css
+- Applied white and light-gray SaaS background
+- Added purple / blue / cyan gradient visual system
+- Added glowing background effects
+- Added glass-style sticky header
+- Added AI SaaS style hero layout support
+- Added centered hero content support
+- Added large gradient hero heading style
+- Added feature-card style tool cards
+- Added dashboard-style preview cards
+- Added SaaS-style buttons
+- Added glass-style form and result panels
+- Added dark dashboard result panel for AWS calculator
+- Added metric-style breakdown cards
+- Preserved static HTML/CSS/JS implementation
+- Did not migrate to Next.js, React, or Tailwind
+- Did not change API endpoints
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Visual direction | AI Starter Kit inspired | Passed |
+| Static architecture | Preserved | Passed |
+| Header style | Glass-like | Passed |
+| Hero style | AI SaaS-like | Passed |
+| Feature cards | Added | Passed |
+| Calculator result panel | Dark dashboard style | Passed |
+| API endpoints | No change | Passed |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a visual design system update.
+
+### Prevention / Follow-up Actions
+
+- [ ] Rebuild top page HTML closer to AI Starter Kit hero structure if needed
+- [ ] Rebuild AI Moving Assistant HTML closer to AI tool UI if needed
+- [ ] Rebuild AWS Cost Simulator HTML closer to dashboard UI if needed
+- [ ] Verify public pages after deployment
+- [ ] Capture screenshots for Phase 9-H-5
