@@ -10,6 +10,8 @@ const RATE_LIMIT_RETRY_AFTER_SECONDS = 60;
 const MONTHLY_COST_STOP_THRESHOLD_JPY = 500;
 const MOCK_ESTIMATED_COST_JPY = 0;
 
+const OPENAI_TIMEOUT_MS = 8000;
+
 const FIELD_NAMES = [
   "furniture",
   "clothes",
@@ -17,6 +19,15 @@ const FIELD_NAMES = [
   "books",
   "movingDate",
   "notes",
+];
+
+const REQUIRED_AI_RESPONSE_FIELDS = [
+  "summary",
+  "boxEstimate",
+  "packingMaterials",
+  "checklist",
+  "riskNotes",
+  "disclaimer",
 ];
 
 export default {
@@ -170,35 +181,258 @@ export default {
       );
     }
 
+    const fallback = buildFallbackResponse();
+
+    const aiResponse = await generateMovingAdviceWithOpenAI(body, env);
+
     await recordEstimatedCost(env, MOCK_ESTIMATED_COST_JPY);
+
+    if (aiResponse.ok) {
+      await recordUsage(env, "api_success");
+      await recordUsage(env, "ai_success");
+      return jsonResponse(aiResponse.data);
+    }
+
     await recordUsage(env, "api_success");
+    await recordUsage(env, "ai_errors");
 
     return jsonResponse({
-      summary: "入力内容をもとに、引越し準備の初期チェックリストを作成しました。",
-      boxEstimate: "ダンボール目安: 8〜12箱",
-      packingMaterials: [
-        "ダンボール",
-        "ガムテープ",
-        "緩衝材",
-        "油性ペン",
-        "小物用袋",
-      ],
-      checklist: [
-        "本や重い物は小さめの箱に分けて梱包する",
-        "家電や電子機器は緩衝材やタオルで保護する",
-        "衣類は衣装ケース・スーツケース・大きめの袋に分類する",
-        "搬入経路、エレベーター、駐車スペースを事前確認する",
-        "引越し1週間前までに不要品を処分する",
-      ],
-      riskNotes: [
-        "重い物を大きな箱にまとめると運搬時に危険です",
-        "電子機器は衝撃と水濡れに注意してください",
-      ],
-      disclaimer:
-        "これはAI引越し診断のモック結果です。正式な引越し業者の見積もりではありません。",
+      ...fallback,
+      aiStatus: "fallback",
+      fallbackReason: aiResponse.reason,
     });
   },
 };
+
+async function generateMovingAdviceWithOpenAI(body, env) {
+  if (!env.OPENAI_API_KEY) {
+    return {
+      ok: false,
+      reason: "missing_openai_api_key",
+    };
+  }
+
+  await recordUsage(env, "ai_calls");
+
+  const model = env.AI_MODEL || "gpt-4.1-nano";
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model,
+        input: [
+          {
+            role: "system",
+            content:
+              "あなたは日本語の引越し準備アシスタントです。必ずJSONのみを返してください。Markdownや説明文は返さないでください。",
+          },
+          {
+            role: "user",
+            content: buildPrompt(body),
+          },
+        ],
+        text: {
+          format: {
+            type: "json_object",
+          },
+        },
+      }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      return {
+        ok: false,
+        reason: `openai_http_${response.status}`,
+      };
+    }
+
+    const responseBody = await response.json();
+    const outputText = extractOpenAIOutputText(responseBody);
+
+    if (!outputText) {
+      return {
+        ok: false,
+        reason: "empty_openai_output",
+      };
+    }
+
+    let parsed;
+
+    try {
+      parsed = JSON.parse(outputText);
+    } catch {
+      return {
+        ok: false,
+        reason: "invalid_openai_json",
+      };
+    }
+
+    if (!isValidAiResponse(parsed)) {
+      return {
+        ok: false,
+        reason: "invalid_openai_response_shape",
+      };
+    }
+
+    return {
+      ok: true,
+      data: {
+        ...parsed,
+        aiStatus: "generated",
+      },
+    };
+  } catch (error) {
+    clearTimeout(timeoutId);
+
+    if (error && error.name === "AbortError") {
+      return {
+        ok: false,
+        reason: "openai_timeout",
+      };
+    }
+
+    return {
+      ok: false,
+      reason: "openai_request_failed",
+    };
+  }
+}
+
+function buildPrompt(body) {
+  const normalized = FIELD_NAMES.reduce((result, fieldName) => {
+    const value = body[fieldName];
+
+    result[fieldName] = typeof value === "string" ? value.trim() : "";
+
+    return result;
+  }, {});
+
+  return [
+    "以下の引越し情報をもとに、引越し準備診断を作成してください。",
+    "",
+    "出力は必ず次のJSON形式にしてください。",
+    "",
+    JSON.stringify({
+      summary: "短い要約文",
+      boxEstimate: "ダンボール目安",
+      packingMaterials: ["必要資材1", "必要資材2"],
+      checklist: ["チェック項目1", "チェック項目2", "チェック項目3"],
+      riskNotes: ["注意点1", "注意点2"],
+      disclaimer: "注意書き",
+    }),
+    "",
+    "条件:",
+    "- 日本語で返す",
+    "- JSON以外の文章を返さない",
+    "- packingMaterials, checklist, riskNotes は配列にする",
+    "- checklist は3〜6項目にする",
+    "- 医療・法律・契約上の断定は避ける",
+    "",
+    "入力:",
+    JSON.stringify(normalized),
+  ].join("\n");
+}
+
+function extractOpenAIOutputText(responseBody) {
+  if (typeof responseBody.output_text === "string") {
+    return responseBody.output_text;
+  }
+
+  if (!Array.isArray(responseBody.output)) {
+    return "";
+  }
+
+  const textParts = [];
+
+  for (const item of responseBody.output) {
+    if (!Array.isArray(item.content)) {
+      continue;
+    }
+
+    for (const content of item.content) {
+      if (content.type === "output_text" && typeof content.text === "string") {
+        textParts.push(content.text);
+      }
+    }
+  }
+
+  return textParts.join("");
+}
+
+function isValidAiResponse(data) {
+  if (!data || typeof data !== "object" || Array.isArray(data)) {
+    return false;
+  }
+
+  for (const field of REQUIRED_AI_RESPONSE_FIELDS) {
+    if (!(field in data)) {
+      return false;
+    }
+  }
+
+  if (typeof data.summary !== "string") {
+    return false;
+  }
+
+  if (typeof data.boxEstimate !== "string") {
+    return false;
+  }
+
+  if (!Array.isArray(data.packingMaterials)) {
+    return false;
+  }
+
+  if (!Array.isArray(data.checklist)) {
+    return false;
+  }
+
+  if (!Array.isArray(data.riskNotes)) {
+    return false;
+  }
+
+  if (typeof data.disclaimer !== "string") {
+    return false;
+  }
+
+  return true;
+}
+
+function buildFallbackResponse() {
+  return {
+    summary: "入力内容をもとに、引越し準備の初期チェックリストを作成しました。",
+    boxEstimate: "ダンボール目安: 8〜12箱",
+    packingMaterials: [
+      "ダンボール",
+      "ガムテープ",
+      "緩衝材",
+      "油性ペン",
+      "小物用袋",
+    ],
+    checklist: [
+      "本や重い物は小さめの箱に分けて梱包する",
+      "家電や電子機器は緩衝材やタオルで保護する",
+      "衣類は衣装ケース・スーツケース・大きめの袋に分類する",
+      "搬入経路、エレベーター、駐車スペースを事前確認する",
+      "引越し1週間前までに不要品を処分する",
+    ],
+    riskNotes: [
+      "重い物を大きな箱にまとめると運搬時に危険です",
+      "電子機器は衝撃と水濡れに注意してください",
+    ],
+    disclaimer:
+      "これはAI引越し診断のフォールバック結果です。正式な引越し業者の見積もりではありません。",
+  };
+}
 
 async function checkRateLimit(request, env) {
   if (!env.RATE_LIMIT_KV) {
