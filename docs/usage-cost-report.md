@@ -65,36 +65,36 @@ Service: AI Moving Assistant
 
 API usage:
 
-- api_requests: TBD
-- api_success: TBD
-- api_errors: TBD
-- rate_limited: TBD
+- api_requests: 26
+- api_success: 19
+- api_errors: 82
+- rate_limited: 3
 
 AI usage:
 
-- ai_calls: TBD
-- ai_success: TBD
-- ai_errors: TBD
-- ai_limited: TBD
+- ai_calls: 9
+- ai_success: 6
+- ai_errors: 3
+- ai_limited: 3
 
 Estimated cost:
 
-- input_tokens: TBD
-- output_tokens: TBD
-- estimated_daily_jpy: TBD
-- estimated_monthly_jpy: TBD
+- input_tokens: 108
+- output_tokens: 2500
+- estimated_daily_jpy: 0.20216
+- estimated_monthly_jpy: 0.20216
 
 OpenAI Platform:
 
-- usage requests: TBD
-- usage tokens: TBD
-- usage cost: TBD
-- credit balance: 5 USD initial credit configured
+- usage requests: 0
+- usage tokens: 0
+- usage cost: $0.00
+- credit balance: $5.00
 - auto recharge: off
 
 Assessment:
 
 - Status: normal
-- Notes: Initial report template created after Real AI API Integration completion.
-- Action: Fill in values from Cloudflare KV and OpenAI Platform during the next usage/cost check.
+- Notes: Initial snapshot recorded after Real AI API Integration, AI cost tracking, AI daily limit, and cost_limit_reached verification. The high api_errors count is expected because API safety, rate limit, AI limit, and cost limit behavior were manually tested on the same day. OpenAI Platform Usage still showed 0 requests / 0 tokens / $0.00 at the time of the snapshot even though the Worker returned aiStatus: generated; this should be rechecked later because it may be caused by reporting delay, project/group filter, or usage aggregation timing.
+- Action: Continue daily snapshots during the initial AI rollout and compare Cloudflare KV estimated cost with OpenAI Platform usage.
 

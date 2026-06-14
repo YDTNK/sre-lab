@@ -1389,3 +1389,110 @@ Not applicable. This is a documentation and portfolio readiness record.
 - [ ] Review docs after adding second service
 - [ ] Keep operational records updated after each major phase
 - [ ] Compare estimated cost with OpenAI Platform usage after several days\n\n---\n\n### 20260614-015\n\n### Service\n\nSRE Lab Usage / Cost Monitoring\n\n### Alert Rule\n\nManual documentation record / usage and cost snapshot setup\n\n### Summary\n\nUsage and cost snapshot documentation was added to begin Phase 7 Usage / Cost Monitoring.\n\n### Impact\n\nNo user-facing incident occurred.\n\nThis record documents the start of Phase 7 by adding a manual snapshot report and operational procedures for usage and cost monitoring.\n\n### Detection\n\nManual documentation review after Phase 6 completion.\n\n### Initial Checks\n\n- Real AI API Integration was completed\n- AI usage tracking was implemented\n- AI cost tracking was implemented\n- AI-specific daily limits were implemented\n- Cost operations documentation was added\n- cost_limit_reached behavior was verified\n\n### Documentation Added\n\n- docs/usage-cost-report.md\n- Usage / Cost Snapshot Procedure in docs/cost.md\n- Daily Usage / Cost Snapshot section in docs/operations.md\n\n### Phase 7 Scope\n\n- Manual usage and cost snapshot\n- Cloudflare KV usage review\n- Cloudflare KV estimated cost review\n- OpenAI Platform usage comparison\n- Future dashboard design\n\n### Verification Results\n\n| Case | Expected | Result |\n|---|---|---|\n| docs/usage-cost-report.md | Created | Passed |\n| docs/cost.md | Snapshot procedure added | Passed |\n| docs/operations.md | Daily snapshot procedure added | Passed |\n| Phase 7 start | Documented | Passed |\n\n### Root Cause\n\nNo incident occurred.\n\n### Mitigation\n\nNo mitigation was required.\n\n### Recovery Validation\n\nNot applicable. This is a usage and cost monitoring documentation record.\n\n### Prevention / Follow-up Actions\n\n- [ ] Fill the first real usage/cost snapshot\n- [ ] Compare Cloudflare KV estimated cost with OpenAI Platform usage\n- [ ] Review whether daily or weekly cadence is appropriate\n- [ ] Design future usage/cost dashboard\n\n
+
+---
+
+### 20260614-016
+
+### Service
+
+SRE Lab Usage / Cost Monitoring
+
+### Alert Rule
+
+Manual verification / initial usage and cost snapshot
+
+### Summary
+
+The first manual usage and cost snapshot was recorded for AI Moving Assistant.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the first Phase 7 usage and cost monitoring snapshot after Real AI API Integration was completed.
+
+### Detection
+
+Manual Cloudflare KV and OpenAI Platform review.
+
+### Snapshot Values
+
+| Metric | Value |
+|---|---:|
+| api_requests | 26 |
+| api_success | 19 |
+| api_errors | 82 |
+| rate_limited | 3 |
+| ai_calls | 9 |
+| ai_success | 6 |
+| ai_errors | 3 |
+| ai_limited | 3 |
+| input_tokens | 108 |
+| output_tokens | 2500 |
+| estimated_daily_jpy | 0.20216 |
+| estimated_monthly_jpy | 0.20216 |
+| OpenAI Platform requests | 0 |
+| OpenAI Platform tokens | 0 |
+| OpenAI Platform cost | $0.00 |
+
+### Assessment
+
+Initial usage and cost monitoring is in normal status.
+
+The high api_errors count is expected because API safety, rate limit, AI limit, and cost limit behavior were manually tested on the same day.
+
+Cloudflare KV estimated usage and OpenAI Platform Usage did not match at the time of the snapshot.
+
+OpenAI Platform Usage showed 0 requests, 0 tokens, and $0.00 even though the Worker had returned aiStatus: generated during production verification.
+
+This is not treated as an incident at this stage because it may be caused by reporting delay, project/group filter, or usage aggregation timing.
+
+### Initial Checks
+
+- API usage counters were available in Cloudflare KV
+- AI usage counters were available in Cloudflare KV
+- Estimated token counters were available in Cloudflare KV
+- Estimated daily and monthly cost counters were available in Cloudflare KV
+- OpenAI Platform billing and usage were checked manually
+- Auto recharge remained off
+
+### Documentation Updated
+
+- docs/usage-cost-report.md
+- docs/incidents.md
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| API usage counters | Available | Passed |
+| AI usage counters | Available | Passed |
+| Estimated cost counters | Available | Passed |
+| OpenAI Platform check | Completed | Passed with note |
+| Usage/cost report | Updated | Passed |
+
+### Root Cause
+
+No user-facing incident occurred.
+
+OpenAI Platform usage mismatch cause is not confirmed.
+
+Possible causes include reporting delay, project/group filter, or usage aggregation timing.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a usage and cost monitoring record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Continue daily snapshots during initial AI rollout
+- [ ] Recheck OpenAI Platform Usage later
+- [ ] Compare Cloudflare KV estimated cost with OpenAI Platform usage
+- [ ] Review AI limit thresholds after several days of data
+- [ ] Consider future dashboard design
+
