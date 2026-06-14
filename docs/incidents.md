@@ -3056,3 +3056,72 @@ Not applicable. This is a public top page rebuild.
 - [ ] Rebuild AI Moving Assistant page using the same design system
 - [ ] Rebuild AWS Cost Simulator page using the same design system
 - [ ] Verify public page after Cloudflare Pages deployment
+
+---
+
+### 20260614-038
+
+### Service
+
+AI Moving Assistant Public Page
+
+### Alert Rule
+
+Manual documentation record / AI Moving Assistant page rebuild
+
+### Summary
+
+The AI Moving Assistant public page was rebuilt as a customer-facing AI tool page using the shared design system.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-G-3 moving-assistant.html rebuild.
+
+### Detection
+
+Manual review identified that the AI Moving Assistant page needed clearer customer-facing layout, wording, and result guidance.
+
+### Changes
+
+- Rebuilt apps/landing/moving-assistant.html
+- Removed SRE and portfolio wording from the public page
+- Improved hero copy for customer-facing use
+- Improved input form guidance
+- Added result explanation before the result panel
+- Added usage instructions
+- Added customer-facing disclaimer
+- Preserved form IDs
+- Preserved result container ID
+- Preserved production API endpoint
+- Preserved JavaScript submission behavior
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Customer-facing wording | Updated | Passed |
+| Form ID moving-form | Preserved | Passed |
+| Result ID result | Preserved | Passed |
+| Production API endpoint | Preserved | Passed |
+| Browser check | Required after deploy | Pending |
+| Form submission | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a public page rebuild.
+
+### Prevention / Follow-up Actions
+
+- [ ] Rebuild AWS Cost Simulator page using the same design system
+- [ ] Verify AI Moving Assistant form after Cloudflare Pages deployment
+- [ ] Capture final page screenshot
