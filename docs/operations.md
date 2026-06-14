@@ -460,3 +460,33 @@ Consider implementation when one of the following is true:
 - Monthly cost becomes non-trivial
 - Portfolio presentation would benefit from a visual dashboard
 
+## Phase 7 Usage / Cost Monitoring Summary
+
+Phase 7 introduced usage and cost monitoring operations for AI Moving Assistant.
+
+### Completed Items
+
+- Usage and cost snapshot procedure
+- Initial usage and cost snapshot
+- Cloudflare KV as the primary operational source
+- OpenAI Platform Usage as a secondary reconciliation source
+- OpenAI Usage recheck policy
+- Future usage/cost dashboard design
+- README and documentation update
+
+### Current Operating Model
+
+| Area | Current Approach |
+|---|---|
+| Immediate usage monitoring | Cloudflare KV |
+| Immediate estimated cost monitoring | Cloudflare KV |
+| Actual usage reconciliation | OpenAI Platform Usage |
+| Manual reporting | docs/usage-cost-report.md |
+| Dashboard design | docs/dashboard-design.md |
+
+### Next Phase
+
+The next phase is Phase 8: Second Service.
+
+The recommended second service is AWS Cost Simulator because it aligns with AWS, Terraform, SRE cost awareness, and portfolio storytelling.
+

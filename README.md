@@ -167,6 +167,48 @@ Verified behavior:
 - AI per-IP daily limit: 429 / ai_limit_reached
 - Estimated monthly cost stop threshold: 503 / cost_limit_reached
 
+## Usage / Cost Monitoring
+
+Usage and cost monitoring has been introduced for the AI Moving Assistant service.
+
+Current monitoring approach:
+
+- Cloudflare KV is used as the primary operational source for immediate usage and estimated cost checks
+- OpenAI Platform Usage is used as a secondary reconciliation source
+- Manual usage and cost snapshots are recorded in docs/usage-cost-report.md
+- Future dashboard design is documented in docs/dashboard-design.md
+
+Tracked metrics:
+
+- API requests
+- API success count
+- API error count
+- rate_limited count
+- AI calls
+- AI success count
+- AI error count
+- ai_limited count
+- estimated input tokens
+- estimated output tokens
+- estimated daily cost
+- estimated monthly cost
+
+Current cost policy:
+
+- OpenAI initial credit: 5 USD
+- Auto recharge: off
+- Monthly AI budget: 500 JPY
+- Monthly warning threshold: 300 JPY
+- Monthly stop threshold: 500 JPY
+- Daily hard limit: 100 JPY
+
+Verified behavior:
+
+- Initial usage and cost snapshot recorded
+- KV estimated usage is treated as the primary operational source
+- OpenAI Usage mismatch handling policy documented
+- Future usage/cost dashboard design documented
+
 ## CI/CD
 
 ### CI
@@ -274,6 +316,9 @@ Implemented:
 - KV-based rate limiting
 - AI-specific daily limits
 - Estimated AI usage and cost tracking
+- Usage and cost snapshot reporting
+- Usage source-of-truth policy
+- Future usage/cost dashboard design
 - Cost limit behavior
 - Timeout and fallback handling
 - AI response validation
@@ -290,19 +335,20 @@ Implemented:
 
 Not yet implemented:
 
-- API usage dashboard
+- Implemented usage/cost dashboard
 - Custom domain
 - Deployment status dashboard
 - Revenue experiments
+- Second service
 
 ## Roadmap
 
-1. Add cost and usage dashboard
-2. Add usage and latency monitoring
-3. Add custom domain
-4. Add second service such as AWS Cost Simulator
-5. Add revenue experiments
-6. Consider D1 for historical usage and cost reporting
+1. Add second service such as AWS Cost Simulator
+2. Add generated usage/cost reports or lightweight dashboard
+3. Consider D1 for historical usage and cost reporting
+4. Add usage and latency monitoring improvements
+5. Add custom domain
+6. Add revenue experiments
 
 ## Cost Operations
 

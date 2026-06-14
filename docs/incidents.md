@@ -1667,3 +1667,91 @@ Not applicable. This is a future dashboard design record.
 - [ ] Consider D1 before adding multiple services
 - [ ] Defer dashboard implementation until usage data justifies it
 
+---
+
+### 20260614-019
+
+### Service
+
+SRE Lab Documentation / Usage and Cost Monitoring
+
+### Alert Rule
+
+Manual documentation record / Phase 7 final documentation update
+
+### Summary
+
+README and operational documentation were updated to reflect the completed Phase 7 Usage / Cost Monitoring work.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the final documentation update for Phase 7 and confirms that SRE Lab is ready to move toward Phase 8 Second Service planning.
+
+### Detection
+
+Manual documentation review after Phase 7-4 completion.
+
+### Initial Checks
+
+- Usage and cost snapshot procedure was completed
+- Initial usage and cost snapshot was recorded
+- Usage source-of-truth policy was documented
+- OpenAI Usage recheck policy was documented
+- Future usage/cost dashboard design was documented
+
+### Documentation Updated
+
+- README.md
+- docs/operations.md
+- docs/cost.md
+- docs/incidents.md
+
+### Phase 7 Completion Summary
+
+| Phase | Status |
+|---|---|
+| Phase 7-1 Usage / Cost Snapshot procedure | Completed |
+| Phase 7-2 Initial Usage / Cost Snapshot | Completed |
+| Phase 7-3 Usage source-of-truth policy | Completed |
+| Phase 7-4 Future Usage / Cost Dashboard design | Completed |
+| Phase 7-5 Final README and docs update | Completed |
+
+### Current Monitoring Model
+
+| Area | Source |
+|---|---|
+| Immediate usage review | Cloudflare KV |
+| Immediate estimated cost review | Cloudflare KV |
+| Actual usage reconciliation | OpenAI Platform Usage |
+| Manual snapshot report | docs/usage-cost-report.md |
+| Future dashboard design | docs/dashboard-design.md |
+
+### Next Phase
+
+Phase 8: Second Service.
+
+Recommended candidate:
+
+- AWS Cost Simulator
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a final documentation update for Phase 7.
+
+### Prevention / Follow-up Actions
+
+- [ ] Start Phase 8 Second Service planning
+- [ ] Keep usage/cost snapshots during initial AI rollout
+- [ ] Recheck OpenAI Platform Usage later
+- [ ] Decide whether generated reports or dashboard are needed after more usage data
+

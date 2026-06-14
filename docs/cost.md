@@ -254,3 +254,29 @@ The recommended path is:
 4. Build a lightweight internal dashboard.
 5. Extend to multi-service dashboard after the second service is added.
 
+## Phase 7 Completion Summary
+
+Phase 7 established the initial usage and cost monitoring model for SRE Lab.
+
+### Completed
+
+- Manual usage and cost snapshot procedure
+- Initial usage and cost snapshot record
+- Cloudflare KV as the primary operational source
+- OpenAI Platform Usage as secondary reconciliation source
+- OpenAI Usage mismatch handling policy
+- Future usage/cost dashboard design
+
+### Current Decision
+
+Do not implement a dashboard immediately.
+
+Continue with Cloudflare KV and manual Markdown snapshots until usage becomes regular, repetitive, or multi-service operations require stronger reporting.
+
+### Next Improvement Candidates
+
+- Generated Markdown usage/cost reports
+- Cloudflare D1 daily summary table
+- Lightweight internal dashboard
+- Grafana-based cost threshold visualization
+
