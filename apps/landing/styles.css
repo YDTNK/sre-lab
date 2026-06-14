@@ -1491,3 +1491,137 @@ button {
     linear-gradient(135deg, #fffbeb 0%, #ffffff 88%);
   border-color: rgba(245, 158, 11, 0.28);
 }
+
+/* ============================================================
+   Phase 9-H-6-3-3: Hero color balance tuning
+   Reduce excessive gradient intensity and align closer to
+   freee / Money Forward / SUUMO / AWS reference color balance.
+============================================================ */
+
+/* Shared: reduce purple glow further */
+body {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(37, 99, 235, 0.12), transparent 34rem),
+    radial-gradient(circle at 12% 10%, rgba(6, 182, 212, 0.08), transparent 26rem),
+    radial-gradient(circle at 90% 8%, rgba(124, 58, 237, 0.025), transparent 26rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 44%, #eef6ff 100%);
+}
+
+/* Top page: make it closer to freee / Money Forward, less AI-template */
+.page-home .hero {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.11), transparent 28rem),
+    radial-gradient(circle at 16% 18%, rgba(6, 182, 212, 0.07), transparent 24rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.page-home .hero h1 {
+  background: linear-gradient(90deg, #102033 0%, #1e40af 72%, #0891b2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-home .hero-subtitle {
+  color: #1e293b;
+}
+
+/* Moving page: soften SUUMO-like orange / green */
+.page-moving {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(249, 115, 22, 0.08), transparent 32rem),
+    radial-gradient(circle at 12% 10%, rgba(22, 163, 74, 0.055), transparent 24rem),
+    linear-gradient(180deg, #ffffff 0%, #fffaf5 42%, #f8fbff 100%);
+}
+
+.page-moving .hero {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(249, 115, 22, 0.10), transparent 26rem),
+    radial-gradient(circle at 12% 16%, rgba(22, 163, 74, 0.055), transparent 22rem),
+    linear-gradient(180deg, #ffffff 0%, #fffaf5 52%, #f8fbff 100%);
+}
+
+.page-moving .hero h1 {
+  background: linear-gradient(90deg, #1e293b 0%, #ea580c 58%, #15803d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-moving .hero-subtitle {
+  color: #1f2937;
+}
+
+.page-moving .eyebrow,
+.page-moving .hero__eyebrow,
+.page-moving .badge,
+.page-moving .status {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+/* AWS page: make navy dominant and orange accent smaller */
+.page-aws {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(37, 99, 235, 0.075), transparent 32rem),
+    radial-gradient(circle at 88% 8%, rgba(255, 153, 0, 0.075), transparent 26rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 44%, #eef6ff 100%);
+}
+
+.page-aws .hero {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.09), transparent 26rem),
+    radial-gradient(circle at 88% 72%, rgba(255, 153, 0, 0.08), transparent 22rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 50%, #eef6ff 100%);
+}
+
+.page-aws .hero h1 {
+  background: linear-gradient(90deg, #111827 0%, #1e40af 72%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-aws .hero-subtitle {
+  color: #1f2937;
+}
+
+/* Buttons: keep CTA strong, not noisy */
+.page-moving .button,
+.page-moving button {
+  background: linear-gradient(135deg, #f97316, #c2410c);
+}
+
+.page-moving .button.secondary {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+.page-aws .button,
+.page-aws button {
+  background: linear-gradient(135deg, #111827, #1f2937);
+}
+
+.page-aws .button.secondary {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+/* Reduce preview card color intensity */
+.preview-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.78));
+}
+
+.page-home .preview-card:nth-child(2) .preview-card__total,
+.page-aws .preview-card__total {
+  background: linear-gradient(135deg, #111827, #1f2937);
+}
+
+/* Make label pills calmer */
+.page-aws .eyebrow,
+.page-aws .hero__eyebrow,
+.page-aws .badge,
+.page-aws .status {
+  background: #fff7ed;
+  color: #92400e;
+}
+
