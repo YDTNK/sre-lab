@@ -1625,3 +1625,260 @@ body {
   color: #92400e;
 }
 
+
+/* ============================================================
+   Phase 9-H-6-3-4: Reference final color alignment
+   Final color tuning based on Money Forward / freee / SUUMO / AWS.
+   Focus only on color balance.
+============================================================ */
+
+:root {
+  --mf-blue: #005bac;
+  --mf-blue-dark: #00408a;
+  --freee-blue: #2864f0;
+  --freee-blue-soft: #eaf3ff;
+
+  --suumo-green: #4ab000;
+  --suumo-green-dark: #2f7d00;
+  --suumo-green-soft: #eefbe7;
+  --suumo-sky: #dff8ff;
+  --suumo-yellow: #fff7c2;
+
+  --aws-orange: #ff9900;
+  --aws-orange-dark: #cc7a00;
+  --aws-orange-soft: #fff3df;
+  --aws-navy: #232f3e;
+  --aws-navy-soft: #f3f4f6;
+}
+
+/* Overall: less glow, more clean service-site background */
+body {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(40, 100, 240, 0.08), transparent 34rem),
+    radial-gradient(circle at 12% 10%, rgba(6, 182, 212, 0.05), transparent 26rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 48%, #eef6ff 100%);
+}
+
+body::before {
+  opacity: 0.42;
+}
+
+/* Header: keep clean, reference-like */
+.site-header {
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.site-brand::before,
+.logo::before,
+.site-title::before {
+  background:
+    radial-gradient(circle at 30% 20%, #ffffff 0 9%, transparent 10%),
+    linear-gradient(135deg, var(--freee-blue), #00a6d6);
+}
+
+/* Home: Money Forward / freee balance */
+.page-home .hero {
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f5faff 100%);
+}
+
+.page-home .hero h1 {
+  background: linear-gradient(90deg, #102033 0%, var(--mf-blue) 74%, #008ccf 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-home .button {
+  background: linear-gradient(135deg, var(--freee-blue), #1e40af);
+}
+
+.page-home .button.secondary {
+  background: linear-gradient(135deg, var(--mf-blue-dark), var(--mf-blue));
+}
+
+/* Moving: SUUMO-like green main, orange only as secondary warm accent */
+.page-moving {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(74, 176, 0, 0.08), transparent 32rem),
+    radial-gradient(circle at 12% 10%, rgba(0, 174, 239, 0.06), transparent 24rem),
+    linear-gradient(180deg, #ffffff 0%, #f5fff0 42%, #f4fbff 100%);
+}
+
+.page-moving .hero {
+  background:
+    radial-gradient(circle at 52% 0%, rgba(74, 176, 0, 0.11), transparent 26rem),
+    radial-gradient(circle at 16% 16%, rgba(0, 174, 239, 0.08), transparent 22rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fff4 52%, #f4fbff 100%);
+}
+
+.page-moving .hero h1 {
+  background: linear-gradient(90deg, #102033 0%, var(--suumo-green-dark) 62%, var(--suumo-green) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-moving .eyebrow,
+.page-moving .hero__eyebrow,
+.page-moving .badge,
+.page-moving .status {
+  border-color: rgba(74, 176, 0, 0.24);
+  background: var(--suumo-green-soft);
+  color: var(--suumo-green-dark);
+}
+
+.page-moving .eyebrow::before,
+.page-moving .hero__eyebrow::before,
+.page-moving .badge::before,
+.page-moving .status::before {
+  background: linear-gradient(135deg, var(--suumo-green), #00a6d6);
+  box-shadow: 0 0 16px rgba(74, 176, 0, 0.26);
+}
+
+.page-moving .button,
+.page-moving button {
+  background: linear-gradient(135deg, var(--suumo-green), var(--suumo-green-dark));
+  box-shadow: 0 18px 40px rgba(74, 176, 0, 0.22);
+}
+
+.page-moving .button.secondary {
+  background: linear-gradient(135deg, #f97316, #c2410c);
+}
+
+.page-moving .preview-card__total {
+  background: linear-gradient(135deg, var(--suumo-green-soft), var(--suumo-sky));
+  color: var(--suumo-green-dark);
+}
+
+.page-moving input:focus,
+.page-moving textarea:focus,
+.page-moving select:focus {
+  border-color: rgba(74, 176, 0, 0.68);
+  box-shadow:
+    0 0 0 4px rgba(74, 176, 0, 0.12),
+    0 10px 26px rgba(74, 176, 0, 0.08);
+}
+
+/* AWS: white + orange main, navy as supporting trust color */
+.page-aws {
+  background:
+    radial-gradient(circle at 86% 4%, rgba(255, 153, 0, 0.10), transparent 28rem),
+    linear-gradient(180deg, #ffffff 0%, #fffaf2 42%, #f8fbff 100%);
+}
+
+.page-aws .hero {
+  background:
+    radial-gradient(circle at 82% 22%, rgba(255, 153, 0, 0.12), transparent 24rem),
+    linear-gradient(180deg, #ffffff 0%, #fffaf2 54%, #ffffff 100%);
+  border-color: rgba(255, 153, 0, 0.22);
+}
+
+.page-aws .hero h1 {
+  background: linear-gradient(90deg, var(--aws-navy) 0%, var(--aws-orange-dark) 82%, var(--aws-orange) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-aws .hero-subtitle {
+  color: var(--aws-navy);
+}
+
+.page-aws .eyebrow,
+.page-aws .hero__eyebrow,
+.page-aws .badge,
+.page-aws .status {
+  border-color: rgba(255, 153, 0, 0.28);
+  background: var(--aws-orange-soft);
+  color: #8a5200;
+}
+
+.page-aws .eyebrow::before,
+.page-aws .hero__eyebrow::before,
+.page-aws .badge::before,
+.page-aws .status::before {
+  background: var(--aws-orange);
+  box-shadow: 0 0 16px rgba(255, 153, 0, 0.28);
+}
+
+.page-aws .button,
+.page-aws button {
+  background: linear-gradient(135deg, var(--aws-orange), var(--aws-orange-dark));
+  color: #111827;
+  box-shadow: 0 18px 40px rgba(255, 153, 0, 0.24);
+}
+
+.page-aws .button.secondary {
+  background: linear-gradient(135deg, var(--aws-navy), #111827);
+  color: #ffffff;
+}
+
+.page-aws .result-panel #result,
+.page-aws .result-panel .result-card__body {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(255, 153, 0, 0.16), transparent 13rem),
+    linear-gradient(180deg, #ffffff 0%, #fffaf2 100%);
+  color: var(--aws-navy);
+  border-color: rgba(255, 153, 0, 0.24);
+}
+
+.page-aws .result-panel #result p,
+.page-aws .result-panel .result-card__body p {
+  color: #475569;
+}
+
+.page-aws .result-total,
+.page-aws .total-amount {
+  background: linear-gradient(90deg, var(--aws-navy), var(--aws-orange-dark), var(--aws-orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-aws .preview-card__total {
+  background: linear-gradient(135deg, var(--aws-orange-soft), #ffffff);
+  color: var(--aws-navy);
+}
+
+.page-aws .preview-card__total span:last-child {
+  color: var(--aws-orange-dark);
+}
+
+/* Top page service cards retain role colors, but calmer */
+.page-home .tool-card:nth-child(1) .status,
+.page-home .scenario-card:nth-child(1) .status {
+  border-color: rgba(74, 176, 0, 0.22);
+  background: var(--suumo-green-soft);
+  color: var(--suumo-green-dark);
+}
+
+.page-home .tool-card:nth-child(1) .status::before,
+.page-home .scenario-card:nth-child(1) .status::before {
+  background: linear-gradient(135deg, var(--suumo-green), #00a6d6);
+}
+
+.page-home .tool-card:nth-child(2) .status,
+.page-home .scenario-card:nth-child(2) .status {
+  border-color: rgba(255, 153, 0, 0.26);
+  background: var(--aws-orange-soft);
+  color: #8a5200;
+}
+
+.page-home .tool-card:nth-child(2) .status::before,
+.page-home .scenario-card:nth-child(2) .status::before {
+  background: var(--aws-orange);
+}
+
+/* Reduce heavy AI dashboard glow globally */
+.preview-stack::before {
+  opacity: 0.62;
+}
+
+.preview-card {
+  box-shadow:
+    0 22px 54px rgba(37, 99, 235, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
