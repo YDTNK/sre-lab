@@ -227,3 +227,30 @@ OpenAI Platform Usage is treated as a secondary reconciliation source because it
 | Stable operation | Weekly |
 | Billing or quota issue | Immediately and after mitigation |
 
+## Future Usage / Cost Dashboard
+
+A future usage and cost dashboard is planned, but it is intentionally not implemented during the early AI rollout.
+
+Current monitoring uses Cloudflare KV, docs/usage-cost-report.md, and manual OpenAI Platform checks.
+
+The dashboard design is documented in:
+
+- docs/dashboard-design.md
+
+Initial dashboard goals:
+
+- Show API usage
+- Show AI usage
+- Show AI success and error counts
+- Show estimated daily and monthly cost
+- Show AI limit and cost limit activity
+- Support future multi-service SRE Lab operation
+
+The recommended path is:
+
+1. Continue KV + manual snapshots.
+2. Add generated Markdown reports if manual work becomes repetitive.
+3. Introduce Cloudflare D1 for historical reporting.
+4. Build a lightweight internal dashboard.
+5. Extend to multi-service dashboard after the second service is added.
+

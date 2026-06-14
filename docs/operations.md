@@ -426,3 +426,37 @@ Check the following:
 - docs/usage-cost-report.md
 - docs/incidents.md
 
+## Future Dashboard Operations
+
+A future usage and cost dashboard is planned after manual usage and cost snapshots become repetitive or after additional services are added.
+
+Until then, Cloudflare KV and docs/usage-cost-report.md remain the operational source for usage and cost review.
+
+### Dashboard Design
+
+- docs/dashboard-design.md
+
+### Dashboard Should Show
+
+- API requests
+- API success and error counts
+- AI calls
+- AI success and error counts
+- AI limited count
+- Estimated daily cost
+- Estimated monthly cost
+- Monthly cost usage ratio
+- Recent operational notes
+
+### When to Implement
+
+Do not implement a dashboard too early.
+
+Consider implementation when one of the following is true:
+
+- Manual snapshots become repetitive
+- AI Moving Assistant receives regular external usage
+- A second service is added
+- Monthly cost becomes non-trivial
+- Portfolio presentation would benefit from a visual dashboard
+

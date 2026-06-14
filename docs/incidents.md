@@ -1580,3 +1580,90 @@ Not applicable. This is a monitoring policy documentation record.
 - [ ] Compare KV estimated usage with OpenAI Platform usage after reporting updates
 - [ ] Consider dashboard design in a later Phase 7 step
 
+---
+
+### 20260614-018
+
+### Service
+
+SRE Lab Usage / Cost Monitoring
+
+### Alert Rule
+
+Manual documentation record / future usage and cost dashboard design
+
+### Summary
+
+A future usage and cost dashboard design was documented for SRE Lab.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the future dashboard design for usage, AI usage, estimated cost, and multi-service cost monitoring.
+
+### Detection
+
+Manual documentation planning during Phase 7 Usage / Cost Monitoring.
+
+### Initial Checks
+
+- Manual usage and cost snapshots were already added
+- Cloudflare KV was defined as the primary operational source
+- OpenAI Platform Usage was defined as a secondary reconciliation source
+- Cost operations documentation was already available
+
+### Documentation Added
+
+- docs/dashboard-design.md
+- Future Usage / Cost Dashboard section in docs/cost.md
+- Future Dashboard Operations section in docs/operations.md
+- README reference to docs/dashboard-design.md
+
+### Design Decision
+
+The dashboard will not be implemented immediately.
+
+SRE Lab will continue using Cloudflare KV and manual Markdown snapshots during the early AI rollout.
+
+A future dashboard may use Cloudflare D1 for historical reporting and a lightweight internal dashboard for service, usage, and cost summaries.
+
+### Recommended Staged Path
+
+| Stage | Approach | Status |
+|---|---|---|
+| Stage 1 | KV + manual snapshot | Current |
+| Stage 2 | KV + generated Markdown report | Future |
+| Stage 3 | D1 daily summary table | Future |
+| Stage 4 | Lightweight dashboard page | Future |
+| Stage 5 | Multi-service dashboard | Future |
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Dashboard design document | Created | Passed |
+| Cost documentation | Dashboard section added | Passed |
+| Operations documentation | Dashboard operations section added | Passed |
+| README | Dashboard document referenced | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a future dashboard design record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Continue manual usage and cost snapshots
+- [ ] Recheck OpenAI Platform Usage later
+- [ ] Decide whether KV remains enough after several days of usage
+- [ ] Consider D1 before adding multiple services
+- [ ] Defer dashboard implementation until usage data justifies it
+
