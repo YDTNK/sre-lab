@@ -27,3 +27,4 @@ jobs:
           test -f docs/services.md
           test -f docs/moving-assistant.md
           test -f apps/landing/index.html
+          test -f apps/landing/styles.css
