@@ -5,7 +5,7 @@ This document defines the basic operational workflow for SRE Lab.
 ## Daily Checks
 
 - Check Cloudflare Pages deployment status
-- Check Grafana Synthetic Monitoring status
+- Check Grafana Synthetic Monitoring status for landing page and API
 - Check alert rule status
 - Check GitHub Actions status
 
@@ -28,7 +28,19 @@ After deployment:
 
 - Confirm Cloudflare Pages deployment succeeded
 - Confirm https://sre-lab.pages.dev/ returns HTTP 200
-- Confirm Grafana uptime check remains healthy
+- Confirm Grafana uptime checks for landing page and API remain healthy
+
+## API Operations
+
+The AI Moving Assistant API is operated as a Cloudflare Workers endpoint.
+
+Operational checks:
+
+- Confirm Worker deployment status
+- Confirm POST /api/moving-assistant returns HTTP 200
+- Confirm Grafana API synthetic check is healthy
+- Confirm API alert rule is normal
+- Confirm frontend can call the production API endpoint
 
 ## Incident Response Flow
 

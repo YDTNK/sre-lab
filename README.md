@@ -98,6 +98,33 @@ SRE Lab includes a Cloudflare Workers API layer for future AI-powered features.
 - Current behavior: mock response
 - Future behavior: AI-generated moving checklist
 
+## API Monitoring
+
+The Cloudflare Workers API is monitored with Grafana Cloud Synthetic Monitoring.
+
+- Target URL: https://sre-lab-api.daisan-tanaka.workers.dev/api/moving-assistant
+- Check type: HTTP API endpoint check
+- Method: POST
+- Probe location: Tokyo, JP (AWS)
+- Frequency: 60s
+- Expected status code: 2xx
+- Purpose: detect API availability and response failures for AI Moving Assistant
+
+## API Alerting
+
+Grafana Cloud Alerting is configured for the AI Moving Assistant API check.
+
+- Alert rule: sre-lab-api-down
+- Metric: probe_success
+- Condition: probe_success < 0.5
+- Label filters:
+  - probe = Tokyo
+  - job = sre-lab-api-moving-assistant
+- Evaluation interval: 1m
+- Pending period: 2m
+- Contact point: sre-lab-email
+- Runbook: docs/runbook.md
+
 ## Roadmap
 
 1. Build the project foundation
