@@ -415,3 +415,175 @@ Initial HTTP status:
 - Add cost incident runbook
 - Verify that AI API calls are blocked after the stop threshold is reached
 
+## Real AI API Integration Provider and Model Strategy
+
+This section defines the initial provider and model strategy for real AI API integration.
+
+The goal is not to maximize AI quality at the first step. The goal is to safely replace the current mock response with a controlled AI-generated response while preserving the SRE Lab safety model.
+
+### Decision
+
+The initial AI provider will be OpenAI API.
+
+Claude API will not be used for the first AI Moving Assistant integration. It will remain a future candidate for more complex services such as Terraform Review AI and AI Incident Summarizer.
+
+### Rationale
+
+AI Moving Assistant requires short, structured Japanese JSON responses, not long-form reasoning or infrastructure code review.
+
+For the initial production AI integration, the priority is:
+
+- Low cost
+- Stable JSON output
+- Short latency
+- Timeout handling
+- Fallback response
+- Usage tracking
+- Estimated cost tracking
+- Secret management
+- Safe operation under a small monthly budget
+
+### Initial Model Strategy
+
+The initial model should be a low-cost OpenAI mini/nano class model.
+
+The concrete model name should be configured by environment variable or Worker secret instead of being hard-coded in the frontend.
+
+Planned configuration name:
+
+- AI_MODEL
+
+### Secret Management
+
+The OpenAI API key must be stored as a Cloudflare Workers Secret.
+
+The API key must not be stored in frontend code, repository files, local examples, README examples, or browser-visible JavaScript.
+
+Planned secret name:
+
+- OPENAI_API_KEY
+
+### Initial Budget and Limits
+
+| Item | Initial Value |
+|---|---:|
+| Monthly budget | 500 JPY |
+| Monthly warning threshold | 300 JPY |
+| Monthly stop threshold | 500 JPY |
+| Daily soft limit | 50 JPY |
+| Daily hard limit | 100 JPY |
+| Service AI diagnoses per day | 20-50 |
+| AI diagnoses per IP per day | 5 |
+| Timeout | 8 seconds |
+
+### API Control Order
+
+The future AI-enabled endpoint should process requests in this order:
+
+1. OPTIONS handling
+2. Path validation
+3. Method validation
+4. Content-Type validation
+5. Request size validation
+6. Rate limit check
+7. JSON parse
+8. Input validation
+9. Usage count increment
+10. Cost threshold check
+11. AI daily usage limit check
+12. OpenAI API call with timeout
+13. AI response validation
+14. Estimated token and cost record
+15. Response
+16. Fallback response if needed
+
+### Timeout Strategy
+
+The Worker should use AbortController or an equivalent timeout mechanism.
+
+Initial timeout:
+
+- 8 seconds
+
+If the OpenAI API call times out, the Worker should not fail with an unhandled exception.
+
+It should return the existing fallback/mock-style response with a clear notice that the AI result is temporarily unavailable.
+
+### Fallback Strategy
+
+Fallback is required.
+
+If the OpenAI API call fails, times out, or returns invalid JSON, the Worker should return a safe fallback response.
+
+Fallback must preserve the user experience and prevent frontend breakage.
+
+Expected fallback behavior:
+
+- Return a valid JSON response
+- Include checklist-style moving advice
+- Include a disclaimer
+- Avoid exposing internal API errors
+- Record the AI error count
+
+### Response Validation
+
+The AI response must be validated before returning it to the frontend.
+
+Expected fields:
+
+- summary
+- boxEstimate
+- packingMaterials
+- checklist
+- riskNotes
+- disclaimer
+
+If the response is missing required fields or has invalid types, the Worker should use the fallback response.
+
+### Cost Control
+
+Before calling the OpenAI API, the Worker must check monthly and daily cost thresholds.
+
+If the monthly stop threshold is reached, the Worker must not call OpenAI API.
+
+Expected cost limit response:
+
+{
+  "error": {
+    "code": "cost_limit_reached",
+    "message": "AI diagnosis is temporarily unavailable due to usage limits."
+  }
+}
+
+Expected status:
+
+- 503 Service Unavailable
+
+### Cost Estimation
+
+The first implementation may estimate cost conservatively.
+
+Initial estimation strategy:
+
+- Treat Japanese input length as a conservative token approximation
+- Use fixed expected output token upper bound
+- Record estimated input tokens
+- Record estimated output tokens
+- Record estimated JPY cost
+
+The exact price table should be confirmed from the official provider pricing before implementation.
+
+### Follow-up Implementation Tasks
+
+- Add OPENAI_API_KEY as a Cloudflare Workers Secret
+- Add AI_MODEL configuration
+- Implement OpenAI API call from Worker only
+- Add timeout handling
+- Add fallback response
+- Add AI response validation
+- Add AI daily usage limit
+- Add estimated token tracking
+- Add estimated cost calculation
+- Verify production behavior with curl
+- Record verification results in docs/incidents.md
+

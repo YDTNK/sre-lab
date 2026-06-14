@@ -149,6 +149,78 @@ Rate limiting will be introduced before real AI API integration.
 Rate limiting must be implemented before connecting OpenAI API, Claude API, or any other paid AI API.
 
 
+## Real AI API Integration Operations
+
+This section defines the operational policy for the first real AI API integration.
+
+### Provider Decision
+
+- Initial provider: OpenAI API
+- Initial model class: low-cost mini/nano model
+- Claude API: reserved for future Terraform Review AI or AI Incident Summarizer
+
+### Secret Management
+
+The OpenAI API key must be managed as a Cloudflare Workers Secret.
+
+Planned secret:
+
+- OPENAI_API_KEY
+
+The API key must not be committed to GitHub or placed in frontend code.
+
+### Initial Usage Limits
+
+| Item | Initial Value |
+|---|---:|
+| Monthly budget | 500 JPY |
+| Monthly warning threshold | 300 JPY |
+| Monthly stop threshold | 500 JPY |
+| Service AI diagnoses per day | 20-50 |
+| AI diagnoses per IP per day | 5 |
+| Timeout | 8 seconds |
+
+### Daily Operation Checks After Implementation
+
+During the initial AI rollout, check the following daily:
+
+- API request count
+- AI call count
+- AI error count
+- Rate limited count
+- Estimated daily cost
+- Estimated monthly cost
+- Grafana API check status
+- Whether fallback responses increased
+
+### Deployment Verification After Implementation
+
+After deploying real AI integration:
+
+1. Confirm valid POST returns AI or fallback JSON.
+2. Confirm API key is not exposed in frontend.
+3. Confirm invalid input still returns standardized errors.
+4. Confirm rate limiting still works.
+5. Confirm usage counters are recorded.
+6. Confirm estimated cost counters are recorded.
+7. Confirm timeout returns fallback.
+8. Confirm invalid AI response returns fallback.
+9. Confirm Grafana API check remains healthy.
+10. Record results in docs/incidents.md.
+
+### Rollback Policy
+
+If AI integration causes instability, disable AI API calls and return fallback responses.
+
+Rollback options:
+
+- Disable AI call path in Worker code
+- Remove or rotate OPENAI_API_KEY
+- Lower AI daily limits
+- Lower cost thresholds
+- Return mock response until the issue is fixed
+
+
 ## Usage and Cost Tracking Operations
 
 Usage and cost tracking must be introduced before real AI API integration.

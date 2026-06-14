@@ -689,3 +689,112 @@ Cloudflare KV stored usage counters as expected.
 - [ ] Review usage and cost values during initial AI rollout
 - [ ] Consider moving historical usage records to D1 if reporting requirements grow
 
+---
+
+### 20260614-008
+
+### Service
+
+SRE Lab Workers API
+
+### Alert Rule
+
+Manual design record / real AI API integration strategy
+
+### Summary
+
+The initial real AI API integration provider and model strategy were defined.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the decision to use OpenAI API for the first AI Moving Assistant integration while reserving Claude API for future infrastructure-focused services.
+
+### Detection
+
+Manual design review before real AI API integration.
+
+### Initial Checks
+
+- Workers API safety hardening was completed
+- KV-based rate limiting was implemented and verified
+- Usage and cost tracking foundation was implemented and verified
+- Real AI API integration has not started yet
+- AI provider and model strategy must be decided before implementation
+
+### Design Decision
+
+- Initial provider: OpenAI API
+- Initial model class: low-cost mini/nano model
+- Claude API: reserved for future Terraform Review AI and AI Incident Summarizer
+- API key location: Cloudflare Workers Secret
+- Planned secret name: OPENAI_API_KEY
+- Planned model config: AI_MODEL
+- Monthly budget: 500 JPY
+- Monthly warning threshold: 300 JPY
+- Monthly stop threshold: 500 JPY
+- Service AI diagnoses per day: 20-50
+- AI diagnoses per IP per day: 5
+- Timeout: 8 seconds
+- Fallback response: required
+- AI response validation: required
+- Estimated cost tracking: required
+
+### Rationale
+
+AI Moving Assistant requires short, structured Japanese JSON responses.
+
+The initial goal is safe AI integration under a small monthly budget, not maximum reasoning quality.
+
+OpenAI API was selected for the first integration because it is suitable for low-cost structured JSON generation and simple Cloudflare Workers integration.
+
+Claude API remains a strong future candidate for longer and more complex services, especially Terraform Review AI and AI Incident Summarizer.
+
+### Planned Safety Controls
+
+- API key must not be exposed to frontend
+- AI call must happen only inside Cloudflare Workers
+- Existing API validation must remain active
+- Existing KV-based rate limiting must remain active
+- AI-specific daily limits must be added
+- Timeout handling must be added
+- Fallback response must be added
+- AI response validation must be added
+- Estimated token and cost tracking must be added
+- Monthly cost stop threshold must block AI calls
+
+### Timeline
+
+| Time | Event |
+|---|---|
+| 2026-06-14 | OpenAI API was selected as the first AI provider |
+| 2026-06-14 | Claude API was reserved for future infrastructure-focused services |
+| 2026-06-14 | Monthly AI budget and limits were confirmed |
+| 2026-06-14 | Timeout, fallback, and response validation were defined as required controls |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a design and planning record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Add OPENAI_API_KEY as a Cloudflare Workers Secret
+- [ ] Add AI_MODEL configuration
+- [ ] Implement OpenAI API call from Worker
+- [ ] Add AI API timeout handling
+- [ ] Add fallback response
+- [ ] Add AI response validation
+- [ ] Add AI daily usage limits
+- [ ] Add estimated token tracking
+- [ ] Add estimated cost calculation
+- [ ] Verify production behavior after deployment
+
