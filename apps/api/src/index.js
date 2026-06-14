@@ -8,9 +8,18 @@ const RATE_LIMIT_PER_DAY = 50;
 const RATE_LIMIT_RETRY_AFTER_SECONDS = 60;
 
 const MONTHLY_COST_STOP_THRESHOLD_JPY = 500;
-const MOCK_ESTIMATED_COST_JPY = 0;
+const DAILY_COST_HARD_LIMIT_JPY = 100;
+
+const AI_SERVICE_DAILY_LIMIT = 30;
+const AI_IP_DAILY_LIMIT = 5;
+const AI_LIMIT_RETRY_AFTER_SECONDS = 86400;
 
 const OPENAI_TIMEOUT_MS = 8000;
+
+const ESTIMATED_OUTPUT_TOKENS = 500;
+const ESTIMATED_INPUT_TOKEN_DIVISOR = 1;
+const ESTIMATED_COST_PER_1K_INPUT_TOKENS_JPY = 0.02;
+const ESTIMATED_COST_PER_1K_OUTPUT_TOKENS_JPY = 0.08;
 
 const FIELD_NAMES = [
   "furniture",
@@ -170,9 +179,11 @@ export default {
       );
     }
 
-    const monthlyEstimatedCost = await getMonthlyEstimatedCost(env);
+    const estimatedUsage = estimateAiUsage(body);
+    const monthlyEstimatedCost = await getEstimatedCost(env, "month");
+    const dailyEstimatedCost = await getEstimatedCost(env, "day");
 
-    if (monthlyEstimatedCost >= MONTHLY_COST_STOP_THRESHOLD_JPY) {
+    if (monthlyEstimatedCost + estimatedUsage.estimatedCostJpy >= MONTHLY_COST_STOP_THRESHOLD_JPY) {
       await recordUsage(env, "api_errors");
       return errorResponse(
         "cost_limit_reached",
@@ -181,16 +192,40 @@ export default {
       );
     }
 
-    const fallback = buildFallbackResponse();
+    if (dailyEstimatedCost + estimatedUsage.estimatedCostJpy >= DAILY_COST_HARD_LIMIT_JPY) {
+      await recordUsage(env, "api_errors");
+      return errorResponse(
+        "cost_limit_reached",
+        "AI diagnosis is temporarily unavailable due to daily usage limits.",
+        503
+      );
+    }
 
+    const aiLimitResult = await checkAiDailyLimit(request, env);
+
+    if (!aiLimitResult.allowed) {
+      await recordUsage(env, "ai_limited");
+      return errorResponse(
+        "ai_limit_reached",
+        "AI diagnosis limit reached. Please try again later.",
+        429,
+        {
+          "Retry-After": String(AI_LIMIT_RETRY_AFTER_SECONDS),
+        }
+      );
+    }
+
+    const fallback = buildFallbackResponse();
     const aiResponse = await generateMovingAdviceWithOpenAI(body, env);
 
-    await recordEstimatedCost(env, MOCK_ESTIMATED_COST_JPY);
-
     if (aiResponse.ok) {
+      await recordEstimatedAiUsage(env, estimatedUsage);
       await recordUsage(env, "api_success");
       await recordUsage(env, "ai_success");
-      return jsonResponse(aiResponse.data);
+      return jsonResponse({
+        ...aiResponse.data,
+        estimatedUsage,
+      });
     }
 
     await recordUsage(env, "api_success");
@@ -200,9 +235,127 @@ export default {
       ...fallback,
       aiStatus: "fallback",
       fallbackReason: aiResponse.reason,
+      estimatedUsage,
     });
   },
 };
+
+async function checkAiDailyLimit(request, env) {
+  if (!env.RATE_LIMIT_KV) {
+    return { allowed: true };
+  }
+
+  const now = new Date();
+  const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
+
+  const serviceKey = `ai-limit:moving-assistant:service:${formatDayWindow(now)}`;
+  const ipKey = `ai-limit:moving-assistant:ip:${clientIp}:${formatDayWindow(now)}`;
+
+  const serviceCount = await incrementCounter(
+    env.RATE_LIMIT_KV,
+    serviceKey,
+    secondsUntilNextDay(now)
+  );
+
+  if (serviceCount > AI_SERVICE_DAILY_LIMIT) {
+    return { allowed: false, reason: "service_daily_ai_limit_exceeded" };
+  }
+
+  const ipCount = await incrementCounter(
+    env.RATE_LIMIT_KV,
+    ipKey,
+    secondsUntilNextDay(now)
+  );
+
+  if (ipCount > AI_IP_DAILY_LIMIT) {
+    return { allowed: false, reason: "ip_daily_ai_limit_exceeded" };
+  }
+
+  return { allowed: true };
+}
+
+function estimateAiUsage(body) {
+  const inputTextLength = FIELD_NAMES.reduce((total, fieldName) => {
+    const value = body[fieldName];
+
+    if (typeof value !== "string") {
+      return total;
+    }
+
+    return total + value.trim().length;
+  }, 0);
+
+  const estimatedInputTokens = Math.max(
+    1,
+    Math.ceil(inputTextLength / ESTIMATED_INPUT_TOKEN_DIVISOR)
+  );
+
+  const estimatedOutputTokens = ESTIMATED_OUTPUT_TOKENS;
+
+  const estimatedInputCostJpy =
+    (estimatedInputTokens / 1000) * ESTIMATED_COST_PER_1K_INPUT_TOKENS_JPY;
+  const estimatedOutputCostJpy =
+    (estimatedOutputTokens / 1000) * ESTIMATED_COST_PER_1K_OUTPUT_TOKENS_JPY;
+
+  const estimatedCostJpy = Number(
+    (estimatedInputCostJpy + estimatedOutputCostJpy).toFixed(6)
+  );
+
+  return {
+    estimatedInputTokens,
+    estimatedOutputTokens,
+    estimatedCostJpy,
+  };
+}
+
+async function recordEstimatedAiUsage(env, estimatedUsage) {
+  if (!env.RATE_LIMIT_KV) {
+    return;
+  }
+
+  const now = new Date();
+
+  await incrementNumericValue(
+    env.RATE_LIMIT_KV,
+    `cost:moving-assistant:input_tokens:${formatDayWindow(now)}`,
+    estimatedUsage.estimatedInputTokens,
+    secondsUntilNextDay(now)
+  );
+
+  await incrementNumericValue(
+    env.RATE_LIMIT_KV,
+    `cost:moving-assistant:output_tokens:${formatDayWindow(now)}`,
+    estimatedUsage.estimatedOutputTokens,
+    secondsUntilNextDay(now)
+  );
+
+  await incrementNumericValue(
+    env.RATE_LIMIT_KV,
+    `cost:moving-assistant:estimated_jpy:${formatDayWindow(now)}`,
+    estimatedUsage.estimatedCostJpy,
+    secondsUntilNextDay(now)
+  );
+
+  await incrementNumericValue(
+    env.RATE_LIMIT_KV,
+    `cost:moving-assistant:estimated_jpy:${formatMonthWindow(now)}`,
+    estimatedUsage.estimatedCostJpy,
+    secondsUntilNextMonth(now)
+  );
+}
+
+async function getEstimatedCost(env, windowType) {
+  if (!env.RATE_LIMIT_KV) {
+    return 0;
+  }
+
+  const now = new Date();
+  const suffix = windowType === "month" ? formatMonthWindow(now) : formatDayWindow(now);
+  const key = `cost:moving-assistant:estimated_jpy:${suffix}`;
+  const currentValue = await env.RATE_LIMIT_KV.get(key);
+
+  return Number.parseFloat(currentValue || "0");
+}
 
 async function generateMovingAdviceWithOpenAI(body, env) {
   if (!env.OPENAI_API_KEY) {
@@ -477,42 +630,6 @@ async function recordUsage(env, metricName) {
   const key = `usage:moving-assistant:${metricName}:${formatDayWindow(now)}`;
 
   await incrementCounter(env.RATE_LIMIT_KV, key, secondsUntilNextDay(now));
-}
-
-async function recordEstimatedCost(env, estimatedCostJpy) {
-  if (!env.RATE_LIMIT_KV || estimatedCostJpy <= 0) {
-    return;
-  }
-
-  const now = new Date();
-  const dailyKey = `cost:moving-assistant:estimated_jpy:${formatDayWindow(now)}`;
-  const monthlyKey = `cost:moving-assistant:estimated_jpy:${formatMonthWindow(now)}`;
-
-  await incrementNumericValue(
-    env.RATE_LIMIT_KV,
-    dailyKey,
-    estimatedCostJpy,
-    secondsUntilNextDay(now)
-  );
-
-  await incrementNumericValue(
-    env.RATE_LIMIT_KV,
-    monthlyKey,
-    estimatedCostJpy,
-    secondsUntilNextMonth(now)
-  );
-}
-
-async function getMonthlyEstimatedCost(env) {
-  if (!env.RATE_LIMIT_KV) {
-    return 0;
-  }
-
-  const now = new Date();
-  const monthlyKey = `cost:moving-assistant:estimated_jpy:${formatMonthWindow(now)}`;
-  const currentValue = await env.RATE_LIMIT_KV.get(monthlyKey);
-
-  return Number.parseFloat(currentValue || "0");
 }
 
 async function incrementCounter(kv, key, expirationTtl) {
