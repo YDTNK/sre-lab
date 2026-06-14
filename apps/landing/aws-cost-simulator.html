@@ -3,136 +3,368 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AWS料金試算</title>
+  <title>AWS料金試算 | クラウドとAIの便利ツール集</title>
+  <meta
+    name="description"
+    content="EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を計算します。"
+  />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-brand" href="index.html">クラウドとAIの便利ツール集</a>
+      <nav class="site-nav" aria-label="主要ナビゲーション">
+        <a href="moving-assistant.html">AI引越し診断</a>
+        <a href="aws-cost-simulator.html">AWS料金試算</a>
+        <a href="#notices">ご利用にあたって</a>
+      </nav>
+    </div>
+  </header>
+
   <div class="nav-link">
     <a href="index.html">← ツール一覧へ戻る</a>
   </div>
 
-  <main>
+  <main class="container">
     <section class="hero">
-      <span class="badge">AWS料金試算</span>
-      <h1>AWS月額料金の目安をかんたんに確認できます</h1>
-      <p class="lead">
-        EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を計算します。
-      </p>
-      <p>
-        学習や構成検討の初期段階で、ざっくりと料金感をつかむためのツールです。
-      </p>
+      <div class="hero__inner">
+        <div class="hero__content">
+          <p class="eyebrow">AWS料金試算</p>
+          <h1>AWS月額料金の目安をかんたんに確認できます</h1>
+          <p class="lead">
+            EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を計算します。
+          </p>
+          <p>
+            学習や構成検討のたたき台として、ざっくりした月額費用と内訳を確認できます。
+          </p>
+
+          <div class="hero__actions">
+            <a class="button" href="#calculator">月額料金を試算する</a>
+          </div>
+        </div>
+
+        <div class="hero__visual" aria-label="AWS料金試算の結果イメージ">
+          <div class="preview-stack">
+            <div class="preview-card">
+              <div class="preview-card__head">
+                <span>試算結果イメージ</span>
+                <span>USD / JPY</span>
+              </div>
+              <dl class="preview-card__row">
+                <dt>EC2</dt>
+                <dd>インスタンス費用</dd>
+              </dl>
+              <dl class="preview-card__row">
+                <dt>EBS / S3</dt>
+                <dd>ストレージ費用</dd>
+              </dl>
+              <dl class="preview-card__row">
+                <dt>Data transfer</dt>
+                <dd>転送量費用</dd>
+              </dl>
+              <div class="preview-card__total">
+                <span>月額概算</span>
+                <span>内訳つき</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
+ 
+    <section class="section" id="calculator">
+      <div class="section__header">
+        <span class="section__eyebrow">Calculator</span>
+        <h2 class="section__title">試算条件を入力</h2>
+        <p class="section__lead">
+          利用予定のEC2、ストレージ、データ転送量を入力してください。
+        </p>
+      </div>
 
-    <section class="card">
-      <h2>試算条件を入力</h2>
-      <p>
-        想定するAWS構成を入力してください。固定単価ベースで、月額料金の目安を計算します。
-      </p>
+      <div class="calculator-layout">
+        <div class="card">
+          <h3>入力条件</h3>
+          <p>
+            分かる範囲で入力してください。初期値のままでも試算できます。
+          </p>
 
-      <form id="aws-cost-form" class="form-card">
-        <label for="region">リージョン</label>
-        <select id="region" name="region">
-          <option value="ap-northeast-1">東京リージョン / ap-northeast-1</option>
-          <option value="us-east-1">バージニア北部 / us-east-1</option>
-        </select>
+          <form id="awsCostSimulatorForm">
+            <div>
+              <label for="region">リージョン</label>
+              <select id="region" name="region">
+                <option value="ap-northeast-1">東京 / ap-northeast-1</option>
+                <option value="us-east-1">バージニア北部 / us-east-1</option>
+              </select>
+            </div>
 
-        <label for="ec2InstanceType">EC2インスタンスタイプ</label>
-        <select id="ec2InstanceType" name="ec2InstanceType">
-          <option value="t3.micro">t3.micro</option>
-          <option value="t3.small">t3.small</option>
-          <option value="t3.medium">t3.medium</option>
-        </select>
+            <div>
+              <label for="ec2InstanceType">EC2インスタンスタイプ</label>
+              <select id="ec2InstanceType" name="ec2InstanceType">
+                <option value="t3.micro">t3.micro</option>
+                <option value="t3.small">t3.small</option>
+                <option value="t3.medium">t3.medium</option>
+              </select>
+            </div>
 
-        <label for="ec2InstanceCount">EC2台数</label>
-        <input id="ec2InstanceCount" name="ec2InstanceCount" type="number" min="0" max="20" value="1" />
+            <div>
+              <label for="ec2InstanceCount">EC2台数</label>
+              <input
+                id="ec2InstanceCount"
+                name="ec2InstanceCount"
+                type="number"
+                min="0"
+                max="20"
+                step="1"
+                value="1"
+              />
+            </div>
 
-        <label for="ec2HoursPerMonth">EC2月間稼働時間</label>
-        <input id="ec2HoursPerMonth" name="ec2HoursPerMonth" type="number" min="0" max="744" value="730" />
+            <div>
+              <label for="ec2HoursPerMonth">EC2月間稼働時間</label>
+              <input
+                id="ec2HoursPerMonth"
+                name="ec2HoursPerMonth"
+                type="number"
+                min="0"
+                max="744"
+                step="1"
+                value="730"
+              />
+            </div>
 
-        <label for="ebsGb">EBS容量 GB</label>
-        <input id="ebsGb" name="ebsGb" type="number" min="0" max="1000" value="30" />
+            <div>
+              <label for="ebsGb">EBS容量 GB</label>
+              <input
+                id="ebsGb"
+                name="ebsGb"
+                type="number"
+                min="0"
+                max="2000"
+                step="1"
+                value="20"
+              />
+            </div>
 
-        <label for="s3Gb">S3容量 GB</label>
-        <input id="s3Gb" name="s3Gb" type="number" min="0" max="1000" value="10" />
+            <div>
+              <label for="s3Gb">S3容量 GB</label>
+              <input
+                id="s3Gb"
+                name="s3Gb"
+                type="number"
+                min="0"
+                max="5000"
+                step="1"
+                value="50"
+              />
+            </div>
 
-        <label for="dataTransferGb">Data transfer量 GB</label>
-        <input id="dataTransferGb" name="dataTransferGb" type="number" min="0" max="1000" value="10" />
+            <div>
+              <label for="dataTransferGb">Data transfer量 GB</label>
+              <input
+                id="dataTransferGb"
+                name="dataTransferGb"
+                type="number"
+                min="0"
+                max="5000"
+                step="1"
+                value="10"
+              />
+            </div>
 
-        <button id="calculate-button" type="submit" class="button">月額料金を試算する</button>
-      </form>
-    </section>
+            <button type="submit">月額料金を試算する</button>
+          </form>
+        </div>
 
-    <section class="card result-panel">
-      <h2>試算結果</h2>
-      <p>
-        入力内容にもとづき、月額概算、サービス別の内訳、計算前提を表示します。
-      </p>
-      <div id="aws-cost-result" class="result-box">
-        <p>条件を入力して「月額料金を試算する」を押してください。</p>
+        <aside class="result-panel card" aria-live="polite">
+          <span class="section__eyebrow">試算結果</span>
+          <h2>月額概算</h2>
+          <div id="result" class="result-card__body">
+            条件を入力して「月額料金を試算する」を押してください。
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="operations">
-      <h2>計算について</h2>
-      <p>
-        このツールでは、固定単価をもとにEC2、EBS、S3、Data transferの月額料金を概算します。
-        AWS Pricing APIや有料AI APIは使用していません。
-      </p>
-      <ul>
-        <li>EC2はインスタンスタイプ、台数、月間稼働時間から計算します。</li>
-        <li>EBSとS3は入力された容量をもとに概算します。</li>
-        <li>Data transferは入力された転送量をもとに概算します。</li>
-        <li>表示される金額は学習・検討用の目安です。</li>
-      </ul>
+    <section class="section">
+      <div class="section__header">
+        <span class="section__eyebrow">Breakdown</span>
+        <h2 class="section__title">内訳</h2>
+        <p class="section__lead">
+          試算後、EC2、EBS、S3、Data transferごとの概算金額を表示します。
+        </p>
+      </div>
+
+      <div class="breakdown-grid" id="breakdownGrid">
+        <div class="breakdown-card">
+          <span>EC2</span>
+          <strong>-</strong>
+        </div>
+        <div class="breakdown-card">
+          <span>EBS</span>
+          <strong>-</strong>
+        </div>
+        <div class="breakdown-card">
+          <span>S3</span>
+          <strong>-</strong>
+        </div>
+        <div class="breakdown-card">
+          <span>Data transfer</span>
+          <strong>-</strong>
+        </div>
+      </div>
     </section>
 
-    <section class="operations">
-      <h2>ご利用にあたって</h2>
-      <p>
-        この試算は、学習・検討用の概算です。
-        AWS公式Pricing Calculatorや実際の請求額の代替ではありません。
-      </p>
-      <p>
-        正式な見積もりや費用判断を行う場合は、AWS公式の料金情報や請求データを確認してください。
-      </p>
+    <section class="section section--soft">
+      <div class="section__header">
+        <span class="section__eyebrow">Assumptions</span>
+        <h2 class="section__title">前提条件</h2>
+        <p class="section__lead">
+          このツールは学習・検討用の概算ツールです。
+        </p>
+      </div>
+
+      <div class="card" id="assumptions">
+        <ul>
+          <li>この試算は学習・検討用の概算です。</li>
+          <li>AWS Pricing APIは使用していません。</li>
+          <li>このAPI endpointでは有料AI APIを使用していません。</li>
+          <li>USD to JPYの換算レートは150円で固定しています。</li>
+          <li>税金、無料利用枠、NAT Gateway、Load Balancer、RDS、CloudWatchなどは含めていません。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="notices">
+      <div class="notice-card">
+        <h2 class="notice-card__title">ご利用にあたって</h2>
+        <ul class="notice-list">
+          <li>
+            この試算は学習・検討用の概算であり、AWS公式の見積もりではありません。
+          </li>
+          <li>
+            実際の料金は、AWS Pricing Calculator、AWS公式料金ページ、請求情報で確認してください。
+          </li>
+          <li>
+            固定単価ベースの簡易計算のため、Savings Plans、Reserved Instances、無料利用枠、税金、為替変動などは反映していません。
+          </li>
+        </ul>
+      </div>
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div>
+        <a class="site-brand" href="index.html">クラウドとAIの便利ツール集</a>
+        <p>
+          クラウド料金の試算やAI診断など、検討や準備に役立つWebツールをまとめています。
+        </p>
+      </div>
+      <div class="site-footer__links">
+        <a href="index.html">トップ</a>
+        <a href="moving-assistant.html">AI引越し診断</a>
+        <a href="#notices">ご利用にあたって</a>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    const AWS_COST_API_URL = "https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator";
+    const API_BASE_URL = "https://sre-lab-api.daisan-tanaka.workers.dev";
 
-    const form = document.getElementById("aws-cost-form");
-    const resultBox = document.getElementById("aws-cost-result");
-    const calculateButton = document.getElementById("calculate-button");
+    const form = document.getElementById("awsCostSimulatorForm");
+    const result = document.getElementById("result");
+    const breakdownGrid = document.getElementById("breakdownGrid");
+    const assumptions = document.getElementById("assumptions");
 
-    function readNumber(id) {
-      return Number(document.getElementById(id).value);
-    }
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-    function renderError(message) {
-      resultBox.innerHTML = "<p><strong>エラー:</strong> " + escapeHtml(message) + "</p>";
-    }
+      result.innerHTML = "<p>試算しています...</p>";
+
+      const payload = {
+        region: document.getElementById("region").value,
+        ec2InstanceType: document.getElementById("ec2InstanceType").value,
+        ec2InstanceCount: Number(document.getElementById("ec2InstanceCount").value),
+        ec2HoursPerMonth: Number(document.getElementById("ec2HoursPerMonth").value),
+        ebsGb: Number(document.getElementById("ebsGb").value),
+        s3Gb: Number(document.getElementById("s3Gb").value),
+        dataTransferGb: Number(document.getElementById("dataTransferGb").value)
+      };
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/aws-cost-simulator`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          const message = data?.error?.message || "試算に失敗しました。";
+          result.innerHTML = `<p>${escapeHtml(message)}</p>`;
+          return;
+        }
+
+        renderResult(data);
+      } catch (error) {
+        result.innerHTML = "<p>通信エラーが発生しました。時間をおいて再度お試しください。</p>";
+      }
+    });
 
     function renderResult(data) {
-      const breakdown = data.breakdown || {};
-      const assumptions = Array.isArray(data.assumptions) ? data.assumptions : [];
+      const totalUsd = data?.total?.usd ?? data?.totalUsd ?? 0;
+      const totalJpy = data?.total?.jpy ?? data?.totalJpy ?? 0;
+      const breakdown = data?.breakdown || {};
 
-      resultBox.innerHTML = [
-        "<h3>月額概算</h3>",
-        "<p><strong>$" + data.totalMonthlyUsd + " / ¥" + data.totalMonthlyJpy + "</strong></p>",
-        "<h3>内訳</h3>",
-        "<ul>",
-        "<li>EC2: $" + breakdown.ec2 + "</li>",
-        "<li>EBS: $" + breakdown.ebs + "</li>",
-        "<li>S3: $" + breakdown.s3 + "</li>",
-        "<li>Data transfer: $" + breakdown.dataTransfer + "</li>",
-        "</ul>",
-        "<h3>前提条件</h3>",
-        "<ul>",
-        assumptions.map((item) => "<li>" + escapeHtml(item) + "</li>").join(""),
-        "</ul>",
-        "<p>" + escapeHtml(data.disclaimer || "") + "</p>",
-      ].join("");
+      result.innerHTML = `
+        <p>入力条件にもとづく月額の概算です。</p>
+        <span class="result-total">$${formatNumber(totalUsd)} / ¥${formatNumber(totalJpy)}</span>
+        <p>${escapeHtml(data.summary || "AWS月額料金の概算を計算しました。")}</p>
+      `;
+
+      const ec2Usd = breakdown?.ec2?.usd ?? breakdown?.ec2Usd ?? 0;
+      const ebsUsd = breakdown?.ebs?.usd ?? breakdown?.ebsUsd ?? 0;
+      const s3Usd = breakdown?.s3?.usd ?? breakdown?.s3Usd ?? 0;
+      const dataTransferUsd = breakdown?.dataTransfer?.usd ?? breakdown?.dataTransferUsd ?? 0;
+
+      breakdownGrid.innerHTML = `
+        <div class="breakdown-card">
+          <span>EC2</span>
+          <strong>$${formatNumber(ec2Usd)}</strong>
+        </div>
+        <div class="breakdown-card">
+          <span>EBS</span>
+          <strong>$${formatNumber(ebsUsd)}</strong>
+        </div>
+        <div class="breakdown-card">
+          <span>S3</span>
+          <strong>$${formatNumber(s3Usd)}</strong>
+        </div>
+        <div class="breakdown-card">
+          <span>Data transfer</span>
+          <strong>$${formatNumber(dataTransferUsd)}</strong>
+        </div>
+      `;
+
+      if (Array.isArray(data.assumptions) && data.assumptions.length > 0) {
+        assumptions.innerHTML = `
+          <ul>
+            ${data.assumptions.map((item) => `<li>${escapeHtml(String(item))}</li>`).join("")}
+          </ul>
+        `;
+      } else if (typeof data.assumptions === "string" && data.assumptions.trim()) {
+        assumptions.innerHTML = `<p>${escapeHtml(data.assumptions)}</p>`;
+      }
+    }
+
+    function formatNumber(value) {
+      return Number(value || 0).toLocaleString("ja-JP", {
+        maximumFractionDigits: 2
+      });
     }
 
     function escapeHtml(value) {
@@ -143,48 +375,6 @@
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
     }
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const payload = {
-        region: document.getElementById("region").value,
-        ec2InstanceType: document.getElementById("ec2InstanceType").value,
-        ec2InstanceCount: readNumber("ec2InstanceCount"),
-        ec2HoursPerMonth: readNumber("ec2HoursPerMonth"),
-        ebsGb: readNumber("ebsGb"),
-        s3Gb: readNumber("s3Gb"),
-        dataTransferGb: readNumber("dataTransferGb"),
-      };
-
-      calculateButton.disabled = true;
-      calculateButton.textContent = "試算中...";
-      resultBox.innerHTML = "<p>試算中...</p>";
-
-      try {
-        const response = await fetch(AWS_COST_API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          renderError(data.error ? data.error.message : "試算に失敗しました。");
-          return;
-        }
-
-        renderResult(data);
-      } catch {
-        renderError("ネットワークエラーです。時間をおいて再度お試しください。");
-      } finally {
-        calculateButton.disabled = false;
-        calculateButton.textContent = "月額料金を試算する";
-      }
-    });
   </script>
 </body>
 </html>

@@ -3413,3 +3413,79 @@ Not applicable. This is an AI Moving Assistant HTML rebuild.
 - [ ] Rebuild AWS Cost Simulator HTML
 - [ ] Verify AI Moving Assistant page after Cloudflare Pages deployment
 - [ ] Confirm production API response rendering
+
+---
+
+### 20260614-044
+
+### Service
+
+AWS Cost Simulator Public Page
+
+### Alert Rule
+
+Manual documentation record / AWS Cost Simulator HTML rebuild
+
+### Summary
+
+The AWS Cost Simulator page HTML was rebuilt based on the final reference-based calculator wireframe.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-H-4-3 aws-cost-simulator.html rebuild.
+
+### Detection
+
+Manual design review identified that the AWS Cost Simulator page needed a calculator-first layout with input and result sections placed side by side on desktop.
+
+### Changes
+
+- Rebuilt apps/landing/aws-cost-simulator.html
+- Added shared header
+- Added back link to top page
+- Added hero section
+- Added calculator two-column layout
+- Added input form panel
+- Added result panel
+- Added breakdown cards
+- Added assumptions section
+- Added notice section
+- Added shared footer
+- Preserved API endpoint /api/aws-cost-simulator
+- Preserved client-side rendering for result output
+- Removed portfolio and SRE wording from public page
+- Avoided new external dependencies
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Page structure | Hero / Input-Result / Breakdown / Assumptions / Notice / Footer | Passed |
+| Site name | クラウドとAIの便利ツール集 | Passed |
+| Form ID | awsCostSimulatorForm | Passed |
+| Result ID | result | Passed |
+| Breakdown ID | breakdownGrid | Passed |
+| Assumptions ID | assumptions | Passed |
+| API endpoint | /api/aws-cost-simulator | Passed |
+| External dependencies | None added | Passed |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is an AWS Cost Simulator HTML rebuild.
+
+### Prevention / Follow-up Actions
+
+- [ ] Verify AWS Cost Simulator page after Cloudflare Pages deployment
+- [ ] Confirm production API response rendering
+- [ ] Capture screenshots for Phase 9-H-5
