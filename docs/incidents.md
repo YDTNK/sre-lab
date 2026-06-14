@@ -2383,3 +2383,81 @@ Not applicable. This is a monitoring and documentation update record.
 - [ ] Add Grafana alert rule
 - [ ] Verify alert routing to existing email contact point
 - [ ] Connect frontend form to API in a future phase
+
+---
+
+### 20260614-028
+
+### Service
+
+SRE Lab AWS Cost Simulator Frontend
+
+### Alert Rule
+
+Manual documentation record / frontend API integration
+
+### Summary
+
+AWS Cost Simulator frontend was connected to the Workers API endpoint.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-A frontend to API integration.
+
+### Detection
+
+Manual implementation and frontend verification planning.
+
+### Changes
+
+- Enabled Calculate estimate button
+- Added frontend JavaScript submit handler
+- Added POST request to AWS Cost Simulator Workers API
+- Added JSON request body generation from form fields
+- Added result rendering for total monthly estimate
+- Added resource breakdown rendering
+- Added assumptions and disclaimer rendering
+- Added error rendering for API and network errors
+- Added result box styling
+
+### Production Endpoint
+
+POST https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator
+
+### Design Decision
+
+The frontend connects to the deterministic AWS Cost Simulator API.
+
+The frontend does not call AWS Pricing API.
+
+The frontend does not call OpenAI API or any paid AI API.
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Frontend form submit | Calls Workers API | Pending production check |
+| Valid input | Shows deterministic estimate | Pending production check |
+| API error | Shows error message | Pending production check |
+| Network error | Shows fallback error | Pending production check |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a frontend API integration record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Verify production frontend page
+- [ ] Verify successful estimate rendering
+- [ ] Verify invalid input error rendering
+- [ ] Update docs if needed after browser verification

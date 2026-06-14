@@ -15,7 +15,7 @@
         AWS Cost Simulator is a planned educational tool for estimating simple AWS monthly costs.
       </p>
       <p>
-        The MVP will start with deterministic calculations for EC2, EBS, S3, and data transfer placeholders.
+        The MVP calculates simple deterministic estimates for EC2, EBS, S3, and data transfer.
         It will not require a paid AI API in the first version.
       </p>
       <p>
@@ -26,7 +26,7 @@
     <section class="services">
       <h2>Cost Estimate Form</h2>
       <p>
-        Enter a simple AWS configuration. The next implementation phase will connect this form to a Workers API endpoint.
+        Enter a simple AWS configuration and calculate an educational monthly estimate.
       </p>
 
       <form id="aws-cost-form" class="form-card">
@@ -58,42 +58,124 @@
         <label for="dataTransferGb">Data transfer GB</label>
         <input id="dataTransferGb" name="dataTransferGb" type="number" min="0" max="1000" value="10" />
 
-        <button type="button" class="button" disabled>Calculate estimate - coming soon</button>
+        <button id="calculate-button" type="submit" class="button">Calculate estimate</button>
       </form>
     </section>
 
     <section class="operations result-panel">
-      <h2>Result Preview</h2>
-      <p>
-        The calculation result will appear here after the Workers API endpoint is implemented.
-      </p>
-      <ul>
-        <li>Total monthly estimate in USD</li>
-        <li>Total monthly estimate in JPY</li>
-        <li>EC2 / EBS / S3 / data transfer breakdown</li>
-        <li>Pricing assumptions</li>
-        <li>Educational disclaimer</li>
-      </ul>
+      <h2>Estimate Result</h2>
+      <div id="aws-cost-result" class="result-box">
+        <p>Enter values and click Calculate estimate.</p>
+      </div>
     </section>
 
     <section class="operations">
       <h2>Implementation Status</h2>
       <ul>
-        <li>Status: Planned / placeholder page</li>
-        <li>Next: frontend form implementation</li>
-        <li>Future: Workers API endpoint</li>
-        <li>Future: API safety validation</li>
-        <li>Future: synthetic monitoring</li>
+        <li>Status: Frontend connected to Workers API</li>
+        <li>Current: deterministic estimate via API</li>
+        <li>Implemented: Workers API endpoint</li>
+        <li>Implemented: API safety validation</li>
+        <li>Implemented: synthetic monitoring and alerting</li>
       </ul>
     </section>
 
     <section class="operations">
       <h2>Disclaimer</h2>
       <p>
-        This page is a planning placeholder. Future estimates will be approximate and educational.
+        This page provides approximate educational estimates.
         They will not replace the official AWS Pricing Calculator or actual AWS billing data.
       </p>
     </section>
   </main>
+
+  <script>
+    const AWS_COST_API_URL = "https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator";
+
+    const form = document.getElementById("aws-cost-form");
+    const resultBox = document.getElementById("aws-cost-result");
+    const calculateButton = document.getElementById("calculate-button");
+
+    function readNumber(id) {
+      return Number(document.getElementById(id).value);
+    }
+
+    function renderError(message) {
+      resultBox.innerHTML = "<p><strong>Error:</strong> " + escapeHtml(message) + "</p>";
+    }
+
+    function renderResult(data) {
+      const breakdown = data.breakdown || {};
+      const assumptions = Array.isArray(data.assumptions) ? data.assumptions : [];
+
+      resultBox.innerHTML = [
+        "<p><strong>Total monthly estimate:</strong> $" + data.totalMonthlyUsd + " / ¥" + data.totalMonthlyJpy + "</p>",
+        "<h3>Breakdown</h3>",
+        "<ul>",
+        "<li>EC2: $" + breakdown.ec2 + "</li>",
+        "<li>EBS: $" + breakdown.ebs + "</li>",
+        "<li>S3: $" + breakdown.s3 + "</li>",
+        "<li>Data transfer: $" + breakdown.dataTransfer + "</li>",
+        "</ul>",
+        "<h3>Assumptions</h3>",
+        "<ul>",
+        assumptions.map((item) => "<li>" + escapeHtml(item) + "</li>").join(""),
+        "</ul>",
+        "<p>" + escapeHtml(data.disclaimer || "") + "</p>",
+      ].join("");
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const payload = {
+        region: document.getElementById("region").value,
+        ec2InstanceType: document.getElementById("ec2InstanceType").value,
+        ec2InstanceCount: readNumber("ec2InstanceCount"),
+        ec2HoursPerMonth: readNumber("ec2HoursPerMonth"),
+        ebsGb: readNumber("ebsGb"),
+        s3Gb: readNumber("s3Gb"),
+        dataTransferGb: readNumber("dataTransferGb"),
+      };
+
+      calculateButton.disabled = true;
+      calculateButton.textContent = "Calculating...";
+      resultBox.innerHTML = "<p>Calculating estimate...</p>";
+
+      try {
+        const response = await fetch(AWS_COST_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          renderError(data.error ? data.error.message : "Failed to calculate estimate.");
+          return;
+        }
+
+        renderResult(data);
+      } catch {
+        renderError("Network error. Please try again later.");
+      } finally {
+        calculateButton.disabled = false;
+        calculateButton.textContent = "Calculate estimate";
+      }
+    });
+  </script>
+
 </body>
 </html>
