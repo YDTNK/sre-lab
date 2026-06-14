@@ -148,6 +148,19 @@ Grafana Cloud Alerting is configured for the AI Moving Assistant API check.
 - Contact point: sre-lab-email
 - Runbook: docs/runbook.md
 
+## Worker Deployment
+
+The Cloudflare Workers API can be deployed through GitHub Actions.
+
+- Workflow: .github/workflows/deploy-worker.yml
+- Trigger:
+  - Push to main when files under apps/api change
+  - Manual workflow dispatch
+- Deployment target: sre-lab-api
+- Required GitHub Secrets:
+  - CLOUDFLARE_API_TOKEN
+  - CLOUDFLARE_ACCOUNT_ID
+
 ## Roadmap
 
 1. Build the project foundation
