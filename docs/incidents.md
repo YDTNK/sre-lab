@@ -2734,3 +2734,63 @@ Not applicable. This is a portfolio review and polish record.
 - [ ] Capture final screenshots after Cloudflare Pages deployment
 - [ ] Check public pages after deploy
 - [ ] Keep page status labels aligned with actual production status
+
+---
+
+### 20260614-033
+
+### Service
+
+SRE Lab Portfolio README
+
+### Alert Rule
+
+Manual documentation record / README Japanese wording polish
+
+### Summary
+
+README wording was polished to reduce unnatural English-heavy headings and bullet points for Japanese portfolio submission.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents additional README localization polish after final wording review.
+
+### Detection
+
+Manual review identified that the README still contained many English headings and bullet points, making it look partially localized.
+
+### Changes
+
+- Replaced English section headings with natural Japanese headings
+- Rewrote English-heavy bullet points into Japanese-first descriptions
+- Kept service names, product names, API paths, metric names, and alert names in English where appropriate
+- Preserved technical clarity while improving Japanese readability for portfolio submission
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| README headings | Japanese-first | Updated |
+| README bullet points | Japanese-first | Updated |
+| Technical identifiers | Preserved | Passed |
+| Portfolio readability | Improved | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a documentation polish record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Keep future README updates Japanese-first
+- [ ] Preserve technical terms in English only when they improve clarity
+- [ ] Re-check GitHub rendering after push
