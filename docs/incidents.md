@@ -2794,3 +2794,65 @@ Not applicable. This is a documentation polish record.
 - [ ] Keep future README updates Japanese-first
 - [ ] Preserve technical terms in English only when they improve clarity
 - [ ] Re-check GitHub rendering after push
+
+---
+
+### 20260614-034
+
+### Service
+
+SRE Lab Portfolio README
+
+### Alert Rule
+
+Manual documentation record / README rewrite
+
+### Summary
+
+README was rewritten as a Japanese-first portfolio document instead of translating the previous English-oriented structure.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the README rewrite for natural Japanese portfolio presentation.
+
+### Detection
+
+Manual review identified that the README still looked like an English README translated into Japanese, especially in headings and bullet points.
+
+### Changes
+
+- Removed interview script section from README
+- Rebuilt README structure for Japanese portfolio submission
+- Replaced translation-like headings with natural Japanese headings
+- Rewrote bullet points as Japanese-first descriptions
+- Preserved technical names, API paths, alert names, and product names where appropriate
+- Added clearer sections for API safety, CI/CD, operations documentation, and future improvements
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Interview script section | Removed | Passed |
+| Japanese heading structure | Natural Japanese | Updated |
+| Bullet point wording | Japanese-first | Updated |
+| Technical identifiers | Preserved | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a documentation rewrite record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Keep README Japanese-first for portfolio submission
+- [ ] Keep interview scripts outside the main README
+- [ ] Use docs/portfolio-submission.md for detailed interview preparation
