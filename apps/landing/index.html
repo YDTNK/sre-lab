@@ -10,14 +10,14 @@
   />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="page-home">
   <header class="site-header">
     <div class="container site-header__inner">
       <a class="site-brand" href="index.html">クラウドとAIの便利ツール集</a>
       <nav class="site-nav" aria-label="主要ナビゲーション">
         <a href="moving-assistant.html">AI引越し診断</a>
         <a href="aws-cost-simulator.html">AWS料金試算</a>
-        <a href="#notices">ご利用にあたって</a>
+        <a href="#tools">ツール一覧</a>
       </nav>
     </div>
   </header>
@@ -26,14 +26,13 @@
     <section class="hero">
       <div class="hero__inner">
         <div class="hero__content">
-          <p class="eyebrow">Cloud and AI tools</p>
+          <p class="eyebrow">AI and Cloud Utility Tools</p>
           <h1>クラウドとAIの便利ツール集</h1>
-          <p class="hero-subtitle">検討や準備に役立つWebツールをまとめています</p>
-          <p class="lead">
-            クラウド料金の試算やAI診断など、入力内容をもとに必要な情報を分かりやすく整理します。
+          <p class="hero-subtitle">
+            検討や準備に役立つWebツールを、すぐ使える形で。
           </p>
-          <p>
-            学習、検討、日々の準備のたたき台として、登録不要で使えるツールを公開しています。
+          <p class="lead">
+            AIによる引越し準備の整理、AWS月額料金の概算など、入力内容をもとに必要な情報を分かりやすく表示します。
           </p>
 
           <div class="hero__actions">
@@ -46,35 +45,35 @@
           <div class="preview-stack">
             <div class="preview-card">
               <div class="preview-card__head">
-                <span>AI引越し診断</span>
-                <span>結果イメージ</span>
+                <span>AI Moving Assistant</span>
+                <span>AI Output</span>
               </div>
               <dl class="preview-card__row">
+                <dt>準備サマリー</dt>
+                <dd>生成済み</dd>
+              </dl>
+              <dl class="preview-card__row">
                 <dt>梱包資材</dt>
-                <dd>ダンボール目安</dd>
+                <dd>目安を表示</dd>
               </dl>
               <dl class="preview-card__row">
                 <dt>チェックリスト</dt>
-                <dd>準備項目を整理</dd>
-              </dl>
-              <dl class="preview-card__row">
-                <dt>注意点</dt>
-                <dd>見落とし防止</dd>
+                <dd>タスク化</dd>
               </dl>
               <div class="preview-card__total">
-                <span>準備の目安</span>
-                <span>AIで整理</span>
+                <span>AI診断</span>
+                <span>準備漏れを減らす</span>
               </div>
             </div>
 
             <div class="preview-card">
               <div class="preview-card__head">
-                <span>AWS料金試算</span>
-                <span>結果イメージ</span>
+                <span>AWS Cost Simulator</span>
+                <span>Estimate</span>
               </div>
               <dl class="preview-card__row">
                 <dt>EC2</dt>
-                <dd>月額概算</dd>
+                <dd>計算対象</dd>
               </dl>
               <dl class="preview-card__row">
                 <dt>EBS / S3</dt>
@@ -82,10 +81,10 @@
               </dl>
               <dl class="preview-card__row">
                 <dt>Data transfer</dt>
-                <dd>転送量を反映</dd>
+                <dd>反映</dd>
               </dl>
               <div class="preview-card__total">
-                <span>料金の目安</span>
+                <span>月額概算</span>
                 <span>USD / JPY</span>
               </div>
             </div>
@@ -96,38 +95,38 @@
 
     <section class="section" id="tools">
       <div class="section__header">
-        <span class="section__eyebrow">目的で選ぶ</span>
-        <h2 class="section__title">使いたいツールを選ぶ</h2>
+        <span class="section__eyebrow">Tools</span>
+        <h2 class="section__title">目的に合わせて、すぐ使えるツール</h2>
         <p class="section__lead">
-          今すぐ確認したい内容に合わせて、必要なツールを選んでください。
+          暮らしの準備からクラウド費用の検討まで、入力してすぐ確認できる小さなWebツールを用意しています。
         </p>
       </div>
 
       <div class="tool-grid">
         <article class="tool-card">
-          <p class="status">AI対応</p>
+          <p class="status">AI Tool</p>
           <h3>AI引越し診断</h3>
           <p>
             家具、衣類、家電、本・小物、引越し予定日などを入力すると、引越し準備のサマリー、必要資材、チェックリスト、注意点を整理します。
           </p>
           <div class="tool-card__tags">
             <span class="tag">AI診断</span>
-            <span class="tag">登録不要</span>
             <span class="tag">準備整理</span>
+            <span class="tag">登録不要</span>
           </div>
           <a class="tool-card__link" href="moving-assistant.html">AI引越し診断を使う →</a>
         </article>
 
         <article class="tool-card">
-          <p class="status">無料試算</p>
+          <p class="status">Calculator</p>
           <h3>AWS料金試算</h3>
           <p>
-            EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を計算します。
+            EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算をUSD/JPYで計算します。
           </p>
           <div class="tool-card__tags">
-            <span class="tag">クラウド料金</span>
-            <span class="tag">概算</span>
-            <span class="tag">登録不要</span>
+            <span class="tag">AWS</span>
+            <span class="tag">料金概算</span>
+            <span class="tag">内訳表示</span>
           </div>
           <a class="tool-card__link" href="aws-cost-simulator.html">AWS料金を試算する →</a>
         </article>
@@ -136,15 +135,16 @@
 
     <section class="section section--soft">
       <div class="section__header">
-        <span class="section__eyebrow">利用シーン</span>
-        <h2 class="section__title">こんな時に使えます</h2>
+        <span class="section__eyebrow">Use Cases</span>
+        <h2 class="section__title">ざっくり知りたいことを、すぐ確認</h2>
         <p class="section__lead">
-          暮らしの準備からクラウド費用の検討まで、ざっくり確認したい場面で使えます。
+          正式な見積もりや契約の前に、検討のたたき台として使える情報を整理します。
         </p>
       </div>
 
       <div class="scenario-grid">
         <article class="scenario-card">
+          <p class="status">Life</p>
           <h3>引越し準備を整理したい</h3>
           <p>
             荷物の量や引越し予定日をもとに、必要な梱包資材や準備項目の目安を確認できます。
@@ -153,6 +153,7 @@
         </article>
 
         <article class="scenario-card">
+          <p class="status">Cloud</p>
           <h3>AWS料金の目安を知りたい</h3>
           <p>
             EC2やストレージ容量などを入力して、月額費用のざっくりした内訳を確認できます。
@@ -161,9 +162,10 @@
         </article>
 
         <article class="scenario-card">
+          <p class="status">Planning</p>
           <h3>学習や検討のたたき台にしたい</h3>
           <p>
-            正式な見積もりの前に、入力内容をもとにした目安を確認し、検討材料として使えます。
+            入力内容をもとにした目安を確認し、次に調べることや準備することを整理できます。
           </p>
           <a class="scenario-card__link" href="#tools">ツール一覧を見る →</a>
         </article>

@@ -1167,3 +1167,327 @@ textarea::placeholder {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   Phase 9-H-6-3: Reference color tuning
+   Align colors with freee / Money Forward / SUUMO / AWS references.
+   Keep AI Starter Kit layout, reduce overly purple AI-template feel.
+============================================================ */
+
+:root {
+  --ref-bg: #f7fbff;
+  --ref-bg-strong: #eef6ff;
+  --ref-surface: #ffffff;
+
+  --ref-text: #102033;
+  --ref-muted: #64748b;
+
+  --ref-blue: #2563eb;
+  --ref-blue-dark: #1e40af;
+  --ref-blue-soft: #dbeafe;
+
+  --ref-cyan: #06b6d4;
+  --ref-cyan-soft: #ecfeff;
+
+  --ref-ai: #7c3aed;
+  --ref-ai-soft: #f3e8ff;
+
+  --ref-moving-orange: #f97316;
+  --ref-moving-orange-dark: #c2410c;
+  --ref-moving-orange-soft: #fff7ed;
+  --ref-moving-green: #16a34a;
+  --ref-moving-green-soft: #f0fdf4;
+
+  --ref-aws-navy: #111827;
+  --ref-aws-navy-2: #1f2937;
+  --ref-aws-orange: #ff9900;
+  --ref-aws-orange-soft: #fff7ed;
+}
+
+/* Overall: freee / Money Forward-like clean blue-white base */
+body {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(37, 99, 235, 0.15), transparent 34rem),
+    radial-gradient(circle at 12% 10%, rgba(6, 182, 212, 0.10), transparent 26rem),
+    radial-gradient(circle at 90% 8%, rgba(124, 58, 237, 0.05), transparent 26rem),
+    linear-gradient(180deg, #ffffff 0%, var(--ref-bg) 44%, var(--ref-bg-strong) 100%);
+}
+
+body::before {
+  background-image:
+    linear-gradient(rgba(37, 99, 235, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.04) 1px, transparent 1px);
+}
+
+/* Header: blue/cyan instead of purple-heavy */
+.site-brand::before,
+.logo::before,
+.site-title::before {
+  background:
+    radial-gradient(circle at 30% 20%, #ffffff 0 9%, transparent 10%),
+    linear-gradient(135deg, var(--ref-blue), var(--ref-cyan));
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.22);
+}
+
+.site-nav a:hover,
+.nav a:hover,
+.nav__link:hover,
+.nav__link.is-active {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: rgba(219, 234, 254, 0.88);
+  color: var(--ref-blue-dark);
+}
+
+/* Shared hero: keep AI Starter Kit polish, reduce purple dominance */
+.hero {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.18), transparent 28rem),
+    radial-gradient(circle at 12% 16%, rgba(6, 182, 212, 0.12), transparent 24rem),
+    radial-gradient(circle at 88% 72%, rgba(124, 58, 237, 0.05), transparent 24rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(247, 251, 255, 0.94) 100%);
+}
+
+.hero h1 {
+  background: linear-gradient(90deg, var(--ref-text) 0%, var(--ref-blue) 58%, var(--ref-cyan) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Labels: blue first, purple is kept only as minor AI accent */
+.eyebrow,
+.hero__eyebrow,
+.badge,
+.status {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: rgba(219, 234, 254, 0.82);
+  color: var(--ref-blue-dark);
+}
+
+.eyebrow::before,
+.hero__eyebrow::before,
+.badge::before,
+.status::before {
+  background: linear-gradient(135deg, var(--ref-blue), var(--ref-cyan));
+  box-shadow: 0 0 16px rgba(37, 99, 235, 0.32);
+}
+
+/* Buttons: trustworthy blue rather than rainbow AI gradient */
+.button,
+.btn,
+button {
+  background: linear-gradient(135deg, var(--ref-blue) 0%, var(--ref-blue-dark) 100%);
+  box-shadow:
+    0 18px 40px rgba(37, 99, 235, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.button.secondary,
+.btn--secondary {
+  background: linear-gradient(135deg, #0f172a, #1f2937);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.22);
+}
+
+/* Home: freee / Money Forward style - clean blue-white */
+.page-home .hero {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.16), transparent 28rem),
+    radial-gradient(circle at 12% 18%, rgba(6, 182, 212, 0.10), transparent 24rem),
+    radial-gradient(circle at 88% 70%, rgba(124, 58, 237, 0.04), transparent 22rem),
+    linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.page-home .hero h1 {
+  background: linear-gradient(90deg, #102033 0%, #2563eb 60%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Moving: SUUMO-like warmth with orange/green, while preserving AI feel */
+.page-moving {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(249, 115, 22, 0.12), transparent 32rem),
+    radial-gradient(circle at 12% 10%, rgba(22, 163, 74, 0.08), transparent 24rem),
+    linear-gradient(180deg, #ffffff 0%, #fffaf5 42%, #f7fbff 100%);
+}
+
+.page-moving .hero {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(249, 115, 22, 0.16), transparent 26rem),
+    radial-gradient(circle at 12% 16%, rgba(22, 163, 74, 0.10), transparent 22rem),
+    radial-gradient(circle at 88% 72%, rgba(124, 58, 237, 0.05), transparent 22rem),
+    linear-gradient(180deg, #ffffff 0%, #fffaf5 48%, #f7fbff 100%);
+}
+
+.page-moving .hero h1 {
+  background: linear-gradient(90deg, #102033 0%, var(--ref-moving-orange) 52%, var(--ref-moving-green) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-moving .eyebrow,
+.page-moving .hero__eyebrow,
+.page-moving .badge,
+.page-moving .status {
+  border-color: rgba(249, 115, 22, 0.22);
+  background: var(--ref-moving-orange-soft);
+  color: var(--ref-moving-orange-dark);
+}
+
+.page-moving .eyebrow::before,
+.page-moving .hero__eyebrow::before,
+.page-moving .badge::before,
+.page-moving .status::before {
+  background: linear-gradient(135deg, var(--ref-moving-orange), var(--ref-moving-green));
+  box-shadow: 0 0 16px rgba(249, 115, 22, 0.26);
+}
+
+.page-moving .button,
+.page-moving button {
+  background: linear-gradient(135deg, var(--ref-moving-orange), var(--ref-moving-orange-dark));
+  box-shadow: 0 18px 40px rgba(249, 115, 22, 0.24);
+}
+
+.page-moving .button.secondary {
+  background: linear-gradient(135deg, var(--ref-moving-green), #15803d);
+  box-shadow: 0 18px 40px rgba(22, 163, 74, 0.20);
+}
+
+.page-moving input:focus,
+.page-moving textarea:focus,
+.page-moving select:focus {
+  border-color: rgba(249, 115, 22, 0.70);
+  box-shadow:
+    0 0 0 4px rgba(249, 115, 22, 0.12),
+    0 10px 26px rgba(249, 115, 22, 0.08);
+}
+
+/* Moving preview/output cards */
+.page-moving .preview-card__total {
+  background: linear-gradient(135deg, var(--ref-moving-orange-soft), var(--ref-moving-green-soft));
+  color: var(--ref-moving-orange-dark);
+}
+
+.page-moving .result-panel #result,
+.page-moving .result-panel .result-card__body {
+  background:
+    radial-gradient(circle at 88% 6%, rgba(249, 115, 22, 0.22), transparent 13rem),
+    radial-gradient(circle at 8% 16%, rgba(22, 163, 74, 0.18), transparent 14rem),
+    linear-gradient(180deg, #1f2937 0%, #111827 100%);
+}
+
+/* AWS: AWS-like navy/orange trust */
+.page-aws {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(37, 99, 235, 0.10), transparent 32rem),
+    radial-gradient(circle at 88% 8%, rgba(255, 153, 0, 0.12), transparent 26rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 44%, #eef6ff 100%);
+}
+
+.page-aws .hero {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.12), transparent 26rem),
+    radial-gradient(circle at 88% 72%, rgba(255, 153, 0, 0.14), transparent 22rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 48%, #eef6ff 100%);
+}
+
+.page-aws .hero h1 {
+  background: linear-gradient(90deg, var(--ref-aws-navy) 0%, var(--ref-blue) 54%, var(--ref-aws-orange) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-aws .eyebrow,
+.page-aws .hero__eyebrow,
+.page-aws .badge,
+.page-aws .status {
+  border-color: rgba(255, 153, 0, 0.24);
+  background: var(--ref-aws-orange-soft);
+  color: #92400e;
+}
+
+.page-aws .eyebrow::before,
+.page-aws .hero__eyebrow::before,
+.page-aws .badge::before,
+.page-aws .status::before {
+  background: linear-gradient(135deg, var(--ref-aws-navy), var(--ref-aws-orange));
+  box-shadow: 0 0 16px rgba(255, 153, 0, 0.26);
+}
+
+.page-aws .button,
+.page-aws button {
+  background: linear-gradient(135deg, var(--ref-aws-navy), var(--ref-aws-navy-2));
+  box-shadow: 0 18px 40px rgba(17, 24, 39, 0.24);
+}
+
+.page-aws .button.secondary {
+  background: linear-gradient(135deg, var(--ref-blue), var(--ref-blue-dark));
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.22);
+}
+
+.page-aws .result-panel #result,
+.page-aws .result-panel .result-card__body {
+  background:
+    radial-gradient(circle at 88% 6%, rgba(255, 153, 0, 0.24), transparent 13rem),
+    linear-gradient(180deg, var(--ref-aws-navy) 0%, var(--ref-aws-navy-2) 100%);
+}
+
+.page-aws .result-total,
+.page-aws .total-amount {
+  background: linear-gradient(90deg, #ffffff, #ffcc80, var(--ref-aws-orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Home tool card color roles */
+.page-home .tool-card:nth-child(1) .status,
+.page-home .scenario-card:nth-child(1) .status {
+  border-color: rgba(249, 115, 22, 0.22);
+  background: var(--ref-moving-orange-soft);
+  color: var(--ref-moving-orange-dark);
+}
+
+.page-home .tool-card:nth-child(1) .status::before,
+.page-home .scenario-card:nth-child(1) .status::before {
+  background: linear-gradient(135deg, var(--ref-moving-orange), var(--ref-moving-green));
+  box-shadow: 0 0 16px rgba(249, 115, 22, 0.26);
+}
+
+.page-home .tool-card:nth-child(2) .status,
+.page-home .scenario-card:nth-child(2) .status {
+  border-color: rgba(255, 153, 0, 0.24);
+  background: var(--ref-aws-orange-soft);
+  color: #92400e;
+}
+
+.page-home .tool-card:nth-child(2) .status::before,
+.page-home .scenario-card:nth-child(2) .status::before {
+  background: linear-gradient(135deg, var(--ref-aws-navy), var(--ref-aws-orange));
+  box-shadow: 0 0 16px rgba(255, 153, 0, 0.26);
+}
+
+/* Top preview role colors */
+.page-home .preview-card:nth-child(1) .preview-card__total {
+  background: linear-gradient(135deg, var(--ref-moving-orange-soft), var(--ref-moving-green-soft));
+  color: var(--ref-moving-orange-dark);
+}
+
+.page-home .preview-card:nth-child(2) .preview-card__total {
+  background: linear-gradient(135deg, var(--ref-aws-navy), var(--ref-aws-navy-2));
+  color: #ffffff;
+}
+
+.page-home .preview-card:nth-child(2) .preview-card__total span:last-child {
+  color: var(--ref-aws-orange);
+}
+
+/* Notice: keep visible but less alarm-like */
+.notice-card {
+  background:
+    linear-gradient(135deg, #fffbeb 0%, #ffffff 88%);
+  border-color: rgba(245, 158, 11, 0.28);
+}
