@@ -1,5 +1,8 @@
 # SRE Lab
 
+[![CI](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml)
+[![Deploy Worker](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml)
+
 SRE Lab is a personal platform project for building, operating, monitoring, and improving multiple AI-powered micro services.
 
 ## Architecture
