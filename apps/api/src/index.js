@@ -208,61 +208,14 @@ export default {
     }
 
     const estimatedUsage = estimateAiUsage(body);
-    const monthlyEstimatedCost = await getEstimatedCost(env, "month");
-    const dailyEstimatedCost = await getEstimatedCost(env, "day");
-
-    if (monthlyEstimatedCost + estimatedUsage.estimatedCostJpy >= MONTHLY_COST_STOP_THRESHOLD_JPY) {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "cost_limit_reached",
-        "AI diagnosis is temporarily unavailable due to usage limits.",
-        503
-      );
-    }
-
-    if (dailyEstimatedCost + estimatedUsage.estimatedCostJpy >= DAILY_COST_HARD_LIMIT_JPY) {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "cost_limit_reached",
-        "AI diagnosis is temporarily unavailable due to daily usage limits.",
-        503
-      );
-    }
-
-    const aiLimitResult = await checkAiDailyLimit(request, env);
-
-    if (!aiLimitResult.allowed) {
-      await safeRecordUsage(env, "ai_limited");
-      return errorResponse(
-        "ai_limit_reached",
-        "AI diagnosis limit reached. Please try again later.",
-        429,
-        {
-          "Retry-After": String(AI_LIMIT_RETRY_AFTER_SECONDS),
-        }
-      );
-    }
-
     const fallback = buildFallbackResponse();
-    const aiResponse = await generateMovingAdviceWithOpenAI(body, env);
-
-    if (aiResponse.ok) {
-      await recordEstimatedAiUsage(env, estimatedUsage);
-      await safeRecordUsage(env, "api_success");
-      await safeRecordUsage(env, "ai_success");
-      return jsonResponse({
-        ...aiResponse.data,
-        estimatedUsage,
-      });
-    }
 
     await safeRecordUsage(env, "api_success");
-    await safeRecordUsage(env, "ai_errors");
 
     return jsonResponse({
       ...fallback,
       aiStatus: "fallback",
-      fallbackReason: aiResponse.reason,
+      fallbackReason: "AI integration is temporarily disabled during production verification.",
       estimatedUsage,
     });
   },
