@@ -38,17 +38,22 @@ AI Moving Assistant is a Japanese moving preparation assistant.
 Current behavior:
 
 - Collects moving-related user inputs
-- Validates empty input
+- Validates request method, path, Content-Type, JSON body, body size, and total input length
 - Calls a Cloudflare Workers API
-- Returns a mock moving checklist response
-- Displays packing materials, checklist items, risk notes, and disclaimers
+- Generates moving preparation advice through OpenAI API
+- Returns a safe fallback response if the AI API fails
+- Displays packing materials, checklist items, risk notes, disclaimers, and AI status
+- Tracks AI usage and estimated cost in Cloudflare KV
+- Enforces rate limiting, AI-specific daily limits, and estimated cost limits
 
-Future behavior:
+Reliability behavior:
 
-- Generate moving checklists through an AI API
-- Add rate limiting
-- Add cost controls
-- Add timeout and fallback handling
+- API key is stored only as a Cloudflare Workers Secret
+- AI API is never called directly from frontend JavaScript
+- Timeout and fallback behavior are implemented
+- AI response shape is validated before returning to the frontend
+- Cost limit behavior returns 503 / cost_limit_reached
+- AI daily limit behavior returns 429 / ai_limit_reached
 
 ## Architecture
 
@@ -57,8 +62,10 @@ flowchart TD
     U[User] --> P[Cloudflare Pages<br/>SRE Lab Frontend]
     P --> F[AI Moving Assistant<br/>Japanese Form UI]
     F --> W[Cloudflare Workers API<br/>POST /api/moving-assistant]
-    W --> M[Mock Response<br/>Moving Checklist JSON]
-    W -. Future .-> AI[Future AI API]
+    W --> V[Validation / Rate Limit / Cost Guard]
+    V --> AI[OpenAI API<br/>AI Moving Diagnosis]
+    AI --> J[Validated JSON Response]
+    V --> FB[Fallback Response]
 
     G[Grafana Synthetic Monitoring] --> P
     G --> W
@@ -104,7 +111,13 @@ This project includes the following SRE-oriented components:
 - Incident log
 - Operations guide
 - Architecture documentation
-- Cost-control design before introducing paid AI APIs
+- Cost-control design and implementation for paid AI APIs
+- OpenAI API integration through Cloudflare Workers
+- Timeout and fallback behavior
+- AI response validation
+- AI usage and estimated cost tracking
+- AI-specific daily limits
+- Cost limit behavior verification
 
 ## API Safety
 
@@ -130,6 +143,29 @@ Verified responses:
 - Unknown path: 404 / not_found
 - Missing JSON Content-Type: 415 / unsupported_media_type
 - Input too large: 413 / input_too_large
+
+## Real AI API Integration
+
+The Workers API now calls OpenAI API from the backend.
+
+Implemented controls:
+
+- OPENAI_API_KEY is stored as a Cloudflare Workers Secret
+- AI_MODEL is configured as a Worker environment variable
+- Frontend never receives or stores the AI API key
+- OpenAI API call is executed only after request validation, rate limiting, and cost checks
+- AI API timeout is enforced
+- Fallback response is returned when OpenAI API fails
+- AI-generated response is validated before returning to the user
+- AI usage counters are recorded in Cloudflare KV
+- Estimated input tokens, output tokens, and JPY cost are recorded in Cloudflare KV
+
+Verified behavior:
+
+- OpenAI API failure: 200 with fallback JSON response
+- OpenAI API success: 200 with aiStatus: generated
+- AI per-IP daily limit: 429 / ai_limit_reached
+- Estimated monthly cost stop threshold: 503 / cost_limit_reached
 
 ## CI/CD
 
@@ -203,7 +239,8 @@ Alert behavior:
 | docs/operations.md | Daily/weekly operations and deployment checks |
 | docs/services.md | Service planning |
 | docs/moving-assistant.md | AI Moving Assistant specification |
-| docs/ai-api-design.md | Future AI API backend design |
+| docs/ai-api-design.md | Real AI API backend design and safety controls |
+| docs/cost.md | AI usage and cost operations |
 
 ## Operational Records
 
@@ -211,6 +248,13 @@ Current operational records include:
 
 - Initial production readiness check
 - Worker auto deployment verification
+- Workers API safety hardening verification
+- KV-based rate limiting verification
+- Usage and cost tracking foundation verification
+- OpenAI API Worker integration verification
+- AI cost tracking and daily limit verification
+- Cost operations documentation
+- cost_limit_reached behavior verification
 
 These records are stored in:
 
@@ -221,8 +265,17 @@ These records are stored in:
 Implemented:
 
 - Static frontend
-- Cloudflare Workers mock API
+- Cloudflare Workers API
 - Frontend to API connection
+- Real OpenAI API integration through Workers
+- Cloudflare Workers Secret for OpenAI API key
+- Request validation and standardized errors
+- KV-based rate limiting
+- AI-specific daily limits
+- Estimated AI usage and cost tracking
+- Cost limit behavior
+- Timeout and fallback handling
+- AI response validation
 - CI
 - Workers auto deployment
 - Synthetic monitoring
@@ -230,25 +283,25 @@ Implemented:
 - Runbook
 - Incident log
 - Operations guide
+- Cost operations guide
 - Architecture documentation
 - GitHub Actions status badges
 
 Not yet implemented:
 
-- Real AI API integration
-- Rate limiting
 - API usage dashboard
 - Custom domain
 - Deployment status dashboard
+- Revenue experiments
 
 ## Roadmap
 
-1. Add rate limiting to the Workers API
-2. Add real AI API integration
-3. Add API timeout and fallback handling
-4. Add deployment status badge or dashboard
-5. Add usage and latency monitoring
-6. Add revenue experiments
+1. Add cost and usage dashboard
+2. Add usage and latency monitoring
+3. Add custom domain
+4. Add second service such as AWS Cost Simulator
+5. Add revenue experiments
+6. Consider D1 for historical usage and cost reporting
 
 ## Cost Operations
 

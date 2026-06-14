@@ -653,3 +653,58 @@ The frontend must never call OpenAI API directly.
 - Add estimated token and cost tracking
 - Verify that the API key is not exposed in frontend assets
 
+## Real AI API Integration Status
+
+Real AI API integration has been implemented for AI Moving Assistant.
+
+### Current Provider
+
+- Provider: OpenAI API
+- API location: Cloudflare Workers backend
+- Secret storage: Cloudflare Workers Secret
+- Model configuration: AI_MODEL in wrangler.toml
+
+### Implemented Controls
+
+- API key is not exposed to frontend JavaScript
+- Request validation is completed before the AI API call
+- KV-based rate limiting is applied before the AI API call
+- Estimated cost checks are applied before the AI API call
+- OpenAI API timeout is enforced
+- Fallback response is returned when OpenAI API fails
+- AI response shape is validated before returning to the frontend
+- AI usage counters are recorded in Cloudflare KV
+- Estimated token and cost values are recorded in Cloudflare KV
+- AI-specific daily limits are enforced
+- cost_limit_reached behavior has been verified
+
+### Verified Production Behavior
+
+| Case | Result |
+|---|---|
+| OpenAI API success | 200 / aiStatus: generated |
+| OpenAI API failure | 200 / aiStatus: fallback |
+| OpenAI API billing or quota failure | fallback response verified |
+| Per-IP AI daily limit | 429 / ai_limit_reached |
+| Monthly estimated cost stop threshold | 503 / cost_limit_reached |
+
+### Current Limit Values
+
+| Limit | Value |
+|---|---:|
+| Request body size | 8 KB |
+| Total input length | 2000 characters |
+| General per-IP rate limit | 10 requests / minute |
+| General per-IP daily limit | 50 requests / day |
+| Service AI daily limit | 30 requests / day |
+| Per-IP AI daily limit | 5 requests / day |
+| Monthly stop threshold | 500 JPY |
+| Daily hard limit | 100 JPY |
+
+### Related Documents
+
+- docs/cost.md
+- docs/runbook.md
+- docs/operations.md
+- docs/incidents.md
+
