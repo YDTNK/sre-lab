@@ -3341,3 +3341,75 @@ Not applicable. This is a top page HTML rebuild.
 - [ ] Rebuild AI Moving Assistant HTML
 - [ ] Rebuild AWS Cost Simulator HTML
 - [ ] Verify public pages after Cloudflare Pages deployment
+
+---
+
+### 20260614-043
+
+### Service
+
+AI Moving Assistant Public Page
+
+### Alert Rule
+
+Manual documentation record / AI Moving Assistant HTML rebuild
+
+### Summary
+
+The AI Moving Assistant page HTML was rebuilt based on the final reference-based wireframe.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-H-4-2 moving-assistant.html rebuild.
+
+### Detection
+
+Manual design review identified that the AI Moving Assistant page needed an input-first structure based on a moving-service reference layout.
+
+### Changes
+
+- Rebuilt apps/landing/moving-assistant.html
+- Added shared header
+- Added back link to top page
+- Added hero section
+- Emphasized the input form
+- Added diagnosis result section
+- Added 3-step usage section
+- Added notice section
+- Added shared footer
+- Preserved API endpoint /api/moving-assistant
+- Preserved client-side rendering for result output
+- Removed portfolio and SRE wording from public page
+- Avoided new external dependencies
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Page structure | Hero / Form / Result / Usage / Notice / Footer | Passed |
+| Site name | クラウドとAIの便利ツール集 | Passed |
+| Form ID | movingAssistantForm | Passed |
+| Result ID | result | Passed |
+| API endpoint | /api/moving-assistant | Passed |
+| External dependencies | None added | Passed |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is an AI Moving Assistant HTML rebuild.
+
+### Prevention / Follow-up Actions
+
+- [ ] Rebuild AWS Cost Simulator HTML
+- [ ] Verify AI Moving Assistant page after Cloudflare Pages deployment
+- [ ] Confirm production API response rendering
