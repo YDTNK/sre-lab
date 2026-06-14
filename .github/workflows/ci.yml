@@ -29,3 +29,6 @@ jobs:
           test -f docs/ai-api-design.md
           test -f apps/landing/index.html
           test -f apps/landing/styles.css
+          test -f apps/api/src/index.js
+          test -f apps/api/package.json
+          test -f apps/api/wrangler.toml

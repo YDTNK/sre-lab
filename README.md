@@ -88,6 +88,15 @@ SRE Lab plans to add an AI API backend using Cloudflare Workers.
 - Purpose: keep API keys secure, validate requests, handle errors, and control API cost
 - Design document: docs/ai-api-design.md
 
+## API
+
+SRE Lab includes a Cloudflare Workers API layer for future AI-powered features.
+
+- API app: apps/api
+- Initial endpoint: POST /api/moving-assistant
+- Current behavior: mock response
+- Future behavior: AI-generated moving checklist
+
 ## Roadmap
 
 1. Build the project foundation
