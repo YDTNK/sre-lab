@@ -15,9 +15,9 @@
     <div class="container site-header__inner">
       <a class="site-brand" href="index.html">クラウドとAIの便利ツール集</a>
       <nav class="site-nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
         <a href="moving-assistant.html">AI引越し診断</a>
-        <a href="aws-cost-simulator.html">AWS料金試算</a>
-        <a href="#notices">ご利用にあたって</a>
+        <a href="#calculator">試算する</a>
       </nav>
     </div>
   </header>
@@ -30,42 +30,65 @@
     <section class="hero">
       <div class="hero__inner">
         <div class="hero__content">
-          <p class="eyebrow">AWS cost simulator</p>
+          <p class="eyebrow">AWS Cost Simulator</p>
           <h1>AWS料金試算</h1>
-          <p class="hero-subtitle">AWS月額料金の目安をかんたんに確認できます</p>
-          <p class="lead">
-            EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を計算します。
+          <p class="hero-subtitle">
+            AWS月額料金の目安を、構成入力からすぐに概算します。
           </p>
-          <p>
-            学習や構成検討のたたき台として、ざっくりした月額費用と内訳を確認できます。
+          <p class="lead">
+            EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算と内訳をUSD/JPYで表示します。
           </p>
 
           <div class="hero__actions">
             <a class="button" href="#calculator">月額料金を試算する</a>
+            <a class="button secondary" href="moving-assistant.html">AI引越し診断を見る</a>
           </div>
         </div>
 
-        <div class="hero__visual" aria-label="AWS料金試算の結果イメージ">
+        <div class="hero__visual" aria-label="AWS料金試算の出力イメージ">
           <div class="preview-stack">
             <div class="preview-card">
               <div class="preview-card__head">
-                <span>試算結果イメージ</span>
-                <span>USD / JPY</span>
+                <span>Cloud Input</span>
+                <span>Resources</span>
               </div>
               <dl class="preview-card__row">
                 <dt>EC2</dt>
-                <dd>インスタンス費用</dd>
+                <dd>Type / Count / Hours</dd>
               </dl>
               <dl class="preview-card__row">
-                <dt>EBS / S3</dt>
-                <dd>ストレージ費用</dd>
+                <dt>Storage</dt>
+                <dd>EBS / S3</dd>
               </dl>
               <dl class="preview-card__row">
-                <dt>Data transfer</dt>
-                <dd>転送量費用</dd>
+                <dt>Transfer</dt>
+                <dd>Data transfer</dd>
               </dl>
               <div class="preview-card__total">
-                <span>月額概算</span>
+                <span>入力</span>
+                <span>構成条件</span>
+              </div>
+            </div>
+
+            <div class="preview-card">
+              <div class="preview-card__head">
+                <span>Cost Output</span>
+                <span>Estimate</span>
+              </div>
+              <dl class="preview-card__row">
+                <dt>Monthly cost</dt>
+                <dd>USD / JPY</dd>
+              </dl>
+              <dl class="preview-card__row">
+                <dt>Breakdown</dt>
+                <dd>4 categories</dd>
+              </dl>
+              <dl class="preview-card__row">
+                <dt>Assumptions</dt>
+                <dd>Fixed rates</dd>
+              </dl>
+              <div class="preview-card__total">
+                <span>結果</span>
                 <span>内訳つき</span>
               </div>
             </div>
@@ -76,18 +99,19 @@
  
     <section class="section" id="calculator">
       <div class="section__header">
-        <span class="section__eyebrow">Calculator</span>
+        <span class="section__eyebrow">Cloud Calculator</span>
         <h2 class="section__title">試算条件を入力</h2>
         <p class="section__lead">
-          利用予定のEC2、ストレージ、データ転送量を入力してください。
+          利用予定のEC2、ストレージ、データ転送量を入力すると、月額料金の概算を表示します。
         </p>
       </div>
 
       <div class="calculator-layout">
         <div class="card">
-          <h3>入力条件</h3>
+          <p class="status">Input</p>
+          <h3>リソース条件</h3>
           <p>
-            分かる範囲で入力してください。初期値のままでも試算できます。
+            初期値のままでも試算できます。学習や構成検討のたたき台としてご利用ください。
           </p>
 
           <form id="awsCostSimulatorForm">
@@ -178,7 +202,7 @@
         </div>
 
         <aside class="result-panel card" aria-live="polite">
-          <span class="section__eyebrow">試算結果</span>
+          <span class="section__eyebrow">Cost Output Panel</span>
           <h2>月額概算</h2>
           <div id="result" class="result-card__body">
             条件を入力して「月額料金を試算する」を押してください。
@@ -187,10 +211,10 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section--soft">
       <div class="section__header">
-        <span class="section__eyebrow">Breakdown</span>
-        <h2 class="section__title">内訳</h2>
+        <span class="section__eyebrow">Cost Breakdown</span>
+        <h2 class="section__title">費用内訳</h2>
         <p class="section__lead">
           試算後、EC2、EBS、S3、Data transferごとの概算金額を表示します。
         </p>
@@ -216,12 +240,12 @@
       </div>
     </section>
 
-    <section class="section section--soft">
+    <section class="section">
       <div class="section__header">
         <span class="section__eyebrow">Assumptions</span>
         <h2 class="section__title">前提条件</h2>
         <p class="section__lead">
-          このツールは学習・検討用の概算ツールです。
+          このツールは、学習・検討用の簡易的な概算ツールです。
         </p>
       </div>
 

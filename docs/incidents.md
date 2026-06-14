@@ -3789,3 +3789,80 @@ Not applicable. This is an AI Moving Assistant visual structure update.
 - [ ] Adjust AWS Cost Simulator page to AI Starter Kit style
 - [ ] Verify AI Moving Assistant page after deployment
 - [ ] Confirm production API response rendering
+
+---
+
+### 20260614-049
+
+### Service
+
+AWS Cost Simulator Public Page
+
+### Alert Rule
+
+Manual documentation record / AI Starter Kit AWS cost page adjustment
+
+### Summary
+
+The AWS Cost Simulator page HTML was adjusted to better match the uploaded AI Starter Kit visual structure while preserving the existing API integration.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-H-6-2-4 AWS Cost Simulator HTML adjustment.
+
+### Detection
+
+Manual design review identified that the shared CSS, top page, and AI Moving Assistant page had moved toward the AI Starter Kit style, but the AWS Cost Simulator page still needed a matching dashboard calculator interface.
+
+### Changes
+
+- Rebuilt apps/landing/aws-cost-simulator.html
+- Adjusted hero to a centered AI SaaS structure
+- Added Cloud Input / Cost Output preview cards
+- Reframed calculator as a dashboard-style input and result layout
+- Reframed result area as Cost Output Panel
+- Reframed breakdown section as Cost Breakdown
+- Preserved form ID awsCostSimulatorForm
+- Preserved result ID result
+- Preserved breakdownGrid ID
+- Preserved assumptions ID
+- Preserved API endpoint /api/aws-cost-simulator
+- Preserved client-side rendering logic
+- Did not add external dependencies
+- Did not migrate to Next.js, React, or Tailwind
+- Removed SRE and portfolio wording from public page
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Hero structure | AI Starter Kit inspired | Passed |
+| Calculator panel | Dashboard-style | Passed |
+| Result panel | Dashboard-style | Passed |
+| Form ID | awsCostSimulatorForm | Passed |
+| Result ID | result | Passed |
+| Breakdown ID | breakdownGrid | Passed |
+| Assumptions ID | assumptions | Passed |
+| API endpoint | /api/aws-cost-simulator | Passed |
+| External dependencies | None added | Passed |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is an AWS Cost Simulator visual structure update.
+
+### Prevention / Follow-up Actions
+
+- [ ] Verify AWS Cost Simulator page after deployment
+- [ ] Confirm production API response rendering
+- [ ] Capture screenshots for Phase 9-H-5
