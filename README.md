@@ -75,8 +75,9 @@ The first planned service is:
 
 - AI Moving Assistant
   - Purpose: help users estimate moving preparation tasks and packing materials
-  - Status: planning
+  - Status: static MVP
   - Service design: docs/services.md
+  - MVP specification: docs/moving-assistant.md
 
 ## Roadmap
 
