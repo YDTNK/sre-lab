@@ -3,7 +3,52 @@
 [![CI](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml)
 [![Deploy Worker](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml)
 
-SRE Lab is a personal platform project for building, operating, monitoring, and improving multiple AI-powered micro services.
+SRE Lab is a portfolio project for building, operating, monitoring, and improving a small AI-powered web service.
+
+This project demonstrates practical SRE and platform engineering workflows through a real deployed service, including frontend/API separation, CI/CD, synthetic monitoring, alerting, runbooks, incident records, and operational documentation.
+
+## Live Demo
+
+- Frontend: https://sre-lab.pages.dev/
+- Workers API: https://sre-lab-api.daisan-tanaka.workers.dev
+- API endpoint: POST /api/moving-assistant
+
+## Project Goal
+
+The goal of this project is to demonstrate the ability to operate a small production-like service, not just build an application.
+
+This project focuses on:
+
+- Frontend/API separation
+- CI/CD with GitHub Actions
+- Cloudflare Workers deployment automation
+- Synthetic monitoring
+- Alerting
+- Runbooks
+- Incident records
+- Operations documentation
+- Cost-aware AI service design
+
+## Current Service
+
+### AI Moving Assistant
+
+AI Moving Assistant is a Japanese moving preparation assistant.
+
+Current behavior:
+
+- Collects moving-related user inputs
+- Validates empty input
+- Calls a Cloudflare Workers API
+- Returns a mock moving checklist response
+- Displays packing materials, checklist items, risk notes, and disclaimers
+
+Future behavior:
+
+- Generate moving checklists through an AI API
+- Add rate limiting
+- Add cost controls
+- Add timeout and fallback handling
 
 ## Architecture
 
@@ -26,132 +71,54 @@ flowchart TD
     CI --> W
 ```
 
-- Architecture document: docs/architecture.md
+- Detailed architecture: docs/architecture.md
 
-## Live Site
+## Tech Stack
 
-https://sre-lab.pages.dev/
+| Area | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Hosting | Cloudflare Pages |
+| API | Cloudflare Workers |
+| CI/CD | GitHub Actions, Wrangler |
+| Monitoring | Grafana Cloud Synthetic Monitoring |
+| Alerting | Grafana Alerting |
+| Documentation | Markdown |
+| Repository | GitHub |
 
-## Purpose
+## SRE / Operations Features
 
-The goal of this project is to learn and demonstrate practical SRE skills through real service operation.
+This project includes the following SRE-oriented components:
 
-This project focuses on:
+- Public frontend deployment
+- Public Workers API deployment
+- Frontend/API separation
+- API input validation
+- GitHub Actions CI
+- Workers auto deployment
+- Synthetic monitoring for frontend
+- Synthetic monitoring for API
+- Alert rules for frontend and API availability
+- Email notification contact point
+- Runbook
+- Incident log
+- Operations guide
+- Architecture documentation
+- Cost-control design before introducing paid AI APIs
 
-- CI/CD
-- Monitoring
-- Alerting
-- Runbooks
-- Cost control
-- Reliability improvement
-- Automated monetization experiments
+## CI/CD
 
-## Monitoring
+### CI
 
-The landing page is deployed on Cloudflare Pages and monitored with Grafana Cloud Synthetic Monitoring.
+The CI workflow validates the repository on push and pull request.
 
-- Target URL: https://sre-lab.pages.dev/
-- Check type: HTTP uptime check
-- Probe location: Tokyo, JP (AWS)
-- Expected status code: 200
-- Purpose: detect downtime and build a basic SRE operation workflow
+- Workflow: .github/workflows/ci.yml
+- Checks:
+  - Required files exist
+  - API dependencies install successfully
+  - API syntax check passes
 
-Future improvements:
-
-- Add alert notifications
-- Add an incident response runbook
-- Track uptime and response time trends
-- Record incidents and reliability improvements
-
-## Alerting
-
-Grafana Cloud Alerting is configured for the landing page uptime check.
-
-- Alert rule: sre-lab-uptime-down
-- Metric: probe_success
-- Condition: probe_success < 0.5
-- Probe location: Tokyo, JP (AWS)
-- Evaluation interval: 1m
-- Pending period: 2m
-- Contact point: sre-lab-email
-- Runbook: docs/runbook.md
-
-This alert is intended to detect downtime and connect monitoring results to an operational response workflow.
-
-## Incident Management
-
-SRE Lab records operational incidents and follow-up actions in an incident log.
-
-- Incident log: docs/incidents.md
-- Purpose: record alerts, investigations, mitigations, root causes, and reliability improvements
-
-## Operations
-
-SRE Lab defines basic operational workflows for deployments, monitoring, incident response, and cost control.
-
-- Operations guide: docs/operations.md
-- Daily checks: Cloudflare Pages, Grafana monitoring, alert rules, GitHub Actions
-- Weekly checks: uptime trends, incidents, runbook accuracy, cost and usage
-
-## Services
-
-SRE Lab will host multiple AI-powered micro services.
-
-The first planned service is:
-
-- AI Moving Assistant
-  - Purpose: help users estimate moving preparation tasks and packing materials
-  - Status: static MVP
-  - Service design: docs/services.md
-  - MVP specification: docs/moving-assistant.md
-
-## AI API Design
-
-SRE Lab plans to add an AI API backend using Cloudflare Workers.
-
-- Target service: AI Moving Assistant
-- Backend design: Cloudflare Workers API
-- Purpose: keep API keys secure, validate requests, handle errors, and control API cost
-- Design document: docs/ai-api-design.md
-
-## API
-
-SRE Lab includes a Cloudflare Workers API layer for future AI-powered features.
-
-- API app: apps/api
-- API URL: https://sre-lab-api.daisan-tanaka.workers.dev
-- Initial endpoint: POST /api/moving-assistant
-- Current behavior: mock response
-- Future behavior: AI-generated moving checklist
-
-## API Monitoring
-
-The Cloudflare Workers API is monitored with Grafana Cloud Synthetic Monitoring.
-
-- Target URL: https://sre-lab-api.daisan-tanaka.workers.dev/api/moving-assistant
-- Check type: HTTP API endpoint check
-- Method: POST
-- Probe location: Tokyo, JP (AWS)
-- Frequency: 60s
-- Expected status code: 2xx
-- Purpose: detect API availability and response failures for AI Moving Assistant
-
-## API Alerting
-
-Grafana Cloud Alerting is configured for the AI Moving Assistant API check.
-
-- Alert rule: sre-lab-api-down
-- Metric: probe_success
-- Condition: probe_success < 0.5
-- Label filters:
-  - probe = Tokyo
-  - job = sre-lab-api-moving-assistant
-- Evaluation interval: 1m
-- Pending period: 2m
-- Contact point: sre-lab-email
-- Runbook: docs/runbook.md
-
-## Worker Deployment
+### Worker Auto Deployment
 
 The Cloudflare Workers API is deployed through GitHub Actions.
 
@@ -168,11 +135,92 @@ The Cloudflare Workers API is deployed through GitHub Actions.
   - API syntax check passed
   - Wrangler deploy completed successfully
 
+## Monitoring and Alerting
+
+### Frontend Monitoring
+
+- Target URL: https://sre-lab.pages.dev/
+- Check type: HTTP uptime check
+- Probe location: Tokyo, JP
+- Expected status code: 200
+- Frequency: 60s
+
+### API Monitoring
+
+- Target URL: https://sre-lab-api.daisan-tanaka.workers.dev/api/moving-assistant
+- Check type: HTTP API endpoint check
+- Method: POST
+- Probe location: Tokyo, JP
+- Expected status code: 2xx
+- Frequency: 60s
+
+### Alert Rules
+
+- sre-lab-uptime-down
+- sre-lab-api-down
+
+Alert behavior:
+
+- Metric: probe_success
+- Condition: probe_success < 0.5
+- Evaluation interval: 1m
+- Pending period: 2m
+- Contact point: sre-lab-email
+- Runbook: docs/runbook.md
+
+## Documentation
+
+| Document | Purpose |
+|---|---|
+| docs/architecture.md | Detailed architecture and reliability flow |
+| docs/runbook.md | Incident response procedures |
+| docs/incidents.md | Incident and operational records |
+| docs/operations.md | Daily/weekly operations and deployment checks |
+| docs/services.md | Service planning |
+| docs/moving-assistant.md | AI Moving Assistant specification |
+| docs/ai-api-design.md | Future AI API backend design |
+
+## Operational Records
+
+Current operational records include:
+
+- Initial production readiness check
+- Worker auto deployment verification
+
+These records are stored in:
+
+- docs/incidents.md
+
+## Current Scope
+
+Implemented:
+
+- Static frontend
+- Cloudflare Workers mock API
+- Frontend to API connection
+- CI
+- Workers auto deployment
+- Synthetic monitoring
+- Alerting
+- Runbook
+- Incident log
+- Operations guide
+- Architecture documentation
+- GitHub Actions status badges
+
+Not yet implemented:
+
+- Real AI API integration
+- Rate limiting
+- API usage dashboard
+- Custom domain
+- Deployment status dashboard
+
 ## Roadmap
 
-1. Build the project foundation
-2. Deploy a landing page
-3. Add CI/CD
-4. Add monitoring and alerting
-5. Launch the first AI-powered micro service
+1. Add rate limiting to the Workers API
+2. Add real AI API integration
+3. Add API timeout and fallback handling
+4. Add deployment status badge or dashboard
+5. Add usage and latency monitoring
 6. Add revenue experiments
