@@ -883,3 +883,22 @@ textarea::placeholder {
     grid-template-columns: 1fr;
   }
 }
+
+/* Hero text hierarchy fix */
+.hero-subtitle {
+  max-width: 760px;
+  margin-top: 16px;
+  color: #243044;
+  font-size: clamp(1.32rem, 2.6vw, 2rem);
+  font-weight: 850;
+  line-height: 1.55;
+  letter-spacing: -0.035em;
+}
+
+.hero .lead,
+.hero__lead,
+.lead {
+  margin-top: 18px;
+  font-size: clamp(1rem, 1.5vw, 1.16rem);
+  line-height: 1.9;
+}
