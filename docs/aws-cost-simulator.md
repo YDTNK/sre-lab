@@ -280,3 +280,50 @@ Invalid input response:
 400 / invalid_input
 
 The endpoint rejects unsupported regions, unsupported instance types, missing numeric fields, non-numeric values, and out-of-range numeric values.
+
+## Phase 8 Implementation Status
+
+| Phase | Item | Status |
+|---|---|---|
+| Phase 8-1 | Service design | Completed |
+| Phase 8-2 | Navigation / dedicated page design | Completed |
+| Phase 8-3 | Frontend page split | Completed |
+| Phase 8-4 | Frontend UI | Completed |
+| Phase 8-5 | Workers API endpoint | Completed |
+| Phase 8-6 | Deterministic cost calculation | Completed |
+| Phase 8-7 | API safety / validation | Completed |
+| Phase 8-8 | Monitoring / docs update | In progress |
+
+## Monitoring Plan
+
+AWS Cost Simulator should be monitored as an independent API service.
+
+Synthetic Monitoring target:
+
+POST https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator
+
+Recommended request body:
+
+{
+  "region": "ap-northeast-1",
+  "ec2InstanceType": "t3.micro",
+  "ec2InstanceCount": 1,
+  "ec2HoursPerMonth": 730,
+  "ebsGb": 30,
+  "s3Gb": 10,
+  "dataTransferGb": 10
+}
+
+Expected result:
+
+- HTTP 2xx
+- JSON response
+- mode: deterministic
+
+Recommended alert rule name:
+
+sre-lab-aws-cost-simulator-api-down
+
+Runbook:
+
+docs/runbook.md

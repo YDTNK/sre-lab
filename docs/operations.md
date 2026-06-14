@@ -533,3 +533,88 @@ Initial dedicated pages:
 Related document:
 
 - docs/frontend-navigation.md
+
+## AWS Cost Simulator Operations
+
+AWS Cost Simulator is the second service in SRE Lab.
+
+### Production URL
+
+Frontend page:
+
+https://sre-lab.pages.dev/aws-cost-simulator.html
+
+API endpoint:
+
+POST https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator
+
+### Daily Check
+
+Run the following production API check:
+
+curl -i -X POST \
+  https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator \
+  -H "Content-Type: application/json" \
+  -d '{
+    "region": "ap-northeast-1",
+    "ec2InstanceType": "t3.micro",
+    "ec2InstanceCount": 1,
+    "ec2HoursPerMonth": 730,
+    "ebsGb": 30,
+    "s3Gb": 10,
+    "dataTransferGb": 10
+  }'
+
+Expected result:
+
+HTTP/2 200
+mode: deterministic
+
+### Error Validation Checks
+
+Invalid region:
+
+HTTP/2 400
+code: invalid_input
+
+Invalid EC2 instance type:
+
+HTTP/2 400
+code: invalid_input
+
+Out-of-range numeric input:
+
+HTTP/2 400
+code: invalid_input
+
+### Monitoring
+
+Grafana Synthetic Monitoring should include a dedicated POST check for AWS Cost Simulator.
+
+Recommended check name:
+
+sre-lab-aws-cost-simulator-api
+
+Recommended alert rule name:
+
+sre-lab-aws-cost-simulator-api-down
+
+Recommended probe:
+
+Tokyo, JP
+
+Recommended frequency:
+
+60s
+
+Expected status:
+
+2xx
+
+### Runbook
+
+Use the main runbook for first response:
+
+docs/runbook.md
+
+If AWS Cost Simulator API is down but Moving Assistant is healthy, investigate AWS Cost Simulator route handling, validation logic, and deterministic calculation changes first.

@@ -321,6 +321,42 @@ Alert behavior:
 - Contact point: sre-lab-email
 - Runbook: docs/runbook.md
 
+## AWS Cost Simulator
+
+AWS Cost Simulator is the second service in SRE Lab.
+
+It provides a simple educational AWS monthly cost estimate through a dedicated frontend page and Workers API endpoint.
+
+### Endpoint
+
+POST /api/aws-cost-simulator
+
+### Current scope
+
+- EC2 fixed hourly estimate
+- EBS fixed GB-month estimate
+- S3 fixed GB-month estimate
+- Data transfer fixed GB estimate
+- USD to JPY fixed exchange rate
+- Deterministic calculation
+- JSON request validation
+- Educational assumptions and disclaimer
+
+### Safety
+
+- No AWS Pricing API call
+- No paid AI API call
+- Region whitelist
+- EC2 instance type whitelist
+- Numeric range validation
+- Standardized JSON error response
+
+### Monitoring
+
+A dedicated Grafana Synthetic Monitoring check should be configured for:
+
+POST https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator
+
 ## Documentation
 
 | Document | Purpose |

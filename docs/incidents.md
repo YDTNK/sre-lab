@@ -2302,3 +2302,84 @@ Not applicable. This is an API safety implementation record.
 - [ ] Verify invalid instance type in production
 - [ ] Verify out-of-range numeric input in production
 - [ ] Connect frontend form to the API after validation is stable
+
+---
+
+### 20260614-027
+
+### Service
+
+SRE Lab AWS Cost Simulator
+
+### Alert Rule
+
+sre-lab-aws-cost-simulator-api-down
+
+### Summary
+
+AWS Cost Simulator was documented as an operational service and prepared for dedicated monitoring.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 8-8 monitoring and documentation update for AWS Cost Simulator.
+
+### Detection
+
+Manual production verification and documentation review after Phase 8-7.
+
+### Changes
+
+- Updated README with AWS Cost Simulator status
+- Updated AWS Cost Simulator documentation
+- Updated operations guide with AWS Cost Simulator checks
+- Documented recommended Grafana Synthetic Monitoring target
+- Documented recommended alert rule
+- Documented production curl check
+- Documented expected success and validation behavior
+
+### Production Endpoint
+
+POST https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator
+
+### Recommended Monitoring
+
+| Item | Value |
+|---|---|
+| Check name | sre-lab-aws-cost-simulator-api |
+| Alert rule | sre-lab-aws-cost-simulator-api-down |
+| Method | POST |
+| Expected status | 2xx |
+| Probe | Tokyo, JP |
+| Frequency | 60s |
+| Runbook | docs/runbook.md |
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Valid AWS Cost Simulator request | 200 deterministic estimate | Passed |
+| Invalid region | 400 invalid_input | Passed |
+| Invalid instance type | 400 invalid_input | Passed |
+| Out-of-range numeric input | 400 invalid_input | Passed |
+| Documentation update | Completed | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a monitoring and documentation update record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Add Grafana Synthetic Monitoring check
+- [ ] Add Grafana alert rule
+- [ ] Verify alert routing to existing email contact point
+- [ ] Connect frontend form to API in a future phase
