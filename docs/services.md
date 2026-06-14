@@ -133,3 +133,69 @@ Initial page structure:
 Related document:
 
 - docs/frontend-navigation.md
+
+## Multi-Service Operating Status
+
+SRE Lab currently operates two small services.
+
+### AI Moving Assistant
+
+Status: Production
+
+Purpose:
+
+- Japanese moving preparation support
+- Real AI API integration experiment
+- API safety, rate limiting, cost tracking, and fallback behavior
+
+Operational features:
+
+- Dedicated frontend page
+- Dedicated Workers API endpoint
+- OpenAI API integration through backend only
+- Cloudflare Workers Secret for API key
+- KV-based usage and cost tracking
+- AI daily limit
+- Cost limit behavior
+- Grafana Synthetic Monitoring
+- Grafana Alerting
+- Runbook and operational records
+
+### AWS Cost Simulator
+
+Status: Production
+
+Purpose:
+
+- Educational AWS monthly cost estimate
+- AWS cost awareness and FinOps learning
+- Second service for multi-service SRE Lab operations
+
+Operational features:
+
+- Dedicated frontend page
+- Dedicated Workers API endpoint
+- Deterministic cost calculation
+- Region whitelist
+- EC2 instance type whitelist
+- Numeric input range validation
+- No AWS Pricing API dependency
+- No paid AI API usage
+- Grafana Synthetic Monitoring
+- Grafana Alerting
+- Runbook and operational records
+
+### Portfolio Value
+
+The project now demonstrates operation of multiple small services instead of a single standalone application.
+
+This improves the portfolio value by showing:
+
+- service separation
+- API separation
+- service-specific monitoring
+- service-specific alerting
+- operational documentation
+- incident and operational records
+- safe API design
+- cost-aware product design

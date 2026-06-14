@@ -3,33 +3,34 @@
 [![CI](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml)
 [![Deploy Worker](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml)
 
-SRE Lab is a portfolio project for building, operating, monitoring, and improving a small AI-powered web service.
+SRE Lab is a portfolio project for building, operating, monitoring, and improving a small group of AI and SRE-oriented web services.
 
-This project demonstrates practical SRE and platform engineering workflows through a real deployed service, including frontend/API separation, CI/CD, synthetic monitoring, alerting, runbooks, incident records, and operational documentation.
+This project demonstrates practical SRE and platform engineering workflows through real deployed services, including frontend/API separation, CI/CD, synthetic monitoring, alerting, runbooks, incident records, and operational documentation.
 
 ## Live Demo
 
 - Frontend: https://sre-lab.pages.dev/
 - Workers API: https://sre-lab-api.daisan-tanaka.workers.dev
-- API endpoint: POST /api/moving-assistant
+- AI Moving Assistant API: POST /api/moving-assistant
+- AWS Cost Simulator API: POST /api/aws-cost-simulator
 
 ## Project Goal
 
-The goal of this project is to demonstrate the ability to operate a small production-like service, not just build an application.
+The goal of this project is to demonstrate the ability to operate small production-like services, not just build applications.
 
 This project focuses on:
 
 - Frontend/API separation
 - CI/CD with GitHub Actions
 - Cloudflare Workers deployment automation
-- Synthetic monitoring
-- Alerting
+- Synthetic monitoring for multiple services
+- Alerting for multiple services
 - Runbooks
 - Incident records
 - Operations documentation
 - Cost-aware AI service design
 
-## Current Service
+## Current Services
 
 ### AI Moving Assistant
 
@@ -54,6 +55,32 @@ Reliability behavior:
 - AI response shape is validated before returning to the frontend
 - Cost limit behavior returns 503 / cost_limit_reached
 - AI daily limit behavior returns 429 / ai_limit_reached
+
+### AWS Cost Simulator
+
+AWS Cost Simulator is an educational AWS monthly cost estimate tool.
+
+Current behavior:
+
+- Collects simple AWS configuration inputs from a dedicated frontend page
+- Calls a Cloudflare Workers API
+- Calculates deterministic monthly estimates for EC2, EBS, S3, and data transfer
+- Returns total monthly USD and JPY estimates
+- Returns a per-resource cost breakdown
+- Validates region, EC2 instance type, and numeric input ranges
+- Provides educational assumptions and disclaimer
+- Does not call AWS Pricing API
+- Does not call OpenAI API or any paid AI API
+
+Reliability behavior:
+
+- Dedicated frontend page
+- Dedicated API endpoint
+- JSON request validation
+- Standardized error response
+- Grafana Synthetic Monitoring
+- Grafana Alerting
+- Runbook URL attached to alert rule
 
 ## Architecture
 
@@ -103,9 +130,9 @@ This project includes the following SRE-oriented components:
 - API input validation
 - GitHub Actions CI
 - Workers auto deployment
-- Synthetic monitoring for frontend
-- Synthetic monitoring for API
-- Alert rules for frontend and API availability
+- Synthetic monitoring for multiple services for frontend
+- Synthetic monitoring for multiple services for multiple API endpoints
+- Alert rules for frontend and service-specific API availability
 - Email notification contact point
 - Runbook
 - Incident log
@@ -233,30 +260,36 @@ Documentation:
 
 - docs/frontend-navigation.md
 
-## Second Service Plan
+## Multi-Service Status
 
-The next SRE Lab service is planned as AWS Cost Simulator.
+SRE Lab currently operates two services.
 
-Purpose:
+Service 1: AI Moving Assistant
 
-- Add a second small service to SRE Lab
-- Demonstrate AWS cost awareness
-- Connect the project with AWS SAA, Terraform, and FinOps learning
-- Provide a lightweight tool that does not require paid AI API calls in the MVP
-- Extend SRE Lab from one service to a small SaaS group
+- Frontend page: /moving-assistant.html
+- API endpoint: POST /api/moving-assistant
+- OpenAI API integration through Cloudflare Workers
+- AI fallback behavior
+- Rate limiting
+- AI daily limit
+- Estimated cost tracking
+- Synthetic monitoring for multiple services and alerting
 
-Initial scope:
+Service 2: AWS Cost Simulator
 
-- EC2 monthly estimate
-- EBS estimate
-- S3 estimate
-- Data transfer placeholder
-- Deterministic calculation
-- API safety validation
-- Future synthetic monitoring
+- Frontend page: /aws-cost-simulator.html
+- API endpoint: POST /api/aws-cost-simulator
+- Deterministic cost calculation
+- API input validation
+- No paid AI API usage
+- Synthetic monitoring for multiple services and alerting
+
+This moves SRE Lab from a single-service project to a small multi-service operations lab.
 
 Documentation:
 
+- docs/services.md
+- docs/moving-assistant.md
 - docs/aws-cost-simulator.md
 
 ## CI/CD
@@ -368,7 +401,8 @@ POST https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator
 | docs/services.md | Service planning |
 | docs/moving-assistant.md | AI Moving Assistant specification |
 | docs/ai-api-design.md | Real AI API backend design and safety controls |
-| docs/cost.md | AI usage and cost operations |\n| docs/usage-cost-report.md | Manual usage and cost snapshot records |
+| docs/cost.md | AI usage and cost operations |
+| docs/usage-cost-report.md | Manual usage and cost snapshot records |
 | docs/dashboard-design.md | Future usage and cost dashboard design |
 
 ## Operational Records
@@ -410,8 +444,8 @@ Implemented:
 - AI response validation
 - CI
 - Workers auto deployment
-- Synthetic monitoring
-- Alerting
+- Synthetic monitoring for multiple services
+- Alerting for multiple services
 - Runbook
 - Incident log
 - Operations guide

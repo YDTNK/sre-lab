@@ -327,3 +327,30 @@ sre-lab-aws-cost-simulator-api-down
 Runbook:
 
 docs/runbook.md
+
+## Frontend API Integration
+
+The AWS Cost Simulator frontend is connected to the Workers API endpoint.
+
+Frontend page:
+
+https://sre-lab.pages.dev/aws-cost-simulator.html
+
+API endpoint:
+
+POST https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator
+
+Implemented behavior:
+
+- User enters AWS configuration values in the frontend form
+- Frontend sends JSON request to Workers API
+- Workers API validates input
+- Workers API calculates deterministic cost estimate
+- Frontend renders total monthly USD and JPY estimate
+- Frontend renders EC2, EBS, S3, and data transfer breakdown
+- Frontend renders assumptions and disclaimer
+- Frontend shows API or network errors when calculation fails
+
+Current status:
+
+Production frontend to API integration is verified.

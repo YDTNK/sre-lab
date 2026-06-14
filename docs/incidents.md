@@ -2461,3 +2461,65 @@ Not applicable. This is a frontend API integration record.
 - [ ] Verify successful estimate rendering
 - [ ] Verify invalid input error rendering
 - [ ] Update docs if needed after browser verification
+
+---
+
+### 20260614-029
+
+### Service
+
+SRE Lab Multi-Service Portfolio
+
+### Alert Rule
+
+Manual documentation record / portfolio polish
+
+### Summary
+
+README and service documentation were updated to reflect SRE Lab as a multi-service operations lab.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-B README and documentation polish after AWS Cost Simulator frontend API integration.
+
+### Detection
+
+Manual documentation review after Phase 9-A.
+
+### Changes
+
+- Updated README from single-service wording to multi-service wording
+- Documented AI Moving Assistant and AWS Cost Simulator as current services
+- Replaced second-service planning language with multi-service operating status
+- Updated services documentation with multi-service operating status
+- Updated AWS Cost Simulator documentation with frontend API integration status
+- Clarified service-specific monitoring and alerting value
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| README reflects multiple services | Updated | Passed |
+| AWS Cost Simulator documented as active service | Updated | Passed |
+| Service docs reflect multi-service operation | Updated | Passed |
+| Operational record added | Added | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a documentation polish record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Continue keeping README aligned with actual production status
+- [ ] Update docs when adding future services
+- [ ] Keep monitoring and alerting status reflected in operational records
