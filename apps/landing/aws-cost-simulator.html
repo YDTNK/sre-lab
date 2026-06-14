@@ -3,23 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AWS料金試算 | SRE Lab</title>
+  <title>AWS料金試算</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="container">
     <section class="hero">
-      <p class="eyebrow">AWS Cost Simulator</p>
-      <h1>AWS料金試算</h1>
+      <p class="eyebrow">AWS料金試算</p>
+      <h1>AWS月額料金の目安をかんたんに確認できます</h1>
       <p class="lead">
         EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を計算します。
       </p>
       <p>
-        このページは学習・ポートフォリオ用の概算ツールです。
-        AWS公式Pricing Calculatorや実際の請求額の代替ではありません。
+        学習や構成検討の初期段階で、ざっくりと料金感をつかむためのツールです。
       </p>
       <p>
-        <a class="button secondary" href="index.html">SRE Labトップへ戻る</a>
+        <a class="button secondary" href="index.html">ツール一覧へ戻る</a>
       </p>
     </section>
 
@@ -79,20 +78,16 @@
         <li>EC2はインスタンスタイプ、台数、月間稼働時間から計算します。</li>
         <li>EBSとS3は入力された容量をもとに概算します。</li>
         <li>Data transferは入力された転送量をもとに概算します。</li>
-        <li>表示される金額は学習用の目安です。</li>
+        <li>表示される金額は学習・検討用の目安です。</li>
       </ul>
     </section>
 
     <section class="operations">
-      <h2>このサービスで実装している運用要素</h2>
-      <ul>
-        <li>Cloudflare Workers APIによる料金計算</li>
-        <li>入力値の範囲検証</li>
-        <li>標準化されたJSON error response</li>
-        <li>有料AI APIを使わない低コスト設計</li>
-        <li>Grafana Synthetic Monitoring</li>
-        <li>Grafana Alerting</li>
-      </ul>
+      <h2>ご利用にあたって</h2>
+      <p>
+        この試算は、学習・検討用の概算です。
+        AWS公式Pricing Calculatorや実際の請求額の代替ではありません。
+      </p>
     </section>
   </main>
 

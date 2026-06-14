@@ -3,25 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI引越し診断 | SRE Lab</title>
+  <title>AI引越し診断</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="nav-link">
-    <a href="index.html">← SRE Labトップへ戻る</a>
+    <a href="index.html">← ツール一覧へ戻る</a>
   </div>
 
   <main>
     <section class="hero">
-      <span class="badge">AI Moving Assistant</span>
-      <h1>AI引越し診断</h1>
+      <span class="badge">AI引越し診断</span>
+      <h1>引越し準備に必要なことを整理します</h1>
       <p>
         家具、衣類、家電、本・小物、引越し日、補足メモを入力すると、
         引越し準備のサマリー、必要な梱包資材、チェックリスト、注意点を整理します。
       </p>
       <p>
-        OpenAI APIをバックエンド経由で利用し、fallback response、rate limiting、
-        利用量・推定コスト記録を備えたSRE Labの1つ目のサービスです。
+        何から準備すればよいか迷ったときの、最初の整理用としてご利用ください。
       </p>
     </section>
 
@@ -29,7 +28,7 @@
       <h2>引越し情報を入力</h2>
       <p>
         分かる範囲で入力してください。すべての項目を埋める必要はありません。
-        家具・衣類・家電などの情報が多いほど、より具体的なチェックリストを作成できます。
+        入力内容が多いほど、より具体的なチェックリストを作成できます。
       </p>
 
       <form id="moving-form">
@@ -100,17 +99,11 @@
     </section>
 
     <section class="card">
-      <h2>このサービスで実装している運用要素</h2>
-      <ul>
-        <li>Cloudflare Workers API</li>
-        <li>OpenAI APIのバックエンド連携</li>
-        <li>API keyのSecret管理</li>
-        <li>Rate limiting</li>
-        <li>fallback response</li>
-        <li>利用量・推定コスト記録</li>
-        <li>Grafana Synthetic Monitoring</li>
-        <li>Grafana Alerting</li>
-      </ul>
+      <h2>ご利用にあたって</h2>
+      <p>
+        診断結果は、入力内容にもとづく準備の目安です。
+        実際の必要資材や作業量は、荷物の量、部屋の広さ、引越し業者の条件によって変わります。
+      </p>
     </section>
   </main>
 
@@ -191,8 +184,8 @@
         result.innerHTML = `
           <h3>診断に失敗しました</h3>
           <p>
-            AI引越し診断の生成に失敗しました。
-            APIサーバーが起動しているか確認し、時間をおいて再度お試しください。
+            診断結果の作成に失敗しました。
+            時間をおいて再度お試しください。
           </p>
           <p><small>${error.message}</small></p>
         `;

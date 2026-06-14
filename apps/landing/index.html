@@ -3,81 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRE Lab</title>
+  <title>クラウドとAIの便利ツール集</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="container">
     <section class="hero">
-      <p class="eyebrow">SRE Lab</p>
-      <h1>小さなAI / SREサービスを運用するポートフォリオ</h1>
+      <p class="eyebrow">クラウドとAIの便利ツール集</p>
+      <h1>検討や準備に役立つWebツールをまとめています</h1>
       <p class="lead">
-        SRE Labは、複数の小さなAI / SRE系サービスを開発・公開し、CI/CD、監視、Alert、Runbook、運用記録まで含めて継続的に改善していくポートフォリオです。
+        クラウド料金の試算やAI診断など、入力内容をもとに必要な情報を分かりやすく整理します。
       </p>
       <p>
-        単なるWebアプリ制作ではなく、公開後の運用・監視・改善まで含めて、SRE / Platform Engineeringの実践力を示すことを目的としています。
+        学習、検討、日々の準備のたたき台としてご利用ください。
       </p>
     </section>
 
     <section class="services">
-      <h2>公開中のサービス</h2>
+      <h2>提供中のツール</h2>
 
       <div class="service-grid">
         <article class="service-card">
-          <p class="status">公開中 / AI API連携</p>
-          <h3>AI Moving Assistant / AI引越し診断</h3>
+          <p class="status">AI対応</p>
+          <h3>AI引越し診断</h3>
           <p>
             家具、衣類、家電、本・小物、引越し日などを入力すると、引越し準備のサマリー、必要資材、チェックリスト、注意点を整理します。
           </p>
           <ul>
-            <li>OpenAI APIをバックエンド経由で利用</li>
-            <li>fallback response</li>
-            <li>Rate limiting</li>
-            <li>利用量・推定コスト記録</li>
+            <li>梱包資材の目安を確認</li>
+            <li>引越し前のチェックリストを作成</li>
+            <li>見落としやすい注意点を整理</li>
           </ul>
-          <a class="button" href="moving-assistant.html">AI引越し診断を開く</a>
+          <a class="button" href="moving-assistant.html">AI引越し診断を使う</a>
         </article>
 
         <article class="service-card">
-          <p class="status">公開中 / 監視・Alert設定済み</p>
-          <h3>AWS Cost Simulator / AWS料金試算</h3>
+          <p class="status">無料試算</p>
+          <h3>AWS料金試算</h3>
           <p>
-            EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を固定単価ベースで計算します。
+            EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を計算します。
           </p>
           <ul>
-            <li>Workers APIによる料金計算</li>
-            <li>入力値の範囲検証</li>
-            <li>有料AI API不使用</li>
-            <li>Synthetic Monitoring / Alerting</li>
+            <li>月額料金のざっくり把握</li>
+            <li>学習用・検討用の概算</li>
+            <li>有料AI APIは不使用</li>
           </ul>
-          <a class="button secondary" href="aws-cost-simulator.html">AWS料金試算を開く</a>
+          <a class="button secondary" href="aws-cost-simulator.html">AWS料金を試算する</a>
         </article>
       </div>
     </section>
 
     <section class="operations">
-      <h2>運用で重視していること</h2>
+      <h2>ご利用にあたって</h2>
       <p>
-        SRE Labでは、機能を作るだけでなく、公開後に安全に運用し続けるための仕組みを整えています。
+        各ツールの結果は、入力内容にもとづく目安です。正式な見積もり、契約、請求金額、専門家の判断の代替ではありません。
       </p>
       <ul>
-        <li>Cloudflare Pages / Workersによる公開</li>
-        <li>GitHub ActionsによるCI/CD</li>
-        <li>Grafana Synthetic Monitoringによる外形監視</li>
-        <li>Grafana Alertingによるアラート通知</li>
-        <li>RunbookとOperational Recordsによる運用記録</li>
-        <li>API安全化、Rate limiting、Cost control</li>
-      </ul>
-    </section>
-
-    <section class="operations">
-      <h2>関連ドキュメント</h2>
-      <ul>
-        <li>README.md: プロジェクト概要</li>
-        <li>docs/portfolio-submission.md: 提出・面談用まとめ</li>
-        <li>docs/runbook.md: 障害対応手順</li>
-        <li>docs/incidents.md: 運用記録</li>
-        <li>docs/operations.md: 日次・週次運用手順</li>
+        <li>AI引越し診断の結果は、準備のたたき台としてご利用ください。</li>
+        <li>AWS料金試算は、学習・検討用の概算です。</li>
+        <li>重要な判断を行う場合は、公式情報や専門家の確認を併用してください。</li>
       </ul>
     </section>
   </main>

@@ -452,7 +452,7 @@ function buildAwsCostSimulatorMockResponse(body) {
   return {
     service: "aws-cost-simulator",
     mode: "deterministic",
-    summary: `Estimated monthly cost is about $${totalMonthlyUsd} / ¥${totalMonthlyJpy}.`,
+    summary: `月額料金の概算は $${totalMonthlyUsd} / ¥${totalMonthlyJpy} です。`,
     totalMonthlyUsd,
     totalMonthlyJpy,
     breakdown: {
@@ -462,13 +462,13 @@ function buildAwsCostSimulatorMockResponse(body) {
       dataTransfer: roundCurrency(dataTransferUsd),
     },
     assumptions: [
-      "This is an educational deterministic estimate.",
-      "No AWS Pricing API is called.",
-      "No paid AI API is used for this endpoint.",
-      `USD to JPY rate is fixed at ${USD_TO_JPY_RATE}.`,
-      "EC2 pricing uses a small fixed table for t3.micro, t3.small, and t3.medium.",
-      "EBS, S3, and data transfer prices are approximate fixed values.",
-      "Taxes, free tier, snapshots, NAT Gateway, Load Balancer, RDS, CloudWatch, and support fees are not included.",
+      "この試算は学習・検討用の概算です。",
+      "AWS Pricing APIは使用していません。",
+      "このAPI endpointでは有料AI APIを使用していません。",
+      `USD to JPYの換算レートは ${USD_TO_JPY_RATE} 円で固定しています。`,
+      "EC2料金はt3.micro、t3.small、t3.mediumの固定単価テーブルを使用しています。",
+      "EBS、S3、Data transferの料金は固定の概算単価を使用しています。",
+      "税金、無料利用枠、snapshot、NAT Gateway、Load Balancer、RDS、CloudWatch、サポート料金などは含めていません。",
     ],
     receivedInput: {
       region,
@@ -480,7 +480,7 @@ function buildAwsCostSimulatorMockResponse(body) {
       dataTransferGb,
     },
     disclaimer:
-      "This is an educational estimate and not an official AWS cost estimate. Always confirm real costs with AWS Pricing Calculator and actual AWS billing data.",
+      "この試算は学習・検討用の概算であり、AWS公式の見積もりではありません。実際の料金はAWS Pricing CalculatorやAWSの請求情報で確認してください。",
   };
 }
 
