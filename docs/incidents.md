@@ -582,3 +582,110 @@ Not applicable. This is a design and planning record.
 - [ ] Verify AI API calls are blocked after the stop threshold
 - [ ] Review thresholds after real usage data is available
 
+---
+
+### 20260614-007
+
+### Service
+
+SRE Lab Workers API
+
+### Alert Rule
+
+Manual verification / usage and cost tracking check
+
+### Summary
+
+Usage and cost tracking foundation was implemented and verified for the Workers API.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the successful implementation and production verification of Cloudflare KV based usage tracking before real AI API integration.
+
+### Detection
+
+Manual verification after GitHub Actions deployment.
+
+### Initial Checks
+
+- Usage and cost tracking design was documented
+- Cloudflare KV based rate limiting was already implemented
+- The Workers API was updated with usage tracking counters
+- The mock response behavior was preserved
+- Real AI API integration has not started yet
+
+### Implementation Details
+
+- Storage: Cloudflare KV
+- Binding: RATE_LIMIT_KV
+- Target endpoint: POST /api/moving-assistant
+- API request counter: usage:moving-assistant:api_requests:{yyyyMMdd}
+- API success counter: usage:moving-assistant:api_success:{yyyyMMdd}
+- API error counter: usage:moving-assistant:api_errors:{yyyyMMdd}
+- Rate limited counter: usage:moving-assistant:rate_limited:{yyyyMMdd}
+- Cost key foundation: cost:moving-assistant:estimated_jpy:{yyyyMMdd}
+- Monthly cost key foundation: cost:moving-assistant:estimated_jpy:{yyyyMM}
+- Monthly stop threshold foundation: 500 JPY
+- Current mock estimated cost: 0 JPY
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Deploy Worker | Success | Passed |
+| CI | Success | Passed |
+| Valid POST | 200 | Passed |
+| Rate limited requests | 429 / rate_limited | Passed |
+| api_requests key | Numeric value | Passed |
+| api_success key | Numeric value | Passed |
+| rate_limited key | Numeric value | Passed |
+| api_errors key | Numeric value | Passed |
+
+### Observed KV Values
+
+| Key | Value |
+|---|---:|
+| usage:moving-assistant:api_requests:20260614 | 13 |
+| usage:moving-assistant:api_success:20260614 | 10 |
+| usage:moving-assistant:rate_limited:20260614 | 3 |
+| usage:moving-assistant:api_errors:20260614 | 7 |
+
+### Timeline
+
+| Time | Event |
+|---|---|
+| 2026-06-14 | Usage and cost tracking foundation was implemented |
+| 2026-06-14 | Changes were pushed to main |
+| 2026-06-14 | CI workflow completed successfully |
+| 2026-06-14 | Deploy Worker workflow completed successfully |
+| 2026-06-14 | Production API returned expected 200 response |
+| 2026-06-14 | Rate limiting behavior remained functional |
+| 2026-06-14 | Usage tracking KV values were verified |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Production API behavior remained healthy after usage tracking was added.
+
+The Workers API returned 200 for valid requests and 429 / rate_limited for requests exceeding the configured minute limit.
+
+Cloudflare KV stored usage counters as expected.
+
+### Prevention / Follow-up Actions
+
+- [ ] Add estimated AI token tracking after real AI API integration
+- [ ] Add estimated AI API cost calculation after model selection
+- [ ] Add cost_limit_reached test case
+- [ ] Add docs/cost.md
+- [ ] Review usage and cost values during initial AI rollout
+- [ ] Consider moving historical usage records to D1 if reporting requirements grow
+
