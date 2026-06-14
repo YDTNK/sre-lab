@@ -311,3 +311,46 @@ Use this section when OPENAI_API_KEY is missing, invalid, expired, or suspected 
 4. Worker reads AI_MODEL from configuration.
 5. Real AI integration can proceed only after secret setup is confirmed.
 
+## AI Cost Limit Runbook
+
+Use this section when AI usage cost approaches or exceeds the configured threshold.
+
+### Symptoms
+
+- Estimated monthly cost exceeds 300 JPY
+- Estimated monthly cost reaches 500 JPY
+- cost_limit_reached appears
+- ai_limit_reached appears frequently
+- OpenAI credit balance decreases faster than expected
+- OpenAI API returns billing, quota, or rate limit errors
+
+### Immediate Checks
+
+1. Check docs/cost.md.
+2. Check Cloudflare KV estimated daily cost.
+3. Check Cloudflare KV estimated monthly cost.
+4. Check OpenAI Platform Usage.
+5. Check OpenAI credit balance.
+6. Confirm auto recharge is off.
+7. Check recent deployments.
+8. Check ai_calls, ai_success, ai_errors, and ai_limited counters.
+
+### Mitigation
+
+- Keep auto recharge disabled
+- Lower AI service daily limit
+- Lower per-IP AI daily limit
+- Temporarily disable AI calls and return fallback
+- Reduce max output tokens
+- Tighten input length limits
+- Review whether traffic is abusive or expected
+
+### Recovery Validation
+
+1. Valid API requests still return JSON.
+2. AI calls are blocked when limits are reached.
+3. cost_limit_reached returns 503 when cost threshold is reached.
+4. ai_limit_reached returns 429 when AI daily limit is reached.
+5. Estimated cost counters are recorded.
+6. docs/incidents.md is updated.
+

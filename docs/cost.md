@@ -1,0 +1,187 @@
+# SRE Lab Cost Operations
+
+This document defines the initial cost management policy for SRE Lab.
+
+The current cost focus is the AI Moving Assistant Workers API and OpenAI API usage.
+
+## Cost Policy
+
+SRE Lab is currently in the pre-monetization phase.
+
+The priority is not maximizing AI usage. The priority is preventing unexpected cost growth while maintaining a safe public portfolio service.
+
+## Current Budget
+
+| Item | Value |
+|---|---:|
+| OpenAI initial credit | 5 USD |
+| Auto recharge | Off |
+| SRE Lab monthly AI budget | 500 JPY |
+| Monthly warning threshold | 300 JPY |
+| Monthly stop threshold | 500 JPY |
+| Daily hard limit | 100 JPY |
+
+## Current AI Limits
+
+| Limit | Value |
+|---|---:|
+| Service AI daily limit | 30 requests / day |
+| Per-IP AI daily limit | 5 requests / day |
+| AI limit response | 429 / ai_limit_reached |
+| Retry-After | 86400 seconds |
+
+## Current Cost Tracking Storage
+
+Initial cost tracking is stored in Cloudflare KV.
+
+KV binding:
+
+- RATE_LIMIT_KV
+
+This is acceptable for the early stage because the system is small and already uses KV for rate limiting and usage tracking.
+
+A future version may move historical cost data to Cloudflare D1 or another database if reporting requirements grow.
+
+## Cost KV Keys
+
+Daily estimated input tokens:
+
+- cost:moving-assistant:input_tokens:{yyyyMMdd}
+
+Daily estimated output tokens:
+
+- cost:moving-assistant:output_tokens:{yyyyMMdd}
+
+Daily estimated cost:
+
+- cost:moving-assistant:estimated_jpy:{yyyyMMdd}
+
+Monthly estimated cost:
+
+- cost:moving-assistant:estimated_jpy:{yyyyMM}
+
+## Usage KV Keys
+
+AI call count:
+
+- usage:moving-assistant:ai_calls:{yyyyMMdd}
+
+AI success count:
+
+- usage:moving-assistant:ai_success:{yyyyMMdd}
+
+AI error count:
+
+- usage:moving-assistant:ai_errors:{yyyyMMdd}
+
+AI limit count:
+
+- usage:moving-assistant:ai_limited:{yyyyMMdd}
+
+## Daily Cost Check Commands
+
+Replace the date suffix with the current UTC date.
+
+Example for 2026-06-14:
+
+```bash
+cd apps/api
+
+npx wrangler kv key get "usage:moving-assistant:ai_calls:20260614" --binding RATE_LIMIT_KV --remote --text
+npx wrangler kv key get "usage:moving-assistant:ai_success:20260614" --binding RATE_LIMIT_KV --remote --text
+npx wrangler kv key get "usage:moving-assistant:ai_errors:20260614" --binding RATE_LIMIT_KV --remote --text
+npx wrangler kv key get "usage:moving-assistant:ai_limited:20260614" --binding RATE_LIMIT_KV --remote --text
+
+npx wrangler kv key get "cost:moving-assistant:input_tokens:20260614" --binding RATE_LIMIT_KV --remote --text
+npx wrangler kv key get "cost:moving-assistant:output_tokens:20260614" --binding RATE_LIMIT_KV --remote --text
+npx wrangler kv key get "cost:moving-assistant:estimated_jpy:20260614" --binding RATE_LIMIT_KV --remote --text
+npx wrangler kv key get "cost:moving-assistant:estimated_jpy:202606" --binding RATE_LIMIT_KV --remote --text
+```
+
+## OpenAI Platform Checks
+
+OpenAI Platform should also be checked because Cloudflare KV cost tracking is an estimate.
+
+Check:
+
+- Usage
+- Billing
+- Credit balance
+- Auto recharge status
+- Monthly spend limit
+
+Expected current policy:
+
+- Credit balance is manually topped up
+- Auto recharge is off
+- OpenAI API usage is reviewed manually during initial rollout
+
+## Cost Limit Behavior
+
+If the estimated monthly cost reaches the stop threshold, the Worker must not call OpenAI API.
+
+Expected response:
+
+```json
+{
+  "error": {
+    "code": "cost_limit_reached",
+    "message": "AI diagnosis is temporarily unavailable due to usage limits."
+  }
+}
+```
+
+Expected status:
+
+- 503 Service Unavailable
+
+## AI Limit Behavior
+
+If the service or per-IP AI daily limit is reached, the Worker should return:
+
+```json
+{
+  "error": {
+    "code": "ai_limit_reached",
+    "message": "AI diagnosis limit reached. Please try again later."
+  }
+}
+```
+
+Expected status:
+
+- 429 Too Many Requests
+
+Expected header:
+
+- Retry-After: 86400
+
+## Review Cadence
+
+| Stage | Review Cadence |
+|---|---|
+| Initial AI rollout | Daily |
+| Stable low-traffic operation | Weekly |
+| Revenue experiment phase | Weekly and monthly |
+
+## Cost Incident Criteria
+
+Create an operational record in docs/incidents.md if any of the following occurs:
+
+- Estimated monthly cost exceeds 300 JPY
+- Estimated monthly cost reaches 500 JPY
+- OpenAI credit decreases faster than expected
+- AI errors spike
+- ai_limit_reached appears frequently
+- cost_limit_reached appears
+- OpenAI API billing or quota errors occur
+
+## Follow-up Improvements
+
+- Compare estimated KV cost with OpenAI Platform usage
+- Add cost_limit_reached test case
+- Add monthly cost review section to operations.md
+- Consider Grafana alerting for cost thresholds
+- Consider D1 for historical cost reporting
+- Add revenue versus cost tracking after monetization experiments begin
+

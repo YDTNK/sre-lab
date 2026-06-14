@@ -249,3 +249,12 @@ Not yet implemented:
 4. Add deployment status badge or dashboard
 5. Add usage and latency monitoring
 6. Add revenue experiments
+
+## Cost Operations
+
+AI API usage and estimated cost operations are documented in:
+
+- docs/cost.md
+
+The current policy keeps OpenAI auto recharge disabled and uses Cloudflare KV to track estimated AI usage and cost.
+

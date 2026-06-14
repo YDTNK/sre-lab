@@ -1120,3 +1120,102 @@ Cloudflare KV recorded estimated input tokens, output tokens, and daily/monthly 
 - [ ] Review AI limit thresholds after initial usage data is collected
 - [ ] Consider adding Grafana alerting for cost threshold in the future
 
+---
+
+### 20260614-012
+
+### Service
+
+SRE Lab Workers API / Cost Operations
+
+### Alert Rule
+
+Manual documentation record / cost operations setup
+
+### Summary
+
+Cost operations documentation was added after AI cost tracking and AI-specific daily limits were implemented.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the creation of cost operations guidance for OpenAI API usage, Cloudflare KV cost tracking, and monthly budget control.
+
+### Detection
+
+Manual documentation review after AI cost tracking verification.
+
+### Initial Checks
+
+- OpenAI API Worker integration was completed
+- AI cost tracking was implemented and verified
+- AI-specific daily limits were implemented and verified
+- OpenAI credit was configured with auto recharge off
+- Estimated daily and monthly cost keys were verified in Cloudflare KV
+
+### Documentation Added
+
+- docs/cost.md
+- Cost Operations section in docs/operations.md
+- AI Cost Limit Runbook section in docs/runbook.md
+- README reference to docs/cost.md
+
+### Current Cost Policy
+
+| Item | Value |
+|---|---:|
+| OpenAI initial credit | 5 USD |
+| Auto recharge | Off |
+| Monthly AI budget | 500 JPY |
+| Monthly warning threshold | 300 JPY |
+| Monthly stop threshold | 500 JPY |
+| Daily hard limit | 100 JPY |
+| Service AI daily limit | 30 requests / day |
+| Per-IP AI daily limit | 5 requests / day |
+
+### Cost Tracking Keys
+
+- cost:moving-assistant:input_tokens:{yyyyMMdd}
+- cost:moving-assistant:output_tokens:{yyyyMMdd}
+- cost:moving-assistant:estimated_jpy:{yyyyMMdd}
+- cost:moving-assistant:estimated_jpy:{yyyyMM}
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| docs/cost.md | Created | Passed |
+| docs/operations.md | Cost Operations added | Passed |
+| docs/runbook.md | AI Cost Limit Runbook added | Passed |
+| README.md | docs/cost.md referenced | Passed |
+
+### Timeline
+
+| Time | Event |
+|---|---|
+| 2026-06-14 | AI cost tracking was verified |
+| 2026-06-14 | AI-specific daily limits were verified |
+| 2026-06-14 | Cost operations documentation was added |
+| 2026-06-14 | Operational record was added |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a cost operations documentation record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Add cost_limit_reached test case
+- [ ] Compare Cloudflare KV estimated cost with OpenAI Platform usage
+- [ ] Review cost thresholds after several days of real AI usage
+- [ ] Consider Grafana alerting for cost thresholds in the future
+- [ ] Consider D1 for historical cost reporting
+

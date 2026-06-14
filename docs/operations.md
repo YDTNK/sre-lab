@@ -199,6 +199,46 @@ If the API key is suspected to be exposed:
 4. Re-deploy the Worker if required.
 5. Record the event in docs/incidents.md.
 
+## Cost Operations
+
+Cost operations are required because SRE Lab now calls a real AI API.
+
+The detailed cost policy is documented in docs/cost.md.
+
+### Daily Checks During Initial AI Rollout
+
+- Check Cloudflare KV AI usage counters
+- Check Cloudflare KV estimated daily cost
+- Check Cloudflare KV estimated monthly cost
+- Check OpenAI Platform Usage
+- Check OpenAI credit balance
+- Confirm auto recharge is off
+- Confirm Grafana API check remains healthy
+
+### Weekly Checks
+
+- Review estimated monthly cost trend
+- Compare Cloudflare KV estimated cost with OpenAI Platform usage
+- Review ai_errors count
+- Review ai_limited count
+- Decide whether AI daily limits should be adjusted
+
+### Initial Thresholds
+
+| Item | Threshold |
+|---|---:|
+| Monthly warning threshold | 300 JPY |
+| Monthly stop threshold | 500 JPY |
+| Daily hard limit | 100 JPY |
+| Service AI daily limit | 30 requests / day |
+| Per-IP AI daily limit | 5 requests / day |
+
+### References
+
+- docs/cost.md
+- docs/runbook.md
+- docs/incidents.md
+
 ## Real AI API Integration Operations
 
 This section defines the operational policy for the first real AI API integration.
