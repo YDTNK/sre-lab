@@ -15,9 +15,9 @@
     <div class="container site-header__inner">
       <a class="site-brand" href="index.html">クラウドとAIの便利ツール集</a>
       <nav class="site-nav" aria-label="主要ナビゲーション">
-        <a href="moving-assistant.html">AI引越し診断</a>
+        <a href="index.html">トップ</a>
         <a href="aws-cost-simulator.html">AWS料金試算</a>
-        <a href="#notices">ご利用にあたって</a>
+        <a href="#moving-form">入力する</a>
       </nav>
     </div>
   </header>
@@ -30,43 +30,66 @@
     <section class="hero">
       <div class="hero__inner">
         <div class="hero__content">
-          <p class="eyebrow">AI-powered moving checklist</p>
+          <p class="eyebrow">AI Moving Assistant</p>
           <h1>AI引越し診断</h1>
-          <p class="hero-subtitle">引越し準備に必要なことを整理します</p>
-          <p class="lead">
-            家具、衣類、家電、本・小物、引越し予定日などを入力すると、必要な梱包資材、チェックリスト、注意点をまとめて確認できます。
+          <p class="hero-subtitle">
+            引越し準備に必要なことを、AIがまとめて整理します。
           </p>
-          <p>
-            分かる範囲で入力してください。すべての項目を細かく埋めなくても、準備のたたき台として使えます。
+          <p class="lead">
+            家具、衣類、家電、本・小物、引越し予定日などを入力すると、必要な梱包資材、チェックリスト、注意点を分かりやすく表示します。
           </p>
 
           <div class="hero__actions">
-            <a class="button" href="#moving-form">入力して診断する</a>
+            <a class="button" href="#moving-form">チェックリストを作成する</a>
+            <a class="button secondary" href="aws-cost-simulator.html">AWS料金試算を見る</a>
           </div>
         </div>
 
-        <div class="hero__visual" aria-label="AI引越し診断の結果イメージ">
+        <div class="hero__visual" aria-label="AI引越し診断の出力イメージ">
           <div class="preview-stack">
             <div class="preview-card">
               <div class="preview-card__head">
-                <span>診断結果イメージ</span>
-                <span>AIで整理</span>
+                <span>AI Input</span>
+                <span>Moving Data</span>
               </div>
               <dl class="preview-card__row">
-                <dt>準備サマリー</dt>
-                <dd>荷物量を整理</dd>
+                <dt>家具</dt>
+                <dd>デスク / 椅子</dd>
               </dl>
               <dl class="preview-card__row">
-                <dt>梱包資材</dt>
-                <dd>必要数の目安</dd>
+                <dt>家電</dt>
+                <dd>PC / 掃除機</dd>
               </dl>
               <dl class="preview-card__row">
-                <dt>チェックリスト</dt>
-                <dd>やることを一覧化</dd>
+                <dt>予定日</dt>
+                <dd>入力内容を反映</dd>
               </dl>
               <div class="preview-card__total">
-                <span>目的</span>
-                <span>準備漏れを減らす</span>
+                <span>入力</span>
+                <span>1分で完了</span>
+              </div>
+            </div>
+
+            <div class="preview-card">
+              <div class="preview-card__head">
+                <span>AI Output</span>
+                <span>Checklist</span>
+              </div>
+              <dl class="preview-card__row">
+                <dt>梱包資材</dt>
+                <dd>目安を表示</dd>
+              </dl>
+              <dl class="preview-card__row">
+                <dt>準備リスト</dt>
+                <dd>タスク化</dd>
+              </dl>
+              <dl class="preview-card__row">
+                <dt>注意点</dt>
+                <dd>見落とし防止</dd>
+              </dl>
+              <div class="preview-card__total">
+                <span>結果</span>
+                <span>AIで整理</span>
               </div>
             </div>
           </div>
@@ -76,114 +99,122 @@
 
     <section class="section" id="moving-form">
       <div class="section__header">
-        <span class="section__eyebrow">入力フォーム</span>
+        <span class="section__eyebrow">AI Input Panel</span>
         <h2 class="section__title">引越し情報を入力</h2>
         <p class="section__lead">
-          荷物の量や気になることを入力すると、引越し準備の目安を作成します。
+          分かる範囲で入力してください。すべての項目を細かく埋めなくても、AIが準備のたたき台を作成します。
         </p>
       </div>
 
-      <div class="card">
-        <form id="movingAssistantForm">
-          <div>
-            <label for="furniture">家具</label>
-            <textarea
-              id="furniture"
-              name="furniture"
-              placeholder="例: デスク1台、椅子1脚、ベッドなし、衣装ケース1つ"
-            ></textarea>
+      <div class="calculator-layout">
+        <div class="card">
+          <p class="status">Input</p>
+          <h3>診断条件</h3>
+          <p>
+            荷物の量や気になることを入力すると、引越し準備の目安を作成します。
+          </p>
+
+          <form id="movingAssistantForm">
+            <div>
+              <label for="furniture">家具</label>
+              <textarea
+                id="furniture"
+                name="furniture"
+                placeholder="例: デスク1台、椅子1脚、ベッドなし、衣装ケース1つ"
+              ></textarea>
+            </div>
+
+            <div>
+              <label for="clothes">衣類</label>
+              <input
+                id="clothes"
+                name="clothes"
+                type="text"
+                placeholder="例: ダンボール3箱分、衣装ケース1つ分"
+              />
+            </div>
+
+            <div>
+              <label for="electronics">家電・電子機器</label>
+              <input
+                id="electronics"
+                name="electronics"
+                type="text"
+                placeholder="例: 掃除機、炊飯器、PC、モニター"
+              />
+            </div>
+
+            <div>
+              <label for="books">本・小物</label>
+              <input
+                id="books"
+                name="books"
+                type="text"
+                placeholder="例: 本30冊、小物ダンボール2箱分"
+              />
+            </div>
+
+            <div>
+              <label for="movingDate">引越し予定日</label>
+              <input
+                id="movingDate"
+                name="movingDate"
+                type="date"
+              />
+            </div>
+
+            <div>
+              <label for="notes">補足情報</label>
+              <textarea
+                id="notes"
+                name="notes"
+                placeholder="例: 重い荷物がある、梱包が苦手、資材を多めに見積もりたい"
+              ></textarea>
+            </div>
+
+            <button type="submit">チェックリストを作成する</button>
+          </form>
+        </div>
+
+        <aside class="result-panel card" aria-live="polite">
+          <span class="section__eyebrow">AI Output Panel</span>
+          <h2>診断結果</h2>
+          <div id="result" class="result-card__body">
+            入力後、「チェックリストを作成する」を押してください。
           </div>
-
-          <div>
-            <label for="clothes">衣類</label>
-            <input
-              id="clothes"
-              name="clothes"
-              type="text"
-              placeholder="例: ダンボール3箱分、衣装ケース1つ分"
-            />
-          </div>
-
-          <div>
-            <label for="electronics">家電・電子機器</label>
-            <input
-              id="electronics"
-              name="electronics"
-              type="text"
-              placeholder="例: 掃除機、炊飯器、PC、モニター"
-            />
-          </div>
-
-          <div>
-            <label for="books">本・小物</label>
-            <input
-              id="books"
-              name="books"
-              type="text"
-              placeholder="例: 本30冊、小物ダンボール2箱分"
-            />
-          </div>
-
-          <div>
-            <label for="movingDate">引越し予定日</label>
-            <input
-              id="movingDate"
-              name="movingDate"
-              type="date"
-            />
-          </div>
-
-          <div>
-            <label for="notes">補足情報</label>
-            <textarea
-              id="notes"
-              name="notes"
-              placeholder="例: 重い荷物がある、梱包が苦手、資材を多めに見積もりたい"
-            ></textarea>
-          </div>
-
-          <button type="submit">チェックリストを作成する</button>
-        </form>
-      </div>
-    </section>
-
-    <section class="section" aria-live="polite">
-      <div class="section__header">
-        <span class="section__eyebrow">診断結果</span>
-        <h2 class="section__title">引越し準備の目安</h2>
-        <p class="section__lead">
-          入力内容をもとに、準備サマリー、必要資材、チェックリストを表示します。
-        </p>
-      </div>
-
-      <div id="result" class="result-box">
-        入力後、「チェックリストを作成する」を押してください。
+        </aside>
       </div>
     </section>
 
     <section class="section section--soft">
       <div class="section__header">
-        <span class="section__eyebrow">使い方</span>
+        <span class="section__eyebrow">How it works</span>
         <h2 class="section__title">3ステップで確認できます</h2>
+        <p class="section__lead">
+          入力から結果確認まで、シンプルな流れで引越し準備を整理できます。
+        </p>
       </div>
 
       <div class="scenario-grid">
         <article class="scenario-card">
-          <h3>1. 荷物の情報を入力</h3>
+          <p class="status">Step 1</p>
+          <h3>荷物の情報を入力</h3>
           <p>
             家具、衣類、家電、本・小物、引越し予定日など、分かる範囲で入力します。
           </p>
         </article>
 
         <article class="scenario-card">
-          <h3>2. チェックリストを作成</h3>
+          <p class="status">Step 2</p>
+          <h3>AIが準備内容を整理</h3>
           <p>
-            入力内容をもとに、AIが引越し準備に必要な情報を整理します。
+            入力内容をもとに、引越し準備に必要な情報をAIが整理します。
           </p>
         </article>
 
         <article class="scenario-card">
-          <h3>3. 必要資材と注意点を確認</h3>
+          <p class="status">Step 3</p>
+          <h3>必要資材と注意点を確認</h3>
           <p>
             ダンボール目安、梱包資材、作業チェックリスト、注意点を確認します。
           </p>

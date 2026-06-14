@@ -3645,3 +3645,147 @@ Not applicable. This is a visual design system update.
 - [ ] Rebuild AWS Cost Simulator HTML closer to dashboard UI if needed
 - [ ] Verify public pages after deployment
 - [ ] Capture screenshots for Phase 9-H-5
+
+---
+
+### 20260614-047
+
+### Service
+
+Cloud and AI Tools Public Site
+
+### Alert Rule
+
+Manual documentation record / AI Starter Kit top page adjustment
+
+### Summary
+
+The top page HTML was adjusted to better match the uploaded AI Starter Kit visual structure while preserving the existing static site architecture.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-H-6-2-2 top page AI Starter Kit style adjustment.
+
+### Detection
+
+Manual design review identified that the shared CSS had been updated, but the top page HTML still needed a structure closer to the AI Starter Kit style to make the visual design more effective.
+
+### Changes
+
+- Rebuilt apps/landing/index.html
+- Adjusted hero to a centered AI SaaS structure
+- Added large title and subtitle hierarchy
+- Added AI SaaS style preview cards
+- Adjusted section labels to AI Starter Kit-like wording
+- Reframed tool cards as feature cards
+- Reframed usage scenarios as use cases
+- Preserved public site name
+- Preserved links to AI Moving Assistant and AWS Cost Simulator
+- Did not add external dependencies
+- Did not migrate to Next.js, React, or Tailwind
+- Removed SRE and portfolio wording from public page
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Hero structure | AI Starter Kit inspired | Passed |
+| Site name | Preserved | Passed |
+| Tool links | Preserved | Passed |
+| Public wording | Customer-facing | Passed |
+| External dependencies | None added | Passed |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a top page visual structure update.
+
+### Prevention / Follow-up Actions
+
+- [ ] Adjust AI Moving Assistant page to AI Starter Kit style
+- [ ] Adjust AWS Cost Simulator page to AI Starter Kit style
+- [ ] Verify public pages after deployment
+
+---
+
+### 20260614-048
+
+### Service
+
+AI Moving Assistant Public Page
+
+### Alert Rule
+
+Manual documentation record / AI Starter Kit moving page adjustment
+
+### Summary
+
+The AI Moving Assistant page HTML was adjusted to better match the uploaded AI Starter Kit visual structure while preserving the existing API integration.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-H-6-2-3 AI Moving Assistant HTML adjustment.
+
+### Detection
+
+Manual design review identified that the shared CSS and top page had moved toward the AI Starter Kit style, but the AI Moving Assistant page still needed a matching AI tool interface structure.
+
+### Changes
+
+- Rebuilt apps/landing/moving-assistant.html
+- Adjusted hero to a centered AI SaaS structure
+- Added AI input / AI output preview cards
+- Changed form and result section into a dashboard-style two-column layout
+- Reframed result area as AI Output Panel
+- Reframed form area as AI Input Panel
+- Reframed usage section as How it works
+- Preserved form ID movingAssistantForm
+- Preserved result ID result
+- Preserved API endpoint /api/moving-assistant
+- Preserved client-side rendering logic
+- Did not add external dependencies
+- Did not migrate to Next.js, React, or Tailwind
+- Removed SRE and portfolio wording from public page
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Hero structure | AI Starter Kit inspired | Passed |
+| Input panel | Dashboard-style | Passed |
+| Output panel | Dashboard-style | Passed |
+| Form ID | movingAssistantForm | Passed |
+| Result ID | result | Passed |
+| API endpoint | /api/moving-assistant | Passed |
+| External dependencies | None added | Passed |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is an AI Moving Assistant visual structure update.
+
+### Prevention / Follow-up Actions
+
+- [ ] Adjust AWS Cost Simulator page to AI Starter Kit style
+- [ ] Verify AI Moving Assistant page after deployment
+- [ ] Confirm production API response rendering
