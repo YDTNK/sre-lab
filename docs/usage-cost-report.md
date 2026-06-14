@@ -98,3 +98,21 @@ Assessment:
 - Notes: Initial snapshot recorded after Real AI API Integration, AI cost tracking, AI daily limit, and cost_limit_reached verification. The high api_errors count is expected because API safety, rate limit, AI limit, and cost limit behavior were manually tested on the same day. OpenAI Platform Usage still showed 0 requests / 0 tokens / $0.00 at the time of the snapshot even though the Worker returned aiStatus: generated; this should be rechecked later because it may be caused by reporting delay, project/group filter, or usage aggregation timing.
 - Action: Continue daily snapshots during the initial AI rollout and compare Cloudflare KV estimated cost with OpenAI Platform usage.
 
+## OpenAI Usage Recheck Notes
+
+Cloudflare KV is used as the primary operational source for immediate usage and estimated cost monitoring.
+
+OpenAI Platform Usage is used as a secondary reconciliation source.
+
+If OpenAI Platform Usage shows 0 requests, 0 tokens, and $0.00 while Cloudflare KV records AI usage, record the mismatch and recheck later.
+
+Possible causes:
+
+- OpenAI Usage reporting delay
+- Project or group filter mismatch
+- API key project mismatch
+- Usage aggregation timing
+- Very small spend rounded to $0.00
+
+The first snapshot on 2026-06-14 recorded this mismatch and should be rechecked later.
+

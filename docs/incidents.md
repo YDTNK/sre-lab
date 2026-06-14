@@ -1496,3 +1496,87 @@ Not applicable. This is a usage and cost monitoring record.
 - [ ] Review AI limit thresholds after several days of data
 - [ ] Consider future dashboard design
 
+---
+
+### 20260614-017
+
+### Service
+
+SRE Lab Usage / Cost Monitoring
+
+### Alert Rule
+
+Manual documentation record / usage source of truth policy
+
+### Summary
+
+A usage source-of-truth and OpenAI Usage recheck policy was documented after the first usage and cost snapshot.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the monitoring policy for handling Cloudflare KV usage values and OpenAI Platform Usage mismatch during the initial AI rollout.
+
+### Detection
+
+Manual review after the first usage and cost snapshot.
+
+### Observed Context
+
+- Cloudflare KV recorded AI usage and estimated cost
+- Worker returned aiStatus: generated during production verification
+- OpenAI Platform Usage showed 0 requests, 0 tokens, and $0.00 at the time of snapshot
+- OpenAI auto recharge remained off
+
+### Policy Decision
+
+Cloudflare KV is treated as the primary source for immediate operational decisions.
+
+OpenAI Platform Usage is treated as a secondary reconciliation source because it may be affected by reporting delay, project or group filters, and usage aggregation timing.
+
+### Documentation Updated
+
+- docs/cost.md
+- docs/operations.md
+- docs/usage-cost-report.md
+- docs/incidents.md
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Usage source-of-truth policy | Documented | Passed |
+| OpenAI Usage recheck policy | Documented | Passed |
+| KV as primary operational source | Documented | Passed |
+| OpenAI Platform as reconciliation source | Documented | Passed |
+| Mismatch handling | Documented | Passed |
+
+### Assessment
+
+No incident is declared at this stage.
+
+The OpenAI Usage mismatch should be rechecked later while continuing to use Cloudflare KV for immediate cost guard decisions.
+
+### Root Cause
+
+No confirmed root cause.
+
+Possible causes include OpenAI Usage reporting delay, project or group filter mismatch, API key project mismatch, usage aggregation timing, or small spend rounding.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a monitoring policy documentation record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Recheck OpenAI Platform Usage later
+- [ ] Confirm OpenAI project and API key project alignment
+- [ ] Continue using Cloudflare KV for immediate cost guard decisions
+- [ ] Compare KV estimated usage with OpenAI Platform usage after reporting updates
+- [ ] Consider dashboard design in a later Phase 7 step
+

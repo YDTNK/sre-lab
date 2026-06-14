@@ -393,3 +393,36 @@ Initial reliability targets:
 - Alert pending period: 2m
 
 These targets may be updated as the project grows.\n\n## Daily Usage / Cost Snapshot\n\nDuring the initial AI rollout, create a manual usage and cost snapshot.\n\n### Checklist\n\n- Check API usage counters in Cloudflare KV\n- Check AI usage counters in Cloudflare KV\n- Check estimated token usage in Cloudflare KV\n- Check estimated daily cost in Cloudflare KV\n- Check estimated monthly cost in Cloudflare KV\n- Check OpenAI Platform usage\n- Check OpenAI credit balance\n- Confirm auto recharge is off\n- Record results in docs/usage-cost-report.md\n\n### Status Classification\n\n| Status | Meaning |\n|---|---|\n| normal | Usage and cost are within expected range |\n| warning | Usage or cost is approaching threshold |\n| action required | Limit reached, error spike, or unexpected cost increase |\n\n### Related Documents\n\n- docs/cost.md\n- docs/usage-cost-report.md\n- docs/incidents.md\n\n
+
+## OpenAI Usage Recheck Policy
+
+Cloudflare KV is the primary source for immediate SRE Lab usage and cost monitoring.
+
+OpenAI Platform Usage should be used for later reconciliation, not as the only real-time source of truth.
+
+### When OpenAI Usage Shows 0
+
+If OpenAI Platform Usage shows 0 requests, 0 tokens, and $0.00 while the Worker has returned aiStatus: generated, do not immediately treat it as an incident.
+
+Check the following:
+
+- OpenAI Platform project selector
+- Usage group or project filter
+- API key project
+- Usage date range
+- Billing credit balance
+- Whether usage reporting may be delayed
+
+### Operational Decision
+
+- Use Cloudflare KV values for immediate cost guard decisions
+- Use OpenAI Platform Usage for later reconciliation
+- Record mismatches in docs/usage-cost-report.md
+- Create an operational record if the mismatch persists or affects budget decisions
+
+### Related Documents
+
+- docs/cost.md
+- docs/usage-cost-report.md
+- docs/incidents.md
+

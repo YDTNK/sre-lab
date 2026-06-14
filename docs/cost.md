@@ -184,3 +184,46 @@ Create an operational record in docs/incidents.md if any of the following occurs
 - Consider Grafana alerting for cost thresholds
 - Consider D1 for historical cost reporting
 - Add revenue versus cost tracking after monetization experiments begin\n\n## Usage / Cost Snapshot Procedure\n\nUse this procedure to create a manual daily or weekly snapshot.\n\n1. Check Cloudflare KV usage counters.\n2. Check Cloudflare KV estimated token and cost counters.\n3. Check OpenAI Platform actual usage.\n4. Check OpenAI credit balance.\n5. Confirm auto recharge is off.\n6. Record the result in docs/usage-cost-report.md.\n7. Create an operational record in docs/incidents.md if thresholds are exceeded or abnormal behavior is found.\n\nSnapshot report:\n\n- docs/usage-cost-report.md\n\nRecommended initial cadence:\n\n- Daily during initial AI rollout\n- Weekly after stable low-traffic operation\n\n
+
+## Usage Source of Truth
+
+During the initial AI rollout, Cloudflare KV is treated as the primary source for immediate operational decisions.
+
+OpenAI Platform Usage is treated as a secondary reconciliation source because it may be affected by reporting delay, project or group filters, and usage aggregation timing.
+
+### Primary Operational Source
+
+| Data | Source | Purpose |
+|---|---|---|
+| API request count | Cloudflare KV | Immediate service usage review |
+| AI call count | Cloudflare KV | Immediate AI usage review |
+| AI success/error count | Cloudflare KV | Immediate reliability review |
+| Estimated input/output tokens | Cloudflare KV | Immediate cost estimation |
+| Estimated daily/monthly JPY cost | Cloudflare KV | Immediate cost guard decision |
+
+### Secondary Reconciliation Source
+
+| Data | Source | Purpose |
+|---|---|---|
+| Actual API requests | OpenAI Platform Usage | Later reconciliation |
+| Actual token usage | OpenAI Platform Usage | Later reconciliation |
+| Actual spend | OpenAI Platform Usage / Billing | Later reconciliation |
+| Credit balance | OpenAI Billing | Budget confirmation |
+
+### Policy
+
+- Do not wait for OpenAI Platform Usage to update before enforcing local cost guards.
+- Use Cloudflare KV estimated cost for cost_limit_reached behavior.
+- Use OpenAI Platform Usage to compare and adjust the estimate later.
+- If OpenAI Usage remains 0 while KV records generated AI responses, check project selection, group filter, API key project, and reporting delay.
+- Record any mismatch in docs/usage-cost-report.md.
+
+### Recheck Cadence
+
+| Situation | Recheck Timing |
+|---|---|
+| Initial AI rollout | Same day and next day |
+| OpenAI Usage shows 0 but Worker generated responses | Recheck after several hours or next day |
+| Stable operation | Weekly |
+| Billing or quota issue | Immediately and after mitigation |
+
