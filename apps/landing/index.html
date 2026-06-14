@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRE Lab - AI Moving Assistant</title>
+  <title>SRE Lab - AI引越し診断</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,86 +11,83 @@
     <section class="hero">
       <span class="badge">SRE Portfolio Project</span>
       <h1>SRE Lab</h1>
-    <p>
-      SRE Lab is a personal platform for building, operating,
-      monitoring, and improving AI-powered micro services.
-    </p>
-
+      <p>
+        SRE Labは、AIを活用した小さなWebサービスを構築・運用・監視し、
+        信頼性改善と自動化を実践するための個人プロジェクトです。
+      </p>
     </section>
 
     <section class="card">
-      <h2>AI Moving Assistant</h2>
+      <h2>AI引越し診断</h2>
       <p>
-        Plan your move by estimating packing materials, preparation tasks,
-        and moving-day risks based on your household items.
+        家具・衣類・家電・本などの情報を入力すると、
+        引越し準備に必要な梱包資材やタスクの目安を確認できます。
       </p>
 
       <form id="moving-form">
         <div>
-          <label for="furniture">Furniture list</label><br />
+          <label for="furniture">家具リスト</label><br />
           <textarea
             id="furniture"
             name="furniture"
             rows="4"
-            placeholder="Example: desk, chair, bed, storage case"
+            placeholder="例：デスク、椅子、ベッド、衣装ケース"
           ></textarea>
         </div>
 
         <div>
-          <label for="clothes">Clothing / storage items</label><br />
+          <label for="clothes">衣類・収納用品</label><br />
           <input
             id="clothes"
             name="clothes"
             type="text"
-            placeholder="Example: 3 storage boxes, 2 suitcases"
+            placeholder="例：衣装ケース3個、スーツケース2個"
           />
         </div>
 
         <div>
-          <label for="electronics">Electronics</label><br />
+          <label for="electronics">家電・電子機器</label><br />
           <input
             id="electronics"
             name="electronics"
             type="text"
-            placeholder="Example: iMac, speakers, audio interface"
+            placeholder="例：iMac、スピーカー、オーディオインターフェイス"
           />
         </div>
 
         <div>
-          <label for="books">Books / documents</label><br />
+          <label for="books">本・書類</label><br />
           <input
             id="books"
             name="books"
             type="text"
-            placeholder="Example: 30 books, documents"
+            placeholder="例：本30冊、書類一式"
           />
         </div>
 
         <div>
-          <label for="moving-date">Moving date</label><br />
+          <label for="moving-date">引越し予定日</label><br />
           <input id="moving-date" name="moving-date" type="date" />
         </div>
 
         <div>
-          <label for="notes">Optional notes</label><br />
+          <label for="notes">補足情報</label><br />
           <textarea
             id="notes"
             name="notes"
             rows="4"
-            placeholder="Example: moving alone, need packing materials, gym equipment included"
+            placeholder="例：一人暮らし、梱包資材が必要、ダンベルあり"
           ></textarea>
         </div>
 
-        <button type="submit">Generate moving checklist</button>
+        <button type="submit">引越しチェックリストを作成</button>
       </form>
     </section>
 
-    </section>
-
     <section class="card">
-      <h2>Result Preview</h2>
+      <h2>診断結果</h2>
       <div id="result">
-        <p>Submit the form to generate a basic moving preparation checklist.</p>
+        <p>入力後、チェックリストを作成できます。</p>
       </div>
     </section>
   </main>
@@ -113,40 +110,39 @@
 
       if (!hasAnyInput) {
         result.innerHTML = `
-          <h3>Please add moving information</h3>
+          <h3>引越し情報を入力してください</h3>
           <p>
-            Enter at least one item such as furniture, clothing, electronics,
-            books, moving date, or notes before generating a checklist.
+            家具、衣類、家電、本、引越し予定日、補足情報のうち、
+            最低1つ以上を入力してからチェックリストを作成してください。
           </p>
         `;
         return;
       }
 
       result.innerHTML = `
-        <h3>Basic Moving Checklist</h3>
-        <p><strong>Moving date:</strong> ${movingDate}</p>
+        <h3>基本チェックリスト</h3>
+        <p><strong>引越し予定日：</strong> ${movingDate || "未入力"}</p>
 
-        <h4>Input Summary</h4>
+        <h4>入力内容</h4>
         <ul>
-          <li><strong>Furniture:</strong> ${furniture}</li>
-          <li><strong>Clothing / storage:</strong> ${clothes}</li>
-          <li><strong>Electronics:</strong> ${electronics}</li>
-          <li><strong>Books / documents:</strong> ${books}</li>
-          <li><strong>Notes:</strong> ${notes}</li>
+          <li><strong>家具：</strong> ${furniture || "未入力"}</li>
+          <li><strong>衣類・収納：</strong> ${clothes || "未入力"}</li>
+          <li><strong>家電・電子機器：</strong> ${electronics || "未入力"}</li>
+          <li><strong>本・書類：</strong> ${books || "未入力"}</li>
+          <li><strong>補足：</strong> ${notes || "未入力"}</li>
         </ul>
 
-        <h4>Initial Recommendations</h4>
+        <h4>初期おすすめ準備</h4>
         <ul>
-          <li>Prepare cardboard boxes for clothing, books, and small electronics.</li>
-          <li>Use bubble wrap or towels for fragile electronics and audio equipment.</li>
-          <li>Separate heavy items such as books or training equipment into smaller boxes.</li>
-          <li>Confirm building access, elevator availability, and moving company schedule.</li>
-          <li>Create a final checklist at least one week before moving day.</li>
+          <li>衣類・本・小物用にダンボールを複数用意してください。</li>
+          <li>家電や音響機器は、緩衝材・タオル・プチプチで保護してください。</li>
+          <li>本やダンベルなど重い物は、小さめの箱に分けて入れてください。</li>
+          <li>建物の搬入経路、エレベーター、駐車スペースを事前確認してください。</li>
+          <li>引越し1週間前までに、最終チェックリストを作成してください。</li>
         </ul>
 
         <p>
-          This is a static MVP result. Future versions will use an AI API
-          to generate personalized estimates.
+          ※これは静的MVP版の診断結果です。今後、AI APIを使ってより個別化された診断に拡張予定です。
         </p>
       `;
     });
