@@ -271,7 +271,7 @@ export default {
 
 async function handleAwsCostSimulator(request, env) {
   if (request.method !== "POST") {
-    await recordUsage(env, "aws_cost_simulator_api_errors");
+    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
     return errorResponse(
       "method_not_allowed",
       "Only POST requests are allowed for this endpoint.",
@@ -282,7 +282,7 @@ async function handleAwsCostSimulator(request, env) {
   const contentType = request.headers.get("content-type") || "";
 
   if (!contentType.toLowerCase().includes("application/json")) {
-    await recordUsage(env, "aws_cost_simulator_api_errors");
+    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
     return errorResponse(
       "unsupported_media_type",
       "Content-Type must be application/json.",
@@ -293,7 +293,7 @@ async function handleAwsCostSimulator(request, env) {
   const contentLength = request.headers.get("content-length");
 
   if (contentLength && Number(contentLength) > MAX_REQUEST_BYTES) {
-    await recordUsage(env, "aws_cost_simulator_api_errors");
+    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
     return errorResponse(
       "payload_too_large",
       "Request body is too large.",
@@ -301,14 +301,14 @@ async function handleAwsCostSimulator(request, env) {
     );
   }
 
-  await recordUsage(env, "aws_cost_simulator_api_requests");
+  await safeRecordUsage(env, "aws_cost_simulator_api_requests");
 
   let bodyText;
 
   try {
     bodyText = await request.text();
   } catch {
-    await recordUsage(env, "aws_cost_simulator_api_errors");
+    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
     return errorResponse(
       "invalid_request_body",
       "Failed to read request body.",
@@ -317,7 +317,7 @@ async function handleAwsCostSimulator(request, env) {
   }
 
   if (bodyText.length > MAX_REQUEST_BYTES) {
-    await recordUsage(env, "aws_cost_simulator_api_errors");
+    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
     return errorResponse(
       "payload_too_large",
       "Request body is too large.",
@@ -330,7 +330,7 @@ async function handleAwsCostSimulator(request, env) {
   try {
     body = JSON.parse(bodyText);
   } catch {
-    await recordUsage(env, "aws_cost_simulator_api_errors");
+    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
     return errorResponse(
       "invalid_json",
       "Request body must be valid JSON.",
@@ -339,7 +339,7 @@ async function handleAwsCostSimulator(request, env) {
   }
 
   if (!body || typeof body !== "object" || Array.isArray(body)) {
-    await recordUsage(env, "aws_cost_simulator_api_errors");
+    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
     return errorResponse(
       "invalid_request_body",
       "Request body must be a JSON object.",
@@ -350,7 +350,7 @@ async function handleAwsCostSimulator(request, env) {
   const validation = validateAwsCostSimulatorInput(body);
 
   if (!validation.ok) {
-    await recordUsage(env, "aws_cost_simulator_api_errors");
+    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
     return errorResponse(
       "invalid_input",
       validation.message,
@@ -358,7 +358,7 @@ async function handleAwsCostSimulator(request, env) {
     );
   }
 
-  await recordUsage(env, "aws_cost_simulator_api_success");
+  await safeRecordUsage(env, "aws_cost_simulator_api_success");
 
   return jsonResponse(buildAwsCostSimulatorMockResponse(validation.data));
 }
@@ -878,6 +878,15 @@ async function checkRateLimit(request, env) {
 
   return { allowed: true };
 }
+
+async function safeRecordUsage(env, metricName) {
+  try {
+    await recordUsage(env, metricName);
+  } catch (error) {
+    console.warn("usage_record_failed", metricName, error?.message || error);
+  }
+}
+
 
 async function recordUsage(env, metricName) {
   if (!env.RATE_LIMIT_KV) {
