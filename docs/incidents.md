@@ -2144,3 +2144,82 @@ Not applicable. This is an API endpoint implementation record.
 - [ ] Implement deterministic cost calculation in Phase 8-6
 - [ ] Add stronger input validation in Phase 8-7
 - [ ] Add monitoring after endpoint behavior is stable
+
+---
+
+### 20260614-025
+
+### Service
+
+SRE Lab AWS Cost Simulator API
+
+### Alert Rule
+
+Manual documentation record / deterministic cost calculation
+
+### Summary
+
+Deterministic cost calculation was implemented for AWS Cost Simulator.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 8-6 deterministic cost calculation implementation.
+
+### Detection
+
+Manual implementation and syntax verification during Phase 8-6.
+
+### Changes
+
+- Replaced mock 0-cost response with deterministic calculation
+- Added fixed USD to JPY rate
+- Added fixed EC2 hourly pricing table
+- Added fixed EBS GB-month estimate
+- Added fixed S3 GB-month estimate
+- Added fixed data transfer estimate
+- Added total monthly USD calculation
+- Added total monthly JPY calculation
+- Added per-resource cost breakdown
+- Added educational assumptions and disclaimer
+
+### Design Decision
+
+AWS Cost Simulator uses fixed approximate prices for the MVP.
+
+The service does not call AWS Pricing API.
+
+The service does not call OpenAI API or any paid AI API.
+
+The output is explicitly educational and approximate.
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| API syntax check | Pass | Passed |
+| Deterministic calculation | Implemented | Passed |
+| Mock 0-cost response | Replaced | Passed |
+| Paid AI API call | Not used | Passed |
+| Educational disclaimer | Present | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a deterministic calculation implementation record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Deploy Worker through GitHub Actions
+- [ ] Verify POST /api/aws-cost-simulator in production
+- [ ] Connect frontend form to the API
+- [ ] Add stronger input validation in Phase 8-7
+- [ ] Add synthetic monitoring after endpoint behavior is stable

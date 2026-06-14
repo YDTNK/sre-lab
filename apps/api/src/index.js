@@ -21,6 +21,18 @@ const ESTIMATED_OUTPUT_TOKENS = 500;
 const ESTIMATED_INPUT_TOKEN_DIVISOR = 1;
 const ESTIMATED_COST_PER_1K_INPUT_TOKENS_JPY = 0.02;
 const ESTIMATED_COST_PER_1K_OUTPUT_TOKENS_JPY = 0.08;
+const USD_TO_JPY_RATE = 150;
+
+const AWS_EC2_HOURLY_USD = {
+  "t3.micro": 0.0136,
+  "t3.small": 0.0272,
+  "t3.medium": 0.0544,
+};
+
+const AWS_EBS_GB_MONTH_USD = 0.096;
+const AWS_S3_GB_MONTH_USD = 0.025;
+const AWS_DATA_TRANSFER_GB_USD = 0.09;
+
 
 const FIELD_NAMES = [
   "furniture",
@@ -330,35 +342,76 @@ async function handleAwsCostSimulator(request, env) {
 }
 
 function buildAwsCostSimulatorMockResponse(body) {
+  const region = typeof body.region === "string" ? body.region : "ap-northeast-1";
+  const ec2InstanceType =
+    typeof body.ec2InstanceType === "string" ? body.ec2InstanceType : "t3.micro";
+
+  const ec2InstanceCount = normalizeNumber(body.ec2InstanceCount, 1);
+  const ec2HoursPerMonth = normalizeNumber(body.ec2HoursPerMonth, 730);
+  const ebsGb = normalizeNumber(body.ebsGb, 30);
+  const s3Gb = normalizeNumber(body.s3Gb, 10);
+  const dataTransferGb = normalizeNumber(body.dataTransferGb, 10);
+
+  const ec2HourlyUsd =
+    AWS_EC2_HOURLY_USD[ec2InstanceType] || AWS_EC2_HOURLY_USD["t3.micro"];
+
+  const ec2Usd = ec2HourlyUsd * ec2InstanceCount * ec2HoursPerMonth;
+  const ebsUsd = AWS_EBS_GB_MONTH_USD * ebsGb;
+  const s3Usd = AWS_S3_GB_MONTH_USD * s3Gb;
+  const dataTransferUsd = AWS_DATA_TRANSFER_GB_USD * dataTransferGb;
+
+  const totalMonthlyUsd = roundCurrency(
+    ec2Usd + ebsUsd + s3Usd + dataTransferUsd
+  );
+  const totalMonthlyJpy = Math.round(totalMonthlyUsd * USD_TO_JPY_RATE);
+
   return {
     service: "aws-cost-simulator",
-    mode: "mock",
-    summary: "AWS Cost Simulator endpoint is available. Deterministic cost calculation will be implemented in the next phase.",
-    totalMonthlyUsd: 0,
-    totalMonthlyJpy: 0,
+    mode: "deterministic",
+    summary: `Estimated monthly cost is about $${totalMonthlyUsd} / ¥${totalMonthlyJpy}.`,
+    totalMonthlyUsd,
+    totalMonthlyJpy,
     breakdown: {
-      ec2: 0,
-      ebs: 0,
-      s3: 0,
-      dataTransfer: 0,
+      ec2: roundCurrency(ec2Usd),
+      ebs: roundCurrency(ebsUsd),
+      s3: roundCurrency(s3Usd),
+      dataTransfer: roundCurrency(dataTransferUsd),
     },
     assumptions: [
-      "This is a mock response for endpoint verification.",
+      "This is an educational deterministic estimate.",
       "No AWS Pricing API is called.",
       "No paid AI API is used for this endpoint.",
-      "Deterministic calculation will be added in Phase 8-6.",
+      `USD to JPY rate is fixed at ${USD_TO_JPY_RATE}.`,
+      "EC2 pricing uses a small fixed table for t3.micro, t3.small, and t3.medium.",
+      "EBS, S3, and data transfer prices are approximate fixed values.",
+      "Taxes, free tier, snapshots, NAT Gateway, Load Balancer, RDS, CloudWatch, and support fees are not included.",
     ],
     receivedInput: {
-      region: body.region || "",
-      ec2InstanceType: body.ec2InstanceType || "",
-      ec2InstanceCount: body.ec2InstanceCount ?? null,
-      ec2HoursPerMonth: body.ec2HoursPerMonth ?? null,
-      ebsGb: body.ebsGb ?? null,
-      s3Gb: body.s3Gb ?? null,
-      dataTransferGb: body.dataTransferGb ?? null,
+      region,
+      ec2InstanceType,
+      ec2InstanceCount,
+      ec2HoursPerMonth,
+      ebsGb,
+      s3Gb,
+      dataTransferGb,
     },
-    disclaimer: "This is an educational placeholder response and not an official AWS cost estimate.",
+    disclaimer:
+      "This is an educational estimate and not an official AWS cost estimate. Always confirm real costs with AWS Pricing Calculator and actual AWS billing data.",
   };
+}
+
+function normalizeNumber(value, fallback) {
+  const numberValue = Number(value);
+
+  if (!Number.isFinite(numberValue) || numberValue < 0) {
+    return fallback;
+  }
+
+  return numberValue;
+}
+
+function roundCurrency(value) {
+  return Number(value.toFixed(2));
 }
 
 async function checkAiDailyLimit(request, env) {

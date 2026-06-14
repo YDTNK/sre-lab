@@ -11,8 +11,8 @@ This service is designed as a lightweight AWS monthly cost estimation tool for l
 | Service name | AWS Cost Simulator |
 | Japanese name | AWS料金試算ミニツール |
 | Phase | Phase 8 Second Service |
-| Status | Design phase |
-| Initial API mode | Mock / deterministic calculation |
+| Status | Deterministic calculation implemented |
+| Initial API mode | Deterministic calculation |
 | AI dependency | Not required for MVP |
 | Target users | AWS learners, junior engineers, portfolio reviewers |
 
@@ -76,7 +76,7 @@ It should clearly state that the result is an approximate educational estimate.
 
 ## Initial Calculation Policy
 
-The first version should use deterministic static pricing values stored in code.
+The first version uses deterministic static pricing values stored in code.
 
 This keeps the MVP simple and avoids external API dependency.
 
@@ -209,7 +209,7 @@ The first goal is SRE portfolio value and operational consistency.
 | Phase 8-1 | Service design | Current |
 | Phase 8-2 | Frontend UI design | Future |
 | Phase 8-3 | Workers API endpoint | Future |
-| Phase 8-4 | Deterministic cost calculation | Future |
+| Phase 8-4 | Deterministic cost calculation | Completed |
 | Phase 8-5 | API safety and validation | Future |
 | Phase 8-6 | Monitoring and alerting | Future |
 | Phase 8-7 | README and operations docs update | Future |
@@ -226,3 +226,30 @@ Phase 8 is successful when:
 - Operational records are updated
 - The service improves SRE Lab's portfolio story
 
+## Implemented Deterministic Pricing
+
+The current deterministic calculation uses fixed approximate values.
+
+| Item | Value |
+|---|---:|
+| USD to JPY | 150 |
+| t3.micro hourly USD | 0.0136 |
+| t3.small hourly USD | 0.0272 |
+| t3.medium hourly USD | 0.0544 |
+| EBS GB-month USD | 0.096 |
+| S3 GB-month USD | 0.025 |
+| Data transfer GB USD | 0.09 |
+
+Important exclusions:
+
+- AWS Free Tier
+- Taxes
+- Snapshots
+- NAT Gateway
+- Load Balancer
+- RDS
+- CloudWatch
+- AWS Support
+- Regional pricing differences beyond the initial fixed table
+
+This is an educational estimate and not an official AWS cost estimate.
