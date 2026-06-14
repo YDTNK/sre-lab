@@ -400,3 +400,95 @@ Not applicable. This is a design and planning record.
 - [ ] Confirm Grafana API check remains healthy
 - [ ] Add usage and cost tracking before real AI API integration
 
+---
+
+### 20260614-005
+
+### Service
+
+SRE Lab Workers API
+
+### Alert Rule
+
+Manual verification / rate limiting check
+
+### Summary
+
+KV-based rate limiting was implemented and verified successfully for the Workers API.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the successful implementation and production verification of IP-based rate limiting before real AI API integration.
+
+### Detection
+
+Manual verification after GitHub Actions deployment.
+
+### Initial Checks
+
+- Cloudflare KV namespace was created
+- RATE_LIMIT_KV binding was added to wrangler.toml
+- Workers API was updated with KV-based rate limiting
+- Cloudflare API Token permissions were updated to include Workers KV Storage edit access
+- Deploy Worker workflow was re-run successfully
+- Production API rate limit test was completed
+
+### Implementation Details
+
+- Storage: Cloudflare KV
+- Binding: RATE_LIMIT_KV
+- Target endpoint: POST /api/moving-assistant
+- Minute limit: 10 requests / minute / client IP
+- Daily limit: 50 requests / day / client IP
+- Rate limit exceeded status: 429 Too Many Requests
+- Error code: rate_limited
+- Retry header: Retry-After: 60
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Requests 1-10 | 200 | Passed |
+| Request 11 | 429 / rate_limited | Passed |
+| Request 12 | 429 / rate_limited | Passed |
+| Retry-After header | Retry-After: 60 | Passed |
+
+### Timeline
+
+| Time | Event |
+|---|---|
+| 2026-06-14 | Cloudflare KV namespace was created |
+| 2026-06-14 | RATE_LIMIT_KV binding was added to wrangler.toml |
+| 2026-06-14 | KV-based rate limiting was implemented |
+| 2026-06-14 | Deploy Worker initially failed due to missing KV token permission |
+| 2026-06-14 | Cloudflare API Token was updated with Workers KV Storage edit permission |
+| 2026-06-14 | Deploy Worker was re-run successfully |
+| 2026-06-14 | Production rate limit behavior was verified |
+
+### Root Cause
+
+No user-facing incident occurred.
+
+The deployment initially failed because the GitHub Actions Cloudflare API Token did not have Workers KV Storage edit permission required for KV bindings.
+
+### Mitigation
+
+A new Cloudflare API Token with Workers KV Storage edit permission was created and saved as the GitHub Actions secret CLOUDFLARE_API_TOKEN.
+
+### Recovery Validation
+
+Deploy Worker workflow completed successfully after updating the Cloudflare API Token.
+
+Production API returned HTTP 200 for the first 10 requests and HTTP 429 / rate_limited with Retry-After: 60 from the 11th request.
+
+### Prevention / Follow-up Actions
+
+- [ ] Continue monitoring Grafana API check after rate limiting deployment
+- [ ] Confirm valid API requests recover after the 1-minute rate limit window
+- [ ] Add usage tracking before real AI API integration
+- [ ] Add estimated cost tracking before real AI API integration
+- [ ] Add cost incident runbook
+- [ ] Review rate limit values after real usage data is available
+
