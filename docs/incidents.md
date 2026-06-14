@@ -993,3 +993,130 @@ Fallback behavior was also verified before successful generation.
 - [ ] Confirm Grafana API check remains healthy
 - [ ] Review prompt and response validation after several real requests
 
+---
+
+### 20260614-011
+
+### Service
+
+SRE Lab Workers API
+
+### Alert Rule
+
+Manual verification / AI cost tracking and daily limit check
+
+### Summary
+
+AI-specific daily limits and estimated cost tracking were implemented and verified in production.
+
+### Impact
+
+No user-facing incident occurred.
+
+The production API continued to return valid JSON responses while enforcing AI-specific daily limits and recording estimated AI usage cost.
+
+### Detection
+
+Manual production verification after GitHub Actions deployment.
+
+### Initial Checks
+
+- OpenAI API Worker integration was already verified
+- AI-generated responses were already working in production
+- Usage tracking foundation was already implemented
+- KV-based rate limiting was already implemented
+- Monthly cost stop threshold foundation was already available
+
+### Implementation Details
+
+- Service AI daily limit: 30 requests per day
+- Per-IP AI daily limit: 5 requests per day
+- AI limit response: 429 / ai_limit_reached
+- AI limit Retry-After: 86400
+- Estimated output tokens: 500
+- Estimated input token strategy: conservative text length approximation
+- Estimated cost is recorded in JPY
+- Daily and monthly estimated cost keys are stored in Cloudflare KV
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| CI | Success | Passed |
+| Deploy Worker | Success | Passed |
+| Valid POST | 200 | Passed |
+| AI generation | aiStatus: generated | Passed |
+| estimatedUsage in response | Present | Passed |
+| Daily estimated cost key | Numeric value | Passed |
+| Monthly estimated cost key | Numeric value | Passed |
+| Input token key | Numeric value | Passed |
+| Output token key | Numeric value | Passed |
+| Per-IP AI daily limit | 429 / ai_limit_reached | Passed |
+| Retry-After header | 86400 | Passed |
+
+### Observed Production Response
+
+- HTTP status: 200
+- aiStatus: generated
+- estimatedInputTokens: 84
+- estimatedOutputTokens: 500
+- estimatedCostJpy: 0.04168
+
+### Observed KV Values
+
+| Key | Value |
+|---|---:|
+| usage:moving-assistant:ai_calls:20260614 | 5 |
+| usage:moving-assistant:ai_success:20260614 | 2 |
+| cost:moving-assistant:input_tokens:20260614 | 84 |
+| cost:moving-assistant:output_tokens:20260614 | 500 |
+| cost:moving-assistant:estimated_jpy:20260614 | 0.04168 |
+| cost:moving-assistant:estimated_jpy:202606 | 0.04168 |
+
+### AI Limit Verification
+
+| Request | Result |
+|---:|---|
+| 1 | 200 / generated |
+| 2 | 200 / generated |
+| 3 | 200 / generated |
+| 4 | 200 / generated |
+| 5 | 429 / ai_limit_reached |
+| 6 | 429 / ai_limit_reached |
+
+### Timeline
+
+| Time | Event |
+|---|---|
+| 2026-06-14 | AI cost tracking and daily limits were implemented |
+| 2026-06-14 | Changes were pushed to main |
+| 2026-06-14 | CI workflow completed successfully |
+| 2026-06-14 | Deploy Worker workflow completed successfully |
+| 2026-06-14 | Production API returned generated AI response with estimatedUsage |
+| 2026-06-14 | Cloudflare KV cost keys were verified |
+| 2026-06-14 | Per-IP AI daily limit was verified with ai_limit_reached |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Production API returned valid AI-generated JSON before the AI-specific limit was reached.
+
+After the per-IP AI daily limit was reached, the API returned 429 / ai_limit_reached with Retry-After: 86400.
+
+Cloudflare KV recorded estimated input tokens, output tokens, and daily/monthly estimated cost values.
+
+### Prevention / Follow-up Actions
+
+- [ ] Add docs/cost.md
+- [ ] Add cost_limit_reached test case
+- [ ] Compare estimated cost with OpenAI Platform usage
+- [ ] Review AI limit thresholds after initial usage data is collected
+- [ ] Consider adding Grafana alerting for cost threshold in the future
+
