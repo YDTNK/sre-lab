@@ -150,7 +150,7 @@ Grafana Cloud Alerting is configured for the AI Moving Assistant API check.
 
 ## Worker Deployment
 
-The Cloudflare Workers API can be deployed through GitHub Actions.
+The Cloudflare Workers API is deployed through GitHub Actions.
 
 - Workflow: .github/workflows/deploy-worker.yml
 - Trigger:
@@ -160,6 +160,10 @@ The Cloudflare Workers API can be deployed through GitHub Actions.
 - Required GitHub Secrets:
   - CLOUDFLARE_API_TOKEN
   - CLOUDFLARE_ACCOUNT_ID
+- Verification:
+  - Deploy Worker workflow succeeded
+  - API syntax check passed
+  - Wrangler deploy completed successfully
 
 ## Roadmap
 
