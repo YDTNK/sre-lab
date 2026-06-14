@@ -149,6 +149,55 @@ Rate limiting will be introduced before real AI API integration.
 Rate limiting must be implemented before connecting OpenAI API, Claude API, or any other paid AI API.
 
 
+## Usage and Cost Tracking Operations
+
+Usage and cost tracking must be introduced before real AI API integration.
+
+### Design Decision
+
+- Initial storage: Cloudflare KV
+- Future storage option: Cloudflare D1 or another database
+- Monthly budget: 500 JPY
+- Monthly warning threshold: 300 JPY
+- Monthly stop threshold: 500 JPY
+- Daily soft limit: 50 JPY
+- Daily hard limit: 100 JPY
+
+### Metrics to Track
+
+API usage:
+
+- API requests
+- API successes
+- API errors
+- Rate limited requests
+
+AI API usage after real AI integration:
+
+- AI API calls
+- AI API successes
+- AI API errors
+- Estimated input tokens
+- Estimated output tokens
+- Estimated cost in JPY
+
+### Operational Checks After Implementation
+
+- Confirm API request counts are recorded
+- Confirm rate limited requests are recorded
+- Confirm estimated daily cost is recorded
+- Confirm estimated monthly cost is recorded
+- Confirm AI API calls stop when the monthly stop threshold is reached
+- Confirm cost_limit_reached response is returned
+- Record verification results in docs/incidents.md
+
+### Review Cadence
+
+- Daily during initial AI API rollout
+- Weekly after stable operation
+- Monthly when reviewing revenue and cost balance
+
+
 ## Incident Response Flow
 
 1. Receive alert

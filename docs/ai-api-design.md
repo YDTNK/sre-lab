@@ -295,3 +295,123 @@ The API should validate requests in the following order:
 - Add production curl verification
 - Document results in docs/incidents.md
 
+## Usage and Cost Tracking Design Before Real AI Integration
+
+Usage and cost tracking must be designed before connecting a real AI API.
+
+The purpose is to understand request volume, estimate AI API cost, and prevent unexpected billing before monetization.
+
+### Decision
+
+Initial usage and cost tracking will use Cloudflare KV.
+
+This is acceptable for the first version because SRE Lab already uses Cloudflare Workers and KV for rate limiting.
+
+A future version may move usage and cost records to Cloudflare D1 or another database if reporting requirements become more complex.
+
+### Initial Metrics
+
+API usage:
+
+- api_requests
+- api_success
+- api_errors
+- rate_limited
+
+AI API usage after real AI integration:
+
+- ai_calls
+- ai_success
+- ai_errors
+
+Estimated token usage after real AI integration:
+
+- input_tokens
+- output_tokens
+
+Estimated cost:
+
+- estimated_jpy_daily
+- estimated_jpy_monthly
+
+### KV Key Design
+
+Daily API usage:
+
+- usage:moving-assistant:api_requests:{yyyyMMdd}
+- usage:moving-assistant:api_success:{yyyyMMdd}
+- usage:moving-assistant:api_errors:{yyyyMMdd}
+- usage:moving-assistant:rate_limited:{yyyyMMdd}
+
+Daily AI usage:
+
+- usage:moving-assistant:ai_calls:{yyyyMMdd}
+- usage:moving-assistant:ai_success:{yyyyMMdd}
+- usage:moving-assistant:ai_errors:{yyyyMMdd}
+
+Estimated tokens:
+
+- cost:moving-assistant:input_tokens:{yyyyMMdd}
+- cost:moving-assistant:output_tokens:{yyyyMMdd}
+
+Estimated cost:
+
+- cost:moving-assistant:estimated_jpy:{yyyyMMdd}
+- cost:moving-assistant:estimated_jpy:{yyyyMM}
+
+### Initial Budget
+
+| Item | Threshold |
+|---|---:|
+| Monthly budget | 500 JPY |
+| Monthly warning threshold | 300 JPY |
+| Monthly stop threshold | 500 JPY |
+| Daily soft limit | 50 JPY |
+| Daily hard limit | 100 JPY |
+
+### Cost Control Order
+
+The future AI-enabled API should process requests in this order:
+
+1. OPTIONS handling
+2. Path validation
+3. Method validation
+4. Content-Type validation
+5. Request size validation
+6. Rate limit check
+7. JSON parse
+8. Input validation
+9. Usage count increment
+10. Cost threshold check
+11. AI API call
+12. AI usage and estimated cost record
+13. Response
+
+### Cost Limit Response
+
+If the monthly stop threshold is reached, the Worker should not call the AI API.
+
+Expected response:
+
+{
+  "error": {
+    "code": "cost_limit_reached",
+    "message": "AI diagnosis is temporarily unavailable due to usage limits."
+  }
+}
+
+Initial HTTP status:
+
+- 503 Service Unavailable
+
+### Follow-up Implementation Tasks
+
+- Add usage counter logic
+- Add estimated token tracking
+- Add estimated cost tracking
+- Add monthly cost threshold check
+- Add cost_limit_reached response
+- Add docs/cost.md
+- Add cost incident runbook
+- Verify that AI API calls are blocked after the stop threshold is reached
+

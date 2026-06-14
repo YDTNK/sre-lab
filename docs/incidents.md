@@ -492,3 +492,93 @@ Production API returned HTTP 200 for the first 10 requests and HTTP 429 / rate_l
 - [ ] Add cost incident runbook
 - [ ] Review rate limit values after real usage data is available
 
+---
+
+### 20260614-006
+
+### Service
+
+SRE Lab Workers API
+
+### Alert Rule
+
+Manual design record / usage and cost planning
+
+### Summary
+
+Usage and cost tracking design was defined before real AI API integration.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the planned approach for usage counting, estimated AI API cost tracking, and cost threshold control before connecting a paid AI API.
+
+### Detection
+
+Manual design review.
+
+### Initial Checks
+
+- API safety hardening was completed
+- KV-based rate limiting was implemented and verified
+- Real AI API integration has not started yet
+- Usage and cost tracking is required before connecting a paid AI API
+- Cost control is required because SRE Lab is not monetized yet
+
+### Design Decision
+
+- Initial storage: Cloudflare KV
+- Future storage option: Cloudflare D1 or another database
+- Monthly budget: 500 JPY
+- Monthly warning threshold: 300 JPY
+- Monthly stop threshold: 500 JPY
+- Daily soft limit: 50 JPY
+- Daily hard limit: 100 JPY
+- Cost limit response: 503 / cost_limit_reached
+
+### Planned Metrics
+
+- API request count
+- API success count
+- API error count
+- Rate limited request count
+- AI API call count
+- AI API success count
+- AI API error count
+- Estimated input tokens
+- Estimated output tokens
+- Estimated cost in JPY
+
+### Timeline
+
+| Time | Event |
+|---|---|
+| 2026-06-14 | Usage and cost tracking requirement was identified |
+| 2026-06-14 | Cloudflare KV was selected as the initial tracking storage |
+| 2026-06-14 | Initial monthly budget and thresholds were defined |
+| 2026-06-14 | Cost limit response design was documented |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a design and planning record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Add usage counter logic
+- [ ] Add estimated token tracking
+- [ ] Add estimated cost tracking
+- [ ] Add monthly cost threshold check
+- [ ] Add cost_limit_reached response
+- [ ] Add docs/cost.md
+- [ ] Verify AI API calls are blocked after the stop threshold
+- [ ] Review thresholds after real usage data is available
+

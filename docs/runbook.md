@@ -214,3 +214,62 @@ Expected response body:
 - Review whether future AI API cost controls need stricter limits
 - Consider adding usage and cost tracking before real AI API integration
 
+## Cost Incident Runbook
+
+Use this section when estimated AI API usage or cost exceeds expected thresholds.
+
+### Initial Thresholds
+
+| Item | Threshold |
+|---|---:|
+| Monthly budget | 500 JPY |
+| Monthly warning threshold | 300 JPY |
+| Monthly stop threshold | 500 JPY |
+| Daily soft limit | 50 JPY |
+| Daily hard limit | 100 JPY |
+
+### Expected Stop Behavior
+
+When the monthly stop threshold is reached, the Worker should not call the real AI API.
+
+Expected response:
+
+{
+  "error": {
+    "code": "cost_limit_reached",
+    "message": "AI diagnosis is temporarily unavailable due to usage limits."
+  }
+}
+
+Expected status:
+
+- 503 Service Unavailable
+
+### Investigation Steps
+
+1. Check daily usage count.
+2. Check monthly estimated cost.
+3. Confirm whether traffic increased naturally or appears abusive.
+4. Check rate limited request count.
+5. Check recent deployments.
+6. Confirm whether AI API calls are being blocked after the stop threshold.
+7. Review whether rate limits should be lowered.
+8. Record findings in docs/incidents.md.
+
+### Mitigation Options
+
+- Temporarily disable real AI API calls
+- Lower rate limits
+- Lower daily or monthly cost thresholds
+- Return fallback mock response
+- Add stricter input length limits
+- Investigate suspicious traffic patterns
+
+### Follow-up Actions
+
+- Add or update docs/cost.md
+- Review monthly cost trend
+- Review revenue versus cost
+- Update thresholds if usage becomes stable
+- Add alerting for cost threshold if possible
+
