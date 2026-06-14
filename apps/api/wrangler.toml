@@ -8,3 +8,6 @@ enabled = true
 [[kv_namespaces]]
 binding = "RATE_LIMIT_KV"
 id = "5ea34c7e316a4733bee1f797457e863e"
+
+[vars]
+AI_MODEL = "gpt-4.1-nano"

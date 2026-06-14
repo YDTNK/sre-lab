@@ -798,3 +798,107 @@ Not applicable. This is a design and planning record.
 - [ ] Add estimated cost calculation
 - [ ] Verify production behavior after deployment
 
+---
+
+### 20260614-009
+
+### Service
+
+SRE Lab Workers API
+
+### Alert Rule
+
+Manual configuration record / OpenAI secret and model setup
+
+### Summary
+
+OpenAI API secret and model configuration preparation was completed before implementation.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents the preparation of Cloudflare Workers Secret management and model configuration for the first real AI API integration.
+
+### Detection
+
+Manual configuration review before OpenAI API implementation.
+
+### Initial Checks
+
+- Real AI API integration strategy was documented
+- OpenAI API was selected as the first provider
+- Claude API was reserved for future infrastructure-focused services
+- Usage and cost tracking foundation was implemented
+- OPENAI_API_KEY was registered as a Cloudflare Workers Secret
+- Secret handling must be prepared before code implementation
+
+### Configuration Decision
+
+- Secret name: OPENAI_API_KEY
+- Secret location: Cloudflare Workers Secret
+- Model variable: AI_MODEL
+- Initial model value: gpt-4.1-nano
+- Frontend API key exposure: prohibited
+- Repository API key storage: prohibited
+- Missing secret behavior: fallback/mock response
+- Secret rotation runbook: required
+
+### Setup Command
+
+```bash
+cd apps/api
+npx wrangler secret put OPENAI_API_KEY
+```
+
+### Safety Controls
+
+- API key must not be pasted into chat logs
+- API key must not be committed to GitHub
+- API key must not be placed in frontend JavaScript
+- OpenAI API must be called only from Cloudflare Workers
+- AI_MODEL may be stored in wrangler.toml because it is not secret
+- Worker must safely fallback if OPENAI_API_KEY is missing
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| OPENAI_API_KEY secret registration | Success | Passed |
+| AI_MODEL configuration | Present in wrangler.toml | Pending |
+| API key in repository | Not present | Pending |
+| CI | Success | Pending |
+| Deploy Worker | Success | Pending |
+| Existing mock API behavior | Preserved | Pending |
+
+### Timeline
+
+| Time | Event |
+|---|---|
+| 2026-06-14 | OPENAI_API_KEY was registered as a Cloudflare Workers Secret |
+| 2026-06-14 | AI_MODEL configuration policy was defined |
+| 2026-06-14 | Missing-secret fallback behavior was defined |
+| 2026-06-14 | Secret rotation runbook was documented |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a configuration preparation record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Verify deploy succeeds after model configuration
+- [ ] Confirm no API key exists in repository files
+- [ ] Implement OpenAI API call from Worker
+- [ ] Add missing-secret fallback
+- [ ] Add AI timeout handling
+- [ ] Add AI response validation
+- [ ] Add estimated cost calculation
+

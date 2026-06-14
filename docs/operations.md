@@ -149,6 +149,56 @@ Rate limiting will be introduced before real AI API integration.
 Rate limiting must be implemented before connecting OpenAI API, Claude API, or any other paid AI API.
 
 
+## OpenAI Secret and Model Configuration Operations
+
+This section describes how to manage the OpenAI API key and model configuration.
+
+### Secret Setup
+
+The OpenAI API key must be stored as a Cloudflare Workers Secret.
+
+Command:
+
+```bash
+cd apps/api
+npx wrangler secret put OPENAI_API_KEY
+```
+
+The secret value must not be committed to GitHub or pasted into documentation.
+
+### Model Configuration
+
+The model is configured in wrangler.toml.
+
+Current planned variable:
+
+```toml
+[vars]
+AI_MODEL = "gpt-4.1-nano"
+```
+
+The model value can be changed later without exposing secrets.
+
+### Verification
+
+After setting the secret and model configuration:
+
+1. Confirm wrangler.toml contains AI_MODEL.
+2. Confirm OPENAI_API_KEY is configured in Cloudflare Workers secrets.
+3. Confirm no API key exists in repository files.
+4. Confirm deploy succeeds.
+5. Confirm existing mock API behavior remains healthy until real AI integration is implemented.
+
+### Secret Rotation
+
+If the API key is suspected to be exposed:
+
+1. Revoke the exposed OpenAI API key.
+2. Create a new OpenAI API key.
+3. Update OPENAI_API_KEY using wrangler secret put.
+4. Re-deploy the Worker if required.
+5. Record the event in docs/incidents.md.
+
 ## Real AI API Integration Operations
 
 This section defines the operational policy for the first real AI API integration.

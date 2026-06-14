@@ -587,3 +587,69 @@ The exact price table should be confirmed from the official provider pricing bef
 - Verify production behavior with curl
 - Record verification results in docs/incidents.md
 
+## OpenAI API Secret and Model Configuration
+
+This section defines how OpenAI API credentials and model configuration are prepared before implementation.
+
+### Secret
+
+The OpenAI API key must be stored as a Cloudflare Workers Secret.
+
+Secret name:
+
+- OPENAI_API_KEY
+
+The secret must not be committed to GitHub, written to README examples, exposed in frontend JavaScript, or pasted into chat logs.
+
+### Setup Command
+
+Run this command from the Workers API directory:
+
+```bash
+cd apps/api
+npx wrangler secret put OPENAI_API_KEY
+```
+
+The API key should be pasted only into the interactive secret prompt.
+
+### Model Configuration
+
+The initial model should be configured using a Worker environment variable.
+
+Variable name:
+
+- AI_MODEL
+
+Initial value:
+
+- gpt-4.1-nano
+
+The model name is not secret information, but it should be configurable without changing frontend code.
+
+### Fallback When Secret Is Missing
+
+If OPENAI_API_KEY is not configured, the Worker must not fail.
+
+Expected behavior:
+
+- Do not call OpenAI API
+- Return the existing fallback/mock response
+- Record an AI configuration error metric after implementation
+- Avoid exposing internal configuration details to the frontend
+
+### Safety Requirement
+
+The frontend must continue to call only the SRE Lab Workers API.
+
+The frontend must never call OpenAI API directly.
+
+### Follow-up Implementation Tasks
+
+- Read env.OPENAI_API_KEY inside the Worker
+- Read env.AI_MODEL inside the Worker
+- Add safe fallback if OPENAI_API_KEY is missing
+- Add timeout handling
+- Add AI response validation
+- Add estimated token and cost tracking
+- Verify that the API key is not exposed in frontend assets
+

@@ -273,3 +273,41 @@ Expected status:
 - Update thresholds if usage becomes stable
 - Add alerting for cost threshold if possible
 
+## OpenAI Secret Runbook
+
+Use this section when OPENAI_API_KEY is missing, invalid, expired, or suspected to be exposed.
+
+### Symptoms
+
+- AI integration returns fallback response only
+- AI calls fail with authentication errors
+- OpenAI API returns unauthorized errors
+- Secret setup is missing in Cloudflare
+- API key exposure is suspected
+
+### Immediate Checks
+
+1. Confirm OPENAI_API_KEY exists as a Cloudflare Workers Secret.
+2. Confirm the API key is not committed to GitHub.
+3. Confirm the API key is not present in frontend files.
+4. Confirm AI_MODEL is configured in wrangler.toml.
+5. Confirm the Worker was deployed after configuration changes if required.
+6. Check recent deployments.
+7. Check AI error metrics after implementation.
+
+### Mitigation
+
+- Re-run `npx wrangler secret put OPENAI_API_KEY`
+- Rotate the OpenAI API key if exposure is suspected
+- Temporarily keep fallback response enabled
+- Avoid exposing provider error details to users
+- Record the event in docs/incidents.md
+
+### Recovery Validation
+
+1. Existing API endpoint still returns valid JSON.
+2. API key is not visible in repository files.
+3. Frontend does not call OpenAI API directly.
+4. Worker reads AI_MODEL from configuration.
+5. Real AI integration can proceed only after secret setup is confirmed.
+
