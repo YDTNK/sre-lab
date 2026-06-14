@@ -2174,3 +2174,466 @@ textarea {
     transform: none;
   }
 }
+
+/* ============================================================
+   Phase 9-H-6-5: Chic SaaS visual tuning
+   Reduce AI-template glass/purple glow and move closer to
+   freee / Money Forward / AWS-style sober commercial UI.
+============================================================ */
+
+/* Global: remove noisy glow and make background calm */
+body,
+.page-home,
+.page-moving,
+.page-aws {
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 52%, #f3f7fb 100%) !important;
+}
+
+body::before,
+body::after,
+.hero::after,
+.preview-stack::before {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+/* Header: simple white commercial header */
+.site-header {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-bottom: 1px solid #e5eaf2 !important;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.035) !important;
+  backdrop-filter: blur(10px);
+}
+
+.site-header__inner,
+.header-inner {
+  min-height: 64px !important;
+}
+
+.site-brand,
+.logo,
+.site-title {
+  font-weight: 800 !important;
+  color: #111827 !important;
+}
+
+.site-brand::before,
+.logo::before,
+.site-title::before {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, #2563eb, #06b6d4) !important;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18) !important;
+}
+
+.site-nav a,
+.nav a,
+.nav__link {
+  min-height: 36px !important;
+  color: #1f2937 !important;
+  font-weight: 700 !important;
+  background: transparent !important;
+}
+
+.site-nav a:hover,
+.nav a:hover,
+.nav__link:hover,
+.nav__link.is-active {
+  background: #eef4ff !important;
+  color: #1e40af !important;
+  border-color: transparent !important;
+}
+
+/* Main density: closer to freee/AWS */
+main {
+  padding-top: 44px !important;
+  padding-bottom: 68px !important;
+}
+
+/* Hero: remove glass/madara look, make it clean card */
+.hero,
+.page-home .hero,
+.page-moving .hero,
+.page-aws .hero {
+  margin-bottom: 32px !important;
+  padding: clamp(34px, 5vw, 64px) !important;
+  border: 1px solid #dbe5f1 !important;
+  border-radius: 28px !important;
+  background: #ffffff !important;
+  box-shadow:
+    0 20px 56px rgba(15, 23, 42, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+.hero::before {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+/* Typography: less template-like, more service-like */
+h1,
+.page-home .hero h1,
+.page-moving .hero h1,
+.page-aws .hero h1 {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: #111827 !important;
+  font-size: clamp(2.25rem, 5vw, 4.4rem) !important;
+  font-weight: 820 !important;
+  letter-spacing: -0.05em !important;
+}
+
+/* Page-specific h1 accent using subtle single-word-like tone */
+.page-home .hero h1 {
+  color: #0f2f66 !important;
+}
+
+.page-moving .hero h1 {
+  color: #1f2937 !important;
+}
+
+.page-aws .hero h1 {
+  color: #232f3e !important;
+}
+
+.hero-subtitle {
+  margin-top: 16px !important;
+  color: #1f2937 !important;
+  font-size: clamp(1.15rem, 2vw, 1.55rem) !important;
+  font-weight: 720 !important;
+  line-height: 1.55 !important;
+}
+
+.hero .lead,
+.hero__lead,
+.lead {
+  margin-top: 16px !important;
+  color: #526173 !important;
+  font-size: clamp(0.98rem, 1.25vw, 1.08rem) !important;
+  line-height: 1.9 !important;
+}
+
+/* Eyebrow: calm labels */
+.eyebrow,
+.hero__eyebrow,
+.badge,
+.status {
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  font-size: 0.8rem !important;
+  font-weight: 760 !important;
+  box-shadow: none !important;
+}
+
+.eyebrow::before,
+.hero__eyebrow::before,
+.badge::before,
+.status::before {
+  box-shadow: none !important;
+}
+
+/* Home color: freee / MoneyForward-like */
+.page-home .eyebrow,
+.page-home .hero__eyebrow,
+.page-home .badge,
+.page-home .status {
+  background: #eaf3ff !important;
+  color: #1e40af !important;
+  border-color: #cfe1ff !important;
+}
+
+.page-home .eyebrow::before,
+.page-home .hero__eyebrow::before,
+.page-home .badge::before,
+.page-home .status::before {
+  background: #2563eb !important;
+}
+
+/* Moving color: SUUMO-like green, no orange domination */
+.page-moving .eyebrow,
+.page-moving .hero__eyebrow,
+.page-moving .badge,
+.page-moving .status {
+  background: #eefbe7 !important;
+  color: #2f7d00 !important;
+  border-color: #cdeebf !important;
+}
+
+.page-moving .eyebrow::before,
+.page-moving .hero__eyebrow::before,
+.page-moving .badge::before,
+.page-moving .status::before {
+  background: #4ab000 !important;
+}
+
+/* AWS color: white/orange with navy text */
+.page-aws .eyebrow,
+.page-aws .hero__eyebrow,
+.page-aws .badge,
+.page-aws .status {
+  background: #fff3df !important;
+  color: #8a5200 !important;
+  border-color: #ffd89a !important;
+}
+
+.page-aws .eyebrow::before,
+.page-aws .hero__eyebrow::before,
+.page-aws .badge::before,
+.page-aws .status::before {
+  background: #ff9900 !important;
+}
+
+/* Buttons: single-direction, reference-like */
+.button,
+.btn,
+button {
+  min-height: 46px !important;
+  padding: 0 22px !important;
+  font-weight: 780 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.16) !important;
+}
+
+/* Home CTA */
+.page-home .button,
+.page-home button {
+  background: #2864f0 !important;
+  color: #ffffff !important;
+}
+
+.page-home .button.secondary {
+  background: #12326f !important;
+  color: #ffffff !important;
+}
+
+/* Moving CTA */
+.page-moving .button,
+.page-moving button {
+  background: #4ab000 !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 22px rgba(74, 176, 0, 0.16) !important;
+}
+
+.page-moving .button.secondary {
+  background: #f97316 !important;
+  color: #ffffff !important;
+}
+
+/* AWS CTA: requested white/orange base */
+.page-aws .button,
+.page-aws button {
+  background: #ff9900 !important;
+  color: #111827 !important;
+  box-shadow: 0 10px 22px rgba(255, 153, 0, 0.20) !important;
+}
+
+.page-aws .button.secondary {
+  background: #232f3e !important;
+  color: #ffffff !important;
+}
+
+/* Preview cards: remove glassy purple dashboard feel */
+.preview-card {
+  min-height: 200px !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06) !important;
+  backdrop-filter: none !important;
+}
+
+.preview-card::after {
+  display: none !important;
+}
+
+.preview-card:nth-child(2) {
+  transform: translateY(12px) !important;
+}
+
+.preview-card__head {
+  color: #475569 !important;
+  font-weight: 760 !important;
+}
+
+.preview-card__row {
+  border-bottom-color: #e5eaf2 !important;
+}
+
+.preview-card__total,
+.preview-total {
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+/* Preview total role colors */
+.page-home .preview-card__total {
+  background: #eaf3ff !important;
+  color: #1e40af !important;
+}
+
+.page-moving .preview-card__total {
+  background: #eefbe7 !important;
+  color: #2f7d00 !important;
+}
+
+.page-aws .preview-card__total {
+  background: #fff3df !important;
+  color: #232f3e !important;
+}
+
+/* Sections and cards: white SaaS cards, less glass */
+.section,
+.services,
+.operations,
+.card,
+.tool-card,
+.service-card,
+.scenario-card,
+.usecase-card,
+.notice-card {
+  border: 1px solid #e2e8f0 !important;
+  background: #ffffff !important;
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.055) !important;
+  backdrop-filter: none !important;
+}
+
+.section--soft {
+  background: #f8fbff !important;
+}
+
+.section__header {
+  margin-bottom: 22px !important;
+}
+
+.section__title {
+  color: #111827 !important;
+}
+
+/* Cards: less decorative, more product-site */
+.tool-card::before,
+.service-card::before,
+.scenario-card::before,
+.usecase-card::before,
+.tool-card::after,
+.service-card::after {
+  display: none !important;
+}
+
+.tool-card,
+.service-card,
+.scenario-card,
+.usecase-card {
+  padding: 24px !important;
+  border-radius: 18px !important;
+}
+
+/* Form/input: sober and clear */
+input,
+textarea,
+select {
+  border-color: #cfd8e6 !important;
+  background: #ffffff !important;
+  border-radius: 10px !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;
+}
+
+.page-moving input:focus,
+.page-moving textarea:focus,
+.page-moving select:focus {
+  border-color: #4ab000 !important;
+  box-shadow: 0 0 0 3px rgba(74, 176, 0, 0.10) !important;
+}
+
+.page-aws input:focus,
+.page-aws textarea:focus,
+.page-aws select:focus {
+  border-color: #ff9900 !important;
+  box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.12) !important;
+}
+
+/* Result panels: remove dark dashboard except where needed */
+.result-panel #result,
+.result-panel .result-card__body {
+  border: 1px solid #e2e8f0 !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  box-shadow: none !important;
+}
+
+.result-panel #result p,
+.result-panel .result-card__body p {
+  color: #526173 !important;
+}
+
+.result-total,
+.total-amount,
+.page-aws .result-total,
+.page-aws .total-amount {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: #111827 !important;
+  font-size: clamp(1.9rem, 4vw, 3rem) !important;
+  font-weight: 820 !important;
+}
+
+/* AWS result amount should use orange accent */
+.page-aws .result-total,
+.page-aws .total-amount {
+  color: #cc7a00 !important;
+}
+
+/* Breakdown cards: calm metric cards */
+.breakdown-card {
+  border: 1px solid #e2e8f0 !important;
+  background: #ffffff !important;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045) !important;
+}
+
+.breakdown-card::before {
+  display: none !important;
+}
+
+/* Notice: simple warm block */
+.notice-card {
+  background: #fffbeb !important;
+  border-color: #fde68a !important;
+}
+
+.notice-card__title {
+  color: #78350f !important;
+}
+
+/* Footer: sober */
+.site-footer {
+  background: #ffffff !important;
+  border-top: 1px solid #e5eaf2 !important;
+  box-shadow: none !important;
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+  .hero {
+    padding: 28px 20px !important;
+  }
+
+  h1,
+  .page-home .hero h1,
+  .page-moving .hero h1,
+  .page-aws .hero h1 {
+    font-size: clamp(2rem, 9vw, 3rem) !important;
+  }
+
+  .preview-card:nth-child(2) {
+    transform: none !important;
+  }
+}
