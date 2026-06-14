@@ -7,9 +7,13 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="container">
+  <div class="nav-link">
+    <a href="index.html">← ツール一覧へ戻る</a>
+  </div>
+
+  <main>
     <section class="hero">
-      <p class="eyebrow">AWS料金試算</p>
+      <span class="badge">AWS料金試算</span>
       <h1>AWS月額料金の目安をかんたんに確認できます</h1>
       <p class="lead">
         EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算を計算します。
@@ -17,12 +21,9 @@
       <p>
         学習や構成検討の初期段階で、ざっくりと料金感をつかむためのツールです。
       </p>
-      <p>
-        <a class="button secondary" href="index.html">ツール一覧へ戻る</a>
-      </p>
     </section>
 
-    <section class="services">
+    <section class="card">
       <h2>試算条件を入力</h2>
       <p>
         想定するAWS構成を入力してください。固定単価ベースで、月額料金の目安を計算します。
@@ -61,8 +62,11 @@
       </form>
     </section>
 
-    <section class="operations result-panel">
+    <section class="card result-panel">
       <h2>試算結果</h2>
+      <p>
+        入力内容にもとづき、月額概算、サービス別の内訳、計算前提を表示します。
+      </p>
       <div id="aws-cost-result" class="result-box">
         <p>条件を入力して「月額料金を試算する」を押してください。</p>
       </div>
@@ -88,6 +92,9 @@
         この試算は、学習・検討用の概算です。
         AWS公式Pricing Calculatorや実際の請求額の代替ではありません。
       </p>
+      <p>
+        正式な見積もりや費用判断を行う場合は、AWS公式の料金情報や請求データを確認してください。
+      </p>
     </section>
   </main>
 
@@ -111,7 +118,8 @@
       const assumptions = Array.isArray(data.assumptions) ? data.assumptions : [];
 
       resultBox.innerHTML = [
-        "<p><strong>月額概算:</strong> $" + data.totalMonthlyUsd + " / ¥" + data.totalMonthlyJpy + "</p>",
+        "<h3>月額概算</h3>",
+        "<p><strong>$" + data.totalMonthlyUsd + " / ¥" + data.totalMonthlyJpy + "</strong></p>",
         "<h3>内訳</h3>",
         "<ul>",
         "<li>EC2: $" + breakdown.ec2 + "</li>",

@@ -3125,3 +3125,76 @@ Not applicable. This is a public page rebuild.
 - [ ] Rebuild AWS Cost Simulator page using the same design system
 - [ ] Verify AI Moving Assistant form after Cloudflare Pages deployment
 - [ ] Capture final page screenshot
+
+---
+
+### 20260614-039
+
+### Service
+
+AWS Cost Simulator Public Page and API
+
+### Alert Rule
+
+Manual documentation record / AWS Cost Simulator page rebuild and API localization
+
+### Summary
+
+The AWS Cost Simulator public page was rebuilt using the shared design system, and API response assumptions/disclaimer were localized to Japanese.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-G-4 AWS Cost Simulator page rebuild and API localization.
+
+### Detection
+
+Manual review identified that the AWS Cost Simulator page needed a more polished user-facing layout and that the result assumptions were still displayed in English.
+
+### Changes
+
+- Rebuilt apps/landing/aws-cost-simulator.html
+- Removed SRE and portfolio wording from the public page
+- Improved hero copy for customer-facing use
+- Improved form guidance
+- Improved result panel wording
+- Preserved form IDs
+- Preserved result container ID
+- Preserved production API endpoint
+- Localized AWS Cost Simulator summary to Japanese
+- Localized assumptions to Japanese
+- Localized disclaimer to Japanese
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Customer-facing wording | Updated | Passed |
+| Form ID aws-cost-form | Preserved | Passed |
+| Button ID calculate-button | Preserved | Passed |
+| Result ID aws-cost-result | Preserved | Passed |
+| API endpoint | Preserved | Passed |
+| AWS assumptions | Japanese | Passed |
+| API syntax check | Pass | Pending |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a public page and API wording improvement.
+
+### Prevention / Follow-up Actions
+
+- [ ] Verify API syntax check
+- [ ] Verify Workers deployment
+- [ ] Verify AWS Cost Simulator calculation in browser
+- [ ] Confirm assumptions are displayed in Japanese
+- [ ] Capture final page screenshot
