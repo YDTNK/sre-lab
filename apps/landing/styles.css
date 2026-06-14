@@ -2879,3 +2879,40 @@ select:focus {
   font-size: 0.88rem !important;
   line-height: 1.7 !important;
 }
+
+/* ============================================================
+   Phase 9-H-7-4-fix: Force home CTA service identity colors
+   Top page only:
+   - AI Moving Assistant CTA = green
+   - AWS Cost Simulator CTA = orange
+============================================================ */
+
+body.page-home main .hero .hero__actions a.button.button-moving,
+body.page-home main .hero .hero__actions a.button.button-moving:visited {
+  background: #4ab000 !important;
+  color: #ffffff !important;
+  border: 1px solid #4ab000 !important;
+  box-shadow: 0 10px 22px rgba(74, 176, 0, 0.22) !important;
+}
+
+body.page-home main .hero .hero__actions a.button.button-moving:hover,
+body.page-home main .hero .hero__actions a.button.button-moving:focus {
+  background: #2f7d00 !important;
+  color: #ffffff !important;
+  border-color: #2f7d00 !important;
+}
+
+body.page-home main .hero .hero__actions a.button.button-aws,
+body.page-home main .hero .hero__actions a.button.button-aws:visited {
+  background: #ff9900 !important;
+  color: #111827 !important;
+  border: 1px solid #ff9900 !important;
+  box-shadow: 0 10px 22px rgba(255, 153, 0, 0.24) !important;
+}
+
+body.page-home main .hero .hero__actions a.button.button-aws:hover,
+body.page-home main .hero .hero__actions a.button.button-aws:focus {
+  background: #cc7a00 !important;
+  color: #111827 !important;
+  border-color: #cc7a00 !important;
+}
