@@ -2,22 +2,18 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
   pull_request:
 
 jobs:
-  basic-check:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check repository files
+      - name: Check required files
         run: |
-          echo "SRE Lab CI started"
-          ls -la
           test -f README.md
           test -f docs/roadmap.md
           test -f docs/architecture.md
@@ -31,4 +27,20 @@ jobs:
           test -f apps/landing/styles.css
           test -f apps/api/src/index.js
           test -f apps/api/package.json
+          test -f apps/api/package-lock.json
           test -f apps/api/wrangler.toml
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/api/package-lock.json
+
+      - name: Install API dependencies
+        working-directory: apps/api
+        run: npm ci
+
+      - name: Check API syntax
+        working-directory: apps/api
+        run: node --check src/index.js
