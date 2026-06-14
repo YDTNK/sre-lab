@@ -1921,3 +1921,77 @@ Not applicable. This is a frontend navigation design record.
 - [ ] Keep top page as a service directory
 - [ ] Add page-level monitoring after implementation
 - [ ] Add AWS Cost Simulator API endpoint after frontend design is stable
+
+---
+
+### 20260614-022
+
+### Service
+
+SRE Lab Frontend / Multi-service Page Split
+
+### Alert Rule
+
+Manual documentation record / frontend page split implementation
+
+### Summary
+
+The frontend structure was split into a service directory page and dedicated service pages.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 8-3 frontend page split implementation for SRE Lab.
+
+### Detection
+
+Manual implementation and local file verification during Phase 8-3.
+
+### Changes
+
+- apps/landing/index.html was changed into the SRE Lab top page and service directory
+- apps/landing/moving-assistant.html was created from the existing AI Moving Assistant page
+- apps/landing/aws-cost-simulator.html was created as a placeholder page
+- apps/landing/styles.css was updated for service cards and navigation links
+- moving-assistant.html received a back link to the SRE Lab top page
+
+### Design Decision
+
+SRE Lab now separates service navigation from individual service UIs.
+
+The top page is used as the service directory.
+
+Each service has a dedicated page.
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Top page | Service directory | Passed |
+| AI Moving Assistant page | Dedicated page exists | Passed |
+| AWS Cost Simulator page | Placeholder page exists | Passed |
+| Top page links | Link to both service pages | Passed |
+| Service page back links | Link back to index.html | Passed |
+| CSS | Service card and nav styles added | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a frontend implementation record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Verify Cloudflare Pages deployment after push
+- [ ] Confirm top page opens in production
+- [ ] Confirm moving-assistant.html opens in production
+- [ ] Confirm aws-cost-simulator.html opens in production
+- [ ] Add AWS Cost Simulator form in the next Phase 8 step
+- [ ] Add monitoring for dedicated service pages later

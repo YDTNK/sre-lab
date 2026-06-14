@@ -3,179 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRE Lab - AI引越し診断</title>
+  <title>SRE Lab</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main>
+  <main class="container">
     <section class="hero">
-      <span class="badge">SRE Portfolio Project</span>
-      <h1>SRE Lab</h1>
+      <p class="eyebrow">SRE Lab</p>
+      <h1>Small AI / SRE Services Lab</h1>
+      <p class="lead">
+        SRE Lab is a small multi-service operations lab for building, monitoring,
+        and improving AI/SRE-related services.
+      </p>
       <p>
-        SRE Labは、AIを活用した小さなWebサービスを構築・運用・監視し、
-        信頼性改善と自動化を実践するための個人プロジェクトです。
+        This project focuses on public deployment, CI/CD, monitoring, alerting,
+        runbooks, incident logs, API safety, AI cost control, and continuous operations.
       </p>
     </section>
 
-    <section class="card">
-      <h2>AI引越し診断</h2>
-      <p>
-        家具・衣類・家電・本などの情報を入力すると、
-        引越し準備に必要な梱包資材やタスクの目安を確認できます。
-      </p>
+    <section class="services">
+      <h2>Services</h2>
 
-      <form id="moving-form">
-        <div>
-          <label for="furniture">家具リスト</label><br />
-          <textarea
-            id="furniture"
-            name="furniture"
-            rows="4"
-            placeholder="例：デスク、椅子、ベッド、衣装ケース"
-          ></textarea>
-        </div>
+      <div class="service-grid">
+        <article class="service-card">
+          <p class="status">Live / AI-enabled</p>
+          <h3>AI Moving Assistant</h3>
+          <p>
+            Japanese moving preparation assistant using Cloudflare Workers and OpenAI API.
+          </p>
+          <ul>
+            <li>AI API integration</li>
+            <li>Fallback response</li>
+            <li>Rate limiting</li>
+            <li>Usage and cost tracking</li>
+          </ul>
+          <a class="button" href="moving-assistant.html">Open Moving Assistant</a>
+        </article>
 
-        <div>
-          <label for="clothes">衣類・収納用品</label><br />
-          <input
-            id="clothes"
-            name="clothes"
-            type="text"
-            placeholder="例：衣装ケース3個、スーツケース2個"
-          />
-        </div>
-
-        <div>
-          <label for="electronics">家電・電子機器</label><br />
-          <input
-            id="electronics"
-            name="electronics"
-            type="text"
-            placeholder="例：iMac、スピーカー、オーディオインターフェイス"
-          />
-        </div>
-
-        <div>
-          <label for="books">本・書類</label><br />
-          <input
-            id="books"
-            name="books"
-            type="text"
-            placeholder="例：本30冊、書類一式"
-          />
-        </div>
-
-        <div>
-          <label for="moving-date">引越し予定日</label><br />
-          <input id="moving-date" name="moving-date" type="date" />
-        </div>
-
-        <div>
-          <label for="notes">補足情報</label><br />
-          <textarea
-            id="notes"
-            name="notes"
-            rows="4"
-            placeholder="例：一人暮らし、梱包資材が必要、ダンベルあり"
-          ></textarea>
-        </div>
-
-        <button type="submit">引越しチェックリストを作成</button>
-      </form>
-    </section>
-
-    <section class="card">
-      <h2>診断結果</h2>
-      <div id="result">
-        <p>入力後、チェックリストを作成できます。</p>
+        <article class="service-card">
+          <p class="status">Planned / Phase 8</p>
+          <h3>AWS Cost Simulator</h3>
+          <p>
+            Educational AWS monthly cost estimation tool for cloud cost awareness and portfolio demonstration.
+          </p>
+          <ul>
+            <li>Deterministic calculation MVP</li>
+            <li>EC2 / EBS / S3 estimate</li>
+            <li>No paid AI API required for MVP</li>
+            <li>Future monitoring target</li>
+          </ul>
+          <a class="button secondary" href="aws-cost-simulator.html">View Plan</a>
+        </article>
       </div>
     </section>
+
+    <section class="operations">
+      <h2>Operations Focus</h2>
+      <ul>
+        <li>Cloudflare Pages / Workers deployment</li>
+        <li>GitHub Actions CI/CD</li>
+        <li>Grafana Synthetic Monitoring and Alerting</li>
+        <li>Runbook and Incident Log</li>
+        <li>API safety, rate limiting, and cost control</li>
+      </ul>
+    </section>
   </main>
-
-  <script>
-    const form = document.getElementById("moving-form");
-    const result = document.getElementById("result");
-
-    const API_ENDPOINT = "https://sre-lab-api.daisan-tanaka.workers.dev/api/moving-assistant";
-
-    form.addEventListener("submit", async function (event) {
-      event.preventDefault();
-
-      const payload = {
-        furniture: document.getElementById("furniture").value.trim(),
-        clothes: document.getElementById("clothes").value.trim(),
-        electronics: document.getElementById("electronics").value.trim(),
-        books: document.getElementById("books").value.trim(),
-        movingDate: document.getElementById("moving-date").value.trim(),
-        notes: document.getElementById("notes").value.trim(),
-      };
-
-      const hasAnyInput = Object.values(payload).some((value) => value.length > 0);
-
-      if (!hasAnyInput) {
-        result.innerHTML = `
-          <h3>引越し情報を入力してください</h3>
-          <p>
-            家具、衣類、家電、本、引越し予定日、補足情報のうち、
-            最低1つ以上を入力してからチェックリストを作成してください。
-          </p>
-        `;
-        return;
-      }
-
-      result.innerHTML = `
-        <h3>診断中です</h3>
-        <p>入力内容をもとにチェックリストを作成しています。</p>
-      `;
-
-      try {
-        const response = await fetch(API_ENDPOINT, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "API request failed");
-        }
-
-        result.innerHTML = `
-          <h3>基本チェックリスト</h3>
-          <p>${data.summary}</p>
-          <p><strong>${data.boxEstimate}</strong></p>
-
-          <h4>必要な梱包資材</h4>
-          <ul>
-            ${data.packingMaterials.map((item) => `<li>${item}</li>`).join("")}
-          </ul>
-
-          <h4>チェックリスト</h4>
-          <ul>
-            ${data.checklist.map((item) => `<li>${item}</li>`).join("")}
-          </ul>
-
-          <h4>注意点</h4>
-          <ul>
-            ${data.riskNotes.map((item) => `<li>${item}</li>`).join("")}
-          </ul>
-
-          <p>${data.disclaimer}</p>
-        `;
-      } catch (error) {
-        result.innerHTML = `
-          <h3>診断に失敗しました</h3>
-          <p>
-            AI引越し診断の生成に失敗しました。
-            APIサーバーが起動しているか確認し、時間をおいて再度お試しください。
-          </p>
-          <p><small>${error.message}</small></p>
-        `;
-      }
-    });
-  </script>
 </body>
 </html>

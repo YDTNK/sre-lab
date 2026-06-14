@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS Cost Simulator | SRE Lab</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">SRE Lab / Phase 8</p>
+      <h1>AWS Cost Simulator</h1>
+      <p class="lead">
+        AWS Cost Simulator is a planned educational tool for estimating simple AWS monthly costs.
+      </p>
+      <p>
+        The MVP will start with deterministic calculations for EC2, EBS, S3, and data transfer placeholders.
+        It will not require a paid AI API in the first version.
+      </p>
+      <p>
+        <a class="button secondary" href="index.html">Back to SRE Lab</a>
+      </p>
+    </section>
+
+    <section class="services">
+      <h2>Planned MVP Scope</h2>
+      <div class="service-grid">
+        <article class="service-card">
+          <h3>Inputs</h3>
+          <ul>
+            <li>Region</li>
+            <li>EC2 instance type</li>
+            <li>EC2 instance count</li>
+            <li>EC2 hours per month</li>
+            <li>EBS storage GB</li>
+            <li>S3 storage GB</li>
+            <li>Data transfer GB</li>
+          </ul>
+        </article>
+
+        <article class="service-card">
+          <h3>Outputs</h3>
+          <ul>
+            <li>Estimated monthly USD cost</li>
+            <li>Estimated monthly JPY cost</li>
+            <li>Resource cost breakdown</li>
+            <li>Assumptions</li>
+            <li>Educational disclaimer</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="operations">
+      <h2>Implementation Status</h2>
+      <ul>
+        <li>Status: Planned / placeholder page</li>
+        <li>Next: frontend form implementation</li>
+        <li>Future: Workers API endpoint</li>
+        <li>Future: API safety validation</li>
+        <li>Future: synthetic monitoring</li>
+      </ul>
+    </section>
+
+    <section class="operations">
+      <h2>Disclaimer</h2>
+      <p>
+        This page is a planning placeholder. Future estimates will be approximate and educational.
+        They will not replace the official AWS Pricing Calculator or actual AWS billing data.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
