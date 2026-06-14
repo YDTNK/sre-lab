@@ -384,6 +384,7 @@
       const totalUsd =
         pickNumber(data?.total?.usd) ??
         pickNumber(data?.totalUsd) ??
+        pickNumber(data?.totalMonthlyUsd) ??
         pickNumber(data?.estimate?.usd) ??
         pickNumber(data?.monthlyCostUsd) ??
         pickNumber(data?.estimatedMonthlyCostUsd) ??
@@ -394,6 +395,7 @@
       const totalJpy =
         pickNumber(data?.total?.jpy) ??
         pickNumber(data?.totalJpy) ??
+        pickNumber(data?.totalMonthlyJpy) ??
         pickNumber(data?.estimate?.jpy) ??
         pickNumber(data?.monthlyCostJpy) ??
         pickNumber(data?.estimatedMonthlyCostJpy) ??
