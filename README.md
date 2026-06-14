@@ -2,6 +2,29 @@
 
 SRE Lab is a personal platform project for building, operating, monitoring, and improving multiple AI-powered micro services.
 
+## Architecture
+
+SRE Lab currently uses the following architecture:
+
+User
+  -> Cloudflare Pages
+  -> AI Moving Assistant Frontend
+  -> Cloudflare Workers API
+  -> Mock Response / Future AI API
+
+Grafana Synthetic Monitoring monitors both:
+
+- Landing page
+- Workers API
+
+Grafana Alerting sends notifications and links to:
+
+- Email notification
+- Runbook
+- Incident Log
+
+- Architecture document: docs/architecture.md
+
 ## Live Site
 
 https://sre-lab.pages.dev/
