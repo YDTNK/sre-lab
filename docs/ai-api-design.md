@@ -160,3 +160,52 @@ AI API integration is successful when:
 - Frontend displays the result
 - Errors are handled gracefully
 - API key is not exposed to the browser
+
+## API Safety Before Real AI Integration
+
+Before connecting a real AI API, the Workers API must protect against invalid requests, oversized input, and unnecessary AI API calls.
+
+Implemented safety controls:
+
+- Standardized JSON error response format
+- Path validation
+- Method validation
+- Content-Type validation
+- JSON parse error handling
+- Empty input validation
+- Request body size limit
+- Total input length limit
+- Existing mock response behavior preserved
+
+Current limits:
+
+- MAX_REQUEST_BYTES: 8 KB
+- MAX_TOTAL_INPUT_LENGTH: 2000 characters
+
+Current standardized error format:
+
+{
+  "error": {
+    "code": "error_code",
+    "message": "Human-readable error message"
+  }
+}
+
+Verified error cases:
+
+- 400 missing_input
+- 400 invalid_json
+- 404 not_found
+- 405 method_not_allowed
+- 413 input_too_large
+- 415 unsupported_media_type
+
+Follow-up before real AI integration:
+
+- Add rate limiting
+- Add AI API timeout handling
+- Add fallback response
+- Add usage tracking
+- Add estimated cost tracking
+- Store AI API keys only in Cloudflare Workers Secrets
+

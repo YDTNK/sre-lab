@@ -112,3 +112,61 @@ For every incident, record:
 - Root cause
 - Mitigation
 - Prevention / follow-up actions
+
+## API Safety Validation
+
+Use this section when validating the AI Moving Assistant Workers API after deployment or when investigating API-related alerts.
+
+### Expected API Safety Responses
+
+| Case | Expected status | Expected error code |
+|---|---:|---|
+| Valid POST | 200 | N/A |
+| Empty JSON body | 400 | missing_input |
+| Invalid JSON | 400 | invalid_json |
+| Unknown path | 404 | not_found |
+| Unsupported method | 405 | method_not_allowed |
+| Input too large | 413 | input_too_large |
+| Missing JSON Content-Type | 415 | unsupported_media_type |
+
+### Validation Commands
+
+Valid request:
+
+    curl -i -X POST "https://sre-lab-api.daisan-tanaka.workers.dev/api/moving-assistant" \
+      -H "Content-Type: application/json" \
+      -d '{"furniture":"机1つ","clothes":"服2箱"}'
+
+Invalid JSON:
+
+    curl -i -X POST "https://sre-lab-api.daisan-tanaka.workers.dev/api/moving-assistant" \
+      -H "Content-Type: application/json" \
+      -d '{invalid json'
+
+Unsupported method:
+
+    curl -i -X GET "https://sre-lab-api.daisan-tanaka.workers.dev/api/moving-assistant"
+
+Unknown path:
+
+    curl -i -X POST "https://sre-lab-api.daisan-tanaka.workers.dev/api/unknown" \
+      -H "Content-Type: application/json" \
+      -d '{}'
+
+### Investigation Notes
+
+If valid requests fail:
+
+- Check the latest GitHub Actions CI result
+- Check the latest Deploy Worker workflow result
+- Review recent commits under apps/api
+- Confirm the production endpoint still returns HTTP 200 for a valid POST
+- Confirm Grafana Synthetic Monitoring is healthy
+
+If invalid requests return unexpected status codes:
+
+- Review apps/api/src/index.js validation logic
+- Confirm the Worker deployment completed successfully
+- Re-run the API safety validation commands
+- Record findings in docs/incidents.md
+

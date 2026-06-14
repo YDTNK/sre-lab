@@ -106,6 +106,31 @@ This project includes the following SRE-oriented components:
 - Architecture documentation
 - Cost-control design before introducing paid AI APIs
 
+## API Safety
+
+The Workers API includes basic safety controls before introducing a real AI API.
+
+Implemented controls:
+
+- Standardized JSON error response
+- Method validation
+- Path validation
+- JSON parse error handling
+- Content-Type validation
+- Request size limit
+- Total input length limit
+- Existing mock response behavior preserved
+
+Verified responses:
+
+- Valid POST: 200
+- Empty JSON body: 400 / missing_input
+- Invalid JSON: 400 / invalid_json
+- Unsupported method: 405 / method_not_allowed
+- Unknown path: 404 / not_found
+- Missing JSON Content-Type: 415 / unsupported_media_type
+- Input too large: 413 / input_too_large
+
 ## CI/CD
 
 ### CI

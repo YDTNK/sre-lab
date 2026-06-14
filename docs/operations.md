@@ -85,6 +85,35 @@ Initial Worker auto deployment was verified successfully.
 - Check Grafana Synthetic Monitoring after deployments
 - Record deployment-related failures in docs/incidents.md
 
+## API Safety Operations
+
+The Workers API includes safety checks to reduce invalid requests and prepare for future AI API integration.
+
+Operational checks:
+
+- Confirm valid POST returns HTTP 200
+- Confirm empty JSON returns 400 / missing_input
+- Confirm invalid JSON returns 400 / invalid_json
+- Confirm unknown path returns 404 / not_found
+- Confirm unsupported method returns 405 / method_not_allowed
+- Confirm oversized input returns 413 / input_too_large
+- Confirm missing JSON Content-Type returns 415 / unsupported_media_type
+
+Safety controls:
+
+- Request size limit
+- Total input length limit
+- Content-Type validation
+- Standardized error response
+- Mock response preserved for valid requests
+
+Follow-up actions:
+
+- Add rate limiting before real AI API integration
+- Add usage and cost tracking
+- Add cost incident runbook
+- Review API safety behavior after each API deployment
+
 ## Incident Response Flow
 
 1. Receive alert
