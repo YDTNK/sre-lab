@@ -3,6 +3,10 @@ const API_PATH = "/api/moving-assistant";
 const MAX_REQUEST_BYTES = 8 * 1024;
 const MAX_TOTAL_INPUT_LENGTH = 2000;
 
+const RATE_LIMIT_PER_MINUTE = 10;
+const RATE_LIMIT_PER_DAY = 50;
+const RATE_LIMIT_RETRY_AFTER_SECONDS = 60;
+
 const FIELD_NAMES = [
   "furniture",
   "clothes",
@@ -13,7 +17,7 @@ const FIELD_NAMES = [
 ];
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
@@ -53,6 +57,19 @@ export default {
         "payload_too_large",
         "Request body is too large.",
         413
+      );
+    }
+
+    const rateLimitResult = await checkRateLimit(request, env);
+
+    if (!rateLimitResult.allowed) {
+      return errorResponse(
+        "rate_limited",
+        "Too many requests. Please try again later.",
+        429,
+        {
+          "Retry-After": String(RATE_LIMIT_RETRY_AFTER_SECONDS),
+        }
       );
     }
 
@@ -153,14 +170,89 @@ export default {
   },
 };
 
-function jsonResponse(data, status = 200) {
+async function checkRateLimit(request, env) {
+  if (!env.RATE_LIMIT_KV) {
+    return { allowed: true };
+  }
+
+  const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
+  const now = new Date();
+
+  const minuteKey = `rate:moving-assistant:minute:${clientIp}:${formatMinuteWindow(now)}`;
+  const dayKey = `rate:moving-assistant:day:${clientIp}:${formatDayWindow(now)}`;
+
+  const minuteCount = await incrementCounter(
+    env.RATE_LIMIT_KV,
+    minuteKey,
+    RATE_LIMIT_RETRY_AFTER_SECONDS
+  );
+
+  if (minuteCount > RATE_LIMIT_PER_MINUTE) {
+    return { allowed: false, reason: "minute_limit_exceeded" };
+  }
+
+  const dayCount = await incrementCounter(
+    env.RATE_LIMIT_KV,
+    dayKey,
+    secondsUntilNextDay(now)
+  );
+
+  if (dayCount > RATE_LIMIT_PER_DAY) {
+    return { allowed: false, reason: "day_limit_exceeded" };
+  }
+
+  return { allowed: true };
+}
+
+async function incrementCounter(kv, key, expirationTtl) {
+  const currentValue = await kv.get(key);
+  const currentCount = Number.parseInt(currentValue || "0", 10);
+  const nextCount = currentCount + 1;
+
+  await kv.put(key, String(nextCount), {
+    expirationTtl,
+  });
+
+  return nextCount;
+}
+
+function formatMinuteWindow(date) {
+  return [
+    date.getUTCFullYear(),
+    pad2(date.getUTCMonth() + 1),
+    pad2(date.getUTCDate()),
+    pad2(date.getUTCHours()),
+    pad2(date.getUTCMinutes()),
+  ].join("");
+}
+
+function formatDayWindow(date) {
+  return [
+    date.getUTCFullYear(),
+    pad2(date.getUTCMonth() + 1),
+    pad2(date.getUTCDate()),
+  ].join("");
+}
+
+function secondsUntilNextDay(date) {
+  const nextDay = new Date(date);
+  nextDay.setUTCHours(24, 0, 0, 0);
+
+  return Math.max(60, Math.ceil((nextDay.getTime() - date.getTime()) / 1000));
+}
+
+function pad2(value) {
+  return String(value).padStart(2, "0");
+}
+
+function jsonResponse(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
-    headers: responseHeaders(),
+    headers: responseHeaders(extraHeaders),
   });
 }
 
-function errorResponse(code, message, status) {
+function errorResponse(code, message, status, extraHeaders = {}) {
   return jsonResponse(
     {
       error: {
@@ -168,16 +260,18 @@ function errorResponse(code, message, status) {
         message,
       },
     },
-    status
+    status,
+    extraHeaders
   );
 }
 
-function responseHeaders() {
+function responseHeaders(extraHeaders = {}) {
   return {
     "content-type": "application/json; charset=utf-8",
     "access-control-allow-origin": "*",
     "access-control-allow-methods": "POST, OPTIONS",
     "access-control-allow-headers": "content-type",
+    ...extraHeaders,
   };
 }
 
