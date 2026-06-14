@@ -3198,3 +3198,74 @@ Not applicable. This is a public page and API wording improvement.
 - [ ] Verify AWS Cost Simulator calculation in browser
 - [ ] Confirm assumptions are displayed in Japanese
 - [ ] Capture final page screenshot
+
+---
+
+### 20260614-041
+
+### Service
+
+Cloud and AI Tools Public Site
+
+### Alert Rule
+
+Manual documentation record / reference-based CSS redesign
+
+### Summary
+
+The public site CSS was redesigned based on the final reference-based wireframe.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-H-3 CSS redesign.
+
+### Detection
+
+Manual design review identified that the previous CSS improved the site but still did not sufficiently match high-quality commercial reference layouts.
+
+### Changes
+
+- Rebuilt apps/landing/styles.css
+- Added shared header styles
+- Added reference-based hero layout
+- Added preview card styles
+- Added tool card and scenario card styles
+- Added calculator two-column layout styles
+- Added sticky result panel support
+- Added breakdown card styles
+- Added shared footer styles
+- Preserved existing class compatibility where possible
+- Added responsive layout rules for mobile
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Header styles | Added | Passed |
+| Hero styles | Added | Passed |
+| Tool card styles | Added | Passed |
+| Calculator layout styles | Added | Passed |
+| Result card styles | Added | Passed |
+| Footer styles | Added | Passed |
+| Mobile rules | Added | Passed |
+| Browser check | Required after HTML rebuild | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a CSS design improvement record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Rebuild HTML pages using the final wireframe
+- [ ] Verify public pages after deployment
+- [ ] Capture screenshots after final HTML rebuild
