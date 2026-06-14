@@ -3866,3 +3866,53 @@ Not applicable. This is an AWS Cost Simulator visual structure update.
 - [ ] Verify AWS Cost Simulator page after deployment
 - [ ] Confirm production API response rendering
 - [ ] Capture screenshots for Phase 9-H-5
+
+## 20260615-001: AWS Cost Simulator API 500 recovery
+
+### Type
+
+Operational Record / API Incident Recovery
+
+### Summary
+
+`POST /api/aws-cost-simulator` returned HTTP/2 500 with Cloudflare Workers error code 1101.
+
+### Impact
+
+- AWS Cost Simulator frontend displayed a communication error.
+- API requests to `/api/aws-cost-simulator` failed before returning a standardized JSON error response.
+- Moving Assistant endpoint was not part of this incident.
+
+### Cause
+
+The most likely cause was a failure in usage logging.  
+`handleAwsCostSimulator` called `recordUsage(env, ...)` directly in the request path.  
+If usage logging failed, the exception could break the API request itself.
+
+### Fix
+
+- Added `safeRecordUsage(env, metricName)`.
+- Updated `handleAwsCostSimulator` to use `safeRecordUsage`.
+- Prevented usage logging failures from breaking the AWS Cost Simulator API path.
+- Updated the frontend result normalization to support `totalMonthlyUsd` and `totalMonthlyJpy`.
+
+### Verification
+
+- Confirmed `node --check apps/api/src/index.js` passed.
+- Confirmed `POST /api/aws-cost-simulator` returned HTTP/2 200.
+- Confirmed API response included:
+  - `totalMonthlyUsd`
+  - `totalMonthlyJpy`
+  - `breakdown`
+  - `assumptions`
+
+### Related commits
+
+- `9feac29 Prevent usage logging failures from breaking AWS cost API`
+- `7691088 Support AWS cost API total monthly fields`
+
+### Follow-up
+
+- Keep usage/cost logging failure isolated from product API success path.
+- Continue small-step CSS cleanup only after API and frontend display verification.
+
