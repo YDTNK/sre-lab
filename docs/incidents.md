@@ -2658,3 +2658,79 @@ Not applicable. This is a localization and portfolio polish record.
 - [ ] Keep technical identifiers in English
 - [ ] Review AI Moving Assistant page wording if needed
 - [ ] Review Runbook and Operations docs for future Japanese polish
+
+---
+
+### 20260614-032
+
+### Service
+
+SRE Lab Portfolio
+
+### Alert Rule
+
+Manual documentation record / final portfolio review
+
+### Summary
+
+Final portfolio review identified and fixed remaining outdated public UI wording before screenshot capture.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-E final portfolio review and screenshot preparation.
+
+### Detection
+
+Manual GitHub and public UI review after Japanese localization.
+
+### Changes
+
+- Reviewed README for portfolio submission readiness
+- Reviewed docs/portfolio-submission.md for interview readiness
+- Reviewed SRE Lab top page copy
+- Updated outdated AWS Cost Simulator status from planned to production
+- Updated top page service descriptions to Japanese-first wording
+- Updated AWS Cost Simulator initial result message to Japanese
+- Prepared screenshot checklist for final portfolio submission
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| README review | Ready for submission | Passed |
+| Portfolio submission document review | Ready for interviews | Passed |
+| Top page wording | Japanese-first and current | Updated |
+| AWS Cost Simulator status | Production, not planned | Updated |
+| AWS Cost Simulator result placeholder | Japanese | Updated |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a portfolio review and polish record.
+
+### Screenshot Targets
+
+- SRE Lab top page
+- AI Moving Assistant page
+- AWS Cost Simulator form
+- AWS Cost Simulator result
+- Grafana Synthetic Monitoring checks
+- Grafana Alert rules
+- GitHub Actions CI and Deploy Worker badges
+- docs/portfolio-submission.md
+- docs/incidents.md
+
+### Prevention / Follow-up Actions
+
+- [ ] Capture final screenshots after Cloudflare Pages deployment
+- [ ] Check public pages after deploy
+- [ ] Keep page status labels aligned with actual production status

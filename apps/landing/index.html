@@ -12,27 +12,25 @@
       <p class="eyebrow">SRE Lab</p>
       <h1>小さなAI / SREサービス運用ラボ</h1>
       <p class="lead">
-        SRE Lab is a small multi-service operations lab for building, monitoring,
-        and improving AI/SRE-related services.
+        SRE Labは、小さなAI / SRE系サービスを公開・監視・改善しながら運用するポートフォリオです。
       </p>
       <p>
-        This project focuses on public deployment, CI/CD, monitoring, alerting,
-        runbooks, incident logs, API safety, AI cost control, and continuous operations.
+        公開、CI/CD、外形監視、Alert、Runbook、Operational Record、API安全化、AI APIのコスト管理まで含めて、実運用に近い形で育てています。
       </p>
     </section>
 
     <section class="services">
-      <h2>Services</h2>
+      <h2>公開中のサービス</h2>
 
       <div class="service-grid">
         <article class="service-card">
-          <p class="status">Live / AI-enabled</p>
-          <h3>AI Moving Assistant</h3>
+          <p class="status">公開中 / AI API連携</p>
+          <h3>AI Moving Assistant / AI引越し診断</h3>
           <p>
-            Japanese moving preparation assistant using Cloudflare Workers and OpenAI API.
+            Cloudflare WorkersとOpenAI APIを利用した、日本語の引越し準備支援サービスです。
           </p>
           <ul>
-            <li>AI API integration</li>
+            <li>AI API連携</li>
             <li>Fallback response</li>
             <li>Rate limiting</li>
             <li>Usage and cost tracking</li>
@@ -41,16 +39,16 @@
         </article>
 
         <article class="service-card">
-          <p class="status">Planned / Phase 8</p>
-          <h3>AWS Cost Simulator</h3>
+          <p class="status">公開中 / 監視・Alert設定済み</p>
+          <h3>AWS Cost Simulator / AWS料金試算</h3>
           <p>
-            Educational AWS monthly cost estimation tool for cloud cost awareness and portfolio demonstration.
+            AWS月額料金を教育用に概算するサービスです。EC2、EBS、S3、Data transferの概算に対応しています。
           </p>
           <ul>
-            <li>Deterministic calculation MVP</li>
-            <li>EC2 / EBS / S3 estimate</li>
-            <li>No paid AI API required for MVP</li>
-            <li>Future monitoring target</li>
+            <li>Deterministic cost calculation</li>
+            <li>EC2 / EBS / S3 / Data transfer estimate</li>
+            <li>No paid AI API usage</li>
+            <li>Synthetic Monitoring and Alerting</li>
           </ul>
           <a class="button secondary" href="aws-cost-simulator.html">AWS料金試算を開く</a>
         </article>
@@ -60,11 +58,11 @@
     <section class="operations">
       <h2>運用で重視していること</h2>
       <ul>
-        <li>Cloudflare Pages / Workers deployment</li>
+        <li>Cloudflare Pages / Workersによる公開</li>
         <li>GitHub Actions CI/CD</li>
         <li>Grafana Synthetic Monitoringによる外形監視 and Alerting</li>
-        <li>Runbook and Incident Log</li>
-        <li>API safety, rate limiting, and cost control</li>
+        <li>Runbook and Incident Log / Operational Records</li>
+        <li>API safety、rate limiting、cost control</li>
       </ul>
     </section>
   </main>
