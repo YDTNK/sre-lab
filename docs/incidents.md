@@ -902,3 +902,94 @@ Not applicable. This is a configuration preparation record.
 - [ ] Add AI response validation
 - [ ] Add estimated cost calculation
 
+---
+
+### 20260614-010
+
+### Service
+
+SRE Lab Workers API
+
+### Alert Rule
+
+Manual verification / OpenAI API Worker integration check
+
+### Summary
+
+The Workers API was updated to call OpenAI API from Cloudflare Workers, and both fallback and generated responses were verified in production.
+
+### Impact
+
+No user-facing incident occurred.
+
+The production API continued to return HTTP 200 with a valid JSON response during both OpenAI API failure and successful AI generation.
+
+### Detection
+
+Manual production verification after Cloudflare Workers deployment.
+
+### Initial Checks
+
+- OPENAI_API_KEY was configured as a Cloudflare Workers Secret
+- AI_MODEL was configured in wrangler.toml
+- OpenAI API call was implemented inside the Worker
+- Timeout handling was implemented
+- AI response validation was implemented
+- Fallback response was implemented
+- Usage counters for ai_calls, ai_success, and ai_errors were added
+- OpenAI API billing credit was added after initial HTTP 429 verification
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Worker deploy | Success | Passed |
+| Valid POST | 200 | Passed |
+| Worker OpenAI call path | Executed | Passed |
+| OpenAI API failure | Fallback response | Passed |
+| fallbackReason | openai_http_429 | Passed |
+| OpenAI API billing credit | Available | Passed |
+| Successful AI response | aiStatus: generated | Passed |
+| Response shape validation | Valid JSON shape | Passed |
+
+### Observed Production Responses
+
+Fallback response:
+
+- HTTP status: 200
+- aiStatus: fallback
+- fallbackReason: openai_http_429
+
+Generated response:
+
+- HTTP status: 200
+- aiStatus: generated
+- AI-generated Japanese moving preparation advice returned successfully
+
+### Root Cause
+
+The first OpenAI API attempt returned HTTP 429 because API billing credit was not available.
+
+After adding API credit, the Worker successfully received a generated AI response.
+
+### Mitigation
+
+OpenAI API credit was added with auto recharge disabled.
+
+The Worker fallback response protected the production API while OpenAI API returned HTTP 429.
+
+### Recovery Validation
+
+The Workers API returned HTTP 200 and a valid generated JSON response after OpenAI API credit was added.
+
+Fallback behavior was also verified before successful generation.
+
+### Prevention / Follow-up Actions
+
+- [ ] Add estimated token and cost calculation
+- [ ] Add AI-specific daily usage limit
+- [ ] Add cost_limit_reached test case
+- [ ] Record OpenAI usage and cost after initial rollout
+- [ ] Confirm Grafana API check remains healthy
+- [ ] Review prompt and response validation after several real requests
+
