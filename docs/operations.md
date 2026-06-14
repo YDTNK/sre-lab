@@ -42,6 +42,49 @@ Operational checks:
 - Confirm API alert rule is normal
 - Confirm frontend can call the production API endpoint
 
+## Worker Auto Deployment
+
+The Cloudflare Workers API is deployed through GitHub Actions.
+
+### Workflow
+
+- Workflow file: .github/workflows/deploy-worker.yml
+- Trigger:
+  - Push to main when files under apps/api change
+  - Manual workflow dispatch
+- Deployment target: sre-lab-api
+
+### Required Secrets
+
+- CLOUDFLARE_API_TOKEN
+- CLOUDFLARE_ACCOUNT_ID
+
+### Deployment Flow
+
+1. Push changes to main
+2. GitHub Actions starts the Deploy Worker workflow
+3. Install API dependencies
+4. Run API syntax check
+5. Deploy Cloudflare Worker with wrangler
+6. Verify Workers API availability through Grafana Synthetic Monitoring
+
+### Verification
+
+Initial Worker auto deployment was verified successfully.
+
+- Deploy Worker workflow status: succeeded
+- API syntax check: passed
+- Cloudflare Workers deploy: completed
+- Deployment date: 2026-06-14
+
+### Operational Notes
+
+- Do not commit Cloudflare API tokens or account IDs to the repository
+- Store deployment secrets only in GitHub Actions Secrets
+- Check GitHub Actions after API changes
+- Check Grafana Synthetic Monitoring after deployments
+- Record deployment-related failures in docs/incidents.md
+
 ## Incident Response Flow
 
 1. Receive alert
