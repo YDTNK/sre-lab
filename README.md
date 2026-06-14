@@ -404,6 +404,7 @@ POST https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator
 | docs/cost.md | AI usage and cost operations |
 | docs/usage-cost-report.md | Manual usage and cost snapshot records |
 | docs/dashboard-design.md | Future usage and cost dashboard design |
+| docs/portfolio-submission.md | Portfolio submission summary for interviews and review |
 
 ## Operational Records
 
