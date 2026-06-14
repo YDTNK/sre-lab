@@ -902,3 +902,402 @@ textarea::placeholder {
   font-size: clamp(1rem, 1.5vw, 1.16rem);
   line-height: 1.9;
 }
+
+/* ============================================================
+   Phase 9-H-6: Visual Design Polish
+   Reference-based color and surface refinement
+============================================================ */
+
+:root {
+  --bg: #f3f7ff;
+  --surface: #ffffff;
+  --surface-soft: #f7fbff;
+  --text: #102033;
+  --muted: #5f6f86;
+
+  --primary: #1d4ed8;
+  --primary-dark: #153eaa;
+  --primary-soft: #dbeafe;
+
+  --accent: #0891b2;
+  --accent-soft: #cffafe;
+
+  --moving: #f97316;
+  --moving-dark: #c2410c;
+  --moving-soft: #ffedd5;
+
+  --aws: #2563eb;
+  --aws-dark: #1e40af;
+  --aws-soft: #dbeafe;
+
+  --success: #059669;
+  --success-soft: #d1fae5;
+
+  --notice: #f59e0b;
+  --notice-soft: #fffbeb;
+
+  --deep: #0f172a;
+  --deep-blue: #102a56;
+
+  --border: #d8e2f0;
+  --border-strong: #b8c7da;
+
+  --shadow-sm: 0 10px 28px rgba(30, 64, 175, 0.07);
+  --shadow-md: 0 20px 50px rgba(30, 64, 175, 0.12);
+  --shadow-lg: 0 34px 90px rgba(30, 64, 175, 0.18);
+}
+
+/* Overall background: SaaS-like soft blue */
+body {
+  background:
+    radial-gradient(circle at 8% 0%, rgba(59, 130, 246, 0.20), transparent 32rem),
+    radial-gradient(circle at 92% 12%, rgba(8, 145, 178, 0.18), transparent 30rem),
+    linear-gradient(180deg, #ffffff 0%, #f3f7ff 48%, #eef6ff 100%);
+}
+
+/* Remove overly technical grid feel and make it softer */
+body::before {
+  background-image:
+    radial-gradient(circle, rgba(37, 99, 235, 0.10) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.55;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.28), transparent 72%);
+}
+
+/* Header: more commercial, less plain */
+.site-header {
+  border-bottom: 1px solid rgba(216, 226, 240, 0.9);
+  background: rgba(255, 255, 255, 0.90);
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+}
+
+.site-brand::before,
+.logo::before,
+.site-title::before {
+  background:
+    linear-gradient(135deg, #1d4ed8 0%, #0891b2 100%);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.24);
+}
+
+.site-nav a,
+.nav a,
+.nav__link {
+  color: #2f4058;
+}
+
+.site-nav a:hover,
+.nav a:hover,
+.nav__link:hover,
+.nav__link.is-active {
+  background: linear-gradient(135deg, #dbeafe, #cffafe);
+  color: #153eaa;
+}
+
+/* Hero: stronger top commercial visual */
+.hero {
+  border: 1px solid rgba(191, 219, 254, 0.95);
+  background:
+    radial-gradient(circle at 86% 8%, rgba(249, 115, 22, 0.18), transparent 20rem),
+    radial-gradient(circle at 72% 72%, rgba(8, 145, 178, 0.20), transparent 26rem),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.99) 0%, rgba(239, 246, 255, 0.96) 52%, rgba(224, 242, 254, 0.92) 100%);
+  box-shadow: var(--shadow-lg);
+}
+
+.hero::after {
+  top: auto;
+  right: -80px;
+  bottom: -90px;
+  width: 260px;
+  height: 260px;
+  background:
+    linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(8, 145, 178, 0.16));
+}
+
+.eyebrow,
+.hero__eyebrow,
+.badge {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: linear-gradient(135deg, #eff6ff, #ecfeff);
+  color: #1e40af;
+}
+
+.hero h1 {
+  color: #0f2a50;
+}
+
+.hero-subtitle {
+  color: #173b6c;
+}
+
+.hero .lead,
+.hero__lead,
+.lead {
+  color: #36506d;
+}
+
+/* Buttons: clearer CTA contrast */
+.button,
+.btn,
+button {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  box-shadow: 0 16px 34px rgba(37, 99, 235, 0.28);
+}
+
+.button:hover,
+.btn:hover,
+button:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #153eaa 100%);
+}
+
+.button.secondary,
+.btn--secondary {
+  background: linear-gradient(135deg, #0f766e 0%, #0891b2 100%);
+  box-shadow: 0 16px 34px rgba(8, 145, 178, 0.24);
+}
+
+.button.secondary:hover,
+.btn--secondary:hover {
+  background: linear-gradient(135deg, #115e59 0%, #0e7490 100%);
+}
+
+/* AI moving page CTA flavor */
+body:has(title)::before {
+  pointer-events: none;
+}
+
+/* Preview cards: more product-like */
+.preview-card {
+  border: 1px solid rgba(191, 219, 254, 0.90);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 252, 255, 0.95));
+  box-shadow:
+    0 24px 55px rgba(30, 64, 175, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.preview-card:nth-child(1) .preview-card__total {
+  background: linear-gradient(135deg, var(--moving-soft), #fff7ed);
+  color: var(--moving-dark);
+}
+
+.preview-card:nth-child(2) .preview-card__total {
+  background: linear-gradient(135deg, var(--aws-soft), var(--accent-soft));
+  color: var(--aws-dark);
+}
+
+.preview-card__head {
+  color: #435a78;
+}
+
+.preview-card__row {
+  border-bottom-color: #e5edf8;
+}
+
+/* Sections: add more visual rhythm */
+.section,
+.services,
+.operations,
+.card {
+  border-color: rgba(216, 226, 240, 0.95);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.95));
+  box-shadow: var(--shadow-sm);
+}
+
+.section--soft {
+  background:
+    linear-gradient(135deg, rgba(239, 246, 255, 0.95), rgba(236, 254, 255, 0.75));
+  border-color: rgba(191, 219, 254, 0.88);
+}
+
+.section__eyebrow {
+  color: #1d4ed8;
+}
+
+/* Tool cards: give each card more identity */
+.tool-card,
+.service-card,
+.scenario-card,
+.usecase-card {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(216, 226, 240, 0.95);
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.tool-card::before,
+.service-card::before,
+.scenario-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: linear-gradient(180deg, #2563eb, #0891b2);
+}
+
+.tool-card:nth-child(1)::before,
+.service-card:nth-child(1)::before {
+  background: linear-gradient(180deg, var(--moving), #f59e0b);
+}
+
+.tool-card:nth-child(2)::before,
+.service-card:nth-child(2)::before {
+  background: linear-gradient(180deg, var(--aws), var(--accent));
+}
+
+.tool-card:hover,
+.service-card:hover {
+  border-color: rgba(37, 99, 235, 0.38);
+  box-shadow: 0 28px 64px rgba(30, 64, 175, 0.16);
+}
+
+.status {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: #eff6ff;
+  color: #1e40af;
+}
+
+.tool-card:nth-child(1) .status,
+.service-card:nth-child(1) .status {
+  border-color: rgba(249, 115, 22, 0.20);
+  background: var(--moving-soft);
+  color: var(--moving-dark);
+}
+
+.tool-card:nth-child(2) .status,
+.service-card:nth-child(2) .status {
+  border-color: rgba(37, 99, 235, 0.20);
+  background: var(--aws-soft);
+  color: var(--aws-dark);
+}
+
+.tag {
+  background: #f8fbff;
+  color: #42546d;
+  border-color: #dce8f6;
+}
+
+.tool-card__link,
+.card-link,
+.scenario-card__link {
+  color: #1d4ed8;
+}
+
+/* Forms: make input area feel like a real service form */
+form {
+  padding: 4px;
+}
+
+label {
+  color: #203554;
+}
+
+input,
+textarea,
+select {
+  border-color: #c8d7ea;
+  background: #fbfdff;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  background: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.13);
+}
+
+/* Result areas: make answers feel valuable */
+#result,
+.result-box,
+.result-card__body {
+  border-color: rgba(191, 219, 254, 0.95);
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.result-panel #result,
+.result-panel .result-card__body {
+  border-color: rgba(30, 64, 175, 0.30);
+  background:
+    linear-gradient(180deg, #102a56 0%, #0f172a 100%);
+  color: #ffffff;
+}
+
+.result-panel #result p,
+.result-panel .result-card__body p {
+  color: #dbeafe;
+}
+
+.result-total,
+.total-amount {
+  color: #ffffff;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* Breakdown cards: calculator-like color blocks */
+.breakdown-card {
+  border-color: rgba(191, 219, 254, 0.95);
+  background:
+    linear-gradient(180deg, #ffffff, #f8fbff);
+  box-shadow: 0 10px 26px rgba(30, 64, 175, 0.07);
+}
+
+.breakdown-card:nth-child(1) {
+  background: linear-gradient(180deg, #eff6ff, #ffffff);
+}
+
+.breakdown-card:nth-child(2) {
+  background: linear-gradient(180deg, #ecfeff, #ffffff);
+}
+
+.breakdown-card:nth-child(3) {
+  background: linear-gradient(180deg, #f0fdf4, #ffffff);
+}
+
+.breakdown-card:nth-child(4) {
+  background: linear-gradient(180deg, #fff7ed, #ffffff);
+}
+
+.breakdown-card strong {
+  color: #0f2a50;
+}
+
+/* Notice: softer but visible */
+.notice-card {
+  background:
+    linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);
+  border-color: #fcd34d;
+  box-shadow: 0 14px 34px rgba(245, 158, 11, 0.10);
+}
+
+.notice-card__title {
+  color: #78350f;
+}
+
+.notice-list {
+  color: #7c2d12;
+}
+
+/* Footer: make it look intentional */
+.site-footer {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.70), rgba(239, 246, 255, 0.92));
+  border-top-color: rgba(191, 219, 254, 0.80);
+}
+
+/* Mobile: keep polish without clutter */
+@media (max-width: 760px) {
+  .hero {
+    background:
+      radial-gradient(circle at 90% 0%, rgba(249, 115, 22, 0.16), transparent 16rem),
+      linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+  }
+
+  .tool-card::before,
+  .service-card::before,
+  .scenario-card::before {
+    width: 5px;
+  }
+}
