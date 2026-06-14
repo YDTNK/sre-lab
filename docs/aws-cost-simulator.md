@@ -253,3 +253,30 @@ Important exclusions:
 - Regional pricing differences beyond the initial fixed table
 
 This is an educational estimate and not an official AWS cost estimate.
+
+## Implemented API Validation
+
+AWS Cost Simulator validates request input before calculating estimates.
+
+Allowed values:
+
+| Field | Allowed values |
+|---|---|
+| region | ap-northeast-1, us-east-1 |
+| ec2InstanceType | t3.micro, t3.small, t3.medium |
+
+Numeric limits:
+
+| Field | Min | Max |
+|---|---:|---:|
+| ec2InstanceCount | 0 | 20 |
+| ec2HoursPerMonth | 0 | 744 |
+| ebsGb | 0 | 1000 |
+| s3Gb | 0 | 1000 |
+| dataTransferGb | 0 | 1000 |
+
+Invalid input response:
+
+400 / invalid_input
+
+The endpoint rejects unsupported regions, unsupported instance types, missing numeric fields, non-numeric values, and out-of-range numeric values.

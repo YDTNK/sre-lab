@@ -32,6 +32,17 @@ const AWS_EC2_HOURLY_USD = {
 const AWS_EBS_GB_MONTH_USD = 0.096;
 const AWS_S3_GB_MONTH_USD = 0.025;
 const AWS_DATA_TRANSFER_GB_USD = 0.09;
+const AWS_ALLOWED_REGIONS = ["ap-northeast-1", "us-east-1"];
+const AWS_ALLOWED_INSTANCE_TYPES = ["t3.micro", "t3.small", "t3.medium"];
+
+const AWS_COST_INPUT_LIMITS = {
+  ec2InstanceCount: { min: 0, max: 20 },
+  ec2HoursPerMonth: { min: 0, max: 744 },
+  ebsGb: { min: 0, max: 1000 },
+  s3Gb: { min: 0, max: 1000 },
+  dataTransferGb: { min: 0, max: 1000 },
+};
+
 
 
 const FIELD_NAMES = [
@@ -336,9 +347,82 @@ async function handleAwsCostSimulator(request, env) {
     );
   }
 
+  const validation = validateAwsCostSimulatorInput(body);
+
+  if (!validation.ok) {
+    await recordUsage(env, "aws_cost_simulator_api_errors");
+    return errorResponse(
+      "invalid_input",
+      validation.message,
+      400
+    );
+  }
+
   await recordUsage(env, "aws_cost_simulator_api_success");
 
-  return jsonResponse(buildAwsCostSimulatorMockResponse(body));
+  return jsonResponse(buildAwsCostSimulatorMockResponse(validation.data));
+}
+
+
+function validateAwsCostSimulatorInput(body) {
+  const region = body.region;
+  const ec2InstanceType = body.ec2InstanceType;
+
+  if (typeof region !== "string" || !AWS_ALLOWED_REGIONS.includes(region)) {
+    return {
+      ok: false,
+      message: "region must be one of: ap-northeast-1, us-east-1.",
+    };
+  }
+
+  if (
+    typeof ec2InstanceType !== "string" ||
+    !AWS_ALLOWED_INSTANCE_TYPES.includes(ec2InstanceType)
+  ) {
+    return {
+      ok: false,
+      message: "ec2InstanceType must be one of: t3.micro, t3.small, t3.medium.",
+    };
+  }
+
+  const numericFields = [
+    "ec2InstanceCount",
+    "ec2HoursPerMonth",
+    "ebsGb",
+    "s3Gb",
+    "dataTransferGb",
+  ];
+
+  const data = {
+    region,
+    ec2InstanceType,
+  };
+
+  for (const fieldName of numericFields) {
+    const value = body[fieldName];
+    const limits = AWS_COST_INPUT_LIMITS[fieldName];
+
+    if (typeof value !== "number" || !Number.isFinite(value)) {
+      return {
+        ok: false,
+        message: `${fieldName} must be a finite number.`,
+      };
+    }
+
+    if (value < limits.min || value > limits.max) {
+      return {
+        ok: false,
+        message: `${fieldName} must be between ${limits.min} and ${limits.max}.`,
+      };
+    }
+
+    data[fieldName] = value;
+  }
+
+  return {
+    ok: true,
+    data,
+  };
 }
 
 function buildAwsCostSimulatorMockResponse(body) {

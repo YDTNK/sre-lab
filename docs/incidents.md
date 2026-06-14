@@ -2223,3 +2223,82 @@ Not applicable. This is a deterministic calculation implementation record.
 - [ ] Connect frontend form to the API
 - [ ] Add stronger input validation in Phase 8-7
 - [ ] Add synthetic monitoring after endpoint behavior is stable
+
+---
+
+### 20260614-026
+
+### Service
+
+SRE Lab AWS Cost Simulator API
+
+### Alert Rule
+
+Manual documentation record / API validation implementation
+
+### Summary
+
+Input validation was added to the AWS Cost Simulator API endpoint.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 8-7 API safety and validation implementation.
+
+### Detection
+
+Manual implementation and syntax verification during Phase 8-7.
+
+### Changes
+
+- Added region whitelist
+- Added EC2 instance type whitelist
+- Added numeric input range validation
+- Added finite number validation
+- Added 400 / invalid_input response for unsupported or out-of-range values
+- Preserved deterministic calculation for valid input
+- Preserved existing Moving Assistant behavior
+
+### Validation Rules
+
+| Field | Rule |
+|---|---|
+| region | ap-northeast-1 or us-east-1 |
+| ec2InstanceType | t3.micro, t3.small, or t3.medium |
+| ec2InstanceCount | 0 to 20 |
+| ec2HoursPerMonth | 0 to 744 |
+| ebsGb | 0 to 1000 |
+| s3Gb | 0 to 1000 |
+| dataTransferGb | 0 to 1000 |
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| API syntax check | Pass | Passed |
+| Valid input | 200 deterministic estimate | Pending production check |
+| Invalid region | 400 invalid_input | Pending production check |
+| Invalid instance type | 400 invalid_input | Pending production check |
+| Out-of-range number | 400 invalid_input | Pending production check |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is an API safety implementation record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Deploy Worker through GitHub Actions
+- [ ] Verify valid input in production
+- [ ] Verify invalid region in production
+- [ ] Verify invalid instance type in production
+- [ ] Verify out-of-range numeric input in production
+- [ ] Connect frontend form to the API after validation is stable
