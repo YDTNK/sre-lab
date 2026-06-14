@@ -76,7 +76,7 @@ export default {
     }
 
     if (url.pathname !== MOVING_ASSISTANT_API_PATH) {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "not_found",
         "The requested API endpoint was not found.",
@@ -85,7 +85,7 @@ export default {
     }
 
     if (request.method !== "POST") {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "method_not_allowed",
         "Only POST requests are allowed for this endpoint.",
@@ -96,7 +96,7 @@ export default {
     const contentType = request.headers.get("content-type") || "";
 
     if (!contentType.toLowerCase().includes("application/json")) {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "unsupported_media_type",
         "Content-Type must be application/json.",
@@ -107,7 +107,7 @@ export default {
     const contentLength = request.headers.get("content-length");
 
     if (contentLength && Number(contentLength) > MAX_REQUEST_BYTES) {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "payload_too_large",
         "Request body is too large.",
@@ -115,12 +115,12 @@ export default {
       );
     }
 
-    await recordUsage(env, "api_requests");
+    await safeRecordUsage(env, "api_requests");
 
     const rateLimitResult = await checkRateLimit(request, env);
 
     if (!rateLimitResult.allowed) {
-      await recordUsage(env, "rate_limited");
+      await safeRecordUsage(env, "rate_limited");
       return errorResponse(
         "rate_limited",
         "Too many requests. Please try again later.",
@@ -136,7 +136,7 @@ export default {
     try {
       bodyText = await request.text();
     } catch {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "invalid_request_body",
         "Failed to read request body.",
@@ -145,7 +145,7 @@ export default {
     }
 
     if (bodyText.length > MAX_REQUEST_BYTES) {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "payload_too_large",
         "Request body is too large.",
@@ -158,7 +158,7 @@ export default {
     try {
       body = JSON.parse(bodyText);
     } catch {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "invalid_json",
         "Request body must be valid JSON.",
@@ -167,7 +167,7 @@ export default {
     }
 
     if (!body || typeof body !== "object" || Array.isArray(body)) {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "invalid_request_body",
         "Request body must be a JSON object.",
@@ -182,7 +182,7 @@ export default {
     });
 
     if (!hasAnyInput) {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "missing_input",
         "At least one moving information field is required.",
@@ -199,7 +199,7 @@ export default {
     }, 0);
 
     if (totalInputLength > MAX_TOTAL_INPUT_LENGTH) {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "input_too_large",
         "Total input length is too large.",
@@ -212,7 +212,7 @@ export default {
     const dailyEstimatedCost = await getEstimatedCost(env, "day");
 
     if (monthlyEstimatedCost + estimatedUsage.estimatedCostJpy >= MONTHLY_COST_STOP_THRESHOLD_JPY) {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "cost_limit_reached",
         "AI diagnosis is temporarily unavailable due to usage limits.",
@@ -221,7 +221,7 @@ export default {
     }
 
     if (dailyEstimatedCost + estimatedUsage.estimatedCostJpy >= DAILY_COST_HARD_LIMIT_JPY) {
-      await recordUsage(env, "api_errors");
+      await safeRecordUsage(env, "api_errors");
       return errorResponse(
         "cost_limit_reached",
         "AI diagnosis is temporarily unavailable due to daily usage limits.",
@@ -232,7 +232,7 @@ export default {
     const aiLimitResult = await checkAiDailyLimit(request, env);
 
     if (!aiLimitResult.allowed) {
-      await recordUsage(env, "ai_limited");
+      await safeRecordUsage(env, "ai_limited");
       return errorResponse(
         "ai_limit_reached",
         "AI diagnosis limit reached. Please try again later.",
@@ -248,16 +248,16 @@ export default {
 
     if (aiResponse.ok) {
       await recordEstimatedAiUsage(env, estimatedUsage);
-      await recordUsage(env, "api_success");
-      await recordUsage(env, "ai_success");
+      await safeRecordUsage(env, "api_success");
+      await safeRecordUsage(env, "ai_success");
       return jsonResponse({
         ...aiResponse.data,
         estimatedUsage,
       });
     }
 
-    await recordUsage(env, "api_success");
-    await recordUsage(env, "ai_errors");
+    await safeRecordUsage(env, "api_success");
+    await safeRecordUsage(env, "ai_errors");
 
     return jsonResponse({
       ...fallback,
@@ -623,7 +623,7 @@ async function generateMovingAdviceWithOpenAI(body, env) {
     };
   }
 
-  await recordUsage(env, "ai_calls");
+  await safeRecordUsage(env, "ai_calls");
 
   const model = env.AI_MODEL || "gpt-4.1-nano";
   const controller = new AbortController();
@@ -881,7 +881,7 @@ async function checkRateLimit(request, env) {
 
 async function safeRecordUsage(env, metricName) {
   try {
-    await recordUsage(env, metricName);
+    await safeRecordUsage(env, metricName);
   } catch (error) {
     console.warn("usage_record_failed", metricName, error?.message || error);
   }
