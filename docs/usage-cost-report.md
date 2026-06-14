@@ -1,1 +1,100 @@
-# Usage / Cost Report\n\nThis document records manual usage and cost snapshots for SRE Lab.\n\nThe current target service is AI Moving Assistant.\n\n## Purpose\n\nThe purpose of this report is to track API usage, AI API usage, estimated cost, and cost-control behavior during the early AI rollout phase.\n\n## Current Tracking Source\n\n| Metric Type | Source |\n|---|---|\n| API usage | Cloudflare KV |\n| AI usage | Cloudflare KV |\n| Estimated token usage | Cloudflare KV |\n| Estimated cost | Cloudflare KV |\n| Actual OpenAI usage | OpenAI Platform |\n\n## Snapshot Template\n\nUse this template for daily or weekly checks.\n\n```text\nDate:\nService: AI Moving Assistant\n\nAPI usage:\n- api_requests:\n- api_success:\n- api_errors:\n- rate_limited:\n\nAI usage:\n- ai_calls:\n- ai_success:\n- ai_errors:\n- ai_limited:\n\nEstimated cost:\n- input_tokens:\n- output_tokens:\n- estimated_daily_jpy:\n- estimated_monthly_jpy:\n\nOpenAI Platform:\n- usage requests:\n- usage tokens:\n- usage cost:\n- credit balance:\n- auto recharge:\n\nAssessment:\n- Status: normal / warning / action required\n- Notes:\n- Action:\n```\n\n## Snapshot Records\n\n### 2026-06-14\n\nService: AI Moving Assistant\n\nAPI usage:\n\n- api_requests: TBD\n- api_success: TBD\n- api_errors: TBD\n- rate_limited: TBD\n\nAI usage:\n\n- ai_calls: TBD\n- ai_success: TBD\n- ai_errors: TBD\n- ai_limited: TBD\n\nEstimated cost:\n\n- input_tokens: TBD\n- output_tokens: TBD\n- estimated_daily_jpy: TBD\n- estimated_monthly_jpy: TBD\n\nOpenAI Platform:\n\n- usage requests: TBD\n- usage tokens: TBD\n- usage cost: TBD\n- credit balance: 5 USD initial credit configured\n- auto recharge: off\n\nAssessment:\n\n- Status: normal\n- Notes: Initial report template created after Real AI API Integration completion.\n- Action: Fill in values from Cloudflare KV and OpenAI Platform during the next usage/cost check.\n\n
+# Usage / Cost Report
+
+This document records manual usage and cost snapshots for SRE Lab.
+
+The current target service is AI Moving Assistant.
+
+## Purpose
+
+The purpose of this report is to track API usage, AI API usage, estimated cost, and cost-control behavior during the early AI rollout phase.
+
+## Current Tracking Source
+
+| Metric Type | Source |
+|---|---|
+| API usage | Cloudflare KV |
+| AI usage | Cloudflare KV |
+| Estimated token usage | Cloudflare KV |
+| Estimated cost | Cloudflare KV |
+| Actual OpenAI usage | OpenAI Platform |
+
+## Snapshot Template
+
+Use this template for daily or weekly checks.
+
+```text
+Date:
+Service: AI Moving Assistant
+
+API usage:
+- api_requests:
+- api_success:
+- api_errors:
+- rate_limited:
+
+AI usage:
+- ai_calls:
+- ai_success:
+- ai_errors:
+- ai_limited:
+
+Estimated cost:
+- input_tokens:
+- output_tokens:
+- estimated_daily_jpy:
+- estimated_monthly_jpy:
+
+OpenAI Platform:
+- usage requests:
+- usage tokens:
+- usage cost:
+- credit balance:
+- auto recharge:
+
+Assessment:
+- Status: normal / warning / action required
+- Notes:
+- Action:
+```
+
+## Snapshot Records
+
+### 2026-06-14
+
+Service: AI Moving Assistant
+
+API usage:
+
+- api_requests: TBD
+- api_success: TBD
+- api_errors: TBD
+- rate_limited: TBD
+
+AI usage:
+
+- ai_calls: TBD
+- ai_success: TBD
+- ai_errors: TBD
+- ai_limited: TBD
+
+Estimated cost:
+
+- input_tokens: TBD
+- output_tokens: TBD
+- estimated_daily_jpy: TBD
+- estimated_monthly_jpy: TBD
+
+OpenAI Platform:
+
+- usage requests: TBD
+- usage tokens: TBD
+- usage cost: TBD
+- credit balance: 5 USD initial credit configured
+- auto recharge: off
+
+Assessment:
+
+- Status: normal
+- Notes: Initial report template created after Real AI API Integration completion.
+- Action: Fill in values from Cloudflare KV and OpenAI Platform during the next usage/cost check.
+
