@@ -102,12 +102,25 @@
     form.addEventListener("submit", function (event) {
       event.preventDefault();
 
-      const furniture = document.getElementById("furniture").value || "Not provided";
-      const clothes = document.getElementById("clothes").value || "Not provided";
-      const electronics = document.getElementById("electronics").value || "Not provided";
-      const books = document.getElementById("books").value || "Not provided";
-      const movingDate = document.getElementById("moving-date").value || "Not provided";
-      const notes = document.getElementById("notes").value || "Not provided";
+      const furniture = document.getElementById("furniture").value.trim();
+      const clothes = document.getElementById("clothes").value.trim();
+      const electronics = document.getElementById("electronics").value.trim();
+      const books = document.getElementById("books").value.trim();
+      const movingDate = document.getElementById("moving-date").value.trim();
+      const notes = document.getElementById("notes").value.trim();
+
+      const hasAnyInput = furniture || clothes || electronics || books || movingDate || notes;
+
+      if (!hasAnyInput) {
+        result.innerHTML = `
+          <h3>Please add moving information</h3>
+          <p>
+            Enter at least one item such as furniture, clothing, electronics,
+            books, moving date, or notes before generating a checklist.
+          </p>
+        `;
+        return;
+      }
 
       result.innerHTML = `
         <h3>Basic Moving Checklist</h3>

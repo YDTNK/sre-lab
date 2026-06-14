@@ -88,3 +88,11 @@ button:hover {
   font-size: 0.85rem;
   font-weight: 700;
 }
+
+#result h3 {
+  margin-top: 0;
+}
+
+#result ul {
+  padding-left: 20px;
+}
