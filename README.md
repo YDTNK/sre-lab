@@ -93,6 +93,7 @@ SRE Lab plans to add an AI API backend using Cloudflare Workers.
 SRE Lab includes a Cloudflare Workers API layer for future AI-powered features.
 
 - API app: apps/api
+- API URL: https://sre-lab-api.daisan-tanaka.workers.dev
 - Initial endpoint: POST /api/moving-assistant
 - Current behavior: mock response
 - Future behavior: AI-generated moving checklist
