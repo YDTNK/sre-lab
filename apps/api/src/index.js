@@ -75,6 +75,10 @@ export default {
       return handleAwsCostSimulator(request, env);
     }
 
+    if (url.pathname === MOVING_ASSISTANT_API_PATH) {
+      return handleMovingAssistantMock(request, env);
+    }
+
     if (url.pathname !== MOVING_ASSISTANT_API_PATH) {
       await safeRecordUsage(env, "api_errors");
       return errorResponse(
@@ -220,6 +224,121 @@ export default {
     });
   },
 };
+
+
+async function handleMovingAssistantMock(request, env) {
+  if (request.method !== "POST") {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "method_not_allowed",
+      "Only POST requests are allowed for this endpoint.",
+      405
+    );
+  }
+
+  const contentType = request.headers.get("content-type") || "";
+
+  if (!contentType.toLowerCase().includes("application/json")) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "unsupported_media_type",
+      "Content-Type must be application/json.",
+      415
+    );
+  }
+
+  let bodyText;
+
+  try {
+    bodyText = await request.text();
+  } catch {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "invalid_request_body",
+      "Failed to read request body.",
+      400
+    );
+  }
+
+  if (bodyText.length > MAX_REQUEST_BYTES) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "payload_too_large",
+      "Request body is too large.",
+      413
+    );
+  }
+
+  let body;
+
+  try {
+    body = JSON.parse(bodyText);
+  } catch {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "invalid_json",
+      "Request body must be valid JSON.",
+      400
+    );
+  }
+
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "invalid_request_body",
+      "Request body must be a JSON object.",
+      400
+    );
+  }
+
+  const fields = FIELD_NAMES.map((fieldName) => body[fieldName]);
+
+  const hasAnyInput = fields.some((value) => {
+    return typeof value === "string" && value.trim().length > 0;
+  });
+
+  if (!hasAnyInput) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "missing_input",
+      "At least one moving information field is required.",
+      400
+    );
+  }
+
+  const totalInputLength = fields.reduce((total, value) => {
+    if (typeof value !== "string") {
+      return total;
+    }
+
+    return total + value.trim().length;
+  }, 0);
+
+  if (totalInputLength > MAX_TOTAL_INPUT_LENGTH) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "input_too_large",
+      "Total input length is too large.",
+      413
+    );
+  }
+
+  await safeRecordUsage(env, "api_success");
+
+  return jsonResponse({
+    ...buildFallbackResponse(),
+    aiStatus: "fallback",
+    fallbackReason: "Moving Assistant uses deterministic fallback during production verification.",
+    receivedInput: {
+      furniture: body.furniture || "",
+      clothes: body.clothes || "",
+      electronics: body.electronics || "",
+      books: body.books || "",
+      movingDate: body.movingDate || "",
+      notes: body.notes || "",
+    },
+  });
+}
 
 
 async function handleAwsCostSimulator(request, env) {
