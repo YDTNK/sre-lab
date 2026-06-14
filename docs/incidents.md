@@ -2922,3 +2922,71 @@ Not applicable. This is a public site wording and structure rebuild.
 - [ ] Verify AI Moving Assistant form submission
 - [ ] Verify AWS Cost Simulator calculation
 - [ ] Capture final screenshots
+
+---
+
+### 20260614-036
+
+### Service
+
+Cloud and AI Tools Public Site
+
+### Alert Rule
+
+Manual documentation record / design system CSS
+
+### Summary
+
+A shared CSS design system was introduced for the public tool site.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-G-1 design system CSS creation.
+
+### Detection
+
+Manual review identified that the public site layout, typography, spacing, cards, buttons, forms, and result panels looked too basic for portfolio screenshots and public presentation.
+
+### Changes
+
+- Rebuilt apps/landing/styles.css as a shared design system
+- Added design tokens for colors, spacing, radius, shadow, and container width
+- Improved typography scale
+- Improved hero layout
+- Improved service cards
+- Improved buttons
+- Improved forms and input focus states
+- Improved result panels
+- Added responsive layout rules
+- Preserved existing class names used by current HTML pages
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Existing class names | Preserved | Passed |
+| Top page layout | Improved | Pending browser check |
+| AI Moving Assistant layout | Improved | Pending browser check |
+| AWS Cost Simulator layout | Improved | Pending browser check |
+| Responsive layout | Added | Pending browser check |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a design system improvement record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Rebuild top page HTML using the new design system
+- [ ] Rebuild AI Moving Assistant HTML using the new design system
+- [ ] Rebuild AWS Cost Simulator HTML using the new design system
+- [ ] Verify public pages after Cloudflare Pages deployment
