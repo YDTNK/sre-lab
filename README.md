@@ -67,6 +67,17 @@ SRE Lab defines basic operational workflows for deployments, monitoring, inciden
 - Daily checks: Cloudflare Pages, Grafana monitoring, alert rules, GitHub Actions
 - Weekly checks: uptime trends, incidents, runbook accuracy, cost and usage
 
+## Services
+
+SRE Lab will host multiple AI-powered micro services.
+
+The first planned service is:
+
+- AI Moving Assistant
+  - Purpose: help users estimate moving preparation tasks and packing materials
+  - Status: planning
+  - Service design: docs/services.md
+
 ## Roadmap
 
 1. Build the project foundation

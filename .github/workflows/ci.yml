@@ -24,4 +24,5 @@ jobs:
           test -f docs/runbook.md
           test -f docs/incidents.md
           test -f docs/operations.md
+          test -f docs/services.md
           test -f apps/landing/index.html
