@@ -2990,3 +2990,69 @@ Not applicable. This is a design system improvement record.
 - [ ] Rebuild AI Moving Assistant HTML using the new design system
 - [ ] Rebuild AWS Cost Simulator HTML using the new design system
 - [ ] Verify public pages after Cloudflare Pages deployment
+
+---
+
+### 20260614-037
+
+### Service
+
+Cloud and AI Tools Public Site
+
+### Alert Rule
+
+Manual documentation record / top page rebuild
+
+### Summary
+
+The public top page was rebuilt as a customer-facing landing page for the Cloud and AI tools site.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-G-2 top page rebuild.
+
+### Detection
+
+Manual review identified that the top page should behave as a customer-facing service entry point rather than a portfolio explanation page.
+
+### Changes
+
+- Rebuilt apps/landing/index.html
+- Used クラウドとAIの便利ツール集 as the public site name
+- Removed SRE Lab and portfolio wording from the public top page
+- Added customer-facing hero copy
+- Added tool cards for AI引越し診断 and AWS料金試算
+- Added usage flow section
+- Added general disclaimer section
+- Added future tool candidates section
+- Preserved links to existing service pages
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Public site name | クラウドとAIの便利ツール集 | Updated |
+| Portfolio wording | Not shown | Passed |
+| Service cards | Shown | Passed |
+| Existing links | Preserved | Passed |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a public top page rebuild.
+
+### Prevention / Follow-up Actions
+
+- [ ] Rebuild AI Moving Assistant page using the same design system
+- [ ] Rebuild AWS Cost Simulator page using the same design system
+- [ ] Verify public page after Cloudflare Pages deployment
