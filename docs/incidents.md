@@ -3489,3 +3489,80 @@ Not applicable. This is an AWS Cost Simulator HTML rebuild.
 - [ ] Verify AWS Cost Simulator page after Cloudflare Pages deployment
 - [ ] Confirm production API response rendering
 - [ ] Capture screenshots for Phase 9-H-5
+
+---
+
+### 20260614-045
+
+### Service
+
+Cloud and AI Tools Public Site
+
+### Alert Rule
+
+Manual documentation record / template-based visual polish
+
+### Summary
+
+The public site visual design was polished using ideas from a reusable free template while preserving the current custom layout and implementation.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 9-H-6-1 template-based visual polish.
+
+### Detection
+
+Manual design review identified that the page layout and functionality had improved, but the color palette and visual treatment still lacked commercial design quality.
+
+### Changes
+
+- Added a dark teal top accent line
+- Strengthened header and navigation visual identity
+- Added a translucent hero content panel
+- Added section title accent bars
+- Added colored top bars to cards
+- Strengthened AI Moving Assistant and AWS Cost Simulator visual differentiation
+- Improved preview card styling
+- Improved CTA button contrast
+- Improved form focus states
+- Improved calculator result and breakdown card styling
+- Improved notice section styling
+- Did not copy template HTML/CSS directly
+- Did not add old float layout
+- Did not add IE compatibility scripts
+- Did not add external dependencies
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| Top accent line | Added | Passed |
+| Header polish | Added | Passed |
+| Hero visual panel | Added | Passed |
+| Card color bars | Added | Passed |
+| CTA contrast | Improved | Passed |
+| Form styling | Improved | Passed |
+| Result styling | Improved | Passed |
+| External dependencies | None added | Passed |
+| Browser check | Required after deploy | Pending |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is a visual design improvement record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Verify top page visual design after deployment
+- [ ] Verify AI Moving Assistant visual design after deployment
+- [ ] Verify AWS Cost Simulator visual design after deployment
+- [ ] Capture screenshots for Phase 9-H-5
