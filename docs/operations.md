@@ -392,4 +392,4 @@ Initial reliability targets:
 - Primary probe location: Tokyo, JP
 - Alert pending period: 2m
 
-These targets may be updated as the project grows.
+These targets may be updated as the project grows.\n\n## Daily Usage / Cost Snapshot\n\nDuring the initial AI rollout, create a manual usage and cost snapshot.\n\n### Checklist\n\n- Check API usage counters in Cloudflare KV\n- Check AI usage counters in Cloudflare KV\n- Check estimated token usage in Cloudflare KV\n- Check estimated daily cost in Cloudflare KV\n- Check estimated monthly cost in Cloudflare KV\n- Check OpenAI Platform usage\n- Check OpenAI credit balance\n- Confirm auto recharge is off\n- Record results in docs/usage-cost-report.md\n\n### Status Classification\n\n| Status | Meaning |\n|---|---|\n| normal | Usage and cost are within expected range |\n| warning | Usage or cost is approaching threshold |\n| action required | Limit reached, error spike, or unexpected cost increase |\n\n### Related Documents\n\n- docs/cost.md\n- docs/usage-cost-report.md\n- docs/incidents.md\n\n

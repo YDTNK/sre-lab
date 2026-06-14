@@ -183,5 +183,4 @@ Create an operational record in docs/incidents.md if any of the following occurs
 - Add monthly cost review section to operations.md
 - Consider Grafana alerting for cost thresholds
 - Consider D1 for historical cost reporting
-- Add revenue versus cost tracking after monetization experiments begin
-
+- Add revenue versus cost tracking after monetization experiments begin\n\n## Usage / Cost Snapshot Procedure\n\nUse this procedure to create a manual daily or weekly snapshot.\n\n1. Check Cloudflare KV usage counters.\n2. Check Cloudflare KV estimated token and cost counters.\n3. Check OpenAI Platform actual usage.\n4. Check OpenAI credit balance.\n5. Confirm auto recharge is off.\n6. Record the result in docs/usage-cost-report.md.\n7. Create an operational record in docs/incidents.md if thresholds are exceeded or abnormal behavior is found.\n\nSnapshot report:\n\n- docs/usage-cost-report.md\n\nRecommended initial cadence:\n\n- Daily during initial AI rollout\n- Weekly after stable low-traffic operation\n\n

@@ -240,7 +240,7 @@ Alert behavior:
 | docs/services.md | Service planning |
 | docs/moving-assistant.md | AI Moving Assistant specification |
 | docs/ai-api-design.md | Real AI API backend design and safety controls |
-| docs/cost.md | AI usage and cost operations |
+| docs/cost.md | AI usage and cost operations |\n| docs/usage-cost-report.md | Manual usage and cost snapshot records |
 
 ## Operational Records
 
