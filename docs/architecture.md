@@ -10,22 +10,25 @@ The current service is AI Moving Assistant, a Japanese moving preparation assist
 
 ## Current Architecture
 
-User
-  -> Cloudflare Pages
-  -> SRE Lab Frontend
-  -> AI Moving Assistant Japanese Form UI
-  -> Cloudflare Workers API
-  -> POST /api/moving-assistant
-  -> Mock Response / Moving Checklist JSON
+```mermaid
+flowchart TD
+    U[User] --> P[Cloudflare Pages<br/>SRE Lab Frontend]
+    P --> F[AI Moving Assistant<br/>Japanese Form UI]
+    F --> W[Cloudflare Workers API<br/>POST /api/moving-assistant]
+    W --> M[Mock Response<br/>Moving Checklist JSON]
+    W -. Future .-> AI[Future AI API]
 
-Grafana Synthetic Monitoring
-  -> monitors Cloudflare Pages frontend
-  -> monitors Cloudflare Workers API
+    G[Grafana Synthetic Monitoring] --> P
+    G --> W
 
-Grafana Alerting
-  -> sends email notification
-  -> links to Runbook
-  -> supports Incident Log
+    G --> A[Grafana Alerting]
+    A --> E[Email Notification]
+    A --> R[Runbook<br/>docs/runbook.md]
+    A --> I[Incident Log<br/>docs/incidents.md]
+
+    CI[GitHub Actions CI] --> P
+    CI --> W
+```
 
 ## Components
 
@@ -115,15 +118,17 @@ Operational documents:
 
 ## Reliability Flow
 
-Deployment
-  -> GitHub Actions CI
-  -> Cloudflare Pages / Workers
-  -> Grafana Synthetic Monitoring
-  -> Grafana Alerting
-  -> Email Notification
-  -> Runbook
-  -> Incident Log
-  -> Follow-up Improvements
+```mermaid
+flowchart LR
+    D[Deployment] --> C[GitHub Actions CI]
+    C --> CF[Cloudflare Pages / Workers]
+    CF --> S[Grafana Synthetic Monitoring]
+    S --> AL[Grafana Alerting]
+    AL --> N[Email Notification]
+    N --> RB[Runbook]
+    RB --> IL[Incident Log]
+    IL --> IMP[Follow-up Improvements]
+```
 
 ## Current Scope
 

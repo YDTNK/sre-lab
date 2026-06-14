@@ -4,24 +4,24 @@ SRE Lab is a personal platform project for building, operating, monitoring, and 
 
 ## Architecture
 
-SRE Lab currently uses the following architecture:
+```mermaid
+flowchart TD
+    U[User] --> P[Cloudflare Pages<br/>SRE Lab Frontend]
+    P --> F[AI Moving Assistant<br/>Japanese Form UI]
+    F --> W[Cloudflare Workers API<br/>POST /api/moving-assistant]
+    W --> M[Mock Response<br/>Moving Checklist JSON]
+    W -. Future .-> AI[Future AI API]
 
-User
-  -> Cloudflare Pages
-  -> AI Moving Assistant Frontend
-  -> Cloudflare Workers API
-  -> Mock Response / Future AI API
+    G[Grafana Synthetic Monitoring] --> P
+    G --> W
 
-Grafana Synthetic Monitoring monitors both:
+    G --> A[Grafana Alerting]
+    A --> E[Email Notification]
+    A --> R[Runbook / Incident Log]
 
-- Landing page
-- Workers API
-
-Grafana Alerting sends notifications and links to:
-
-- Email notification
-- Runbook
-- Incident Log
+    CI[GitHub Actions CI] --> P
+    CI --> W
+```
 
 - Architecture document: docs/architecture.md
 
