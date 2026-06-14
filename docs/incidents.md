@@ -2071,3 +2071,76 @@ Not applicable. This is a frontend UI implementation record.
 - [ ] Enable calculate button after API integration
 - [ ] Add API safety validation
 - [ ] Add synthetic monitoring after endpoint release
+
+---
+
+### 20260614-024
+
+### Service
+
+SRE Lab AWS Cost Simulator API
+
+### Alert Rule
+
+Manual documentation record / Workers API endpoint implementation
+
+### Summary
+
+A new Workers API endpoint was added for AWS Cost Simulator.
+
+### Impact
+
+No user-facing incident occurred.
+
+This record documents Phase 8-5 Workers API endpoint implementation for the second SRE Lab service.
+
+### Detection
+
+Manual implementation and syntax verification during Phase 8-5.
+
+### Changes
+
+- Added AWS Cost Simulator API path
+- Added POST /api/aws-cost-simulator route handling
+- Added JSON request validation for the new endpoint
+- Added request size checks for the new endpoint
+- Added mock estimate response for endpoint verification
+- Preserved existing POST /api/moving-assistant behavior
+
+### Design Decision
+
+The AWS Cost Simulator endpoint starts with a mock response.
+
+Deterministic cost calculation is intentionally deferred to the next phase.
+
+The endpoint does not call OpenAI API or any paid external API.
+
+### Verification Results
+
+| Case | Expected | Result |
+|---|---|---|
+| API syntax check | Pass | Passed |
+| AWS Cost Simulator path | Added | Passed |
+| Mock response | Implemented | Passed |
+| Existing Moving Assistant path | Preserved | Passed |
+| Paid AI API call | Not used | Passed |
+
+### Root Cause
+
+No incident occurred.
+
+### Mitigation
+
+No mitigation was required.
+
+### Recovery Validation
+
+Not applicable. This is an API endpoint implementation record.
+
+### Prevention / Follow-up Actions
+
+- [ ] Deploy Worker through GitHub Actions
+- [ ] Verify POST /api/aws-cost-simulator in production
+- [ ] Implement deterministic cost calculation in Phase 8-6
+- [ ] Add stronger input validation in Phase 8-7
+- [ ] Add monitoring after endpoint behavior is stable

@@ -1,4 +1,5 @@
-const API_PATH = "/api/moving-assistant";
+const MOVING_ASSISTANT_API_PATH = "/api/moving-assistant";
+const AWS_COST_SIMULATOR_API_PATH = "/api/aws-cost-simulator";
 
 const MAX_REQUEST_BYTES = 8 * 1024;
 const MAX_TOTAL_INPUT_LENGTH = 2000;
@@ -47,7 +48,11 @@ export default {
       return handleOptions();
     }
 
-    if (url.pathname !== API_PATH) {
+    if (url.pathname === AWS_COST_SIMULATOR_API_PATH) {
+      return handleAwsCostSimulator(request, env);
+    }
+
+    if (url.pathname !== MOVING_ASSISTANT_API_PATH) {
       await recordUsage(env, "api_errors");
       return errorResponse(
         "not_found",
@@ -239,6 +244,122 @@ export default {
     });
   },
 };
+
+
+async function handleAwsCostSimulator(request, env) {
+  if (request.method !== "POST") {
+    await recordUsage(env, "aws_cost_simulator_api_errors");
+    return errorResponse(
+      "method_not_allowed",
+      "Only POST requests are allowed for this endpoint.",
+      405
+    );
+  }
+
+  const contentType = request.headers.get("content-type") || "";
+
+  if (!contentType.toLowerCase().includes("application/json")) {
+    await recordUsage(env, "aws_cost_simulator_api_errors");
+    return errorResponse(
+      "unsupported_media_type",
+      "Content-Type must be application/json.",
+      415
+    );
+  }
+
+  const contentLength = request.headers.get("content-length");
+
+  if (contentLength && Number(contentLength) > MAX_REQUEST_BYTES) {
+    await recordUsage(env, "aws_cost_simulator_api_errors");
+    return errorResponse(
+      "payload_too_large",
+      "Request body is too large.",
+      413
+    );
+  }
+
+  await recordUsage(env, "aws_cost_simulator_api_requests");
+
+  let bodyText;
+
+  try {
+    bodyText = await request.text();
+  } catch {
+    await recordUsage(env, "aws_cost_simulator_api_errors");
+    return errorResponse(
+      "invalid_request_body",
+      "Failed to read request body.",
+      400
+    );
+  }
+
+  if (bodyText.length > MAX_REQUEST_BYTES) {
+    await recordUsage(env, "aws_cost_simulator_api_errors");
+    return errorResponse(
+      "payload_too_large",
+      "Request body is too large.",
+      413
+    );
+  }
+
+  let body;
+
+  try {
+    body = JSON.parse(bodyText);
+  } catch {
+    await recordUsage(env, "aws_cost_simulator_api_errors");
+    return errorResponse(
+      "invalid_json",
+      "Request body must be valid JSON.",
+      400
+    );
+  }
+
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    await recordUsage(env, "aws_cost_simulator_api_errors");
+    return errorResponse(
+      "invalid_request_body",
+      "Request body must be a JSON object.",
+      400
+    );
+  }
+
+  await recordUsage(env, "aws_cost_simulator_api_success");
+
+  return jsonResponse(buildAwsCostSimulatorMockResponse(body));
+}
+
+function buildAwsCostSimulatorMockResponse(body) {
+  return {
+    service: "aws-cost-simulator",
+    mode: "mock",
+    summary: "AWS Cost Simulator endpoint is available. Deterministic cost calculation will be implemented in the next phase.",
+    totalMonthlyUsd: 0,
+    totalMonthlyJpy: 0,
+    breakdown: {
+      ec2: 0,
+      ebs: 0,
+      s3: 0,
+      dataTransfer: 0,
+    },
+    assumptions: [
+      "This is a mock response for endpoint verification.",
+      "No AWS Pricing API is called.",
+      "No paid AI API is used for this endpoint.",
+      "Deterministic calculation will be added in Phase 8-6.",
+    ],
+    receivedInput: {
+      region: body.region || "",
+      ec2InstanceType: body.ec2InstanceType || "",
+      ec2InstanceCount: body.ec2InstanceCount ?? null,
+      ec2HoursPerMonth: body.ec2HoursPerMonth ?? null,
+      ebsGb: body.ebsGb ?? null,
+      s3Gb: body.s3Gb ?? null,
+      dataTransferGb: body.dataTransferGb ?? null,
+    },
+    disclaimer: "This is an educational placeholder response and not an official AWS cost estimate.",
+  };
+}
 
 async function checkAiDailyLimit(request, env) {
   if (!env.RATE_LIMIT_KV) {
