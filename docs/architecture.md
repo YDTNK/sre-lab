@@ -2,11 +2,21 @@
 
 This document describes the current SRE Lab architecture.
 
+## Current Status
+
+```text
+Stopped at Phase 16 v1 checkpoint
+```
+
+SRE Lab currently keeps one active consumer-facing service running and stops new feature expansion for now.
+
 ## Overview
 
 SRE Lab is a small service platform for building, operating, monitoring, and improving AI-powered micro services.
 
-The current service is AI Moving Assistant, a Japanese moving preparation assistant.
+The current active service is AI Moving Assistant, a Japanese moving preparation assistant.
+
+AWS Cost Simulator was removed from the active service portfolio and is now historical context only.
 
 ## Current Architecture
 
@@ -15,8 +25,9 @@ flowchart TD
     U[User] --> P[Cloudflare Pages<br/>SRE Lab Frontend]
     P --> F[AI Moving Assistant<br/>Japanese Form UI]
     F --> W[Cloudflare Workers API<br/>POST /api/moving-assistant]
-    W --> M[Mock Response<br/>Moving Checklist JSON]
-    W -. Future .-> AI[Future AI API]
+    W --> M[Fallback Response<br/>Moving Checklist JSON]
+    F --> S[Free Moving Checklist Sample<br/>moving-checklist-sample.html]
+    W -. Future only .-> AI[Future AI API]
 
     G[Grafana Synthetic Monitoring] --> P
     G --> W
@@ -41,6 +52,12 @@ Cloudflare Pages hosts the static frontend.
 - Main file: apps/landing/index.html
 - Style file: apps/landing/styles.css
 
+Active pages:
+
+- apps/landing/index.html
+- apps/landing/moving-assistant.html
+- apps/landing/moving-checklist-sample.html
+
 ### AI Moving Assistant Frontend
 
 The frontend provides a Japanese input form for moving preparation.
@@ -51,6 +68,8 @@ Current behavior:
 - Validates empty input
 - Calls the production Workers API
 - Displays the API response
+- Shows a clickable free sample CTA
+- Links to the static free moving checklist sample page
 
 ### Cloudflare Workers API
 
@@ -65,15 +84,30 @@ Current behavior:
 
 - Validates JSON input
 - Rejects empty requests
-- Returns a mock moving checklist response
+- Applies safety controls and rate limiting
+- Returns fallback moving checklist response
 
-Future behavior:
+Future behavior only if resumed:
 
 - Call an AI API through the Worker
 - Keep AI API keys out of frontend code
-- Add timeout handling
-- Add cost controls
-- Add rate limiting
+- Add stronger timeout handling
+- Add stronger cost controls
+- Add implementation-backed tracking only when needed
+
+### Free Sample CTA
+
+The free sample CTA is the current lightweight conversion point.
+
+```text
+AI Moving Assistant result page
+↓
+Free sample CTA click
+↓
+moving-checklist-sample.html visit
+```
+
+There is currently no payment flow, affiliate flow, email collection, or personal information collection.
 
 ### Grafana Synthetic Monitoring
 
@@ -116,6 +150,12 @@ Operational documents:
 - Operations guide: docs/operations.md
 - AI API design: docs/ai-api-design.md
 
+Management documents:
+
+- YDTNK/engineering-career-hq/projects/sre-lab/revenue-cost-dashboard.md
+- YDTNK/engineering-career-hq/projects/sre-lab/progress.md
+- YDTNK/engineering-career-hq/projects/sre-lab/daily-log.md
+
 ## Reliability Flow
 
 ```mermaid
@@ -135,18 +175,31 @@ flowchart LR
 Current scope:
 
 - Static frontend
-- Workers mock API
+- Workers fallback API
 - Frontend to API connection
+- Free moving checklist sample page
 - Synthetic monitoring
 - Alerting
 - Runbook
 - Incident log
-- Basic CI
-
-Not yet included:
-
-- Real AI API integration
-- Worker auto-deploy via GitHub Actions
+- GitHub Actions CI
+- Workers auto-deploy
 - Rate limiting
-- API usage dashboard
+- API safety controls
+- Docs-based Revenue / Cost Dashboard in management repository
+
+Not currently included:
+
+- Real AI API active usage
+- Payment flow
+- Affiliate flow
+- Email collection
+- Personal information collection
+- Implementation-backed conversion tracking
 - Custom domain
+
+## Stop Policy
+
+- Do not add new SRE Lab features for now
+- Do not start Phase 17 until a real revenue route exists
+- Move active learning focus to Kubernetes / CKA preparation
