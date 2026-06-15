@@ -1,5 +1,4 @@
 const MOVING_ASSISTANT_API_PATH = "/api/moving-assistant";
-const AWS_COST_SIMULATOR_API_PATH = "/api/aws-cost-simulator";
 
 const MAX_REQUEST_BYTES = 8 * 1024;
 const MAX_TOTAL_INPUT_LENGTH = 2000;
@@ -21,29 +20,6 @@ const ESTIMATED_OUTPUT_TOKENS = 500;
 const ESTIMATED_INPUT_TOKEN_DIVISOR = 1;
 const ESTIMATED_COST_PER_1K_INPUT_TOKENS_JPY = 0.02;
 const ESTIMATED_COST_PER_1K_OUTPUT_TOKENS_JPY = 0.08;
-const USD_TO_JPY_RATE = 150;
-
-const AWS_EC2_HOURLY_USD = {
-  "t3.micro": 0.0136,
-  "t3.small": 0.0272,
-  "t3.medium": 0.0544,
-};
-
-const AWS_EBS_GB_MONTH_USD = 0.096;
-const AWS_S3_GB_MONTH_USD = 0.025;
-const AWS_DATA_TRANSFER_GB_USD = 0.09;
-const AWS_ALLOWED_REGIONS = ["ap-northeast-1", "us-east-1"];
-const AWS_ALLOWED_INSTANCE_TYPES = ["t3.micro", "t3.small", "t3.medium"];
-
-const AWS_COST_INPUT_LIMITS = {
-  ec2InstanceCount: { min: 0, max: 20 },
-  ec2HoursPerMonth: { min: 0, max: 744 },
-  ebsGb: { min: 0, max: 1000 },
-  s3Gb: { min: 0, max: 1000 },
-  dataTransferGb: { min: 0, max: 1000 },
-};
-
-
 
 const FIELD_NAMES = [
   "furniture",
@@ -71,160 +47,18 @@ export default {
       return handleOptions();
     }
 
-    if (url.pathname === AWS_COST_SIMULATOR_API_PATH) {
-      return handleAwsCostSimulator(request, env);
-    }
-
     if (url.pathname === MOVING_ASSISTANT_API_PATH) {
       return handleMovingAssistantMock(request, env);
     }
 
-    if (url.pathname !== MOVING_ASSISTANT_API_PATH) {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "not_found",
-        "The requested API endpoint was not found.",
-        404
-      );
-    }
-
-    if (request.method !== "POST") {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "method_not_allowed",
-        "Only POST requests are allowed for this endpoint.",
-        405
-      );
-    }
-
-    const contentType = request.headers.get("content-type") || "";
-
-    if (!contentType.toLowerCase().includes("application/json")) {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "unsupported_media_type",
-        "Content-Type must be application/json.",
-        415
-      );
-    }
-
-    const contentLength = request.headers.get("content-length");
-
-    if (contentLength && Number(contentLength) > MAX_REQUEST_BYTES) {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "payload_too_large",
-        "Request body is too large.",
-        413
-      );
-    }
-
-    await safeRecordUsage(env, "api_requests");
-
-    const rateLimitResult = await checkRateLimit(request, env);
-
-    if (!rateLimitResult.allowed) {
-      await safeRecordUsage(env, "rate_limited");
-      return errorResponse(
-        "rate_limited",
-        "Too many requests. Please try again later.",
-        429,
-        {
-          "Retry-After": String(RATE_LIMIT_RETRY_AFTER_SECONDS),
-        }
-      );
-    }
-
-    let bodyText;
-
-    try {
-      bodyText = await request.text();
-    } catch {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "invalid_request_body",
-        "Failed to read request body.",
-        400
-      );
-    }
-
-    if (bodyText.length > MAX_REQUEST_BYTES) {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "payload_too_large",
-        "Request body is too large.",
-        413
-      );
-    }
-
-    let body;
-
-    try {
-      body = JSON.parse(bodyText);
-    } catch {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "invalid_json",
-        "Request body must be valid JSON.",
-        400
-      );
-    }
-
-    if (!body || typeof body !== "object" || Array.isArray(body)) {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "invalid_request_body",
-        "Request body must be a JSON object.",
-        400
-      );
-    }
-
-    const fields = FIELD_NAMES.map((fieldName) => body[fieldName]);
-
-    const hasAnyInput = fields.some((value) => {
-      return typeof value === "string" && value.trim().length > 0;
-    });
-
-    if (!hasAnyInput) {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "missing_input",
-        "At least one moving information field is required.",
-        400
-      );
-    }
-
-    const totalInputLength = fields.reduce((total, value) => {
-      if (typeof value !== "string") {
-        return total;
-      }
-
-      return total + value.trim().length;
-    }, 0);
-
-    if (totalInputLength > MAX_TOTAL_INPUT_LENGTH) {
-      await safeRecordUsage(env, "api_errors");
-      return errorResponse(
-        "input_too_large",
-        "Total input length is too large.",
-        413
-      );
-    }
-
-    const estimatedUsage = estimateAiUsage(body);
-    const fallback = buildFallbackResponse();
-
-    await safeRecordUsage(env, "api_success");
-
-    return jsonResponse({
-      ...fallback,
-      aiStatus: "fallback",
-      fallbackReason: "AI integration is temporarily disabled during production verification.",
-      estimatedUsage,
-    });
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "not_found",
+      "The requested API endpoint was not found.",
+      404
+    );
   },
 };
-
 
 async function handleMovingAssistantMock(request, env) {
   if (request.method !== "POST") {
@@ -340,236 +174,6 @@ async function handleMovingAssistantMock(request, env) {
   });
 }
 
-
-async function handleAwsCostSimulator(request, env) {
-  if (request.method !== "POST") {
-    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
-    return errorResponse(
-      "method_not_allowed",
-      "Only POST requests are allowed for this endpoint.",
-      405
-    );
-  }
-
-  const contentType = request.headers.get("content-type") || "";
-
-  if (!contentType.toLowerCase().includes("application/json")) {
-    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
-    return errorResponse(
-      "unsupported_media_type",
-      "Content-Type must be application/json.",
-      415
-    );
-  }
-
-  const contentLength = request.headers.get("content-length");
-
-  if (contentLength && Number(contentLength) > MAX_REQUEST_BYTES) {
-    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
-    return errorResponse(
-      "payload_too_large",
-      "Request body is too large.",
-      413
-    );
-  }
-
-  await safeRecordUsage(env, "aws_cost_simulator_api_requests");
-
-  let bodyText;
-
-  try {
-    bodyText = await request.text();
-  } catch {
-    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
-    return errorResponse(
-      "invalid_request_body",
-      "Failed to read request body.",
-      400
-    );
-  }
-
-  if (bodyText.length > MAX_REQUEST_BYTES) {
-    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
-    return errorResponse(
-      "payload_too_large",
-      "Request body is too large.",
-      413
-    );
-  }
-
-  let body;
-
-  try {
-    body = JSON.parse(bodyText);
-  } catch {
-    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
-    return errorResponse(
-      "invalid_json",
-      "Request body must be valid JSON.",
-      400
-    );
-  }
-
-  if (!body || typeof body !== "object" || Array.isArray(body)) {
-    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
-    return errorResponse(
-      "invalid_request_body",
-      "Request body must be a JSON object.",
-      400
-    );
-  }
-
-  const validation = validateAwsCostSimulatorInput(body);
-
-  if (!validation.ok) {
-    await safeRecordUsage(env, "aws_cost_simulator_api_errors");
-    return errorResponse(
-      "invalid_input",
-      validation.message,
-      400
-    );
-  }
-
-  await safeRecordUsage(env, "aws_cost_simulator_api_success");
-
-  return jsonResponse(buildAwsCostSimulatorMockResponse(validation.data));
-}
-
-
-function validateAwsCostSimulatorInput(body) {
-  const region = body.region;
-  const ec2InstanceType = body.ec2InstanceType;
-
-  if (typeof region !== "string" || !AWS_ALLOWED_REGIONS.includes(region)) {
-    return {
-      ok: false,
-      message: "region must be one of: ap-northeast-1, us-east-1.",
-    };
-  }
-
-  if (
-    typeof ec2InstanceType !== "string" ||
-    !AWS_ALLOWED_INSTANCE_TYPES.includes(ec2InstanceType)
-  ) {
-    return {
-      ok: false,
-      message: "ec2InstanceType must be one of: t3.micro, t3.small, t3.medium.",
-    };
-  }
-
-  const numericFields = [
-    "ec2InstanceCount",
-    "ec2HoursPerMonth",
-    "ebsGb",
-    "s3Gb",
-    "dataTransferGb",
-  ];
-
-  const data = {
-    region,
-    ec2InstanceType,
-  };
-
-  for (const fieldName of numericFields) {
-    const value = body[fieldName];
-    const limits = AWS_COST_INPUT_LIMITS[fieldName];
-
-    if (typeof value !== "number" || !Number.isFinite(value)) {
-      return {
-        ok: false,
-        message: `${fieldName} must be a finite number.`,
-      };
-    }
-
-    if (value < limits.min || value > limits.max) {
-      return {
-        ok: false,
-        message: `${fieldName} must be between ${limits.min} and ${limits.max}.`,
-      };
-    }
-
-    data[fieldName] = value;
-  }
-
-  return {
-    ok: true,
-    data,
-  };
-}
-
-function buildAwsCostSimulatorMockResponse(body) {
-  const region = typeof body.region === "string" ? body.region : "ap-northeast-1";
-  const ec2InstanceType =
-    typeof body.ec2InstanceType === "string" ? body.ec2InstanceType : "t3.micro";
-
-  const ec2InstanceCount = normalizeNumber(body.ec2InstanceCount, 1);
-  const ec2HoursPerMonth = normalizeNumber(body.ec2HoursPerMonth, 730);
-  const ebsGb = normalizeNumber(body.ebsGb, 30);
-  const s3Gb = normalizeNumber(body.s3Gb, 10);
-  const dataTransferGb = normalizeNumber(body.dataTransferGb, 10);
-
-  const ec2HourlyUsd =
-    AWS_EC2_HOURLY_USD[ec2InstanceType] || AWS_EC2_HOURLY_USD["t3.micro"];
-
-  const ec2Usd = ec2HourlyUsd * ec2InstanceCount * ec2HoursPerMonth;
-  const ebsUsd = AWS_EBS_GB_MONTH_USD * ebsGb;
-  const s3Usd = AWS_S3_GB_MONTH_USD * s3Gb;
-  const dataTransferUsd = AWS_DATA_TRANSFER_GB_USD * dataTransferGb;
-
-  const totalMonthlyUsd = roundCurrency(
-    ec2Usd + ebsUsd + s3Usd + dataTransferUsd
-  );
-  const totalMonthlyJpy = Math.round(totalMonthlyUsd * USD_TO_JPY_RATE);
-
-  return {
-    service: "aws-cost-simulator",
-    mode: "deterministic",
-    summary: `月額料金の概算は $${totalMonthlyUsd} / ¥${totalMonthlyJpy} です。`,
-    totalMonthlyUsd,
-    totalMonthlyJpy,
-    breakdown: {
-      ec2: roundCurrency(ec2Usd),
-      ebs: roundCurrency(ebsUsd),
-      s3: roundCurrency(s3Usd),
-      dataTransfer: roundCurrency(dataTransferUsd),
-    },
-    assumptions: [
-      "この試算は学習・検討用の概算です。",
-      "AWS Pricing APIは使用していません。",
-      "このAPI endpointでは有料AI APIを使用していません。",
-      `USD to JPYの換算レートは ${USD_TO_JPY_RATE} 円で固定しています。`,
-      "EC2料金はt3.micro、t3.small、t3.mediumの固定単価テーブルを使用しています。",
-      "EBS、S3、Data transferの料金は固定の概算単価を使用しています。",
-      "税金、無料利用枠、snapshot、NAT Gateway、Load Balancer、RDS、CloudWatch、サポート料金などは含めていません。",
-    ],
-    receivedInput: {
-      region,
-      ec2InstanceType,
-      ec2InstanceCount,
-      ec2HoursPerMonth,
-      ebsGb,
-      s3Gb,
-      dataTransferGb,
-    },
-    disclaimer:
-      "この試算は学習・検討用の概算であり、AWS公式の見積もりではありません。実際の料金はAWS Pricing CalculatorやAWSの請求情報で確認してください。",
-  };
-}
-
-function normalizeNumber(value, fallback) {
-  const numberValue = Number(value);
-
-  if (!Number.isFinite(numberValue) || numberValue < 0) {
-    return fallback;
-  }
-
-  return numberValue;
-}
-
-function roundCurrency(value) {
-  return Number(value.toFixed(2));
-}
-
 async function checkAiDailyLimit(request, env) {
   if (!env.RATE_LIMIT_KV) {
     return { allowed: true };
@@ -577,7 +181,6 @@ async function checkAiDailyLimit(request, env) {
 
   const now = new Date();
   const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
-
   const serviceKey = `ai-limit:moving-assistant:service:${formatDayWindow(now)}`;
   const ipKey = `ai-limit:moving-assistant:ip:${clientIp}:${formatDayWindow(now)}`;
 
@@ -619,7 +222,6 @@ function estimateAiUsage(body) {
     1,
     Math.ceil(inputTextLength / ESTIMATED_INPUT_TOKEN_DIVISOR)
   );
-
   const estimatedOutputTokens = ESTIMATED_OUTPUT_TOKENS;
 
   const estimatedInputCostJpy =
@@ -953,12 +555,11 @@ async function checkRateLimit(request, env) {
 
 async function safeRecordUsage(env, metricName) {
   try {
-    await safeRecordUsage(env, metricName);
+    await recordUsage(env, metricName);
   } catch (error) {
     console.warn("usage_record_failed", metricName, error?.message || error);
   }
 }
-
 
 async function recordUsage(env, metricName) {
   if (!env.RATE_LIMIT_KV) {
@@ -1044,10 +645,21 @@ function pad2(value) {
   return String(value).padStart(2, "0");
 }
 
-function jsonResponse(data, status = 200, extraHeaders = {}) {
-  return new Response(JSON.stringify(data, null, 2), {
-    status,
-    headers: responseHeaders(extraHeaders),
+function handleOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders(),
+  });
+}
+
+function jsonResponse(data, init = {}) {
+  return new Response(JSON.stringify(data), {
+    ...init,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      ...corsHeaders(),
+      ...(init.headers || {}),
+    },
   });
 }
 
@@ -1059,24 +671,18 @@ function errorResponse(code, message, status, extraHeaders = {}) {
         message,
       },
     },
-    status,
-    extraHeaders
+    {
+      status,
+      headers: extraHeaders,
+    }
   );
 }
 
-function responseHeaders(extraHeaders = {}) {
+function corsHeaders() {
   return {
-    "content-type": "application/json; charset=utf-8",
-    "access-control-allow-origin": "*",
-    "access-control-allow-methods": "POST, OPTIONS",
-    "access-control-allow-headers": "content-type",
-    ...extraHeaders,
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Max-Age": "86400",
   };
-}
-
-function handleOptions() {
-  return new Response(null, {
-    status: 204,
-    headers: responseHeaders(),
-  });
 }
