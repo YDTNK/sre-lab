@@ -1099,6 +1099,49 @@ button {
   box-shadow: 0 14px 36px rgba(15, 23, 42, 0.045) !important;
 }
 
+.page-moving #movingAssistantForm {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 18px !important;
+}
+
+.page-moving #movingAssistantForm > div {
+  display: grid !important;
+  gap: 8px !important;
+  margin-bottom: 0 !important;
+}
+
+.page-moving #movingAssistantForm label {
+  display: block !important;
+  color: #1f2937 !important;
+  font-weight: 800 !important;
+  line-height: 1.5 !important;
+}
+
+.page-moving #movingAssistantForm input,
+.page-moving #movingAssistantForm textarea {
+  width: 100% !important;
+  min-height: 46px !important;
+  padding: 12px 14px !important;
+  border: 1px solid #cfd9e6 !important;
+  border-radius: 10px !important;
+  color: #111827 !important;
+  background: #ffffff !important;
+  font-size: 0.96rem !important;
+  line-height: 1.6 !important;
+}
+
+.page-moving #movingAssistantForm textarea {
+  min-height: 110px !important;
+  resize: vertical !important;
+}
+
+.page-moving #movingAssistantForm input::placeholder,
+.page-moving #movingAssistantForm textarea::placeholder {
+  color: #8a97a8 !important;
+  opacity: 1 !important;
+}
+
 .monetization-cta {
   margin-top: 24px !important;
   padding: 20px !important;
