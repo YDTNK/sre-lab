@@ -1,8 +1,18 @@
 # Public Site Design Reference
 
+## Current Status
+
+```text
+Stopped at Phase 16 v1 checkpoint
+```
+
+SRE Lab currently keeps AI Moving Assistant as the only active consumer-facing service.
+
+AWS Cost Simulator was removed from the active service portfolio.
+
 ## Purpose
 
-公開サイトのデザイン品質を統一し、サービス追加時にレイアウトやUIが崩れないようにする。
+公開サイトのデザイン品質を統一し、将来サービスを追加する場合にもレイアウトやUIが崩れないようにする。
 
 本ドキュメントは公開サイトのデザイン方針を定義する。
 
@@ -15,11 +25,13 @@
 - 個人開発感を減らす
 - 商用品質に近づける
 - ツールを使いたくなる導線を作る
-- サービス追加時も拡張しやすい
+- 将来サービス追加時も拡張しやすい
 - モバイル・PC両対応
-- SREポートフォリオ色を前面に出さない
+- SREポートフォリオ色を前面に出しすぎない
 
-公開サイトは「クラウドとAIの便利ツール集」として構成する。
+公開サイトは、現時点では「AI引越し診断」を中心にした便利ツールとして構成する。
+
+将来、収益導線やサービス追加の判断ができた場合のみ、複数ツール構成へ拡張する。
 
 ---
 
@@ -62,7 +74,9 @@ Level 4:
 
 ### Reason
 
-複数サービスを1ブランド配下で見せる構造がSRE Labと近いため。
+複数サービスを1ブランド配下で見せる構造が、将来のSRE Lab構想と近いため。
+
+ただし現時点では、AI Moving Assistantを主役にした単一サービス構成として扱う。
 
 ### Adopt
 
@@ -72,13 +86,17 @@ Level 4:
 - サービス一覧構造
 - セクション余白
 
-### Layout
+### Current Layout
 
 Hero
 
 ↓
 
-目的別ツールカード
+AI Moving Assistant primary card
+
+↓
+
+無料チェックリストサンプル導線
 
 ↓
 
@@ -114,8 +132,7 @@ SUUMO 引越し
 
 ### Reason
 
-同ジャンルサービスであり、
-入力導線とCTA設計が優れているため。
+同ジャンルサービスであり、入力導線とCTA設計が優れているため。
 
 ### Adopt
 
@@ -135,6 +152,10 @@ Hero
 ↓
 
 診断結果
+
+↓
+
+無料チェックリストサンプルCTA
 
 ↓
 
@@ -162,54 +183,15 @@ LIFULL HOME'S 引越し
 
 ---
 
-# AWS Cost Simulator Reference
+# Removed Service Reference
 
-## Primary Reference
+## AWS Cost Simulator
 
-Calculator Style Layout
+AWS Cost Simulator was previously considered for a calculator-style layout.
 
-### Reason
+It is now removed from the active service portfolio and should not be used as an active design target.
 
-料金試算ツールとして最も理解しやすいため。
-
-### Adopt
-
-- 左入力
-- 右結果
-- 大きな料金表示
-- 内訳表示
-
-### Layout
-
-Hero
-
-↓
-
-2カラム入力/結果
-
-↓
-
-内訳カード
-
-↓
-
-前提条件
-
-↓
-
-注意事項
-
----
-
-## Secondary Reference
-
-マネーフォワード
-
-### Adopt
-
-- 数字の見せ方
-- 結果カード
-- 情報整理
+If a future calculator-style service is added, this reference can be reused only after a separate service decision.
 
 ---
 
@@ -223,18 +205,19 @@ Hero
 
 ## Cards
 
-- サービス単位でカード化
-- 将来追加時も同じカードを利用
+- active serviceを明確にカード化する
+- 将来追加時も同じカード設計を利用できるようにする
 
 ## CTA
 
 - 各ページに主要CTAを1つ
 - ボタン文言は行動ベース
+- 現在の主要CTAはAI Moving Assistantの診断開始と無料サンプル閲覧
 
 例:
 
-- 試算する
 - 診断する
+- 無料サンプルを見る
 - 作成する
 
 ## Spacing
@@ -242,14 +225,19 @@ Hero
 - セクション間余白は大きめ
 - フォーム内余白も十分確保
 
+## Current Stop Policy
+
+- 新規SRE Lab機能追加は当面行わない
+- Phase 17には実収益導線ができるまで進まない
+- 決済、アフィリエイト、メール収集、個人情報収集は別判断なしに追加しない
+
 ## Future Services
 
 将来追加するサービスも同ルールを適用する。
 
-例:
+候補例:
 
-- Terraform構成診断
-- AI障害要約
-- 学習支援ツール
-- AWS構成レビュー
-
+- AI転職診断
+- AI家計診断
+- AI学習コーチ
+- 不動産 / 引越し補助
