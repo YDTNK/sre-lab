@@ -2,6 +2,21 @@
 
 This document describes the service direction for SRE Lab.
 
+## Current Status
+
+```text
+Stopped at Phase 16 v1 checkpoint
+```
+
+Current policy:
+
+- Do not add new SRE Lab features for now
+- Do not start Phase 17 until a real revenue route exists
+- Keep the docs-based Revenue / Cost Dashboard updated monthly or when an event occurs
+- Move active learning focus to Kubernetes / CKA preparation
+
+---
+
 ## Service Selection Policy
 
 SRE Lab services should meet the following criteria:
@@ -55,15 +70,28 @@ The current MVP supports:
   - Risk notes
 - Static result display
 - PDF checklist CTA for monetization demand check
+- Clickable free sample CTA
+- Static free moving checklist sample page
 
 ### Monetization Ideas
 
-Initial monetization options:
+Future monetization options:
 
-- Free basic diagnosis
 - Moving checklist PDF / template
 - Affiliate links for moving supplies or related services
+- Small paid report
 - Ads after traffic grows
+
+Current revenue status:
+
+```text
+Revenue: 0 JPY
+Payment flow: not implemented
+Affiliate flow: not implemented
+PDF / template sale: not implemented
+Free sample CTA: implemented
+Phase 17: not started
+```
 
 ### SRE / Operations Value
 
@@ -71,23 +99,29 @@ This service can be used to demonstrate:
 
 - Frontend deployment
 - API endpoint operation
-- AI API cost control
+- AI API cost control design
 - Request/response monitoring
 - Error handling
 - Alerting
 - Incident management
 - Monetization experiment tracking
+- Docs-based revenue / cost dashboard operation
 
-### Initial Success Criteria
+### Current Success Criteria
 
-MVP success is defined as:
+Current checkpoint is completed when:
 
 - Public page is available
 - User can submit moving information
 - A result is generated
 - PDF checklist CTA is displayed
+- Free sample CTA is clickable
+- Free sample page is accessible
 - Basic errors are handled
 - Usage and failures can be monitored
+- Docs-based Revenue / Cost Dashboard exists
+
+This checkpoint is now complete.
 
 ---
 
@@ -103,7 +137,7 @@ Reason:
 - AWS Cost Simulator does not fit the future consumer AI service group
 - It adds noise to the SRE Lab positioning
 - It has lower monetization potential than AI Moving Assistant and future consumer AI service candidates
-- The project should focus on AI Moving Assistant and Phase 15 Distribution / Acquisition Experiment
+- The project should focus on AI Moving Assistant and the Phase 16 stop checkpoint
 
 Historical note:
 
@@ -123,7 +157,7 @@ Candidates:
 - Personal Budget Review Assistant
 - Real estate / moving support assistant
 
-These should be evaluated after the AI Moving Assistant monetization and acquisition experiment is stable.
+These should be evaluated after the AI Moving Assistant monetization and acquisition experiment is stable, and only when it does not delay the main Kubernetes / CKA learning focus.
 
 ---
 
@@ -131,12 +165,18 @@ These should be evaluated after the AI Moving Assistant monetization and acquisi
 
 Revenue / Cost Dashboard is not a consumer-facing service.
 
-It should be treated as an internal operations tool for:
+It is treated as a docs-based internal operations tool in the management repository:
+
+```text
+YDTNK/engineering-career-hq
+projects/sre-lab/revenue-cost-dashboard.md
+```
+
+It supports:
 
 - revenue tracking
 - cost tracking
 - gross profit tracking
-- usage monitoring
 - monthly review
 - scale-or-stop decision support
 
@@ -152,6 +192,7 @@ Current active page structure:
 
 - index.html
 - moving-assistant.html
+- moving-checklist-sample.html
 
 Removed page:
 
@@ -167,7 +208,11 @@ Related document:
 
 ### AI Moving Assistant
 
-Status: Production
+Status:
+
+```text
+Production / stopped at Phase 16 v1 checkpoint
+```
 
 Purpose:
 
@@ -175,10 +220,12 @@ Purpose:
 - First monetization experiment target
 - API safety, rate limiting, cost tracking, and fallback behavior
 - PDF checklist CTA demand check
+- Free sample CTA / static sample page as first measurable conversion point
 
 Operational features:
 
 - Dedicated frontend page
+- Dedicated sample page
 - Dedicated Workers API endpoint
 - Cloudflare Workers Secret support for future AI key management
 - KV-based usage and cost tracking design
@@ -200,3 +247,11 @@ The project now demonstrates focused operation of one active consumer AI service
 - safe API design
 - cost-aware product design
 - monetization experiment design
+- docs-based revenue / cost dashboard
+
+## Next
+
+- Do not add new SRE Lab features for now
+- Keep the Revenue / Cost Dashboard updated monthly or when an event occurs
+- Do not start Phase 17 until a real revenue route exists
+- Move active learning focus to Kubernetes / CKA preparation
