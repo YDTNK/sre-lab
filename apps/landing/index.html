@@ -6,7 +6,7 @@
   <title>クラウドとAIの便利ツール集</title>
   <meta
     name="description"
-    content="クラウド料金の試算やAI診断など、検討や準備に役立つWebツールをまとめています。"
+    content="AIによる引越し準備の整理など、検討や準備に役立つWebツールをまとめています。"
   />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -16,7 +16,6 @@
       <a class="site-brand" href="index.html">クラウドとAIの便利ツール集</a>
       <nav class="site-nav" aria-label="主要ナビゲーション">
         <a href="moving-assistant.html">AI引越し診断</a>
-        <a href="aws-cost-simulator.html">AWS料金試算</a>
         <a href="#tools">ツール一覧</a>
       </nav>
     </div>
@@ -26,18 +25,17 @@
     <section class="hero">
       <div class="hero__inner">
         <div class="hero__content">
-          <p class="eyebrow">AI and Cloud Utility Tools</p>
+          <p class="eyebrow">AI Utility Tools</p>
           <h1>クラウドとAIの便利ツール集</h1>
           <p class="hero-subtitle">
             検討や準備に役立つWebツールを、すぐ使える形で。
           </p>
           <p class="lead">
-            AIによる引越し準備の整理、AWS月額料金の概算など、入力内容をもとに必要な情報を分かりやすく表示します。
+            現在は、AIによる引越し準備の整理ツールを公開しています。入力内容をもとに、必要資材やチェックリストを分かりやすく表示します。
           </p>
 
           <div class="hero__actions">
             <a class="button button-moving" href="moving-assistant.html">AI引越し診断を使う</a>
-            <a class="button button-aws" href="aws-cost-simulator.html">AWS料金を試算する</a>
           </div>
         </div>
 
@@ -65,29 +63,6 @@
                 <span>準備漏れを減らす</span>
               </div>
             </div>
-
-            <div class="preview-card">
-              <div class="preview-card__head">
-                <span>AWS Cost Simulator</span>
-                <span>Estimate</span>
-              </div>
-              <dl class="preview-card__row">
-                <dt>EC2</dt>
-                <dd>計算対象</dd>
-              </dl>
-              <dl class="preview-card__row">
-                <dt>EBS / S3</dt>
-                <dd>内訳表示</dd>
-              </dl>
-              <dl class="preview-card__row">
-                <dt>Data transfer</dt>
-                <dd>反映</dd>
-              </dl>
-              <div class="preview-card__total">
-                <span>月額概算</span>
-                <span>USD / JPY</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -98,7 +73,7 @@
         <span class="section__eyebrow">Tools</span>
         <h2 class="section__title">目的に合わせて、すぐ使えるツール</h2>
         <p class="section__lead">
-          暮らしの準備からクラウド費用の検討まで、入力してすぐ確認できる小さなWebツールを用意しています。
+          暮らしの準備を、入力してすぐ確認できる小さなWebツールとして提供しています。
         </p>
       </div>
 
@@ -115,20 +90,6 @@
             <span class="tag">登録不要</span>
           </div>
           <a class="tool-card__link" href="moving-assistant.html">AI引越し診断を使う →</a>
-        </article>
-
-        <article class="tool-card">
-          <p class="status">Calculator</p>
-          <h3>AWS料金試算</h3>
-          <p>
-            EC2、EBS、S3、Data transferの入力値をもとに、AWS月額料金の概算をUSD/JPYで計算します。
-          </p>
-          <div class="tool-card__tags">
-            <span class="tag">AWS</span>
-            <span class="tag">料金概算</span>
-            <span class="tag">内訳表示</span>
-          </div>
-          <a class="tool-card__link" href="aws-cost-simulator.html">AWS料金を試算する →</a>
         </article>
       </div>
     </section>
@@ -153,21 +114,12 @@
         </article>
 
         <article class="scenario-card">
-          <p class="status">Cloud</p>
-          <h3>AWS料金の目安を知りたい</h3>
-          <p>
-            EC2やストレージ容量などを入力して、月額費用のざっくりした内訳を確認できます。
-          </p>
-          <a class="scenario-card__link" href="aws-cost-simulator.html">AWS料金試算を見る →</a>
-        </article>
-
-        <article class="scenario-card">
           <p class="status">Planning</p>
-          <h3>学習や検討のたたき台にしたい</h3>
+          <h3>準備の抜け漏れを減らしたい</h3>
           <p>
-            入力内容をもとにした目安を確認し、次に調べることや準備することを整理できます。
+            ダンボール、必要資材、手続き、前日確認などをチェックリストとして整理できます。
           </p>
-          <a class="scenario-card__link" href="#tools">ツール一覧を見る →</a>
+          <a class="scenario-card__link" href="moving-assistant.html#moving-form">チェックリストを作成する →</a>
         </article>
       </div>
     </section>
@@ -183,7 +135,7 @@
             AI引越し診断の結果は、準備のたたき台としてご利用ください。実際の必要資材や作業量は条件によって変わります。
           </li>
           <li>
-            AWS料金試算は、学習・検討用の概算です。実際の料金はAWS公式情報や請求データを確認してください。
+            個人情報や住所など、不要な機微情報は入力しないでください。
           </li>
         </ul>
       </div>
@@ -195,12 +147,11 @@
       <div>
         <a class="site-brand" href="index.html">クラウドとAIの便利ツール集</a>
         <p>
-          クラウド料金の試算やAI診断など、検討や準備に役立つWebツールをまとめています。
+          AI診断など、検討や準備に役立つWebツールをまとめています。
         </p>
       </div>
       <div class="site-footer__links">
         <a href="moving-assistant.html">AI引越し診断</a>
-        <a href="aws-cost-simulator.html">AWS料金試算</a>
         <a href="#notices">ご利用にあたって</a>
       </div>
     </div>
