@@ -1,16 +1,27 @@
 # AI Moving Assistant
 
-AI Moving Assistant is the first AI-powered micro service planned for SRE Lab.
+AI Moving Assistant is the first consumer-facing micro service for SRE Lab.
+
+## Current Status
+
+```text
+Production / stopped at Phase 16 v1 checkpoint
+```
+
+Current revenue status:
+
+```text
+Revenue: 0 JPY
+Payment flow: not implemented
+Affiliate flow: not implemented
+PDF / template sale: not implemented
+Free sample CTA: implemented
+Phase 17: not started
+```
 
 ## Purpose
 
 The purpose of this service is to help users prepare for moving by generating a simple checklist based on their household items and moving conditions.
-
-## Current Status
-
-Current version: Static MVP
-
-The current MVP does not call an AI API yet. It provides a form-based interface and generates a basic checklist in the browser.
 
 ## Target Users
 
@@ -32,12 +43,53 @@ The MVP collects the following information:
 
 ## Current Output
 
-The current static MVP displays:
+The current service displays:
 
 - Input summary
+- Moving preparation summary
+- Estimated packing material guidance
 - Basic moving checklist
-- Packing material suggestions
-- Moving preparation notes
+- Risk notes
+- Disclaimer / caution note
+- PDF checklist CTA
+- Free sample CTA
+
+## Current Pages
+
+```text
+apps/landing/moving-assistant.html
+apps/landing/moving-checklist-sample.html
+```
+
+## Current API
+
+```text
+POST /api/moving-assistant
+```
+
+The API is provided by Cloudflare Workers.
+
+Current behavior:
+
+- Validates input
+- Applies API safety controls
+- Applies rate limiting
+- Returns fallback moving checklist response
+- Does not expose API keys in frontend
+
+## Free Sample CTA
+
+The free sample CTA is the current lightweight conversion point.
+
+```text
+AI Moving Assistant result page
+↓
+Free sample CTA click
+↓
+moving-checklist-sample.html visit
+```
+
+No payment, affiliate, email collection, or personal information collection is currently implemented.
 
 ## Future AI Output
 
@@ -49,6 +101,8 @@ Future versions may generate:
 - Risk notes based on large or fragile items
 - Preparation timeline based on moving date
 
+Real AI API usage is not the current active focus.
+
 ## Non-Goals
 
 This service does not provide:
@@ -58,15 +112,21 @@ This service does not provide:
 - Insurance advice
 - Guaranteed packing quantities
 - Real-time moving company pricing
+- Contract judgment
+- Vendor recommendation guarantee
 
 ## Reliability Considerations
 
-Current static MVP:
+Current service:
 
-- No backend dependency
-- No AI API dependency
-- Low failure risk
-- Monitored by Grafana Synthetic Monitoring
+- Cloudflare Pages frontend
+- Cloudflare Workers API
+- Fallback response behavior
+- API safety controls
+- Rate limiting
+- Grafana Synthetic Monitoring
+- Grafana Alerting
+- Runbook and operational records
 
 Future AI version:
 
@@ -74,22 +134,39 @@ Future AI version:
 - API cost monitoring will be required
 - Error responses must be user-friendly
 - Generated results must include disclaimers
+- Cost guards must remain active
 
 ## Monetization Ideas
 
 Possible future monetization options:
 
-- Free basic checklist
-- Paid detailed PDF report
-- Affiliate links for packing materials
+- Moving checklist PDF / template
+- Affiliate links for packing materials or related services
+- Small paid detailed report
 - Ads after traffic grows
+
+Current decision:
+
+```text
+Do not start Phase 17 until a real revenue route exists.
+```
 
 ## Success Criteria
 
-The MVP is considered successful when:
+The current checkpoint is considered successful because:
 
 - The public page is available
 - Users can input moving information
 - A basic result is generated
-- The page is monitored
+- The API is monitored
 - Operational documents are updated
+- PDF checklist CTA is visible
+- Free sample CTA is clickable
+- Free sample page is accessible
+- Docs-based Revenue / Cost Dashboard exists in the management repository
+
+## Current Next
+
+- Do not add new SRE Lab features for now
+- Keep Revenue / Cost Dashboard updated monthly or when an event occurs
+- Move active learning focus to Kubernetes / CKA preparation
