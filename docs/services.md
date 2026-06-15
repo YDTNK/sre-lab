@@ -1,6 +1,6 @@
 # Services
 
-This document describes AI-powered micro services planned for SRE Lab.
+This document describes the service direction for SRE Lab.
 
 ## Service Selection Policy
 
@@ -15,7 +15,7 @@ SRE Lab services should meet the following criteria:
 
 ---
 
-## Service 1: AI Moving Assistant
+## Current Primary Service: AI Moving Assistant
 
 ### Overview
 
@@ -39,7 +39,7 @@ Moving preparation is confusing because users often do not know:
 
 ### MVP Features
 
-The first MVP should support:
+The current MVP supports:
 
 - User input form
   - Furniture list
@@ -48,20 +48,21 @@ The first MVP should support:
   - Books/documents
   - Moving date
   - Optional notes
-- AI-generated estimate
+- Generated estimate
   - Number of cardboard boxes
   - Packing material suggestions
   - Preparation checklist
   - Risk notes
 - Static result display
+- PDF checklist CTA for monetization demand check
 
 ### Monetization Ideas
 
 Initial monetization options:
 
 - Free basic diagnosis
-- Paid detailed PDF report
-- Affiliate links for moving supplies
+- Moving checklist PDF / template
+- Affiliate links for moving supplies or related services
 - Ads after traffic grows
 
 ### SRE / Operations Value
@@ -75,6 +76,7 @@ This service can be used to demonstrate:
 - Error handling
 - Alerting
 - Incident management
+- Monetization experiment tracking
 
 ### Initial Success Criteria
 
@@ -83,60 +85,85 @@ MVP success is defined as:
 - Public page is available
 - User can submit moving information
 - A result is generated
+- PDF checklist CTA is displayed
 - Basic errors are handled
 - Usage and failures can be monitored
 
 ---
 
-## Future Service Ideas
+## Removed Service: AWS Cost Simulator
+
+AWS Cost Simulator was previously implemented as the second service in SRE Lab.
+
+It has been removed from the active service portfolio.
+
+Reason:
+
+- The current monetization strategy focuses on consumer AI services
+- AWS Cost Simulator does not fit the future consumer AI service group
+- It adds noise to the SRE Lab positioning
+- It has lower monetization potential than AI Moving Assistant and future consumer AI service candidates
+- The project should focus on AI Moving Assistant and Phase 15 Distribution / Acquisition Experiment
+
+Historical note:
+
+- AWS Cost Simulator demonstrated deterministic API design and cloud cost awareness
+- It is no longer part of the active frontend, API, or service navigation
+
+---
+
+## Future Consumer AI Service Ideas
+
+Future services should stay closer to general consumer pain points.
+
+Candidates:
 
 - AI Career Assistant
 - AI Learning Coach
-- AWS Cost Estimator
 - Personal Budget Review Assistant
+- Real estate / moving support assistant
 
-## AWS Cost Simulator
+These should be evaluated after the AI Moving Assistant monetization and acquisition experiment is stable.
 
-AWS Cost Simulator is the planned second service in SRE Lab.
+---
 
-Purpose:
+## Internal Operations Services
 
-- Provide a lightweight AWS monthly cost estimation tool
-- Demonstrate cloud cost awareness
-- Connect SRE Lab with AWS SAA, Terraform, and FinOps learning
-- Add a second monitored service to SRE Lab
+Revenue / Cost Dashboard is not a consumer-facing service.
 
-Initial MVP:
+It should be treated as an internal operations tool for:
 
-- EC2 monthly estimate
-- EBS estimate
-- S3 estimate
-- Data transfer placeholder
-- Deterministic calculation without AI API dependency
+- revenue tracking
+- cost tracking
+- gross profit tracking
+- usage monitoring
+- monthly review
+- scale-or-stop decision support
 
-Documentation:
-
-- docs/aws-cost-simulator.md
+---
 
 ## Service Navigation Policy
 
 SRE Lab should not mix unrelated service forms on a single page.
 
-The frontend should use the top page as a service directory and provide a dedicated page for each service.
+The frontend should use the top page as a focused entry point and provide dedicated pages for active services.
 
-Initial page structure:
+Current active page structure:
 
 - index.html
 - moving-assistant.html
+
+Removed page:
+
 - aws-cost-simulator.html
 
 Related document:
 
 - docs/frontend-navigation.md
 
-## Multi-Service Operating Status
+---
 
-SRE Lab currently operates two small services.
+## Current Operating Status
 
 ### AI Moving Assistant
 
@@ -145,57 +172,31 @@ Status: Production
 Purpose:
 
 - Japanese moving preparation support
-- Real AI API integration experiment
+- First monetization experiment target
 - API safety, rate limiting, cost tracking, and fallback behavior
+- PDF checklist CTA demand check
 
 Operational features:
 
 - Dedicated frontend page
 - Dedicated Workers API endpoint
-- OpenAI API integration through backend only
-- Cloudflare Workers Secret for API key
-- KV-based usage and cost tracking
-- AI daily limit
-- Cost limit behavior
-- Grafana Synthetic Monitoring
-- Grafana Alerting
-- Runbook and operational records
-
-### AWS Cost Simulator
-
-Status: Production
-
-Purpose:
-
-- Educational AWS monthly cost estimate
-- AWS cost awareness and FinOps learning
-- Second service for multi-service SRE Lab operations
-
-Operational features:
-
-- Dedicated frontend page
-- Dedicated Workers API endpoint
-- Deterministic cost calculation
-- Region whitelist
-- EC2 instance type whitelist
-- Numeric input range validation
-- No AWS Pricing API dependency
-- No paid AI API usage
+- Cloudflare Workers Secret support for future AI key management
+- KV-based usage and cost tracking design
+- Cost limit behavior design
 - Grafana Synthetic Monitoring
 - Grafana Alerting
 - Runbook and operational records
 
 ### Portfolio Value
 
-The project now demonstrates operation of multiple small services instead of a single standalone application.
+The project now demonstrates focused operation of one active consumer AI service with:
 
-This improves the portfolio value by showing:
-
-- service separation
+- service-specific frontend
 - API separation
-- service-specific monitoring
-- service-specific alerting
+- monitoring
+- alerting
 - operational documentation
 - incident and operational records
 - safe API design
 - cost-aware product design
+- monetization experiment design
