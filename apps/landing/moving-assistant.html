@@ -41,6 +41,7 @@
 
           <div class="hero__actions">
             <a class="button" href="#moving-form">チェックリストを作成する</a>
+            <a class="button button-secondary" href="moving-checklist-sample.html">無料サンプルを見る</a>
           </div>
         </div>
 
@@ -172,59 +173,32 @@
           <form id="movingAssistantForm">
             <div>
               <label for="furniture">家具</label>
-              <textarea
-                id="furniture"
-                name="furniture"
-                placeholder="例: デスク1台、椅子1脚、ベッドなし、衣装ケース1つ"
-              ></textarea>
+              <textarea id="furniture" name="furniture" placeholder="例: デスク1台、椅子1脚、ベッドなし、衣装ケース1つ"></textarea>
             </div>
 
             <div>
               <label for="clothes">衣類</label>
-              <input
-                id="clothes"
-                name="clothes"
-                type="text"
-                placeholder="例: ダンボール3箱分、衣装ケース1つ分"
-              />
+              <input id="clothes" name="clothes" type="text" placeholder="例: ダンボール3箱分、衣装ケース1つ分" />
             </div>
 
             <div>
               <label for="electronics">家電・電子機器</label>
-              <input
-                id="electronics"
-                name="electronics"
-                type="text"
-                placeholder="例: 掃除機、炊飯器、PC、モニター"
-              />
+              <input id="electronics" name="electronics" type="text" placeholder="例: 掃除機、炊飯器、PC、モニター" />
             </div>
 
             <div>
               <label for="books">本・小物</label>
-              <input
-                id="books"
-                name="books"
-                type="text"
-                placeholder="例: 本30冊、小物ダンボール2箱分"
-              />
+              <input id="books" name="books" type="text" placeholder="例: 本30冊、小物ダンボール2箱分" />
             </div>
 
             <div>
               <label for="movingDate">引越し予定日</label>
-              <input
-                id="movingDate"
-                name="movingDate"
-                type="date"
-              />
+              <input id="movingDate" name="movingDate" type="date" />
             </div>
 
             <div>
               <label for="notes">補足情報</label>
-              <textarea
-                id="notes"
-                name="notes"
-                placeholder="例: 重い荷物がある、梱包が苦手、資材を多めに見積もりたい"
-              ></textarea>
+              <textarea id="notes" name="notes" placeholder="例: 重い荷物がある、梱包が苦手、資材を多めに見積もりたい"></textarea>
             </div>
 
             <button type="submit">チェックリストを作成する</button>
@@ -254,25 +228,19 @@
         <article class="scenario-card">
           <p class="status">Step 1</p>
           <h3>荷物の情報を入力</h3>
-          <p>
-            家具、衣類、家電、本・小物、引越し予定日など、分かる範囲で入力します。
-          </p>
+          <p>家具、衣類、家電、本・小物、引越し予定日など、分かる範囲で入力します。</p>
         </article>
 
         <article class="scenario-card">
           <p class="status">Step 2</p>
           <h3>AIが準備内容を整理</h3>
-          <p>
-            入力内容をもとに、引越し準備に必要な情報をAIが整理します。
-          </p>
+          <p>入力内容をもとに、引越し準備に必要な情報をAIが整理します。</p>
         </article>
 
         <article class="scenario-card">
           <p class="status">Step 3</p>
           <h3>必要資材と注意点を確認</h3>
-          <p>
-            ダンボール目安、梱包資材、作業チェックリスト、注意点を確認します。
-          </p>
+          <p>ダンボール目安、梱包資材、作業チェックリスト、注意点を確認します。</p>
         </article>
       </div>
     </section>
@@ -281,15 +249,9 @@
       <div class="notice-card">
         <h2 class="notice-card__title">ご利用にあたって</h2>
         <ul class="notice-list">
-          <li>
-            診断結果は入力内容にもとづく目安です。実際の必要資材や作業量は、荷物の量、部屋の広さ、引越し業者の条件によって変わります。
-          </li>
-          <li>
-            AIによる自動生成結果を含むため、重要な判断をする場合は引越し業者や管理会社などの案内も確認してください。
-          </li>
-          <li>
-            個人情報や住所など、不要な機微情報は入力しないでください。
-          </li>
+          <li>診断結果は入力内容にもとづく目安です。実際の必要資材や作業量は、荷物の量、部屋の広さ、引越し業者の条件によって変わります。</li>
+          <li>AIによる自動生成結果を含むため、重要な判断をする場合は引越し業者や管理会社などの案内も確認してください。</li>
+          <li>個人情報や住所など、不要な機微情報は入力しないでください。</li>
         </ul>
       </div>
     </section>
@@ -299,9 +261,7 @@
     <div class="container site-footer__inner">
       <div>
         <a class="site-brand" href="index.html">クラウドとAIの便利ツール集</a>
-        <p>
-          AI診断など、検討や準備に役立つWebツールをまとめています。
-        </p>
+        <p>AI診断など、検討や準備に役立つWebツールをまとめています。</p>
       </div>
       <div class="site-footer__links">
         <a href="index.html">トップ</a>
@@ -333,9 +293,7 @@
       try {
         const response = await fetch(`${API_BASE_URL}/api/moving-assistant`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
@@ -374,15 +332,18 @@
         <h4>注意点</h4>
         ${renderList(risks)}
 
-        <div class="monetization-cta" aria-label="引越し準備チェックリストPDFのお知らせ">
-          <p class="status">Coming Soon</p>
-          <h4>引越し準備チェックリストPDFを保存する</h4>
+        <div class="monetization-cta" aria-label="引越し準備チェックリスト無料サンプル">
+          <p class="status">Free Sample</p>
+          <h4>引越し準備チェックリスト無料サンプル</h4>
           <p>
-            診断結果をもとに、引越し準備チェックリストとして保存できるPDFテンプレートを準備中です。
-            段ボール、必要資材、手続き、前日確認をまとめて見返せる形にします。
+            診断結果とあわせて見返せる、引越し準備チェックリストの無料サンプルを公開しています。
+            段ボール、必要資材、手続き、前日確認を整理するための見本です。
           </p>
+          <div class="hero__actions monetization-cta__actions">
+            <a class="button" href="moving-checklist-sample.html">無料サンプルを見る</a>
+          </div>
           <p class="monetization-cta__note">
-            現時点では需要確認用のお知らせです。決済や個人情報の入力は不要です。
+            現在は無料サンプルとして公開しています。決済や個人情報の入力は不要です。
           </p>
         </div>
 
@@ -396,11 +357,7 @@
         return "<p>該当する項目はありません。</p>";
       }
 
-      return `
-        <ul>
-          ${items.map((item) => `<li>${escapeHtml(String(item))}</li>`).join("")}
-        </ul>
-      `;
+      return `<ul>${items.map((item) => `<li>${escapeHtml(String(item))}</li>`).join("")}</ul>`;
     }
 
     function escapeHtml(value) {
