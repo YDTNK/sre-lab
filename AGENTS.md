@@ -12,14 +12,15 @@ Before answering or changing anything in this repository, read the following fil
 4. `docs/ai-organization-operating-model.md`
 5. `docs/sre-lab-workflow.md`
 6. `docs/codex-workflow.md`
-7. `docs/deploy-failure-investigation.md`
-8. `docs/grafana-issue-ai-investigation.md`
-9. `docs/incident-record-rules.md`
-10. `docs/revenue-release-before-cka.md`
-11. `docs/service-state-checklist.md`
-12. `docs/services.md`
-13. `docs/runbook.md`
-14. Latest relevant records under `docs/incidents/`
+7. `docs/completion-report-template.md`
+8. `docs/deploy-failure-investigation.md`
+9. `docs/grafana-issue-ai-investigation.md`
+10. `docs/incident-record-rules.md`
+11. `docs/revenue-release-before-cka.md`
+12. `docs/service-state-checklist.md`
+13. `docs/services.md`
+14. `docs/runbook.md`
+15. Latest relevant records under `docs/incidents/`
 
 ## Core Working Policy
 
@@ -43,6 +44,7 @@ This includes, when available and safe:
 - Release or incident record creation
 - Documentation updates
 - Runbook and policy updates
+- Completion report creation
 
 ## AI Organization Operating Model
 
@@ -52,6 +54,7 @@ The target operating model is documented in:
 docs/ai-organization-operating-model.md
 docs/sre-lab-workflow.md
 docs/codex-workflow.md
+docs/completion-report-template.md
 docs/deploy-failure-investigation.md
 docs/grafana-issue-ai-investigation.md
 docs/incident-record-rules.md
@@ -115,3 +118,11 @@ docs/incidents.md
 ```
 
 unless the full current content is safely loaded and the change is small and verified.
+
+## Completion Reports
+
+When closing Issues, reporting merged PRs, documenting incident follow-up, or completing Grafana-created investigations, use:
+
+```text
+docs/completion-report-template.md
+```
