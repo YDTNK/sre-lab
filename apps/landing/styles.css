@@ -961,6 +961,136 @@ h1, .page-home .hero h1, .page-moving .hero h1, .page-aws .hero h1 {
 
 .journey-item p { margin-top: 8px; font-size: 0.92rem; line-height: 1.65; }
 
+.persona-grid,
+.prep-grid,
+.template-feature-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.persona-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.persona-grid--assistant {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.prep-grid,
+.template-feature-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.template-feature-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.persona-card,
+.prep-card,
+.template-feature-card,
+.faq-item,
+.input-guide {
+  border: 1px solid #dbe5f1;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.045);
+}
+
+.persona-card,
+.prep-card,
+.template-feature-card {
+  min-height: 210px;
+  padding: 22px;
+}
+
+.persona-card--wide {
+  grid-column: span 2;
+}
+
+.persona-card span,
+.template-feature-card span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #eefbe7;
+  color: #2f7d00;
+  font-size: 0.78rem;
+  font-weight: 860;
+}
+
+.persona-card h3,
+.prep-card h3,
+.template-feature-card h3,
+.faq-item h3 {
+  margin-top: 14px;
+  font-size: 1.08rem !important;
+  letter-spacing: 0 !important;
+}
+
+.persona-card p,
+.prep-card p,
+.template-feature-card p,
+.faq-item p {
+  margin-top: 10px;
+  color: #526173;
+  font-size: 0.94rem;
+  line-height: 1.75;
+}
+
+.prep-card__icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 16px;
+  background: #eaf3ff;
+  color: #1e40af;
+  font-weight: 900;
+}
+
+.input-guide {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+  padding: 16px;
+  background: #f8fbff;
+}
+
+.input-guide div {
+  display: grid;
+  gap: 6px;
+}
+
+.input-guide strong {
+  color: #1f2937;
+  font-size: 0.9rem;
+}
+
+.input-guide span {
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.faq-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.faq-item {
+  padding: 24px;
+}
+
+.faq-item h3 {
+  margin-top: 0;
+}
+
 .page-home .tool-card--featured {
   display: grid !important;
   grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.75fr) !important;
@@ -1320,6 +1450,56 @@ h4,
   box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06) !important;
 }
 
+.page-home .hero,
+.page-moving .hero {
+  margin-bottom: 18px !important;
+  padding: clamp(26px, 3vw, 34px) !important;
+}
+
+.nav-link {
+  margin: 16px auto -48px !important;
+}
+
+.page-home .hero h1,
+.page-moving .hero h1 {
+  font-size: clamp(1.95rem, 3vw, 2.75rem) !important;
+  line-height: 1.16 !important;
+}
+
+.page-home .hero-subtitle,
+.page-moving .hero-subtitle {
+  font-size: clamp(1.05rem, 1.55vw, 1.34rem) !important;
+}
+
+.page-home .lp-visual,
+.page-moving .lp-visual,
+.page-moving .sample-document-visual {
+  min-height: 310px;
+}
+
+.page-home .visual-scene,
+.page-moving .assistant-mock {
+  min-height: 252px;
+}
+
+.page-home .visual-card--checklist {
+  transform: scale(0.9);
+  transform-origin: top left;
+}
+
+.page-home .moving-illustration {
+  bottom: 18px;
+  height: 170px;
+}
+
+.page-moving .assistant-mock__panel {
+  min-height: 210px;
+}
+
+.page-moving .document-preview {
+  min-height: 300px;
+}
+
 @media (max-width: 980px) {
   .page-home .hero__inner,
   .page-moving .hero__inner,
@@ -1341,8 +1521,18 @@ h4,
 
   .journey-strip,
   .sample-preview-strip,
-  .route-grid {
+  .route-grid,
+  .persona-grid,
+  .persona-grid--assistant,
+  .prep-grid,
+  .template-feature-grid,
+  .faq-list,
+  .input-guide {
     grid-template-columns: 1fr;
+  }
+
+  .persona-card--wide {
+    grid-column: auto;
   }
 
   .page-home .tool-card--featured {
