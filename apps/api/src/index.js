@@ -425,7 +425,8 @@ function buildGrafanaDedupeKey(payload) {
   const status = payload?.status || "unknown";
 
   return `grafana:${serviceName}:${alertName}:${status}`.toLowerCase();
-}\n
+}
+
 function buildGrafanaDuplicateComment(payload, dedupeKey) {
   return [
     "## Duplicate Grafana notification",
