@@ -1,26 +1,12 @@
-# Grafana Alert to GitHub Issue Setup
+# Grafana Alert to GitHub Issue
 
 ## Purpose
 
-This document defines the setup plan for turning Grafana alerts into GitHub Issues for SRE Lab operations.
-
-The goal is to move toward the AI organization operating model:
-
-```text
-Grafana alert
-↓
-GitHub Issue
-↓
-AI / Codex investigation
-↓
-PR or runbook update
-↓
-Completion report
-```
+This document describes how Grafana alerts are routed to GitHub Issues for SRE Lab operations.
 
 ## Current Status
 
-The first hop is implemented and verified:
+Implemented path:
 
 ```text
 Grafana Contact point
@@ -33,99 +19,79 @@ GitHub Issue
 Verified result:
 
 - Grafana test alert created GitHub Issue `#20`.
-- Test Issue `#20` was closed as completed after verification.
+- Test Issue `#20` was closed as completed.
 
-Remaining Level 5 gaps:
+Current remaining gaps:
 
 - AI investigation is not triggered automatically when a Grafana-created Issue appears.
-- PR or runbook updates after an alert still require a user prompt or manual AI invocation.
+- PR/runbook updates after an alert still require a user prompt or manual AI invocation.
 - Incident record creation is not yet automatic.
-- Deduplication is not implemented yet.
 
-## Recommended Approach
+## Implemented Design
 
-Use an automation bridge instead of sending Grafana directly to GitHub with a token exposed in Grafana configuration.
-
-Current implemented design:
+SRE Lab uses this path:
 
 ```text
 Grafana Webhook
 ↓
 Cloudflare Worker endpoint
 ↓
-GitHub REST API creates Issue
+GitHub REST API creates or updates Issue
 ↓
 Issue becomes the investigation entry point
 ```
 
-## Why Use a Bridge
+Endpoint:
 
-A bridge allows:
-
-- token storage outside repository code
-- input validation
-- rate limiting
-- event formatting
-- safer handling of repeated alerts
-- future deduplication logic
-
-## Required External Settings
-
-The following must not be committed to the repository:
-
-- GitHub token
-- Grafana webhook secret
-- Cloudflare Worker secret values
-- any private alert payload containing sensitive information
-
-## Suggested GitHub Issue Format
-
-Generated Issues should use this structure:
-
-```markdown
-# Grafana Alert: <alert name>
-
-## Status
-
-<status>
-
-## Alert labels
-
-- service:
-- severity:
-- source:
-
-## Summary
-
-<short summary from Grafana payload>
-
-## Affected target
-
-<URL or service>
-
-## Service state check
-
-- [ ] active
-- [ ] degraded
-- [ ] deprecated
-- [ ] removed
-- [ ] replaced
-- [ ] unknown
-
-## First response checklist
-
-- [ ] Read AGENTS.md
-- [ ] Check docs/service-state-checklist.md
-- [ ] Check docs/runbook.md
-- [ ] Check latest docs/incidents/
-- [ ] Confirm whether this is active service failure or stale monitoring
-- [ ] Record findings
-
-## Links
-
-- Grafana alert:
-- Runbook:
+```text
+POST /api/grafana-alert
 ```
+
+Security:
+
+```text
+X-Grafana-Webhook-Secret
+```
+
+Required Worker secrets:
+
+```text
+GRAFANA_WEBHOOK_SECRET
+GITHUB_ISSUE_TOKEN
+GITHUB_REPO
+```
+
+## Duplicate Issue Handling
+
+Grafana notifications are deduplicated before creating new Issues.
+
+Dedupe key format:
+
+```text
+grafana:<service_name>:<alertname>:<status>
+```
+
+The Worker builds the key from:
+
+- `service_name`, `service`, or `job` label
+- `alertname`
+- payload `status`
+
+If an open Issue already exists with the same dedupe key and the `grafana-alert` label:
+
+```text
+No new Issue is created.
+A comment is added to the existing Issue.
+The Worker returns the existing Issue number and URL.
+```
+
+If no matching open Issue exists:
+
+```text
+A new Issue is created with labels: ops, grafana-alert.
+```
+
+The dedupe key is written into the Issue body so future notifications can find it through GitHub Issue search.
 
 ## Alert Routing Rules
 
@@ -279,7 +245,7 @@ The closing comment should include:
 
 - [x] Decide Cloudflare Worker or GitHub Actions repository_dispatch
 - [x] Define payload fields
-- [ ] Define deduplication behavior
+- [x] Define deduplication behavior
 - [x] Define token storage location
 
 ### Phase 3: Secure implementation
@@ -293,7 +259,7 @@ The closing comment should include:
 ### Phase 4: Operations
 
 - [x] Document how to pause the integration
-- [ ] Document how to handle duplicate Issues
+- [x] Document how to handle duplicate Issues
 - [x] Document escalation and close rules
 - [x] Document alert Issue triage and remediation flow
 
