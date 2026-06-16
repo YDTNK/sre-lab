@@ -1,0 +1,25 @@
+name: Validate Grafana Dedupe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check validation script syntax
+        run: bash -n scripts/validate-grafana-dedupe.sh
+
+      - name: Validate Grafana dedupe behavior
+        env:
+          GRAFANA_WEBHOOK_SECRET: ${{ secrets.GRAFANA_WEBHOOK_SECRET }}
+        run: bash scripts/validate-grafana-dedupe.sh
