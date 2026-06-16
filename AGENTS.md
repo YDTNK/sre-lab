@@ -10,11 +10,12 @@ Before answering or changing anything in this repository, read the following fil
 2. `README.md`
 3. `docs/automation-first-working-policy.md`
 4. `docs/ai-organization-operating-model.md`
-5. `docs/revenue-release-before-cka.md`
-6. `docs/service-state-checklist.md`
-7. `docs/services.md`
-8. `docs/runbook.md`
-9. Latest relevant records under `docs/incidents/`
+5. `docs/sre-lab-workflow.md`
+6. `docs/revenue-release-before-cka.md`
+7. `docs/service-state-checklist.md`
+8. `docs/services.md`
+9. `docs/runbook.md`
+10. Latest relevant records under `docs/incidents/`
 
 ## Core Working Policy
 
@@ -45,6 +46,7 @@ The target operating model is documented in:
 
 ```text
 docs/ai-organization-operating-model.md
+docs/sre-lab-workflow.md
 ```
 
 Target balance:
