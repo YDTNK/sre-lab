@@ -1,4 +1,7 @@
 const MOVING_ASSISTANT_API_PATH = "/api/moving-assistant";
+const GRAFANA_ALERT_API_PATH = "/api/grafana-alert";
+const GRAFANA_WEBHOOK_SECRET_HEADER = "x-grafana-webhook-secret";
+const GITHUB_API_BASE_URL = "https://api.github.com";
 
 const MAX_REQUEST_BYTES = 8 * 1024;
 const MAX_TOTAL_INPUT_LENGTH = 2000;
@@ -49,6 +52,10 @@ export default {
 
     if (url.pathname === MOVING_ASSISTANT_API_PATH) {
       return handleMovingAssistantMock(request, env);
+    }
+
+    if (url.pathname === GRAFANA_ALERT_API_PATH) {
+      return handleGrafanaAlertWebhook(request, env);
     }
 
     await safeRecordUsage(env, "api_errors");
@@ -172,6 +179,236 @@ async function handleMovingAssistantMock(request, env) {
       notes: body.notes || "",
     },
   });
+}
+
+async function handleGrafanaAlertWebhook(request, env) {
+  if (request.method !== "POST") {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "method_not_allowed",
+      "Only POST requests are allowed for this endpoint.",
+      405
+    );
+  }
+
+  if (!env.GRAFANA_WEBHOOK_SECRET) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "missing_grafana_webhook_secret",
+      "Grafana webhook secret is not configured.",
+      500
+    );
+  }
+
+  if (!env.GITHUB_ISSUE_TOKEN) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "missing_github_issue_token",
+      "GitHub issue token is not configured.",
+      500
+    );
+  }
+
+  if (!env.GITHUB_REPO) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "missing_github_repo",
+      "GitHub repository is not configured.",
+      500
+    );
+  }
+
+  const providedSecret = request.headers.get(GRAFANA_WEBHOOK_SECRET_HEADER);
+
+  if (!providedSecret || providedSecret !== env.GRAFANA_WEBHOOK_SECRET) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse("unauthorized", "Invalid webhook secret.", 401);
+  }
+
+  const contentType = request.headers.get("content-type") || "";
+
+  if (!contentType.toLowerCase().includes("application/json")) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "unsupported_media_type",
+      "Content-Type must be application/json.",
+      415
+    );
+  }
+
+  let payload;
+
+  try {
+    payload = await request.json();
+  } catch {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "invalid_json",
+      "Request body must be valid JSON.",
+      400
+    );
+  }
+
+  const issue = buildGrafanaIssue(payload);
+  const githubResult = await createGitHubIssue(env, issue);
+
+  if (!githubResult.ok) {
+    await safeRecordUsage(env, "api_errors");
+    return errorResponse(
+      "github_issue_create_failed",
+      "Failed to create GitHub Issue.",
+      502
+    );
+  }
+
+  await safeRecordUsage(env, "grafana_alert_issues");
+
+  return jsonResponse(
+    {
+      ok: true,
+      issueUrl: githubResult.issueUrl,
+      issueNumber: githubResult.issueNumber,
+    },
+    { status: 201 }
+  );
+}
+
+function buildGrafanaIssue(payload) {
+  const alertName =
+    payload?.commonLabels?.alertname ||
+    payload?.alerts?.[0]?.labels?.alertname ||
+    payload?.title ||
+    "Grafana Alert";
+
+  const status = payload?.status || "unknown";
+  const externalUrl = payload?.externalURL || "";
+  const receiver = payload?.receiver || "";
+  const groupKey = payload?.groupKey || "";
+  const alerts = Array.isArray(payload?.alerts) ? payload.alerts : [];
+
+  const alertSummaries = alerts.map((alert, index) => {
+    const labels = alert.labels || {};
+    const annotations = alert.annotations || {};
+    const startsAt = alert.startsAt || "";
+    const generatorURL = alert.generatorURL || "";
+
+    return [
+      `### Alert ${index + 1}`,
+      "",
+      `- status: ${alert.status || status}`,
+      `- alertname: ${labels.alertname || ""}`,
+      `- service: ${labels.service || labels.job || ""}`,
+      `- severity: ${labels.severity || ""}`,
+      `- startsAt: ${startsAt}`,
+      `- generatorURL: ${generatorURL}`,
+      "",
+      "Annotations:",
+      "",
+      "```json",
+      JSON.stringify(annotations, null, 2),
+      "```",
+    ].join("\n");
+  });
+
+  const body = [
+    `# Grafana Alert: ${alertName}`,
+    "",
+    "## Status",
+    "",
+    status,
+    "",
+    "## Receiver",
+    "",
+    receiver || "unknown",
+    "",
+    "## Group key",
+    "",
+    groupKey || "unknown",
+    "",
+    "## Service state check",
+    "",
+    "- [ ] active",
+    "- [ ] degraded",
+    "- [ ] deprecated",
+    "- [ ] removed",
+    "- [ ] replaced",
+    "- [ ] unknown",
+    "",
+    "## First response checklist",
+    "",
+    "- [ ] Read AGENTS.md",
+    "- [ ] Check docs/service-state-checklist.md",
+    "- [ ] Check docs/runbook.md",
+    "- [ ] Check latest records under docs/incidents/",
+    "- [ ] Confirm whether this is active service failure or stale monitoring",
+    "- [ ] Record findings",
+    "",
+    "## Alerts",
+    "",
+    alertSummaries.length > 0
+      ? alertSummaries.join("\n\n")
+      : "No alert details provided.",
+    "",
+    "## Links",
+    "",
+    `- Grafana: ${externalUrl || "not provided"}`,
+    "",
+    "## Raw payload summary",
+    "",
+    "```json",
+    JSON.stringify(
+      {
+        status,
+        receiver,
+        groupKey,
+        commonLabels: payload?.commonLabels || {},
+        commonAnnotations: payload?.commonAnnotations || {},
+      },
+      null,
+      2
+    ),
+    "```",
+  ].join("\n");
+
+  return {
+    title: `Grafana Alert: ${alertName}`,
+    body,
+    labels: ["ops"],
+  };
+}
+
+async function createGitHubIssue(env, issue) {
+  const response = await fetch(
+    `${GITHUB_API_BASE_URL}/repos/${env.GITHUB_REPO}/issues`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${env.GITHUB_ISSUE_TOKEN}`,
+        "Content-Type": "application/json",
+        "User-Agent": "sre-lab-grafana-webhook",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+      body: JSON.stringify(issue),
+    }
+  );
+
+  if (!response.ok) {
+    console.warn(
+      "github_issue_create_failed",
+      response.status,
+      await response.text()
+    );
+    return { ok: false };
+  }
+
+  const data = await response.json();
+
+  return {
+    ok: true,
+    issueUrl: data.html_url,
+    issueNumber: data.number,
+  };
 }
 
 async function checkAiDailyLimit(request, env) {
@@ -682,7 +919,7 @@ function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, X-Grafana-Webhook-Secret",
     "Access-Control-Max-Age": "86400",
   };
 }
