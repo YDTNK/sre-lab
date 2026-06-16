@@ -12,6 +12,7 @@ on:
 
 jobs:
   deploy:
+    # This workflow is used to verify Worker deploy automation and post-deploy smoke tests.
     runs-on: ubuntu-latest
 
     steps:
