@@ -451,23 +451,27 @@ function githubHeaders(env) {
 }
 
 async function findOpenGrafanaIssue(env, dedupeKey) {
-  const searchQuery = encodeURIComponent(
-    `repo:${env.GITHUB_REPO} is:issue is:open label:${GRAFANA_DEDUPE_LABEL} "${dedupeKey}"`
+  const response = await fetch(
+    `${GITHUB_API_BASE_URL}/repos/${env.GITHUB_REPO}/issues?state=open&labels=${encodeURIComponent(GRAFANA_DEDUPE_LABEL)}&per_page=100`,
+    { headers: githubHeaders(env) }
   );
 
-  const response = await fetch(`${GITHUB_API_BASE_URL}/search/issues?q=${searchQuery}`, {
-    headers: githubHeaders(env),
-  });
-
   if (!response.ok) {
-    console.warn("github_issue_search_failed", response.status, await response.text());
+    console.warn("github_issue_list_failed", response.status, await response.text());
     return null;
   }
 
-  const data = await response.json();
-  const items = Array.isArray(data.items) ? data.items : [];
+  const issues = await response.json();
 
-  return items[0] || null;
+  if (!Array.isArray(issues)) {
+    return null;
+  }
+
+  return (
+    issues.find((issue) => {
+      return typeof issue.body === "string" && issue.body.includes(dedupeKey);
+    }) || null
+  );
 }
 
 async function commentOnGitHubIssue(env, issueNumber, body) {
