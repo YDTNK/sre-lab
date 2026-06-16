@@ -7,15 +7,12 @@ on:
     paths:
       - "apps/api/**"
       - ".github/workflows/deploy-worker.yml"
+      - "scripts/smoke-test.sh"
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: apps/api
 
     steps:
       - name: Checkout repository
@@ -29,13 +26,19 @@ jobs:
           cache-dependency-path: apps/api/package-lock.json
 
       - name: Install dependencies
+        working-directory: apps/api
         run: npm ci
 
       - name: Check API syntax
+        working-directory: apps/api
         run: node --check src/index.js
 
       - name: Deploy Cloudflare Worker
+        working-directory: apps/api
         run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Run post-deploy smoke tests
+        run: bash scripts/smoke-test.sh
