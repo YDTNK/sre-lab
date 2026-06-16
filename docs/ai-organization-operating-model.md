@@ -15,24 +15,65 @@ This does not mean unsafe full autonomy. It means the user should mainly make di
 
 ## Target Flow
 
+The automation levels in this document exist to realize this target flow:
+
 ```text
 Human
 ↓
 "Do this"
-
-AI organization
-├─ ChatGPT: PM / planner / reviewer / GitHub operator
-├─ Codex: implementation agent
-├─ GitHub Issues: task queue and source of work
-├─ GitHub Pull Requests: review and change delivery
-├─ GitHub Actions: CI and validation
-├─ Cloudflare: deployment target
-├─ Grafana: monitoring and alerting
-└─ Runbooks / incident records: operational memory
-
+↓
+ChatGPT: PM / planner / reviewer / GitHub operator
+↓
+GitHub Issue: task queue and source of work
+↓
+Codex: implementation agent
+↓
+GitHub Pull Request: reviewable change unit
+↓
+GitHub Actions: CI and validation
+↓
+Cloudflare: deployment target
+↓
+Grafana: monitoring and alerting
 ↓
 Completion report
 ```
+
+For incidents and monitoring-driven work, the flow can also start from Grafana:
+
+```text
+Grafana alert
+↓
+Cloudflare Worker webhook
+↓
+GitHub Issue
+↓
+ChatGPT / Codex investigation
+↓
+Pull Request, runbook update, or incident record
+↓
+GitHub Actions validation
+↓
+Cloudflare deployment when relevant
+↓
+Completion report
+```
+
+## Target Flow Readiness Map
+
+Each automation level represents how much of the target flow is implemented.
+
+| Target flow step | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 |
+| --- | --- | --- | --- | --- | --- |
+| Human says "Do this" | manual | AI assists | AI acts on safe work | Issue-first intake | Alert can create work |
+| ChatGPT acts as PM | no | partial | yes for GitHub work | yes, Issue-driven | yes, alert triage |
+| Issue created as task queue | no | optional | optional | default for non-trivial work | automatic from alerts |
+| Codex implements from Issue | no | optional | optional | target behavior | target behavior for incidents |
+| PR created | manual | human/AI-assisted | AI can create PR | PR linked to Issue | PR/runbook update from alert Issue |
+| GitHub Actions validates | manual | partial | CI foundation | required gate | incident/remediation validation |
+| Cloudflare deploys | manual | manual | workflow foundation | automated deploy target | deploy after remediation when needed |
+| Grafana monitors | manual check | dashboard/alerts | monitoring active | Issues can reference alerts | alert-to-Issue operational |
+| Completion report | manual | AI summary | AI verifies main and reports | Issue/PR completion report | alert closure and incident report |
 
 ## Human Responsibilities
 
@@ -169,10 +210,25 @@ Manual work is expected for:
 
 ### Level 1: Manual execution
 
-Human performs most steps.
+Purpose in the target flow:
+
+- Baseline before the AI organization flow exists.
+- The human performs nearly every target-flow step manually.
 
 ```text
-Human decides → Human edits → Human commits → Human deploys → Human checks
+Human says "Do this"
+↓
+Human creates/edits files
+↓
+Human creates commits and PRs
+↓
+Human runs checks
+↓
+Human deploys
+↓
+Human checks Grafana or endpoints
+↓
+Human writes completion notes
 ```
 
 What is possible:
@@ -189,10 +245,23 @@ SRE Lab status:
 
 ### Level 2: AI-assisted repository work
 
-AI helps with code/docs, but human still merges and verifies.
+Purpose in the target flow:
+
+- ChatGPT helps with planning and drafts, but the human still carries the workflow between systems.
+- The target flow is visible, but not connected end-to-end.
 
 ```text
-Human decides → AI drafts/edits → Human reviews → Human merges
+Human says "Do this"
+↓
+ChatGPT drafts code/docs or commands
+↓
+Human copies changes locally
+↓
+Human creates PR or merges
+↓
+Human deploys/checks
+↓
+ChatGPT summarizes when asked
 ```
 
 What is possible:
@@ -209,10 +278,27 @@ SRE Lab status:
 
 ### Level 3: Automation-first GitHub work
 
-AI completes safe GitHub work through merge and verification.
+Purpose in the target flow:
+
+- ChatGPT executes the GitHub part of the target flow for safe work.
+- The flow reaches branch, PR, merge, and main verification without requiring local human edits.
 
 ```text
-Human decides → AI creates branch/PR → AI checks → AI merges → AI verifies main
+Human says "Do this"
+↓
+ChatGPT inspects repository
+↓
+ChatGPT creates branch / updates files
+↓
+ChatGPT creates PR
+↓
+GitHub Actions validates when available
+↓
+ChatGPT merges safe or approved PR
+↓
+ChatGPT verifies main
+↓
+Completion report
 ```
 
 What is possible:
@@ -234,18 +320,31 @@ SRE Lab status:
 
 ### Level 4: Issue-driven AI organization
 
-Issues become the primary task queue.
+Purpose in the target flow:
+
+- The normal path becomes Issue-first.
+- ChatGPT acts as PM, GitHub Issues become the task queue, Codex implements, PRs deliver changes, GitHub Actions validates, Cloudflare deploys when relevant, and ChatGPT reports completion.
 
 ```text
-Human creates request
+Human says "Do this"
 ↓
-ChatGPT creates Issue
+ChatGPT clarifies scope and creates/updates GitHub Issue
 ↓
-Codex implements
+Codex implements from the Issue scope
+↓
+Codex or ChatGPT creates Pull Request
 ↓
 GitHub Actions validates
 ↓
-ChatGPT reviews and merges safe PRs
+ChatGPT reviews PR and risk
+↓
+Human approves risky changes, if needed
+↓
+ChatGPT merges safe/approved PR
+↓
+Cloudflare deploy workflow runs when relevant
+↓
+ChatGPT verifies main / deployment / smoke results
 ↓
 Completion report
 ```
@@ -258,6 +357,8 @@ What is possible:
 - ChatGPT can act as PM and GitHub operator
 - Codex can be used as implementation agent for scoped work
 - GitHub Actions can validate changes before merge
+- Cloudflare Worker deployment can run from GitHub Actions for relevant changes
+- Post-deploy smoke tests can run after Worker deployment
 
 SRE Lab status:
 
@@ -265,6 +366,8 @@ SRE Lab status:
 - Issue templates and PR template exist.
 - GitHub Issues are being used as the work queue for operational tasks.
 - ChatGPT can create Issues, update files, open PRs, merge safe work, and close completed Issues.
+- GitHub Actions includes required file checks and API syntax checks.
+- Worker deploy workflow includes post-deploy smoke tests.
 - Remaining gap: not every non-trivial task starts from an Issue yet.
 - Remaining gap: Codex is not yet consistently triggered from Issues as the default implementation path.
 - Remaining gap: validation is not strong enough to make most code PRs safely self-verifying.
@@ -276,35 +379,50 @@ User asks for work
 ↓
 ChatGPT decides whether it should become an Issue
 ↓
+ChatGPT creates Issue for non-trivial work when useful
+↓
 ChatGPT creates or updates repository state
 ↓
 PR is created when appropriate
 ↓
+GitHub Actions validates available checks
+↓
 Human approves risky changes
 ↓
 ChatGPT merges safe/approved changes
+↓
+Cloudflare deploy workflow runs for Worker changes
 ↓
 Completion report
 ```
 
 ### Level 5: Monitoring-driven remediation
 
-Alerts create Issues automatically and start the operations flow.
+Purpose in the target flow:
+
+- Grafana can start the same Issue-driven organization flow without the human saying "Do this" first.
+- Monitoring becomes an automatic work intake path.
 
 ```text
 Grafana alert fires
 ↓
+Cloudflare Worker validates webhook
+↓
 GitHub Issue is created
 ↓
-AI investigates
+ChatGPT / Codex investigates from the Issue
 ↓
 PR or runbook update is created
 ↓
-CI validates
+GitHub Actions validates
 ↓
-Safe merge or human approval
+Cloudflare deploys when relevant
 ↓
-Incident record is created
+Grafana / smoke tests confirm recovery
+↓
+Incident record is created when needed
+↓
+Completion report / Issue close
 ```
 
 What is possible:
@@ -314,6 +432,7 @@ What is possible:
 - The Worker can create GitHub Issues from Grafana alert payloads
 - GitHub Issues can become incident investigation entry points
 - AI can inspect the Issue and repository state after the alert is created
+- The documented triage flow can classify active failure, stale monitoring, duplicate, test alert, false positive, or unknown
 
 SRE Lab status:
 
@@ -325,6 +444,7 @@ SRE Lab status:
   - `service_name = sre-lab`
 - Grafana test alert successfully created GitHub Issue `#20`.
 - Test Issue `#20` was closed as completed after verification.
+- Triage and remediation flow is documented in `docs/grafana-alert-to-issue.md`.
 
 Remaining gap:
 
@@ -332,7 +452,7 @@ Remaining gap:
 - PR or runbook updates after an alert still require a user prompt or manual AI invocation.
 - Incident record creation is not yet automatic.
 - Deduplication is not implemented; repeated Grafana notifications may create repeated Issues.
-- Cloudflare Worker deploy is not fully automated from GitHub Actions yet.
+- Full Cloudflare deployment verification still depends on GitHub Actions secrets and workflow results.
 
 Current practical capability:
 
@@ -354,7 +474,7 @@ SRE Lab is currently at:
 
 ```text
 Level 3: Implemented and operational
-Level 4: Partially implemented
+Level 4: Partially implemented toward the target "Do this" → Issue → Codex → PR → CI → Cloudflare → Grafana → report flow
 Level 5: Partially implemented, alert-to-Issue entry point operational
 ```
 
@@ -428,8 +548,8 @@ Add checks for:
 Status:
 
 - Partially implemented.
-- Required file guardrails and smoke test script exist.
-- Remaining improvement: make API syntax checks and post-deploy smoke tests run automatically on PRs and deploys.
+- Required file guardrails, API syntax check, and smoke test script exist.
+- Remaining improvement: expand code validation and make PRs more self-verifying.
 
 ### 4. Post-deploy smoke tests
 
@@ -443,9 +563,8 @@ AWS Cost Simulator remains removed from active navigation and monitoring docs
 
 Status:
 
-- Partially implemented.
-- Smoke test script exists.
-- Remaining improvement: run post-deploy smoke automatically after Cloudflare deployment.
+- Implemented for Worker deploy workflow foundation.
+- Remaining improvement: verify GitHub Actions secrets and successful workflow run after a real Worker deployment.
 
 ### 5. Alert-to-Issue flow
 
@@ -500,14 +619,15 @@ SRE Lab currently has:
 - Issue templates
 - PR template
 - Smoke test script and workflow foundation
+- Worker deploy workflow with post-deploy smoke test step
+- Grafana alert Issue triage documentation
 
 The main missing pieces for 90-95% automation are:
 
 - Issue-first execution as the consistent default
 - Codex execution from Issues as the normal implementation path
 - stronger CI guardrails for code changes
-- automated Cloudflare Worker deploy from GitHub Actions
-- automated post-deploy smoke tests
+- verified automated Cloudflare Worker deployment from GitHub Actions
 - automatic AI investigation from Grafana-created Issues
 - automatic incident record creation after alert triage
 
