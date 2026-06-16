@@ -68,11 +68,12 @@ Before changing files, Codex must read:
 4. `docs/ai-organization-operating-model.md`
 5. `docs/sre-lab-workflow.md`
 6. `docs/codex-workflow.md`
-7. `docs/revenue-release-before-cka.md`
-8. `docs/service-state-checklist.md`
-9. `docs/services.md`
-10. `docs/runbook.md`
-11. Latest relevant records under `docs/incidents/`
+7. `docs/completion-report-template.md`
+8. `docs/revenue-release-before-cka.md`
+9. `docs/service-state-checklist.md`
+10. `docs/services.md`
+11. `docs/runbook.md`
+12. Latest relevant records under `docs/incidents/`
 
 Then Codex should inspect the Issue and confirm:
 
@@ -107,6 +108,62 @@ Use:
 
 for implementation tasks intended for Codex.
 
+## Codex Label Operating Rule
+
+Use the `codex` label when an Issue is ready for implementation by Codex.
+
+Target flow:
+
+```text
+Issue labeled codex
+↓
+Codex starts from the Issue
+↓
+Codex creates or updates a PR
+↓
+ChatGPT reviews the PR
+↓
+ChatGPT merges safe or approved work
+↓
+Completion report is recorded
+```
+
+Apply the `codex` label only when:
+
+- the Issue has clear acceptance criteria
+- likely files or affected areas are identified
+- out-of-scope items are defined
+- validation requirements are listed
+- risk level is known
+- required human approvals are clear
+
+Do not apply the `codex` label when:
+
+- the request is still ambiguous
+- secrets, credentials, billing, or external UI actions are the main task
+- production-impacting behavior needs product judgment first
+- the safest implementation path is not yet clear
+
+Known limitation:
+
+```text
+The repository can define the codex label operating rule, but actual automatic Codex execution depends on external Codex/GitHub App capabilities and permissions.
+```
+
+If direct auto-start is not available, the closest supported workflow is:
+
+```text
+ChatGPT creates or verifies a Codex-ready Issue
+↓
+ChatGPT applies or recommends the codex label
+↓
+User or available Codex integration starts Codex from the Issue
+↓
+Codex opens PR
+↓
+ChatGPT reviews and merges safe or approved work
+```
+
 ## Implementation Rules
 
 Codex must:
@@ -132,6 +189,7 @@ Codex PRs should include:
 - risk level
 - rollback notes if relevant
 - linked Issue
+- completion report fields when the PR closes the Issue
 
 The PR should link the Issue using one of:
 
@@ -157,7 +215,7 @@ After Codex opens or updates a PR, ChatGPT should:
 6. Ask the user for approval when required by risk policy.
 7. Merge safe or approved PRs.
 8. Verify main branch after merge.
-9. Report completion.
+9. Report completion using `docs/completion-report-template.md`.
 
 ## When Human Approval Is Required
 
@@ -194,14 +252,29 @@ Linked Issue:
 Notes for ChatGPT review:
 ```
 
+When the PR closes or completes an Issue, include or reference the standard completion report format:
+
+```text
+Issue:
+PR:
+Merge commit:
+Validation:
+Deploy:
+Monitoring:
+Remaining follow-up:
+Close decision:
+```
+
 ## Current Status
 
-This workflow is now defined, but Codex is not yet automatically triggered from Issues.
+This workflow is now defined, but Codex is not yet automatically triggered from Issues by repository files alone.
 
 Current practical state:
 
 ```text
 ChatGPT creates or verifies a Codex-ready Issue
+↓
+ChatGPT applies or recommends the codex label when appropriate
 ↓
 Codex can implement from that Issue when invoked
 ↓
