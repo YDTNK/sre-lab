@@ -11,9 +11,26 @@ After that revenue release, SRE Lab should move into maintenance-only operation 
 ```text
 Phase 16 v1 checkpoint: complete
 First revenue release: planned before CKA
+Customer-facing service release: planned before CKA
+Revenue content/link: planned before CKA
 CKA learning: starts after revenue release preparation is complete
 SRE Lab during CKA: maintenance-only
 ```
+
+## Target State at CKA Start
+
+When Kubernetes / CKA learning starts, SRE Lab should already be in the following state:
+
+```text
+AI Moving Assistant is publicly available for customer use
+A free sample is publicly available
+A revenue content page, paid content page, or affiliate/revenue link is publicly available
+The active site has a visible route from the free/service experience to the revenue route
+If user traffic arrives and converts, revenue can be generated
+SRE Lab is operated as a live customer-facing service with monitoring
+```
+
+This does not mean the service must already have large traffic or meaningful profit before CKA starts. The required state is that the revenue path is released and technically usable.
 
 ## Why This Policy Exists
 
@@ -40,14 +57,19 @@ The following are not required before CKA:
 - Complex analytics pipeline
 - New consumer AI service
 - Large SEO/content expansion
+- Guaranteed traffic or guaranteed sales
+- Paid advertising campaign
 
 ## Completion Criteria
 
 The revenue release is complete when:
 
+- AI Moving Assistant is publicly available as a customer-facing service
+- A free sample page or free service experience is publicly available
 - One simple revenue route is publicly linked from AI Moving Assistant or the free sample page
 - The user can understand what is free and what is paid
 - The paid/download/affiliate destination works outside the main app if needed
+- If user traffic arrives and converts, revenue can be generated
 - Grafana monitoring for active services is healthy
 - AWS Cost Simulator remains removed from active monitoring and navigation
 - Revenue / Cost Dashboard has an initial release entry
