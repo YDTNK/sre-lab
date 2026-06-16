@@ -14,11 +14,12 @@ Before answering or changing anything in this repository, read the following fil
 6. `docs/codex-workflow.md`
 7. `docs/deploy-failure-investigation.md`
 8. `docs/grafana-issue-ai-investigation.md`
-9. `docs/revenue-release-before-cka.md`
-10. `docs/service-state-checklist.md`
-11. `docs/services.md`
-12. `docs/runbook.md`
-13. Latest relevant records under `docs/incidents/`
+9. `docs/incident-record-rules.md`
+10. `docs/revenue-release-before-cka.md`
+11. `docs/service-state-checklist.md`
+12. `docs/services.md`
+13. `docs/runbook.md`
+14. Latest relevant records under `docs/incidents/`
 
 ## Core Working Policy
 
@@ -53,6 +54,7 @@ docs/sre-lab-workflow.md
 docs/codex-workflow.md
 docs/deploy-failure-investigation.md
 docs/grafana-issue-ai-investigation.md
+docs/incident-record-rules.md
 ```
 
 Target balance:
