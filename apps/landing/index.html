@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>引越し準備をAIでチェックリスト化 | SRE Lab</title>
+  <title>引越し準備ボード | 見積もり前の荷物・資材・手続き整理</title>
   <meta
     name="description"
-    content="見積もり前に、荷物量・必要資材・引越し準備チェックリストを無料で整理できるAI引越し診断ツールです。"
+    content="見積もり前に、荷物量・必要資材・引越し準備チェックリストを無料で整理できる引越し準備ボードです。"
   />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="page-home">
   <header class="site-header">
     <div class="container site-header__inner">
-      <a class="site-brand" href="index.html">SRE Lab 引越し準備ツール</a>
+      <a class="site-brand" href="index.html">引越し準備ボード</a>
       <nav class="site-nav" aria-label="主要ナビゲーション">
-        <a href="moving-assistant.html">AI引越し診断</a>
-        <a href="#tools">公開中のツール</a>
+        <a href="moving-assistant.html">準備ボードを作る</a>
+        <a href="moving-checklist-sample.html">無料サンプル</a>
       </nav>
     </div>
   </header>
@@ -25,17 +25,17 @@
     <section class="hero">
       <div class="hero__inner">
         <div class="hero__content">
-          <p class="eyebrow">Moving Prep AI Tool</p>
-          <h1>見積もり前に、引越し準備をAIでチェックリスト化</h1>
+          <p class="eyebrow">Moving Prep Board</p>
+          <h1>見積もり前に、引越し準備をひとつのボードに整理</h1>
           <p class="hero-subtitle">
-            荷物量・必要資材・前日までの準備項目を、無料で整理できます。
+            荷物量・必要資材・手続き・前日準備を、無料で見える化します。
           </p>
           <p class="lead">
-            SRE Labは引越し業者ではありません。業者へ見積もり依頼をする前に、家具・家電・衣類・本や小物の量を整理し、準備の抜け漏れを減らすための無料ツールです。
+            引越し準備ボードは、引越し業者ではありません。見積もり依頼の前に、自分の荷物量や準備項目を説明しやすくするための無料ツールです。
           </p>
 
           <div class="hero__actions">
-            <a class="button button-moving" href="moving-assistant.html#moving-form">見積もり前に準備を整理する</a>
+            <a class="button button-moving" href="moving-assistant.html#moving-form">準備ボードを作る</a>
             <a class="button button-secondary" href="moving-checklist-sample.html">無料サンプルを見る</a>
           </div>
 
@@ -47,90 +47,92 @@
           </div>
         </div>
 
-        <div class="hero__visual lp-visual lp-visual--home" aria-label="AI引越し診断の利用イメージ">
-          <div class="visual-scene">
-            <div class="visual-card visual-card--checklist">
-              <div class="visual-card__bar">
-                <span></span><span></span><span></span>
-              </div>
-              <h2>Prep Board</h2>
-              <div class="visual-task is-done">荷物量を整理</div>
-              <div class="visual-task is-done">資材の目安を確認</div>
-              <div class="visual-task">前日チェック</div>
+        <div class="hero__visual lp-visual lp-visual--home" aria-label="引越し準備ボードの利用イメージ">
+          <div class="visual-board-simple">
+            <div class="visual-board-simple__header">
+              <span>準備ボード</span>
+              <strong>見積もり前に確認</strong>
             </div>
-            <div class="moving-illustration" aria-hidden="true">
-              <div class="moving-illustration__sun"></div>
-              <div class="moving-illustration__van">
-                <span class="moving-illustration__cab"></span>
-                <span class="moving-illustration__box moving-illustration__box--one"></span>
-                <span class="moving-illustration__box moving-illustration__box--two"></span>
-                <span class="moving-illustration__wheel moving-illustration__wheel--left"></span>
-                <span class="moving-illustration__wheel moving-illustration__wheel--right"></span>
+            <div class="visual-board-simple__grid">
+              <div>
+                <span>1</span>
+                <strong>荷物量</strong>
+                <p>家具・衣類・家電・本や小物</p>
               </div>
-            </div>
-            <div class="visual-card visual-card--metric">
-              <span>次にやること</span>
-              <strong>見積もり前の整理</strong>
-              <p>ダンボール、資材、手続き、当日準備をまとめて確認。</p>
+              <div>
+                <span>2</span>
+                <strong>必要資材</strong>
+                <p>ダンボール・袋・テープ・緩衝材</p>
+              </div>
+              <div>
+                <span>3</span>
+                <strong>手続き</strong>
+                <p>電気・ガス・水道・住所変更</p>
+              </div>
+              <div>
+                <span>4</span>
+                <strong>当日準備</strong>
+                <p>鍵・財布・充電器・重要書類</p>
+              </div>
             </div>
           </div>
           <div class="visual-caption">
-            荷物量、資材、手続きをひとつの準備ボードに整理します。
+            装飾よりも、準備の順番と確認項目が読めることを優先しています。
           </div>
         </div>
       </div>
     </section>
 
-    <section class="journey-strip" aria-label="AI引越し診断の流れ">
+    <section class="journey-strip" aria-label="引越し準備ボードの流れ">
       <div class="journey-item">
         <span>01</span>
+        <strong>状況を選ぶ</strong>
+        <p>単身、初めて、荷物少なめ、手続き不安など、自分の状況を確認します。</p>
+      </div>
+      <div class="journey-item">
+        <span>02</span>
         <strong>荷物量を入力</strong>
         <p>家具・衣類・家電・本や小物を分かる範囲で入力します。</p>
       </div>
       <div class="journey-item">
-        <span>02</span>
-        <strong>資材を整理</strong>
-        <p>ダンボールや梱包用品の目安を確認します。</p>
-      </div>
-      <div class="journey-item">
         <span>03</span>
-        <strong>準備を見える化</strong>
-        <p>前日・当日・手続きの確認項目をリスト化します。</p>
+        <strong>準備ボードで確認</strong>
+        <p>必要資材、手続き、前日・当日の準備をまとめて見直します。</p>
       </div>
     </section>
 
     <section class="section" id="tools">
       <div class="section__header">
         <span class="section__eyebrow">Current Tool</span>
-        <h2 class="section__title">現在公開中のツール</h2>
+        <h2 class="section__title">見積もり前の準備整理ツール</h2>
         <p class="section__lead">
-          引越し業者へ連絡する前に、荷物量・必要資材・準備チェックリストを整理する無料ツールを公開しています。
+          引越し業者へ連絡する前に、荷物量・必要資材・準備チェックリストを整理できます。
         </p>
       </div>
 
       <div class="tool-grid tool-grid--single">
         <article class="tool-card tool-card--featured">
           <div>
-            <p class="status">AI Tool</p>
-            <h3>AI引越し診断</h3>
+            <p class="status">Free Tool</p>
+            <h3>引越し準備ボード</h3>
             <p>
               家具、衣類、家電、本・小物、引越し予定日などを入力すると、見積もり前に把握しておきたい準備サマリー、必要資材、チェックリスト、注意点を整理します。
             </p>
             <div class="tool-card__tags">
-              <span class="tag">AI診断</span>
-              <span class="tag">準備整理</span>
+              <span class="tag">荷物量整理</span>
+              <span class="tag">資材チェック</span>
               <span class="tag">登録不要</span>
               <span class="tag">無料サンプル</span>
             </div>
-            <a class="tool-card__link" href="moving-assistant.html#moving-form">見積もり前に準備を整理する →</a>
+            <a class="tool-card__link" href="moving-assistant.html#moving-form">準備ボードを作る →</a>
           </div>
-          <div class="mini-dashboard" aria-label="診断結果のサンプル">
+          <div class="mini-dashboard" aria-label="準備ボードのサンプル">
             <div class="mini-dashboard__line"></div>
             <div class="mini-dashboard__line mini-dashboard__line--short"></div>
             <div class="mini-dashboard__tiles">
-              <span>資材</span>
+              <span>資材リスト</span>
               <span>手続き</span>
-              <span>当日</span>
+              <span>当日準備</span>
             </div>
           </div>
         </article>
@@ -139,36 +141,36 @@
 
     <section class="section section--soft">
       <div class="section__header">
-        <span class="section__eyebrow">For Your Move</span>
-        <h2 class="section__title">引越しタイプに合わせて、先に整理する</h2>
+        <span class="section__eyebrow">Start by Situation</span>
+        <h2 class="section__title">あなたの状況から、先に確認する</h2>
         <p class="section__lead">
-          単身・初めて・荷物少なめなど、状況ごとに不安になりやすい項目をチェックできます。
+          単身・初めて・荷物少なめなど、状況ごとに不安になりやすい項目を整理します。
         </p>
       </div>
 
-      <div class="persona-grid">
+      <div class="persona-grid persona-grid--compact">
         <article class="persona-card">
-          <span>Solo</span>
+          <span>単身</span>
           <h3>単身引越し</h3>
           <p>少ない荷物でも忘れやすい資材や手続きを整理します。</p>
         </article>
         <article class="persona-card">
-          <span>First</span>
+          <span>初回</span>
           <h3>初めての引越し</h3>
           <p>何から始めるか迷うときの準備順を確認できます。</p>
         </article>
         <article class="persona-card">
-          <span>Light</span>
+          <span>少量</span>
           <h3>荷物少なめ</h3>
           <p>ダンボール数や当日バッグの目安を先に把握します。</p>
         </article>
         <article class="persona-card">
-          <span>Home</span>
+          <span>家具あり</span>
           <h3>家具・家電あり</h3>
           <p>破損しやすい物、重い物、配線まわりの注意点を整理します。</p>
         </article>
         <article class="persona-card persona-card--wide">
-          <span>Concern</span>
+          <span>不安</span>
           <h3>手続き漏れが不安</h3>
           <p>ライフライン、住所変更、前日・当日の持ち物をまとめて見直せます。</p>
         </article>
@@ -177,32 +179,32 @@
 
     <section class="section">
       <div class="section__header">
-        <span class="section__eyebrow">Checklist Focus</span>
-        <h2 class="section__title">見積もり前に確認したい4つのこと</h2>
+        <span class="section__eyebrow">Before Quote Request</span>
+        <h2 class="section__title">見積もり前に整理しておくと説明しやすいこと</h2>
         <p class="section__lead">
-          料金保証や業者比較ではなく、見積もり相談の前に自分の状況を説明しやすくするための準備です。
+          料金保証や業者比較ではなく、相談前に自分の状況を説明しやすくするための準備です。
         </p>
       </div>
 
       <div class="prep-grid">
         <article class="prep-card">
-          <span class="prep-card__icon">箱</span>
-          <h3>ダンボール目安</h3>
+          <span class="prep-card__label">ダンボール</span>
+          <h3>箱数の目安</h3>
           <p>衣類・本・小物の量から、箱数の考え方を整理します。</p>
         </article>
         <article class="prep-card">
-          <span class="prep-card__icon">資</span>
-          <h3>梱包資材</h3>
+          <span class="prep-card__label">梱包資材</span>
+          <h3>買い忘れ防止</h3>
           <p>テープ、緩衝材、当日バッグなど、買い忘れやすい物を確認します。</p>
         </article>
         <article class="prep-card">
-          <span class="prep-card__icon">手</span>
-          <h3>ライフライン手続き</h3>
+          <span class="prep-card__label">手続き</span>
+          <h3>ライフライン確認</h3>
           <p>電気・ガス・水道・ネットなど、早めに確認したい項目を整理します。</p>
         </article>
         <article class="prep-card">
-          <span class="prep-card__icon">当</span>
-          <h3>前日・当日準備</h3>
+          <span class="prep-card__label">当日準備</span>
+          <h3>手元に残す物</h3>
           <p>鍵、財布、充電器、重要書類など、手元に残す物を見直します。</p>
         </article>
       </div>
@@ -210,27 +212,28 @@
 
     <section class="cta-band">
       <div>
-        <span class="section__eyebrow">Start Now</span>
+        <span class="section__eyebrow">Next Step</span>
         <h2>まずは荷物の量から、準備の全体像を見える化</h2>
         <p>
           見積もり前のメモ作りや、当日までの抜け漏れ確認に使える無料ツールです。将来的にはPDFテンプレートの拡充も検討しています。
         </p>
       </div>
       <div class="cta-band__actions">
-        <a class="button" href="moving-assistant.html#moving-form">チェックリストを作成する</a>
+        <a class="button" href="moving-assistant.html#moving-form">準備ボードを作る</a>
         <a class="button button-secondary" href="moving-checklist-sample.html">無料サンプルを見る</a>
       </div>
     </section>
 
-    <section class="section" id="notices">
+    <section class="section notice-section" id="notices">
       <div class="notice-card">
+        <p class="notice-card__eyebrow">注意事項</p>
         <h2 class="notice-card__title">ご利用にあたって</h2>
         <ul class="notice-list">
           <li>
-            各ツールの結果は、入力内容にもとづく目安です。正式な見積もり、契約、請求金額、専門家の判断の代替ではありません。
+            結果は入力内容にもとづく目安です。正式な見積もり、契約、請求金額、専門家の判断の代替ではありません。
           </li>
           <li>
-            AI引越し診断の結果は、準備のたたき台としてご利用ください。実際の必要資材や作業量は条件によって変わります。
+            引越し準備ボードの結果は、準備のたたき台としてご利用ください。実際の必要資材や作業量は条件によって変わります。
           </li>
           <li>
             個人情報や住所など、不要な機微情報は入力しないでください。
@@ -243,13 +246,13 @@
   <footer class="site-footer">
     <div class="container site-footer__inner">
       <div>
-        <a class="site-brand" href="index.html">SRE Lab 引越し準備ツール</a>
+        <a class="site-brand" href="index.html">引越し準備ボード</a>
         <p>
-          見積もり前の準備整理に役立つWebツールをまとめています。
+          見積もり前の準備整理に役立つ無料ツールです。
         </p>
       </div>
       <div class="site-footer__links">
-        <a href="moving-assistant.html">AI引越し診断</a>
+        <a href="moving-assistant.html">準備ボードを作る</a>
         <a href="#notices">ご利用にあたって</a>
       </div>
     </div>
