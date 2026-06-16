@@ -9,11 +9,12 @@ Before answering or changing anything in this repository, read the following fil
 1. `AGENTS.md`
 2. `README.md`
 3. `docs/automation-first-working-policy.md`
-4. `docs/revenue-release-before-cka.md`
-5. `docs/service-state-checklist.md`
-6. `docs/services.md`
-7. `docs/runbook.md`
-8. Latest relevant records under `docs/incidents/`
+4. `docs/ai-organization-operating-model.md`
+5. `docs/revenue-release-before-cka.md`
+6. `docs/service-state-checklist.md`
+7. `docs/services.md`
+8. `docs/runbook.md`
+9. Latest relevant records under `docs/incidents/`
 
 ## Core Working Policy
 
@@ -37,6 +38,21 @@ This includes, when available and safe:
 - Release or incident record creation
 - Documentation updates
 - Runbook and policy updates
+
+## AI Organization Operating Model
+
+The target operating model is documented in:
+
+```text
+docs/ai-organization-operating-model.md
+```
+
+Target balance:
+
+```text
+Manual work: 5-10%
+Automated / AI-assisted work: 90-95%
+```
 
 ## Safety Exceptions
 
