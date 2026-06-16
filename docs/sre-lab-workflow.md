@@ -16,18 +16,24 @@ Level 4: Partially implemented
 Level 5: Partially implemented, alert-to-Issue entry point operational
 ```
 
-Estimated operating ratio:
+Practical public repository operating ratio:
 
 ```text
-Manual work: 12-20%
-Automated / AI-assisted work: 80-88%
+Manual work: 10-15%
+Automated / AI-assisted work: 85-90%
 ```
 
-Target operating ratio:
+Target operating ratio if private/internal Copilot automations become available:
 
 ```text
 Manual work: 5-10%
 Automated / AI-assisted work: 90-95%
+```
+
+For the accepted public repository workflow, see:
+
+```text
+docs/ai-assisted-85-90-workflow.md
 ```
 
 ## Issue-First Rule
@@ -99,7 +105,7 @@ Completion report
 
 ## Practical Current Workflow
 
-Because Level 4 is only partially implemented, the current practical flow is:
+Because this public repository cannot use Copilot cloud agent Automations directly, the current practical flow is:
 
 ```text
 Human gives direction
@@ -110,7 +116,9 @@ ChatGPT creates or reuses a GitHub Issue for non-trivial work
 ↓
 ChatGPT creates a branch and updates files for safe scoped work
 ↓
-ChatGPT opens a PR linked to the Issue when applicable
+For code/larger implementation work, Human manually starts Codex/agent session when needed
+↓
+Codex or ChatGPT opens a PR linked to the Issue
 ↓
 GitHub Actions validates available checks
 ↓
@@ -134,7 +142,7 @@ Grafana alert
 ↓
 Cloudflare Worker `/api/grafana-alert`
 ↓
-GitHub Issue is created
+GitHub Issue is created or deduped
 ```
 
 Target remediation flow:
@@ -230,10 +238,12 @@ Close decision:
 
 ## Next Automation Priorities
 
-To move from the current 80-88% automation range toward 90-95%, prioritize:
+To keep the public repository operating at 85-90%, prioritize:
 
-1. Use the `codex` label operating rule consistently for implementation-ready Issues.
-2. Use the standard completion report for Issue/PR closures.
-3. Confirm #2 production/visual verification and close when evidence is recorded.
-4. Confirm #50 after the next successful Deploy Worker run automatically triggers Validate Grafana Dedupe.
-5. Add direct Codex auto-start integration if the external Codex/GitHub App capability becomes available.
+1. Follow `docs/ai-assisted-85-90-workflow.md` for all non-trivial work.
+2. Use the `codex` label operating rule consistently for implementation-ready Issues.
+3. Use the standard completion report for Issue/PR closures.
+4. Confirm #2 production/visual verification and close when evidence is recorded.
+5. Confirm #50 after the next successful Deploy Worker run automatically triggers Validate Grafana Dedupe.
+
+To reach 90-95%, add a private/internal automation repository or change repository visibility if portfolio requirements allow it.
