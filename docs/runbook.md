@@ -4,6 +4,34 @@ This runbook defines basic incident response procedures for SRE Lab.
 
 ---
 
+## Service State Gate
+
+Before restoring an endpoint, page, monitor, or alert target, confirm whether the target is still an active service.
+
+Required source of truth:
+
+- `README.md`
+- `docs/services.md`
+- `docs/service-state-checklist.md`
+- Latest records under `docs/incidents/`
+
+Classify the target as one of:
+
+| State | Meaning | First action |
+|---|---|---|
+| active | Current production service or endpoint | Investigate and restore if broken |
+| degraded | Active service with partial failure | Mitigate and monitor |
+| deprecated | Planned for removal | Confirm expected behavior before restoring |
+| removed | Intentionally removed | Remove stale monitor or stale reference by default |
+| replaced | Superseded by another target | Update monitor, redirect, or remove stale reference |
+| unknown | State cannot be confirmed | Stop and verify service intent first |
+
+If an endpoint returns 404, do not assume it is down until service state is confirmed.
+
+AWS Cost Simulator is currently treated as a removed service. Alerts for `/api/aws-cost-simulator` should first be investigated as possible stale monitoring or service-state mismatch, not as an automatic API restoration task.
+
+---
+
 ## Alert: sre-lab-uptime-down
 
 ### Summary
@@ -22,22 +50,24 @@ Users may not be able to access the SRE Lab landing page.
 
 ### First Checks
 
-1. Open the landing page in a browser:
+1. Confirm the target page is still active using the Service State Gate.
+2. Open the landing page in a browser:
    - https://sre-lab.pages.dev/
-2. Check Grafana Synthetic Monitoring result.
-3. Check Cloudflare Pages deployment status.
-4. Check recent GitHub commits.
-5. Check GitHub Actions status.
+3. Check Grafana Synthetic Monitoring result.
+4. Check Cloudflare Pages deployment status.
+5. Check recent GitHub commits.
+6. Check GitHub Actions status.
 
 ### Mitigation
 
 - If the latest deployment caused the issue, revert the latest commit.
 - If Cloudflare Pages deployment failed, redeploy from Cloudflare Pages.
 - If the issue is external or transient, continue monitoring until recovery.
+- If the page was intentionally removed or replaced, update the monitor or alert rule instead of restoring the page by default.
 
 ### After Recovery
 
-- Record the incident in docs/incidents.md.
+- Record new incidents under `docs/incidents/` as one file per incident.
 - Update this runbook if the response process changed.
 - Add follow-up actions if prevention is needed.
 
@@ -61,9 +91,11 @@ Users may be able to access the landing page, but the AI Moving Assistant diagno
 
 ### First Checks
 
-1. Check Grafana Synthetic Monitoring result for the API check.
+1. Confirm the target endpoint is still active using the Service State Gate.
 
-2. Test the production API with curl:
+2. Check Grafana Synthetic Monitoring result for the API check.
+
+3. Test the production API with curl:
 
     curl -X POST https://sre-lab-api.daisan-tanaka.workers.dev/api/moving-assistant \
       -H "Content-Type: application/json" \
@@ -76,10 +108,10 @@ Users may be able to access the landing page, but the AI Moving Assistant diagno
         "notes": "runbook test"
       }'
 
-3. Check Cloudflare Workers deployment status.
-4. Check recent GitHub commits.
-5. Check whether the frontend can call the production API endpoint.
-6. Check whether the API returns:
+4. Check Cloudflare Workers deployment status.
+5. Check recent GitHub commits.
+6. Check whether the frontend can call the production API endpoint.
+7. Check whether the API returns:
    - HTTP 200 for valid POST requests
    - HTTP 400 for invalid empty requests
 
@@ -90,10 +122,11 @@ Users may be able to access the landing page, but the AI Moving Assistant diagno
 - If the API returns 500, review Worker logs and recent code changes.
 - If the API is unreachable, check Cloudflare Workers status and deployment settings.
 - If the frontend fails but curl succeeds, review frontend API endpoint configuration and CORS headers.
+- If the endpoint was intentionally removed or replaced, update Grafana monitoring and alert rules instead of restoring the endpoint by default.
 
 ### After Recovery
 
-- Record the incident in docs/incidents.md.
+- Record new incidents under `docs/incidents/` as one file per incident.
 - Add the root cause and mitigation steps.
 - Update the API design document if the failure suggests a design issue.
 - Add follow-up tasks if alerting, validation, or error handling should be improved.
@@ -112,6 +145,14 @@ For every incident, record:
 - Root cause
 - Mitigation
 - Prevention / follow-up actions
+
+New records should normally be created as one file per incident under:
+
+```text
+docs/incidents/
+```
+
+Avoid directly rewriting the large aggregate file unless the full current content is safely loaded and the change is small and verified.
 
 ## API Safety Validation
 
@@ -157,6 +198,7 @@ Unknown path:
 
 If valid requests fail:
 
+- Check the Service State Gate before restoring the endpoint
 - Check the latest GitHub Actions CI result
 - Check the latest Deploy Worker workflow result
 - Review recent commits under apps/api
@@ -168,7 +210,7 @@ If invalid requests return unexpected status codes:
 - Review apps/api/src/index.js validation logic
 - Confirm the Worker deployment completed successfully
 - Re-run the API safety validation commands
-- Record findings in docs/incidents.md
+- Record findings under `docs/incidents/`
 
 ## Rate Limiting Runbook
 
@@ -209,7 +251,7 @@ Expected response body:
 
 ### Follow-up Actions
 
-- Record rate limit related findings in docs/incidents.md
+- Record rate limit related findings under `docs/incidents/`
 - Review whether the client behavior indicates abuse
 - Review whether AI API cost controls need stricter limits before paid AI usage is re-enabled
 - Consider usage and cost tracking requirements before paid AI usage is re-enabled
@@ -254,7 +296,7 @@ Expected status:
 5. Check recent deployments.
 6. Confirm whether AI API calls are being blocked after the stop threshold if paid AI usage is enabled.
 7. Review whether rate limits should be lowered.
-8. Record findings in docs/incidents.md.
+8. Record findings under `docs/incidents/`.
 
 ### Mitigation Options
 
@@ -301,7 +343,7 @@ Use this section when OPENAI_API_KEY is missing, invalid, expired, or suspected 
 - Rotate the OpenAI API key if exposure is suspected
 - Temporarily keep fallback response enabled
 - Avoid exposing provider error details to users
-- Record the event in docs/incidents.md
+- Record the event under `docs/incidents/`
 
 ### Recovery Validation
 
@@ -352,4 +394,4 @@ Use this section when AI usage cost approaches or exceeds the configured thresho
 3. cost_limit_reached returns 503 when cost threshold is reached.
 4. ai_limit_reached returns 429 when AI daily limit is reached.
 5. Estimated cost counters are recorded.
-6. docs/incidents.md is updated.
+6. Record findings under `docs/incidents/`.
