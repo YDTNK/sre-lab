@@ -43,56 +43,75 @@
             <a class="button" href="#moving-form">チェックリストを作成する</a>
             <a class="button button-secondary" href="moving-checklist-sample.html">無料サンプルを見る</a>
           </div>
+
+          <div class="hero-proof" aria-label="AI引越し診断の特徴">
+            <span>単身引越し向け</span>
+            <span>決済不要</span>
+            <span>住所入力なし</span>
+          </div>
         </div>
 
-        <div class="hero__visual" aria-label="AI引越し診断の出力イメージ">
-          <div class="preview-stack">
-            <div class="preview-card">
-              <div class="preview-card__head">
-                <span>入力する情報</span>
-                <span>Moving Data</span>
+        <div class="hero__visual lp-visual lp-visual--assistant" aria-label="AI引越し診断の出力イメージ">
+          <div class="assistant-mock">
+            <div class="assistant-mock__panel assistant-mock__panel--input">
+              <div class="assistant-mock__header">
+                <span></span><span></span><span></span>
               </div>
-              <dl class="preview-card__row">
-                <dt>家具</dt>
-                <dd>デスク / 椅子</dd>
-              </dl>
-              <dl class="preview-card__row">
-                <dt>家電</dt>
-                <dd>PC / 掃除機</dd>
-              </dl>
-              <dl class="preview-card__row">
-                <dt>予定日</dt>
-                <dd>引越し日を反映</dd>
-              </dl>
-              <div class="preview-card__total">
-                <span>入力</span>
-                <span>1分で完了</span>
-              </div>
+              <h2>Input</h2>
+              <div class="mock-field">デスク / 椅子 / 衣類</div>
+              <div class="mock-field">PC / 掃除機 / 本30冊</div>
+              <div class="mock-field mock-field--short">補足メモ</div>
             </div>
-
-            <div class="preview-card">
-              <div class="preview-card__head">
-                <span>診断でわかること</span>
-                <span>Checklist</span>
+            <div class="assistant-mock__arrow" aria-hidden="true">→</div>
+            <div class="assistant-mock__panel assistant-mock__panel--output">
+              <p class="status">AI Output</p>
+              <h2>準備ボード</h2>
+              <div class="output-list">
+                <span>ダンボール目安</span>
+                <span>梱包資材</span>
+                <span>当日チェック</span>
               </div>
-              <dl class="preview-card__row">
-                <dt>必要資材</dt>
-                <dd>ダンボール・梱包材の目安</dd>
-              </dl>
-              <dl class="preview-card__row">
-                <dt>準備リスト</dt>
-                <dd>やることを一覧化</dd>
-              </dl>
-              <dl class="preview-card__row">
-                <dt>注意点</dt>
-                <dd>見落とし防止</dd>
-              </dl>
-              <div class="preview-card__total">
-                <span>目的</span>
-                <span>準備漏れを減らす</span>
-              </div>
+              <strong>抜け漏れを減らす</strong>
+            </div>
+            <div class="assistant-mock__boxes" aria-hidden="true">
+              <span></span><span></span><span></span>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="visual-feature section">
+      <div class="visual-feature__media" aria-label="引越し準備ボードのイメージ">
+        <div class="planning-board">
+          <div class="planning-board__top">
+            <span>Moving Board</span>
+            <strong>今日の準備</strong>
+          </div>
+          <div class="planning-column">
+            <h3>資材</h3>
+            <p>ダンボール / 緩衝材 / テープ</p>
+          </div>
+          <div class="planning-column">
+            <h3>手続き</h3>
+            <p>電気 / ガス / 郵便転送</p>
+          </div>
+          <div class="planning-column">
+            <h3>当日</h3>
+            <p>鍵 / 財布 / 充電器 / 書類</p>
+          </div>
+        </div>
+      </div>
+      <div class="visual-feature__content">
+        <span class="section__eyebrow">Visual Planning</span>
+        <h2>散らばった準備項目を、見返しやすい単位にまとめます</h2>
+        <p>
+          引越し前は、荷物・手続き・当日準備が同時に進みます。AI引越し診断は、入力した内容をもとに準備のたたき台を作り、次に確認すべき項目を整理します。
+        </p>
+        <div class="feature-points">
+          <span>荷物量の目安</span>
+          <span>必要資材</span>
+          <span>前日・当日の確認</span>
         </div>
       </div>
     </section>
@@ -150,6 +169,34 @@
             ダンボール目安、必要資材、引越し前にやること、重い荷物や電子機器の注意点を一覧で確認できます。
           </p>
         </article>
+      </div>
+    </section>
+
+    <section class="section use-route-section">
+      <div class="section__header">
+        <span class="section__eyebrow">Choose Your Route</span>
+        <h2 class="section__title">目的に合わせてすぐ進めます</h2>
+        <p class="section__lead">
+          診断する前に見本を確認したい場合も、すぐ入力したい場合も、同じページから進められます。
+        </p>
+      </div>
+
+      <div class="route-grid">
+        <a class="route-card" href="#moving-form">
+          <span class="route-card__icon">01</span>
+          <h3>自分の荷物で診断する</h3>
+          <p>家具・衣類・家電などを入力して、準備リストを作成します。</p>
+        </a>
+        <a class="route-card" href="moving-checklist-sample.html">
+          <span class="route-card__icon">02</span>
+          <h3>無料サンプルを見る</h3>
+          <p>1ヶ月前から当日までのチェックリスト見本を確認できます。</p>
+        </a>
+        <a class="route-card" href="#notices">
+          <span class="route-card__icon">03</span>
+          <h3>注意点を確認する</h3>
+          <p>AI結果の使い方、個人情報入力に関する注意を確認できます。</p>
+        </a>
       </div>
     </section>
 
@@ -242,6 +289,20 @@
           <h3>必要資材と注意点を確認</h3>
           <p>ダンボール目安、梱包資材、作業チェックリスト、注意点を確認します。</p>
         </article>
+      </div>
+    </section>
+
+    <section class="cta-band cta-band--moving">
+      <div>
+        <span class="section__eyebrow">Free Checklist</span>
+        <h2>診断結果と無料サンプルを並べて、準備を進める</h2>
+        <p>
+          まずはAI診断で自分の荷物を整理し、必要に応じて無料サンプルで時期別の準備を確認できます。
+        </p>
+      </div>
+      <div class="cta-band__actions">
+        <a class="button" href="#moving-form">チェックリストを作成する</a>
+        <a class="button button-secondary" href="moving-checklist-sample.html">無料サンプルを見る</a>
       </div>
     </section>
 
