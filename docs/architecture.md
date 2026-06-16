@@ -25,9 +25,9 @@ flowchart TD
     U[User] --> P[Cloudflare Pages<br/>SRE Lab Frontend]
     P --> F[AI Moving Assistant<br/>Japanese Form UI]
     F --> W[Cloudflare Workers API<br/>POST /api/moving-assistant]
-    W --> M[Fallback Response<br/>Moving Checklist JSON]
+    W --> M[Deterministic Fallback Response<br/>Moving Checklist JSON]
     F --> S[Free Moving Checklist Sample<br/>moving-checklist-sample.html]
-    W -. Future only .-> AI[Future AI API]
+    W -. Inactive code path / future only .-> AI[OpenAI API]
 
     G[Grafana Synthetic Monitoring] --> P
     G --> W
@@ -62,7 +62,7 @@ Active pages:
 
 The frontend provides a Japanese input form for moving preparation.
 
-Current behavior:
+Current production behavior:
 
 - Collects moving-related user inputs
 - Validates empty input
@@ -87,7 +87,7 @@ Current behavior:
 - Applies safety controls and rate limiting
 - Returns fallback moving checklist response
 
-Future behavior only if resumed:
+Inactive / future behavior only if SRE Lab resumes:
 
 - Call an AI API through the Worker
 - Keep AI API keys out of frontend code
@@ -172,10 +172,11 @@ flowchart LR
 
 ## Current Scope
 
-Current scope:
+Current production scope:
 
 - Static frontend
 - Workers fallback API
+- Deterministic fallback response for AI Moving Assistant
 - Frontend to API connection
 - Free moving checklist sample page
 - Synthetic monitoring
@@ -188,7 +189,7 @@ Current scope:
 - API safety controls
 - Docs-based Revenue / Cost Dashboard in management repository
 
-Not currently included:
+Not currently active:
 
 - Real AI API active usage
 - Payment flow

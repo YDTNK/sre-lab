@@ -2,7 +2,7 @@
 
 This document defines the initial cost management policy for SRE Lab.
 
-The current cost focus is the AI Moving Assistant Workers API and OpenAI API usage.
+The current cost focus is the AI Moving Assistant Workers API, manual revenue/cost review, and keeping paid AI usage inactive unless SRE Lab resumes.
 
 ## Cost Policy
 
@@ -10,7 +10,7 @@ SRE Lab is currently in the pre-monetization phase.
 
 The priority is not maximizing AI usage. The priority is preventing unexpected cost growth while maintaining a safe public portfolio service.
 
-## Current Budget
+## Current Budget Guardrails
 
 | Item | Value |
 |---|---:|
@@ -21,7 +21,9 @@ The priority is not maximizing AI usage. The priority is preventing unexpected c
 | Monthly stop threshold | 500 JPY |
 | Daily hard limit | 100 JPY |
 
-## Current AI Limits
+These values are retained as guardrails from the previous AI integration work. The current production path returns a deterministic fallback response and does not actively call OpenAI API.
+
+## Inactive AI Limits
 
 | Limit | Value |
 |---|---:|
@@ -32,13 +34,13 @@ The priority is not maximizing AI usage. The priority is preventing unexpected c
 
 ## Current Cost Tracking Storage
 
-Initial cost tracking is stored in Cloudflare KV.
+Initial cost tracking design used Cloudflare KV.
 
 KV binding:
 
 - RATE_LIMIT_KV
 
-This is acceptable for the early stage because the system is small and already uses KV for rate limiting and usage tracking.
+This remains useful as an operational reference, but the Phase 16 checkpoint uses the docs-based Revenue / Cost Dashboard as the current source of record.
 
 A future version may move historical cost data to Cloudflare D1 or another database if reporting requirements grow.
 
@@ -100,7 +102,7 @@ npx wrangler kv key get "cost:moving-assistant:estimated_jpy:202606" --binding R
 
 ## OpenAI Platform Checks
 
-OpenAI Platform should also be checked because Cloudflare KV cost tracking is an estimate.
+OpenAI Platform should be checked only if paid AI calls are intentionally re-enabled or if previous usage needs reconciliation.
 
 Check:
 
@@ -110,15 +112,15 @@ Check:
 - Auto recharge status
 - Monthly spend limit
 
-Expected current policy:
+Current policy:
 
 - Credit balance is manually topped up
 - Auto recharge is off
-- OpenAI API usage is reviewed manually during initial rollout
+- OpenAI API is not treated as the active production path at the Phase 16 checkpoint
 
 ## Cost Limit Behavior
 
-If the estimated monthly cost reaches the stop threshold, the Worker must not call OpenAI API.
+If the estimated monthly cost reaches the stop threshold in a resumed AI-enabled path, the Worker must not call OpenAI API.
 
 Expected response:
 
@@ -166,7 +168,7 @@ Expected header:
 
 ## Cost Incident Criteria
 
-Create an operational record in docs/incidents.md if any of the following occurs:
+Create an operational record in docs/incidents.md if any of the following occurs after paid AI usage is intentionally re-enabled:
 
 - Estimated monthly cost exceeds 300 JPY
 - Estimated monthly cost reaches 500 JPY
@@ -183,11 +185,31 @@ Create an operational record in docs/incidents.md if any of the following occurs
 - Add monthly cost review section to operations.md
 - Consider Grafana alerting for cost thresholds
 - Consider D1 for historical cost reporting
-- Add revenue versus cost tracking after monetization experiments begin\n\n## Usage / Cost Snapshot Procedure\n\nUse this procedure to create a manual daily or weekly snapshot.\n\n1. Check Cloudflare KV usage counters.\n2. Check Cloudflare KV estimated token and cost counters.\n3. Check OpenAI Platform actual usage.\n4. Check OpenAI credit balance.\n5. Confirm auto recharge is off.\n6. Record the result in docs/usage-cost-report.md.\n7. Create an operational record in docs/incidents.md if thresholds are exceeded or abnormal behavior is found.\n\nSnapshot report:\n\n- docs/usage-cost-report.md\n\nRecommended initial cadence:\n\n- Daily during initial AI rollout\n- Weekly after stable low-traffic operation\n\n
+- Add revenue versus cost tracking after monetization experiments begin
+
+## Usage / Cost Snapshot Procedure
+
+Use this procedure for manual review when usage changes or when the management dashboard is updated.
+
+1. Check Cloudflare KV usage counters if the Worker path being reviewed writes them.
+2. Check Cloudflare KV estimated token and cost counters if AI usage is active.
+3. Check OpenAI Platform actual usage only if paid AI calls were intentionally enabled.
+4. Check OpenAI credit balance when OpenAI usage is being reconciled.
+5. Confirm auto recharge is off.
+6. Record the result in docs/usage-cost-report.md or the management repository dashboard.
+7. Create an operational record in docs/incidents.md if thresholds are exceeded or abnormal behavior is found.
+
+Snapshot report:
+
+- docs/usage-cost-report.md
+
+Recommended current cadence:
+
+- Monthly or when an event occurs during the Phase 16 stop checkpoint
 
 ## Usage Source of Truth
 
-During the initial AI rollout, Cloudflare KV is treated as the primary source for immediate operational decisions.
+During any resumed AI rollout, Cloudflare KV can be treated as the primary source for immediate operational decisions.
 
 OpenAI Platform Usage is treated as a secondary reconciliation source because it may be affected by reporting delay, project or group filters, and usage aggregation timing.
 
@@ -227,17 +249,17 @@ OpenAI Platform Usage is treated as a secondary reconciliation source because it
 | Stable operation | Weekly |
 | Billing or quota issue | Immediately and after mitigation |
 
-## Future Usage / Cost Dashboard
+## Docs-based Usage / Cost Dashboard
 
-A future usage and cost dashboard is planned, but it is intentionally not implemented during the early AI rollout.
+The current Revenue / Cost Dashboard is docs-based in the management repository.
 
-Current monitoring uses Cloudflare KV, docs/usage-cost-report.md, and manual OpenAI Platform checks.
+Current monitoring uses the management repository dashboard, docs/usage-cost-report.md when needed, and manual provider checks only if the relevant provider is active.
 
 The dashboard design is documented in:
 
 - docs/dashboard-design.md
 
-Initial dashboard goals:
+If an implementation-backed dashboard is built later, its goals should be:
 
 - Show API usage
 - Show AI usage
@@ -252,7 +274,7 @@ The recommended path is:
 2. Add generated Markdown reports if manual work becomes repetitive.
 3. Introduce Cloudflare D1 for historical reporting.
 4. Build a lightweight internal dashboard.
-5. Extend to multi-service dashboard after the second service is added.
+5. Extend to multi-service dashboard only after a separate service decision.
 
 ## Phase 7 Completion Summary
 
@@ -269,9 +291,9 @@ Phase 7 established the initial usage and cost monitoring model for SRE Lab.
 
 ### Current Decision
 
-Do not implement a dashboard immediately.
+Do not implement an application-backed dashboard now.
 
-Continue with Cloudflare KV and manual Markdown snapshots until usage becomes regular, repetitive, or multi-service operations require stronger reporting.
+Continue with the docs-based Revenue / Cost Dashboard until usage becomes regular, repetitive, or a real revenue route requires stronger reporting.
 
 ### Next Improvement Candidates
 
@@ -279,4 +301,3 @@ Continue with Cloudflare KV and manual Markdown snapshots until usage becomes re
 - Cloudflare D1 daily summary table
 - Lightweight internal dashboard
 - Grafana-based cost threshold visualization
-

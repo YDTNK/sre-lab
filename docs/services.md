@@ -68,7 +68,7 @@ The current MVP supports:
   - Packing material suggestions
   - Preparation checklist
   - Risk notes
-- Static result display
+- API-backed fallback result display
 - PDF checklist CTA for monetization demand check
 - Clickable free sample CTA
 - Static free moving checklist sample page
@@ -99,7 +99,7 @@ This service can be used to demonstrate:
 
 - Frontend deployment
 - API endpoint operation
-- AI API cost control design
+- AI API cost control design for any future re-enabled paid AI path
 - Request/response monitoring
 - Error handling
 - Alerting
@@ -227,7 +227,7 @@ Operational features:
 - Dedicated frontend page
 - Dedicated sample page
 - Dedicated Workers API endpoint
-- Cloudflare Workers Secret support for future AI key management
+- Cloudflare Workers Secret support for AI key management if paid AI usage is re-enabled
 - KV-based usage and cost tracking design
 - Cost limit behavior design
 - Grafana Synthetic Monitoring

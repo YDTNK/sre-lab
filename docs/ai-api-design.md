@@ -1,6 +1,16 @@
 # AI API Design
 
-This document defines the initial AI API integration design for SRE Lab.
+This document defines the AI API integration design and historical implementation context for SRE Lab.
+
+## Current Status
+
+```text
+Stopped at Phase 16 v1 checkpoint
+```
+
+The current production path for AI Moving Assistant uses the Cloudflare Workers API with a deterministic fallback response.
+
+OpenAI API integration was previously implemented and verified, but paid AI calls are not treated as the current active production focus at the Phase 16 checkpoint.
 
 ## Purpose
 
@@ -9,10 +19,22 @@ The purpose of the AI API integration is to generate personalized moving prepara
 ## Target Service
 
 - Service name: AI Moving Assistant
-- Current status: Static MVP
-- Future status: AI-assisted MVP
+- Current status: Production Worker API with deterministic fallback response
+- Inactive / future status if resumed: AI-assisted response generation through the Worker
 
-## Proposed Architecture
+## Current / Proposed Architecture
+
+User
+↓
+Cloudflare Pages
+↓
+Cloudflare Workers API
+↓
+Deterministic fallback response
+↓
+User
+
+Inactive / future resumed path:
 
 User
 ↓
@@ -41,7 +63,7 @@ Reasons:
 
 ## API Endpoint
 
-Proposed endpoint:
+Current endpoint:
 
 POST /api/moving-assistant
 
@@ -150,9 +172,9 @@ The service must not claim:
 - Guaranteed number of boxes
 - Legal, insurance, or contract advice
 
-## Initial Success Criteria
+## Initial AI Integration Success Criteria
 
-AI API integration is successful when:
+AI API integration is successful when that path is intentionally enabled and:
 
 - User can submit moving information
 - Backend receives the request
@@ -161,9 +183,9 @@ AI API integration is successful when:
 - Errors are handled gracefully
 - API key is not exposed to the browser
 
-## API Safety Before Real AI Integration
+## Historical API Safety Before Real AI Integration
 
-Before connecting a real AI API, the Workers API must protect against invalid requests, oversized input, and unnecessary AI API calls.
+This historical design section records the safety controls that were required before connecting a real AI API. These controls remain useful for the current fallback API and for any future re-enabled AI path.
 
 Implemented safety controls:
 
@@ -200,7 +222,7 @@ Verified error cases:
 - 413 input_too_large
 - 415 unsupported_media_type
 
-Follow-up before real AI integration:
+Historical follow-up before real AI integration:
 
 - Add rate limiting
 - Add AI API timeout handling
@@ -209,9 +231,9 @@ Follow-up before real AI integration:
 - Add estimated cost tracking
 - Store AI API keys only in Cloudflare Workers Secrets
 
-## Rate Limiting Design Before Real AI Integration
+## Historical Rate Limiting Design Before Real AI Integration
 
-Rate limiting must be implemented before connecting a real AI API.
+This historical design section records the rate limiting approach required before connecting a real AI API.
 
 The purpose is to reduce abuse, prevent repeated automated POST requests, and avoid unexpected AI API cost spikes.
 
@@ -295,9 +317,9 @@ The API should validate requests in the following order:
 - Add production curl verification
 - Document results in docs/incidents.md
 
-## Usage and Cost Tracking Design Before Real AI Integration
+## Historical Usage and Cost Tracking Design Before Real AI Integration
 
-Usage and cost tracking must be designed before connecting a real AI API.
+This historical design section records the usage and cost tracking approach required before connecting a real AI API.
 
 The purpose is to understand request volume, estimate AI API cost, and prevent unexpected billing before monetization.
 
@@ -653,9 +675,11 @@ The frontend must never call OpenAI API directly.
 - Add estimated token and cost tracking
 - Verify that the API key is not exposed in frontend assets
 
-## Real AI API Integration Status
+## Real AI API Integration Historical Status
 
-Real AI API integration has been implemented for AI Moving Assistant.
+Real AI API integration was implemented and verified for AI Moving Assistant during the earlier integration phase.
+
+At the Phase 16 v1 checkpoint, the active production behavior is deterministic fallback from the Workers API. The OpenAI path is retained as historical implementation context and future resumption reference, not as the current active service focus.
 
 ### Current Provider
 
@@ -707,4 +731,3 @@ Real AI API integration has been implemented for AI Moving Assistant.
 - docs/runbook.md
 - docs/operations.md
 - docs/incidents.md
-

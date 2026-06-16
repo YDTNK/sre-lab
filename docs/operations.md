@@ -87,7 +87,7 @@ Initial Worker auto deployment was verified successfully.
 
 ## API Safety Operations
 
-The Workers API includes safety checks to reduce invalid requests and prepare for future AI API integration.
+The Workers API includes safety checks to reduce invalid requests and keep the public fallback API safe.
 
 Operational checks:
 
@@ -105,18 +105,16 @@ Safety controls:
 - Total input length limit
 - Content-Type validation
 - Standardized error response
-- Mock response preserved for valid requests
+- Deterministic fallback response preserved for valid requests
 
 Follow-up actions:
 
-- Add rate limiting before real AI API integration
-- Add usage and cost tracking
-- Add cost incident runbook
 - Review API safety behavior after each API deployment
+- Do not add new SRE Lab API features during the Phase 16 stop checkpoint
 
 ## Rate Limiting Operations
 
-Rate limiting will be introduced before real AI API integration.
+Rate limiting is part of the AI Moving Assistant safety design.
 
 ### Design Decision
 
@@ -130,7 +128,7 @@ Rate limiting will be introduced before real AI API integration.
 ### Operational Purpose
 
 - Prevent repeated automated POST requests
-- Reduce abuse before public AI API usage
+- Reduce abuse for the public API
 - Avoid unexpected AI API cost spikes
 - Keep the service safe for low-cost operation
 
@@ -146,7 +144,7 @@ Rate limiting will be introduced before real AI API integration.
 
 ### Follow-up
 
-Rate limiting must be implemented before connecting OpenAI API, Claude API, or any other paid AI API.
+If paid AI usage is intentionally re-enabled later, keep rate limiting in place before exposing that path publicly.
 
 
 ## OpenAI Secret and Model Configuration Operations
@@ -187,7 +185,7 @@ After setting the secret and model configuration:
 2. Confirm OPENAI_API_KEY is configured in Cloudflare Workers secrets.
 3. Confirm no API key exists in repository files.
 4. Confirm deploy succeeds.
-5. Confirm existing mock API behavior remains healthy until real AI integration is implemented.
+5. Confirm the existing fallback API behavior remains healthy.
 
 ### Secret Rotation
 
@@ -201,17 +199,17 @@ If the API key is suspected to be exposed:
 
 ## Cost Operations
 
-Cost operations are required because SRE Lab now calls a real AI API.
+Cost operations are retained to prevent unexpected paid usage and to support the docs-based Revenue / Cost Dashboard.
 
 The detailed cost policy is documented in docs/cost.md.
 
-### Daily Checks During Initial AI Rollout
+### Checks When Paid AI Usage Is Re-enabled
 
-- Check Cloudflare KV AI usage counters
-- Check Cloudflare KV estimated daily cost
-- Check Cloudflare KV estimated monthly cost
-- Check OpenAI Platform Usage
-- Check OpenAI credit balance
+- Check Cloudflare KV AI usage counters if the active Worker path writes them
+- Check Cloudflare KV estimated daily cost if AI usage is active
+- Check Cloudflare KV estimated monthly cost if AI usage is active
+- Check OpenAI Platform Usage when reconciling paid AI usage
+- Check OpenAI credit balance when OpenAI usage is active
 - Confirm auto recharge is off
 - Confirm Grafana API check remains healthy
 
@@ -239,9 +237,9 @@ The detailed cost policy is documented in docs/cost.md.
 - docs/runbook.md
 - docs/incidents.md
 
-## Real AI API Integration Operations
+## Inactive Real AI API Integration Operations
 
-This section defines the operational policy for the first real AI API integration.
+This section records the operational policy for the previous real AI API integration work. At the Phase 16 checkpoint, the production Worker path returns a deterministic fallback response and paid AI calls are not the active focus.
 
 ### Provider Decision
 
@@ -270,9 +268,9 @@ The API key must not be committed to GitHub or placed in frontend code.
 | AI diagnoses per IP per day | 5 |
 | Timeout | 8 seconds |
 
-### Daily Operation Checks After Implementation
+### Operation Checks If Re-enabled
 
-During the initial AI rollout, check the following daily:
+If paid AI usage is intentionally re-enabled, check the following during the rollout:
 
 - API request count
 - AI call count
@@ -313,7 +311,7 @@ Rollback options:
 
 ## Usage and Cost Tracking Operations
 
-Usage and cost tracking must be introduced before real AI API integration.
+Usage and cost tracking design is retained as an operational reference. The current Phase 16 source of record is the docs-based Revenue / Cost Dashboard.
 
 ### Design Decision
 
@@ -325,7 +323,7 @@ Usage and cost tracking must be introduced before real AI API integration.
 - Daily soft limit: 50 JPY
 - Daily hard limit: 100 JPY
 
-### Metrics to Track
+### Metrics to Track If Active
 
 API usage:
 
@@ -334,7 +332,7 @@ API usage:
 - API errors
 - Rate limited requests
 
-AI API usage after real AI integration:
+AI API usage if paid AI calls are active:
 
 - AI API calls
 - AI API successes
@@ -343,7 +341,7 @@ AI API usage after real AI integration:
 - Estimated output tokens
 - Estimated cost in JPY
 
-### Operational Checks After Implementation
+### Operational Checks If Active
 
 - Confirm API request counts are recorded
 - Confirm rate limited requests are recorded
@@ -355,9 +353,9 @@ AI API usage after real AI integration:
 
 ### Review Cadence
 
-- Daily during initial AI API rollout
-- Weekly after stable operation
-- Monthly when reviewing revenue and cost balance
+- Monthly or when an event occurs during the Phase 16 stop checkpoint
+- Daily only if paid AI usage is intentionally re-enabled
+- Weekly after stable paid-AI operation
 
 
 ## Incident Response Flow
@@ -379,9 +377,9 @@ Current expected monthly cost:
 - Cloudflare Pages: Free
 - Grafana Cloud: Free tier
 - Domain: Not used yet
-- AI API: Not used yet
+- AI API: Not active in the current production path
 
-Cost review should be performed before introducing paid services such as AI APIs, custom domains, or external monitoring tools.
+Cost review should be performed before re-enabling paid AI usage or introducing paid services such as custom domains or external monitoring tools.
 
 ## Reliability Targets
 
@@ -392,7 +390,34 @@ Initial reliability targets:
 - Primary probe location: Tokyo, JP
 - Alert pending period: 2m
 
-These targets may be updated as the project grows.\n\n## Daily Usage / Cost Snapshot\n\nDuring the initial AI rollout, create a manual usage and cost snapshot.\n\n### Checklist\n\n- Check API usage counters in Cloudflare KV\n- Check AI usage counters in Cloudflare KV\n- Check estimated token usage in Cloudflare KV\n- Check estimated daily cost in Cloudflare KV\n- Check estimated monthly cost in Cloudflare KV\n- Check OpenAI Platform usage\n- Check OpenAI credit balance\n- Confirm auto recharge is off\n- Record results in docs/usage-cost-report.md\n\n### Status Classification\n\n| Status | Meaning |\n|---|---|\n| normal | Usage and cost are within expected range |\n| warning | Usage or cost is approaching threshold |\n| action required | Limit reached, error spike, or unexpected cost increase |\n\n### Related Documents\n\n- docs/cost.md\n- docs/usage-cost-report.md\n- docs/incidents.md\n\n
+These targets may be updated if SRE Lab resumes.
+
+## Usage / Cost Snapshot
+
+During the Phase 16 stop checkpoint, update usage and cost records monthly or when an event occurs.
+
+### Checklist
+
+- Check the docs-based Revenue / Cost Dashboard in the management repository
+- Check API usage counters in Cloudflare KV if they are needed for the event being reviewed
+- Check AI usage and estimated cost counters only if paid AI usage was intentionally re-enabled
+- Check OpenAI Platform usage only when reconciling paid AI usage
+- Confirm auto recharge is off
+- Record results in docs/usage-cost-report.md or the management dashboard
+
+### Status Classification
+
+| Status | Meaning |
+|---|---|
+| normal | Usage and cost are within expected range |
+| warning | Usage or cost is approaching threshold |
+| action required | Limit reached, error spike, or unexpected cost increase |
+
+### Related Documents
+
+- docs/cost.md
+- docs/usage-cost-report.md
+- docs/incidents.md
 
 ## OpenAI Usage Recheck Policy
 
@@ -426,17 +451,17 @@ Check the following:
 - docs/usage-cost-report.md
 - docs/incidents.md
 
-## Future Dashboard Operations
+## Docs-based Dashboard Operations
 
-A future usage and cost dashboard is planned after manual usage and cost snapshots become repetitive or after additional services are added.
+The current Revenue / Cost Dashboard is docs-based in the management repository.
 
-Until then, Cloudflare KV and docs/usage-cost-report.md remain the operational source for usage and cost review.
+Application-backed Workers / KV / Analytics dashboard work is deferred until it is justified by real usage or revenue flow.
 
 ### Dashboard Design
 
 - docs/dashboard-design.md
 
-### Dashboard Should Show
+### Current / Future Dashboard Should Show
 
 - API requests
 - API success and error counts
@@ -448,7 +473,7 @@ Until then, Cloudflare KV and docs/usage-cost-report.md remain the operational s
 - Monthly cost usage ratio
 - Recent operational notes
 
-### When to Implement
+### When to Implement an Application-backed Dashboard
 
 Do not implement a dashboard too early.
 
@@ -462,7 +487,7 @@ Consider implementation when one of the following is true:
 
 ## Phase 7 Usage / Cost Monitoring Summary
 
-Phase 7 introduced usage and cost monitoring operations for AI Moving Assistant.
+Phase 7 introduced usage and cost monitoring operations for AI Moving Assistant. This is now historical context for the Phase 16 checkpoint.
 
 ### Completed Items
 
@@ -484,34 +509,15 @@ Phase 7 introduced usage and cost monitoring operations for AI Moving Assistant.
 | Manual reporting | docs/usage-cost-report.md |
 | Dashboard design | docs/dashboard-design.md |
 
-### Next Phase
+### Current Phase
 
-The next phase is Phase 8: Second Service.
+SRE Lab is stopped at the Phase 16 v1 checkpoint.
 
-The recommended second service is AWS Cost Simulator because it aligns with AWS, Terraform, SRE cost awareness, and portfolio storytelling.
-
-## Phase 8 Second Service Operations Plan
-
-Phase 8 starts the second service in SRE Lab.
-
-The selected candidate is AWS Cost Simulator.
-
-Initial operation policy:
-
-- Start with deterministic calculation
-- Do not introduce AI API dependency in the MVP
-- Reuse the API safety baseline from AI Moving Assistant
-- Add synthetic monitoring after endpoint implementation
-- Add operational records for each milestone
-- Keep the service small enough to operate continuously
-
-Related document:
-
-- docs/aws-cost-simulator.md
+Do not start Phase 17 or a new service until there is a separate decision and a real revenue route exists.
 
 ## Dedicated Service Page Operations Policy
 
-As SRE Lab adds more services, each service should have a dedicated frontend page and API endpoint.
+If SRE Lab later adds more services, each service should have a dedicated frontend page and API endpoint.
 
 The top page should remain a service directory and portfolio entry point.
 
@@ -523,98 +529,25 @@ Operational benefits:
 - Cleaner portfolio storytelling
 - Lower risk of confusing unrelated user flows
 
-Initial dedicated pages:
+Current active pages:
 
 | Service | Page | API Endpoint |
 |---|---|---|
 | AI Moving Assistant | moving-assistant.html | POST /api/moving-assistant |
-| AWS Cost Simulator | aws-cost-simulator.html | POST /api/aws-cost-simulator |
 
 Related document:
 
 - docs/frontend-navigation.md
 
-## AWS Cost Simulator Operations
+## Historical Service Note: AWS Cost Simulator
 
-AWS Cost Simulator is the second service in SRE Lab.
+AWS Cost Simulator was previously implemented as the second service, including a page and `POST /api/aws-cost-simulator` endpoint.
 
-### Production URL
+It has been removed from the active service portfolio and should not be operated as a current production service.
 
-Frontend page:
+Current policy:
 
-https://sre-lab.pages.dev/aws-cost-simulator.html
-
-API endpoint:
-
-POST https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator
-
-### Daily Check
-
-Run the following production API check:
-
-curl -i -X POST \
-  https://sre-lab-api.daisan-tanaka.workers.dev/api/aws-cost-simulator \
-  -H "Content-Type: application/json" \
-  -d '{
-    "region": "ap-northeast-1",
-    "ec2InstanceType": "t3.micro",
-    "ec2InstanceCount": 1,
-    "ec2HoursPerMonth": 730,
-    "ebsGb": 30,
-    "s3Gb": 10,
-    "dataTransferGb": 10
-  }'
-
-Expected result:
-
-HTTP/2 200
-mode: deterministic
-
-### Error Validation Checks
-
-Invalid region:
-
-HTTP/2 400
-code: invalid_input
-
-Invalid EC2 instance type:
-
-HTTP/2 400
-code: invalid_input
-
-Out-of-range numeric input:
-
-HTTP/2 400
-code: invalid_input
-
-### Monitoring
-
-Grafana Synthetic Monitoring should include a dedicated POST check for AWS Cost Simulator.
-
-Recommended check name:
-
-sre-lab-aws-cost-simulator-api
-
-Recommended alert rule name:
-
-sre-lab-aws-cost-simulator-api-down
-
-Recommended probe:
-
-Tokyo, JP
-
-Recommended frequency:
-
-60s
-
-Expected status:
-
-2xx
-
-### Runbook
-
-Use the main runbook for first response:
-
-docs/runbook.md
-
-If AWS Cost Simulator API is down but Moving Assistant is healthy, investigate AWS Cost Simulator route handling, validation logic, and deterministic calculation changes first.
+- Do not re-add `aws-cost-simulator.html` to the active frontend
+- Do not monitor `POST /api/aws-cost-simulator` as an active endpoint
+- Treat AWS Cost Simulator records in docs/incidents.md as historical operational context
+- Keep the active learning focus on Kubernetes / CKA preparation

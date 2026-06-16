@@ -1,6 +1,6 @@
 # Usage / Cost Dashboard Design
 
-This document defines the future dashboard design for SRE Lab usage, cost, and revenue monitoring.
+This document defines the current docs-based dashboard policy and future implementation-backed dashboard design for SRE Lab usage, cost, and revenue monitoring.
 
 ## Current Status
 
@@ -19,7 +19,9 @@ projects/sre-lab/revenue-cost-dashboard.md
 
 ## Purpose
 
-The purpose of the future dashboard is to make SRE Lab usage, AI API usage, estimated cost, revenue, gross profit, and cost-control behavior visible without manually checking Cloudflare KV every time.
+The current docs-based dashboard keeps revenue, cost, and gross profit visible during the Phase 16 stop checkpoint.
+
+The purpose of a future implementation-backed dashboard would be to make SRE Lab usage, AI API usage, estimated cost, revenue, gross profit, and cost-control behavior visible without manually checking Cloudflare KV every time.
 
 The dashboard should support future multi-service operations only when SRE Lab resumes beyond the current checkpoint.
 

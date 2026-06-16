@@ -6,17 +6,28 @@ The current target service is AI Moving Assistant.
 
 ## Purpose
 
-The purpose of this report is to track API usage, AI API usage, estimated cost, and cost-control behavior during the early AI rollout phase.
+The purpose of this report is to track API usage, estimated cost, and cost-control behavior when manual snapshots are needed.
+
+Current Phase 16 status:
+
+```text
+Revenue: 0 JPY
+Payment flow: not implemented
+Affiliate flow: not implemented
+PDF / template sale: not implemented
+Free sample CTA: implemented
+Phase 17: not started
+```
 
 ## Current Tracking Source
 
 | Metric Type | Source |
 |---|---|
 | API usage | Cloudflare KV |
-| AI usage | Cloudflare KV |
-| Estimated token usage | Cloudflare KV |
-| Estimated cost | Cloudflare KV |
-| Actual OpenAI usage | OpenAI Platform |
+| AI usage | Cloudflare KV, only if AI calls are intentionally enabled |
+| Estimated token usage | Cloudflare KV, only if AI calls are intentionally enabled |
+| Estimated cost | Cloudflare KV or docs-based dashboard |
+| Actual OpenAI usage | OpenAI Platform, only when reconciling paid AI usage |
 
 ## Snapshot Template
 
@@ -60,6 +71,8 @@ Assessment:
 ## Snapshot Records
 
 ### 2026-06-14
+
+Historical snapshot from the earlier real AI API verification period. It is retained for audit context and does not describe the current Phase 16 production path.
 
 Service: AI Moving Assistant
 
@@ -115,4 +128,3 @@ Possible causes:
 - Very small spend rounded to $0.00
 
 The first snapshot on 2026-06-14 recorded this mismatch and should be rechecked later.
-

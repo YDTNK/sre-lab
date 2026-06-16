@@ -149,7 +149,7 @@ SRE Labは、Cloudflare PagesとCloudflare Workersを中心に構成していま
 
 ## API安全化
 
-AI API連携や公開API運用に備えて、Workers API側で以下の安全対策を実装しています。
+公開API運用と、将来AI APIを再有効化する場合に備えて、Workers API側で以下の安全対策を実装しています。
 
 - Method validation
 - Path validation
@@ -192,7 +192,7 @@ Workers APIのデプロイ:
 | docs/ai-api-design.md | AI API連携設計 |
 | docs/cost.md | AI利用量とコスト管理 |
 | docs/usage-cost-report.md | 利用量・コストスナップショット記録 |
-| docs/dashboard-design.md | 将来の利用量・コストDashboard設計 |
+| docs/dashboard-design.md | Docs-based Revenue / Cost Dashboard運用と将来の実装方針 |
 
 ## 実装・運用で工夫した点
 
@@ -205,7 +205,7 @@ Workers APIのデプロイ:
 - Grafana Synthetic Monitoringで外形監視を設定した
 - AlertからRunbookを参照できるようにした
 - Incident Log / Operational Recordsを残した
-- AI APIの障害時にfallback responseを返すようにした
+- 現行のAI Moving Assistant APIでfallback responseを返すようにした
 - Cost limit behaviorを実装し、課金事故を防ぐ設計にした
 - 収益化検証用にPDFチェックリストCTAを追加した
 - 無料チェックリストサンプル導線を追加した

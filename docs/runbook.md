@@ -211,12 +211,12 @@ Expected response body:
 
 - Record rate limit related findings in docs/incidents.md
 - Review whether the client behavior indicates abuse
-- Review whether future AI API cost controls need stricter limits
-- Consider adding usage and cost tracking before real AI API integration
+- Review whether AI API cost controls need stricter limits before paid AI usage is re-enabled
+- Consider usage and cost tracking requirements before paid AI usage is re-enabled
 
 ## Cost Incident Runbook
 
-Use this section when estimated AI API usage or cost exceeds expected thresholds.
+Use this section if paid AI usage is intentionally re-enabled and estimated AI API usage or cost exceeds expected thresholds.
 
 ### Initial Thresholds
 
@@ -230,7 +230,7 @@ Use this section when estimated AI API usage or cost exceeds expected thresholds
 
 ### Expected Stop Behavior
 
-When the monthly stop threshold is reached, the Worker should not call the real AI API.
+When the monthly stop threshold is reached in an AI-enabled path, the Worker should not call the real AI API.
 
 Expected response:
 
@@ -252,7 +252,7 @@ Expected status:
 3. Confirm whether traffic increased naturally or appears abusive.
 4. Check rate limited request count.
 5. Check recent deployments.
-6. Confirm whether AI API calls are being blocked after the stop threshold.
+6. Confirm whether AI API calls are being blocked after the stop threshold if paid AI usage is enabled.
 7. Review whether rate limits should be lowered.
 8. Record findings in docs/incidents.md.
 
@@ -353,4 +353,3 @@ Use this section when AI usage cost approaches or exceeds the configured thresho
 4. ai_limit_reached returns 429 when AI daily limit is reached.
 5. Estimated cost counters are recorded.
 6. docs/incidents.md is updated.
-
