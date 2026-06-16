@@ -14,6 +14,7 @@ jobs:
 
       - name: Check required files
         run: |
+          test -f AGENTS.md
           test -f README.md
           test -f docs/roadmap.md
           test -f docs/architecture.md
@@ -23,6 +24,17 @@ jobs:
           test -f docs/services.md
           test -f docs/moving-assistant.md
           test -f docs/ai-api-design.md
+          test -f docs/automation-first-working-policy.md
+          test -f docs/ai-organization-operating-model.md
+          test -f docs/revenue-release-before-cka.md
+          test -f docs/service-state-checklist.md
+          test -f .github/ISSUE_TEMPLATE/feature_request.md
+          test -f .github/ISSUE_TEMPLATE/ops_task.md
+          test -f .github/ISSUE_TEMPLATE/bug.md
+          test -f .github/ISSUE_TEMPLATE/revenue.md
+          test -f .github/pull_request_template.md
+          test -f .github/workflows/smoke-test.yml
+          test -f scripts/smoke-test.sh
           test -f apps/landing/index.html
           test -f apps/landing/styles.css
           test -f apps/api/src/index.js
