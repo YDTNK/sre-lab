@@ -11,16 +11,17 @@ Before answering or changing anything in this repository, read the following fil
 3. `docs/automation-first-working-policy.md`
 4. `docs/ai-organization-operating-model.md`
 5. `docs/sre-lab-workflow.md`
-6. `docs/codex-workflow.md`
-7. `docs/completion-report-template.md`
-8. `docs/deploy-failure-investigation.md`
-9. `docs/grafana-issue-ai-investigation.md`
-10. `docs/incident-record-rules.md`
-11. `docs/revenue-release-before-cka.md`
-12. `docs/service-state-checklist.md`
-13. `docs/services.md`
-14. `docs/runbook.md`
-15. Latest relevant records under `docs/incidents/`
+6. `docs/ai-assisted-85-90-workflow.md`
+7. `docs/codex-workflow.md`
+8. `docs/completion-report-template.md`
+9. `docs/deploy-failure-investigation.md`
+10. `docs/grafana-issue-ai-investigation.md`
+11. `docs/incident-record-rules.md`
+12. `docs/revenue-release-before-cka.md`
+13. `docs/service-state-checklist.md`
+14. `docs/services.md`
+15. `docs/runbook.md`
+16. Latest relevant records under `docs/incidents/`
 
 ## Core Working Policy
 
@@ -53,6 +54,7 @@ The target operating model is documented in:
 ```text
 docs/ai-organization-operating-model.md
 docs/sre-lab-workflow.md
+docs/ai-assisted-85-90-workflow.md
 docs/codex-workflow.md
 docs/completion-report-template.md
 docs/deploy-failure-investigation.md
@@ -60,7 +62,14 @@ docs/grafana-issue-ai-investigation.md
 docs/incident-record-rules.md
 ```
 
-Target balance:
+Public repository practical balance:
+
+```text
+Manual work: 10-15%
+Automated / AI-assisted work: 85-90%
+```
+
+Target balance if private/internal Copilot automations become available:
 
 ```text
 Manual work: 5-10%
