@@ -53,6 +53,10 @@ require_grep 'GRAFANA_ALERT_API_PATH = "/api/grafana-alert"' apps/api/src/index.
 require_grep 'handleMovingAssistantMock' apps/api/src/index.js
 require_grep 'handleGrafanaAlertWebhook' apps/api/src/index.js
 require_grep 'GRAFANA_WEBHOOK_SECRET_HEADER' apps/api/src/index.js
+require_grep 'GRAFANA_DEDUPE_LABEL' apps/api/src/index.js
+require_grep 'buildGrafanaDedupeKey' apps/api/src/index.js
+require_grep 'findOpenGrafanaIssue' apps/api/src/index.js
+require_grep 'commentOnGitHubIssue' apps/api/src/index.js
 require_grep 'createGitHubIssue' apps/api/src/index.js
 require_grep 'Content-Type must be application/json' apps/api/src/index.js
 require_grep 'Invalid webhook secret' apps/api/src/index.js
