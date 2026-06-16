@@ -175,6 +175,18 @@ Human performs most steps.
 Human decides → Human edits → Human commits → Human deploys → Human checks
 ```
 
+What is possible:
+
+- Basic manual project work
+- Manual local edits
+- Manual Git commits and pushes
+- Manual deploy and verification
+
+SRE Lab status:
+
+- Superseded for normal repository work.
+- Should only be used for external UI operations, credentials, MFA, and emergency recovery.
+
 ### Level 2: AI-assisted repository work
 
 AI helps with code/docs, but human still merges and verifies.
@@ -182,6 +194,18 @@ AI helps with code/docs, but human still merges and verifies.
 ```text
 Human decides → AI drafts/edits → Human reviews → Human merges
 ```
+
+What is possible:
+
+- AI drafts code or documentation
+- Human copies changes locally
+- Human runs validation
+- Human creates or merges PRs
+
+SRE Lab status:
+
+- Superseded for most safe GitHub work.
+- Still acceptable when connector access is unavailable or when the user explicitly wants local control.
 
 ### Level 3: Automation-first GitHub work
 
@@ -191,7 +215,22 @@ AI completes safe GitHub work through merge and verification.
 Human decides → AI creates branch/PR → AI checks → AI merges → AI verifies main
 ```
 
-SRE Lab has reached this level for safe documentation and policy changes.
+What is possible:
+
+- Repository inspection
+- Branch creation
+- File creation and updates
+- Pull request creation
+- Pull request review
+- Safe PR merge
+- Main branch verification
+- Documentation, policy, runbook, and small scoped changes
+
+SRE Lab status:
+
+- Implemented and operational.
+- Used for policy docs, setup templates, CI guardrails, Grafana documentation, and safe repository updates.
+- Production-impacting application code still requires explicit user approval before merge.
 
 ### Level 4: Issue-driven AI organization
 
@@ -211,9 +250,46 @@ ChatGPT reviews and merges safe PRs
 Completion report
 ```
 
+What is possible:
+
+- Non-trivial tasks are tracked as GitHub Issues
+- Issue templates define scope, risk, validation, and acceptance criteria
+- PRs can link back to Issues
+- ChatGPT can act as PM and GitHub operator
+- Codex can be used as implementation agent for scoped work
+- GitHub Actions can validate changes before merge
+
+SRE Lab status:
+
+- Partially implemented.
+- Issue templates and PR template exist.
+- GitHub Issues are being used as the work queue for operational tasks.
+- ChatGPT can create Issues, update files, open PRs, merge safe work, and close completed Issues.
+- Remaining gap: not every non-trivial task starts from an Issue yet.
+- Remaining gap: Codex is not yet consistently triggered from Issues as the default implementation path.
+- Remaining gap: validation is not strong enough to make most code PRs safely self-verifying.
+
+Current practical capability:
+
+```text
+User asks for work
+↓
+ChatGPT decides whether it should become an Issue
+↓
+ChatGPT creates or updates repository state
+↓
+PR is created when appropriate
+↓
+Human approves risky changes
+↓
+ChatGPT merges safe/approved changes
+↓
+Completion report
+```
+
 ### Level 5: Monitoring-driven remediation
 
-Alerts create Issues automatically.
+Alerts create Issues automatically and start the operations flow.
 
 ```text
 Grafana alert fires
@@ -231,7 +307,70 @@ Safe merge or human approval
 Incident record is created
 ```
 
-This is a future target, not the current default.
+What is possible:
+
+- Grafana can notify a Cloudflare Worker webhook
+- The Worker can validate the Grafana webhook secret
+- The Worker can create GitHub Issues from Grafana alert payloads
+- GitHub Issues can become incident investigation entry points
+- AI can inspect the Issue and repository state after the alert is created
+
+SRE Lab status:
+
+- Partially implemented.
+- `POST /api/grafana-alert` is implemented in the Cloudflare Worker.
+- Grafana Contact point `sre-lab-github-issue-webhook` is configured.
+- Notification policy routes are configured for active service labels:
+  - `service_name = sre-lab-api`
+  - `service_name = sre-lab`
+- Grafana test alert successfully created GitHub Issue `#20`.
+- Test Issue `#20` was closed as completed after verification.
+
+Remaining gap:
+
+- AI investigation is not triggered automatically when a Grafana-created Issue appears.
+- PR or runbook updates after an alert still require a user prompt or manual AI invocation.
+- Incident record creation is not yet automatic.
+- Deduplication is not implemented; repeated Grafana notifications may create repeated Issues.
+- Cloudflare Worker deploy is not fully automated from GitHub Actions yet.
+
+Current practical capability:
+
+```text
+Grafana alert / test notification
+↓
+Cloudflare Worker validates header
+↓
+GitHub Issue is created automatically
+↓
+User or ChatGPT reviews Issue
+↓
+ChatGPT can investigate and create PR/runbook updates when asked
+```
+
+## Current Level Summary
+
+SRE Lab is currently at:
+
+```text
+Level 3: Implemented and operational
+Level 4: Partially implemented
+Level 5: Partially implemented, alert-to-Issue entry point operational
+```
+
+Estimated current automation ratio:
+
+```text
+Manual work: 20-30%
+Automated / AI-assisted work: 70-80%
+```
+
+Target remaining ratio:
+
+```text
+Manual work: 5-10%
+Automated / AI-assisted work: 90-95%
+```
 
 ## Required Next Steps To Reach Manual 5-10%
 
@@ -243,10 +382,15 @@ Needed files:
 
 ```text
 .github/ISSUE_TEMPLATE/feature_request.md
-.github/ISSUE_TEMPLATE/bug_report.md
+.github/ISSUE_TEMPLATE/bug.md
 .github/ISSUE_TEMPLATE/ops_task.md
-.github/ISSUE_TEMPLATE/revenue_release_task.md
+.github/ISSUE_TEMPLATE/revenue.md
 ```
+
+Status:
+
+- Implemented.
+- Remaining improvement: make Issue-first execution the default for all non-trivial code, ops, and revenue tasks.
 
 ### 2. Pull Request template
 
@@ -266,6 +410,11 @@ Required sections:
 - Rollback
 - Checklist
 
+Status:
+
+- Implemented.
+- Remaining improvement: keep PRs consistently linked to Issues.
+
 ### 3. Stronger CI guardrails
 
 Add checks for:
@@ -275,6 +424,12 @@ Add checks for:
 - API syntax
 - Basic frontend availability assumptions
 - Smoke test scripts where practical
+
+Status:
+
+- Partially implemented.
+- Required file guardrails and smoke test script exist.
+- Remaining improvement: make API syntax checks and post-deploy smoke tests run automatically on PRs and deploys.
 
 ### 4. Post-deploy smoke tests
 
@@ -286,15 +441,25 @@ POST /api/moving-assistant -> 200
 AWS Cost Simulator remains removed from active navigation and monitoring docs
 ```
 
+Status:
+
+- Partially implemented.
+- Smoke test script exists.
+- Remaining improvement: run post-deploy smoke automatically after Cloudflare deployment.
+
 ### 5. Alert-to-Issue flow
 
-Future target:
+Target:
 
 ```text
-Grafana Alert → Webhook / automation → GitHub Issue
+Grafana Alert → Cloudflare Worker webhook → GitHub Issue
 ```
 
-This should not be built before the first revenue release unless it is very small and does not delay CKA.
+Status:
+
+- Implemented for the first hop.
+- Grafana test alert created GitHub Issue `#20` successfully.
+- Remaining improvement: automatically trigger AI investigation, runbook update, and incident record creation from Grafana-created Issues.
 
 ## Merge Policy
 
@@ -328,17 +493,23 @@ SRE Lab currently has:
 - Revenue-before-CKA policy
 - Service-state checklist
 - Runbooks and incident records
-- GitHub Actions for CI / Worker deploy
+- GitHub Actions for CI / Worker deploy foundations
 - Cloudflare Pages / Workers
 - Grafana monitoring and alerting
+- Grafana alert-to-GitHub-Issue webhook flow
+- Issue templates
+- PR template
+- Smoke test script and workflow foundation
 
 The main missing pieces for 90-95% automation are:
 
-- Issue templates
-- PR template
-- stronger CI guardrails
-- post-deploy smoke tests
-- optional future Grafana alert-to-Issue automation
+- Issue-first execution as the consistent default
+- Codex execution from Issues as the normal implementation path
+- stronger CI guardrails for code changes
+- automated Cloudflare Worker deploy from GitHub Actions
+- automated post-deploy smoke tests
+- automatic AI investigation from Grafana-created Issues
+- automatic incident record creation after alert triage
 
 ## Practical Rule
 
