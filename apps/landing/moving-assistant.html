@@ -71,7 +71,7 @@
         </p>
       </div>
 
-      <div class="calculator-layout">
+      <div class="calculator-layout calculator-layout--visual">
         <div class="card">
           <p class="status">Step 1</p>
           <h3>入力する内容</h3>
@@ -128,6 +128,14 @@
         <aside class="result-panel card" aria-live="polite">
           <span class="section__eyebrow">Result</span>
           <h2>準備ボード</h2>
+          <div class="output-preview-visual" aria-hidden="true">
+            <div class="output-preview-visual__sheet">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="output-preview-visual__kit">
+              <span>箱</span><span>袋</span><span>手続き</span>
+            </div>
+          </div>
           <div id="result" class="result-card__body">
             入力後、「準備ボードを作る」を押してください。正式な見積もりではなく、準備確認の目安を表示します。
           </div>
@@ -178,23 +186,27 @@
       </div>
 
       <div class="prep-grid">
-        <article class="prep-card">
+        <article class="prep-card prep-card--visual">
           <span class="prep-card__label">ダンボール</span>
+          <div class="prep-card__mini prep-card__mini--boxes" aria-hidden="true"><span></span><span></span><span></span></div>
           <h3>箱数の目安</h3>
           <p>衣類・本・小物・家電の量から、箱数を考えるための材料を作ります。</p>
         </article>
-        <article class="prep-card">
+        <article class="prep-card prep-card--visual">
           <span class="prep-card__label">梱包資材</span>
+          <div class="prep-card__mini prep-card__mini--kit" aria-hidden="true"><span></span><span></span><span></span></div>
           <h3>買い忘れ防止</h3>
           <p>テープ、緩衝材、圧縮袋、当日バッグなどを整理します。</p>
         </article>
-        <article class="prep-card">
+        <article class="prep-card prep-card--visual">
           <span class="prep-card__label">手続き</span>
+          <div class="prep-card__mini prep-card__mini--paper" aria-hidden="true"><span></span><span></span><span></span></div>
           <h3>住所・ライフライン</h3>
           <p>ライフライン、住所変更、郵便転送などを忘れにくくします。</p>
         </article>
-        <article class="prep-card">
+        <article class="prep-card prep-card--visual">
           <span class="prep-card__label">不安</span>
+          <div class="prep-card__mini prep-card__mini--check" aria-hidden="true"><span></span><span></span><span></span></div>
           <h3>よくある不安</h3>
           <p>料金・荷物量・当日準備の不安を、確認項目として分解します。</p>
         </article>
