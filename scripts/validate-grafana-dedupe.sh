@@ -3,19 +3,23 @@ set -euo pipefail
 
 WORKER_URL="${WORKER_URL:-https://sre-lab-api.daisan-tanaka.workers.dev/api/grafana-alert}"
 SECRET="${GRAFANA_WEBHOOK_SECRET:-}"
+RUN_ID="${GITHUB_RUN_ID:-local}"
+RUN_ATTEMPT="${GITHUB_RUN_ATTEMPT:-1}"
+ALERT_NAME="github-actions-dedupe-validation-${RUN_ID}-${RUN_ATTEMPT}"
 
 if [ -z "$SECRET" ]; then
   echo "GRAFANA_WEBHOOK_SECRET is required" >&2
   exit 1
 fi
 
-payload='{
+payload=$(cat <<JSON
+{
   "receiver": "github-actions-dedupe-validation",
   "status": "firing",
-  "groupKey": "github-actions-dedupe-validation",
-  "externalURL": "https://github.com/YDTNK/sre-lab/actions",
+  "groupKey": "$ALERT_NAME",
+  "externalURL": "https://github.com/YDTNK/sre-lab/actions/runs/$RUN_ID",
   "commonLabels": {
-    "alertname": "github-actions-dedupe-validation",
+    "alertname": "$ALERT_NAME",
     "service_name": "sre-lab-api",
     "severity": "test"
   },
@@ -26,7 +30,7 @@ payload='{
     {
       "status": "firing",
       "labels": {
-        "alertname": "github-actions-dedupe-validation",
+        "alertname": "$ALERT_NAME",
         "service_name": "sre-lab-api",
         "severity": "test"
       },
@@ -34,10 +38,12 @@ payload='{
         "summary": "GitHub Actions dedupe validation test"
       },
       "startsAt": "2026-06-16T00:00:00Z",
-      "generatorURL": "https://github.com/YDTNK/sre-lab/actions"
+      "generatorURL": "https://github.com/YDTNK/sre-lab/actions/runs/$RUN_ID"
     }
   ]
-}'
+}
+JSON
+)
 
 first_response_file="$(mktemp)"
 second_response_file="$(mktemp)"
