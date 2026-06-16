@@ -30,6 +30,41 @@ Manual work: 5-10%
 Automated / AI-assisted work: 90-95%
 ```
 
+## Issue-First Rule
+
+Non-trivial SRE Lab work should be Issue-first by default.
+
+```text
+Non-trivial work
+↓
+GitHub Issue
+↓
+Branch / PR / validation
+↓
+Completion report
+```
+
+This applies to:
+
+- application code changes
+- operations workflow changes
+- CI / GitHub Actions changes
+- Cloudflare deploy or Worker behavior changes
+- Grafana monitoring or alerting changes
+- revenue release tasks
+- service-state changes
+- incident, runbook, or remediation work
+- multi-step documentation changes
+- work that should be traceable later
+
+A new Issue is not required for:
+
+- answering a question without repository changes
+- very small typo fixes
+- small clarification edits inside an already-related PR
+- emergency mitigation where creating an Issue would delay response
+- work already covered by an existing open Issue
+
 ## Primary Human-Initiated Workflow
 
 Use this workflow when the user says:
@@ -71,13 +106,11 @@ Human gives direction
 ↓
 ChatGPT reads required context and repository state
 ↓
-ChatGPT decides whether the work should become an Issue
-↓
-ChatGPT creates an Issue for non-trivial work when useful
+ChatGPT creates or reuses a GitHub Issue for non-trivial work
 ↓
 ChatGPT creates a branch and updates files for safe scoped work
 ↓
-ChatGPT opens a PR
+ChatGPT opens a PR linked to the Issue when applicable
 ↓
 GitHub Actions validates available checks
 ↓
@@ -187,9 +220,8 @@ Each completed workflow should report:
 
 To move from the current 70-80% automation range toward 90-95%, prioritize:
 
-1. Make Issue-first execution the default for all non-trivial tasks.
-2. Use Codex consistently from Issues for implementation work.
-3. Strengthen CI so code PRs are more self-verifying.
-4. Verify Cloudflare Worker deploy workflow with real GitHub Actions runs.
-5. Add deduplication for Grafana-created Issues.
-6. Move from Grafana-created Issue to AI investigation and incident/runbook updates.
+1. Use Codex consistently from Issues for implementation work.
+2. Strengthen CI so code PRs are more self-verifying.
+3. Verify Cloudflare Worker deploy workflow with real GitHub Actions runs.
+4. Add deduplication for Grafana-created Issues.
+5. Move from Grafana-created Issue to AI investigation and incident/runbook updates.

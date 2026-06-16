@@ -30,6 +30,37 @@ This includes, when technically available:
 - Documentation updates
 - Runbook and policy updates
 
+## Issue-First Rule
+
+Non-trivial work should be Issue-first by default.
+
+```text
+Non-trivial work → GitHub Issue → branch/PR/workflow → validation → completion report
+```
+
+Create or reuse a GitHub Issue before making repository changes for:
+
+- application code changes
+- operations workflow changes
+- CI / GitHub Actions changes
+- Cloudflare deploy or Worker behavior changes
+- Grafana monitoring or alerting changes
+- revenue release tasks
+- service-state changes
+- incident, runbook, or remediation work
+- multi-step documentation changes
+- any task that should be traceable later
+
+A new Issue is not required for:
+
+- answering a question without repository changes
+- very small typo fixes
+- small clarification edits inside an already-related PR
+- emergency mitigation where creating an Issue would delay response
+- work already covered by an existing open Issue
+
+If an existing Issue covers the work, link the PR to that Issue instead of creating a duplicate.
+
 ## Expected Assistant Behavior
 
 When the user asks for a project change, the assistant should not stop at instructions if the connected tools can complete the work.
@@ -40,6 +71,8 @@ Preferred flow:
 Understand requested change
 ↓
 Inspect relevant repository state
+↓
+Create or reuse GitHub Issue for non-trivial work
 ↓
 Create/update files on a branch
 ↓
@@ -119,3 +152,11 @@ Can this be safely done by the connected tools instead of asking the user to do 
 ```
 
 If yes, the assistant should do it.
+
+For non-trivial SRE Lab work, the assistant should also ask:
+
+```text
+Is this already covered by an existing Issue?
+```
+
+If not, create one before changing the repository.
