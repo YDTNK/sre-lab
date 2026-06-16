@@ -22,9 +22,9 @@
   </header>
 
   <main class="container">
-    <section class="hero">
-      <div class="hero__inner">
-        <div class="hero__content">
+    <section class="hero hero--layout-lock">
+      <div class="hero__inner hero__inner--single">
+        <div class="hero__content hero__content--center">
           <p class="eyebrow">Moving Prep Board</p>
           <h1>見積もり前に、引越し準備を整理</h1>
           <p class="hero-subtitle">
@@ -46,70 +46,56 @@
             <span>正式見積もりではありません</span>
           </div>
         </div>
-
-        <div class="hero__visual hero-illustration-card" aria-label="引越し準備ボードの利用イメージ">
-          <img
-            class="hero-illustration"
-            src="assets/moving-prep-hero.svg"
-            alt="ダンボールとチェックリストを見ながら引越し準備を整理している人物のイラスト"
-            loading="eager"
-          />
-        </div>
       </div>
     </section>
 
-    <section class="journey-strip" aria-label="引越し準備ボードの流れ">
+    <section class="journey-strip journey-strip--primary" aria-label="引越し準備ボードの流れ">
       <div class="journey-item">
         <span>01</span>
-        <strong>状況を選ぶ</strong>
-        <p>単身、初めて、荷物少なめ、手続き不安などを確認します。</p>
+        <strong>荷物を入力</strong>
+        <p>家具・衣類・家電・本や小物を、分かる範囲で入力します。</p>
       </div>
       <div class="journey-item">
         <span>02</span>
-        <strong>荷物量を入力</strong>
-        <p>家具・衣類・家電・本や小物を分かる範囲で入力します。</p>
+        <strong>準備項目を整理</strong>
+        <p>入力内容をもとに、資材・手続き・注意点を整理します。</p>
       </div>
       <div class="journey-item">
         <span>03</span>
-        <strong>準備ボードで確認</strong>
-        <p>必要資材、手続き、前日・当日の準備を見直します。</p>
+        <strong>チェックリスト完成</strong>
+        <p>見積もり前のメモや、荷造り前の確認に使えます。</p>
       </div>
     </section>
 
     <section class="section" id="tools">
       <div class="section__header">
-        <span class="section__eyebrow">Current Tool</span>
-        <h2 class="section__title">見積もり前の準備整理ツール</h2>
+        <span class="section__eyebrow">Output</span>
+        <h2 class="section__title">このツールで得られるもの</h2>
         <p class="section__lead">
-          引越し業者へ連絡する前に、荷物量・必要資材・準備チェックリストを整理できます。
+          料金保証や業者比較ではなく、引越し前に自分の状況を説明しやすくするための準備リストを作ります。
         </p>
       </div>
 
-      <div class="tool-grid tool-grid--single">
-        <article class="tool-card tool-card--featured">
-          <div>
-            <p class="status">Free Tool</p>
-            <h3>引越し準備ボード</h3>
-            <p>
-              家具、衣類、家電、本・小物、引越し予定日などを入力すると、見積もり前に把握しておきたい準備サマリー、必要資材、チェックリスト、注意点を整理します。
-            </p>
-            <div class="tool-card__tags">
-              <span class="tag">荷物量整理</span>
-              <span class="tag">資材チェック</span>
-              <span class="tag">登録不要</span>
-              <span class="tag">サンプル無料</span>
-            </div>
-            <a class="tool-card__link" href="moving-assistant.html#moving-form">準備ボードを作る →</a>
-          </div>
-          <div class="mini-dashboard" aria-label="準備ボードのサンプル">
-            <div class="mini-dashboard__line"></div>
-            <div class="mini-dashboard__line mini-dashboard__line--short"></div>
-            <div class="mini-dashboard__tiles">
-              <span>資材リスト</span>
-              <span>手続き</span>
-              <span>当日準備</span>
-            </div>
-          </div>
+      <div class="prep-grid prep-grid--outputs">
+        <article class="prep-card">
+          <span class="prep-card__label">荷物量</span>
+          <h3>持ち物の整理</h3>
+          <p>家具、衣類、家電、本や小物をまとめ、見積もり前の説明材料にします。</p>
+        </article>
+        <article class="prep-card">
+          <span class="prep-card__label">資材</span>
+          <h3>必要資材の目安</h3>
+          <p>ダンボール、袋、テープ、緩衝材など、準備すべき物を確認します。</p>
+        </article>
+        <article class="prep-card">
+          <span class="prep-card__label">手続き</span>
+          <h3>抜け漏れチェック</h3>
+          <p>電気・ガス・水道・ネット・住所変更などを見直します。</p>
+        </article>
+        <article class="prep-card">
+          <span class="prep-card__label">時系列</span>
+          <h3>準備タイムライン</h3>
+          <p>1ヶ月前、2週間前、前日、当日、引越し後の流れで確認できます。</p>
         </article>
       </div>
     </section>
@@ -152,35 +138,30 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section future-template-section">
       <div class="section__header">
-        <span class="section__eyebrow">Before Quote Request</span>
-        <h2 class="section__title">見積もり前に整理したいこと</h2>
+        <span class="section__eyebrow">Future Template</span>
+        <h2 class="section__title">今後追加予定のテンプレート</h2>
         <p class="section__lead">
-          料金保証や業者比較ではなく、相談前に自分の状況を説明しやすくするための準備です。
+          現時点では無料サンプルのみです。将来的に、状況別のPDFテンプレート拡充を検討しています。
         </p>
       </div>
 
-      <div class="prep-grid">
-        <article class="prep-card">
-          <span class="prep-card__label">ダンボール</span>
-          <h3>箱数の目安</h3>
-          <p>衣類・本・小物の量から、箱数の考え方を整理します。</p>
+      <div class="template-feature-grid">
+        <article class="template-feature-card">
+          <span>単身版</span>
+          <h3>一人暮らし向け</h3>
+          <p>荷物が少ない場合の資材・手続き・前日準備を整理する想定です。</p>
         </article>
-        <article class="prep-card">
-          <span class="prep-card__label">梱包資材</span>
-          <h3>買い忘れ防止</h3>
-          <p>テープ、緩衝材、当日バッグなど、買い忘れやすい物を確認します。</p>
+        <article class="template-feature-card">
+          <span>転勤版</span>
+          <h3>期限が決まっている方向け</h3>
+          <p>退去、移動、勤務開始前後の準備を時系列で整理する想定です。</p>
         </article>
-        <article class="prep-card">
-          <span class="prep-card__label">手続き</span>
-          <h3>ライフライン確認</h3>
-          <p>電気・ガス・水道・ネットなど、早めに確認したい項目を整理します。</p>
-        </article>
-        <article class="prep-card">
-          <span class="prep-card__label">当日準備</span>
-          <h3>手元に残す物</h3>
-          <p>鍵、財布、充電器、重要書類など、手元に残す物を見直します。</p>
+        <article class="template-feature-card">
+          <span>家族版</span>
+          <h3>荷物が多い方向け</h3>
+          <p>部屋別の荷物、手続き、当日の分担を整理する想定です。</p>
         </article>
       </div>
     </section>
@@ -190,7 +171,7 @@
         <span class="section__eyebrow">Next Step</span>
         <h2>まずは荷物の量から整理</h2>
         <p>
-          見積もり前のメモ作りや、当日までの抜け漏れ確認に使える無料ツールです。将来的にはPDFテンプレートの拡充も検討しています。
+          見積もり前のメモ作りや、当日までの抜け漏れ確認に使える無料ツールです。
         </p>
       </div>
       <div class="cta-band__actions">
