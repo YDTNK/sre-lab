@@ -2,6 +2,7 @@ const MOVING_ASSISTANT_API_PATH = "/api/moving-assistant";
 const GRAFANA_ALERT_API_PATH = "/api/grafana-alert";
 const GRAFANA_WEBHOOK_SECRET_HEADER = "x-grafana-webhook-secret";
 const GITHUB_API_BASE_URL = "https://api.github.com";
+const GRAFANA_DEDUPE_LABEL = "grafana-alert";
 
 const MAX_REQUEST_BYTES = 8 * 1024;
 const MAX_TOTAL_INPUT_LENGTH = 2000;
@@ -250,13 +251,32 @@ async function handleGrafanaAlertWebhook(request, env) {
   }
 
   const issue = buildGrafanaIssue(payload);
-  const githubResult = await createGitHubIssue(env, issue);
+  const dedupeKey = buildGrafanaDedupeKey(payload);
+  const existingIssue = await findOpenGrafanaIssue(env, dedupeKey);
+
+  let githubResult;
+
+  if (existingIssue) {
+    githubResult = await commentOnGitHubIssue(
+      env,
+      existingIssue.number,
+      buildGrafanaDuplicateComment(payload, dedupeKey)
+    );
+
+    if (githubResult.ok) {
+      githubResult.issueUrl = existingIssue.html_url;
+      githubResult.issueNumber = existingIssue.number;
+      githubResult.deduped = true;
+    }
+  } else {
+    githubResult = await createGitHubIssue(env, issue);
+  }
 
   if (!githubResult.ok) {
     await safeRecordUsage(env, "api_errors");
     return errorResponse(
       "github_issue_create_failed",
-      "Failed to create GitHub Issue.",
+      "Failed to create or update GitHub Issue.",
       502
     );
   }
@@ -266,24 +286,21 @@ async function handleGrafanaAlertWebhook(request, env) {
   return jsonResponse(
     {
       ok: true,
+      deduped: Boolean(githubResult.deduped),
       issueUrl: githubResult.issueUrl,
       issueNumber: githubResult.issueNumber,
     },
-    { status: 201 }
+    { status: githubResult.deduped ? 200 : 201 }
   );
 }
 
 function buildGrafanaIssue(payload) {
-  const alertName =
-    payload?.commonLabels?.alertname ||
-    payload?.alerts?.[0]?.labels?.alertname ||
-    payload?.title ||
-    "Grafana Alert";
-
+  const alertName = getGrafanaAlertName(payload);
   const status = payload?.status || "unknown";
   const externalUrl = payload?.externalURL || "";
   const receiver = payload?.receiver || "";
   const groupKey = payload?.groupKey || "";
+  const dedupeKey = buildGrafanaDedupeKey(payload);
   const alerts = Array.isArray(payload?.alerts) ? payload.alerts : [];
 
   const alertSummaries = alerts.map((alert, index) => {
@@ -297,7 +314,7 @@ function buildGrafanaIssue(payload) {
       "",
       `- status: ${alert.status || status}`,
       `- alertname: ${labels.alertname || ""}`,
-      `- service: ${labels.service || labels.job || ""}`,
+      `- service: ${labels.service_name || labels.service || labels.job || ""}`,
       `- severity: ${labels.severity || ""}`,
       `- startsAt: ${startsAt}`,
       `- generatorURL: ${generatorURL}`,
@@ -312,6 +329,10 @@ function buildGrafanaIssue(payload) {
 
   const body = [
     `# Grafana Alert: ${alertName}`,
+    "",
+    "## Dedupe key",
+    "",
+    dedupeKey,
     "",
     "## Status",
     "",
@@ -373,8 +394,98 @@ function buildGrafanaIssue(payload) {
   return {
     title: `Grafana Alert: ${alertName}`,
     body,
-    labels: ["ops"],
+    labels: ["ops", GRAFANA_DEDUPE_LABEL],
   };
+}
+
+function getGrafanaAlertName(payload) {
+  return (
+    payload?.commonLabels?.alertname ||
+    payload?.alerts?.[0]?.labels?.alertname ||
+    payload?.title ||
+    "Grafana Alert"
+  );
+}
+
+function getGrafanaServiceName(payload) {
+  return (
+    payload?.commonLabels?.service_name ||
+    payload?.commonLabels?.service ||
+    payload?.commonLabels?.job ||
+    payload?.alerts?.[0]?.labels?.service_name ||
+    payload?.alerts?.[0]?.labels?.service ||
+    payload?.alerts?.[0]?.labels?.job ||
+    "unknown-service"
+  );
+}
+
+function buildGrafanaDedupeKey(payload) {
+  const alertName = getGrafanaAlertName(payload);
+  const serviceName = getGrafanaServiceName(payload);
+  const status = payload?.status || "unknown";
+
+  return `grafana:${serviceName}:${alertName}:${status}`.toLowerCase();
+}
+
+function buildGrafanaDuplicateComment(payload, dedupeKey) {
+  return [
+    "## Duplicate Grafana notification",
+    "",
+    `Dedupe key: ${dedupeKey}`,
+    "",
+    `Status: ${payload?.status || "unknown"}`,
+    `Received at: ${new Date().toISOString()}`,
+    "",
+    "This notification matched an existing open Grafana alert Issue, so no new Issue was created.",
+  ].join("\n");
+}
+
+function githubHeaders(env) {
+  return {
+    Accept: "application/vnd.github+json",
+    Authorization: `Bearer ${env.GITHUB_ISSUE_TOKEN}`,
+    "Content-Type": "application/json",
+    "User-Agent": "sre-lab-grafana-webhook",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+}
+
+async function findOpenGrafanaIssue(env, dedupeKey) {
+  const searchQuery = encodeURIComponent(
+    `repo:${env.GITHUB_REPO} is:issue is:open label:${GRAFANA_DEDUPE_LABEL} "${dedupeKey}"`
+  );
+
+  const response = await fetch(`${GITHUB_API_BASE_URL}/search/issues?q=${searchQuery}`, {
+    headers: githubHeaders(env),
+  });
+
+  if (!response.ok) {
+    console.warn("github_issue_search_failed", response.status, await response.text());
+    return null;
+  }
+
+  const data = await response.json();
+  const items = Array.isArray(data.items) ? data.items : [];
+
+  return items[0] || null;
+}
+
+async function commentOnGitHubIssue(env, issueNumber, body) {
+  const response = await fetch(
+    `${GITHUB_API_BASE_URL}/repos/${env.GITHUB_REPO}/issues/${issueNumber}/comments`,
+    {
+      method: "POST",
+      headers: githubHeaders(env),
+      body: JSON.stringify({ body }),
+    }
+  );
+
+  if (!response.ok) {
+    console.warn("github_issue_comment_failed", response.status, await response.text());
+    return { ok: false };
+  }
+
+  return { ok: true };
 }
 
 async function createGitHubIssue(env, issue) {
@@ -382,13 +493,7 @@ async function createGitHubIssue(env, issue) {
     `${GITHUB_API_BASE_URL}/repos/${env.GITHUB_REPO}/issues`,
     {
       method: "POST",
-      headers: {
-        Accept: "application/vnd.github+json",
-        Authorization: `Bearer ${env.GITHUB_ISSUE_TOKEN}`,
-        "Content-Type": "application/json",
-        "User-Agent": "sre-lab-grafana-webhook",
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
+      headers: githubHeaders(env),
       body: JSON.stringify(issue),
     }
   );
@@ -459,6 +564,7 @@ function estimateAiUsage(body) {
     1,
     Math.ceil(inputTextLength / ESTIMATED_INPUT_TOKEN_DIVISOR)
   );
+
   const estimatedOutputTokens = ESTIMATED_OUTPUT_TOKENS;
 
   const estimatedInputCostJpy =
@@ -630,256 +736,70 @@ async function generateMovingAdviceWithOpenAI(body, env) {
   }
 }
 
-function buildPrompt(body) {
-  const normalized = FIELD_NAMES.reduce((result, fieldName) => {
-    const value = body[fieldName];
-
-    result[fieldName] = typeof value === "string" ? value.trim() : "";
-
-    return result;
-  }, {});
-
-  return [
-    "以下の引越し情報をもとに、引越し準備診断を作成してください。",
-    "",
-    "出力は必ず次のJSON形式にしてください。",
-    "",
-    JSON.stringify({
-      summary: "短い要約文",
-      boxEstimate: "ダンボール目安",
-      packingMaterials: ["必要資材1", "必要資材2"],
-      checklist: ["チェック項目1", "チェック項目2", "チェック項目3"],
-      riskNotes: ["注意点1", "注意点2"],
-      disclaimer: "注意書き",
-    }),
-    "",
-    "条件:",
-    "- 日本語で返す",
-    "- JSON以外の文章を返さない",
-    "- packingMaterials, checklist, riskNotes は配列にする",
-    "- checklist は3〜6項目にする",
-    "- 医療・法律・契約上の断定は避ける",
-    "",
-    "入力:",
-    JSON.stringify(normalized),
-  ].join("\n");
-}
-
 function extractOpenAIOutputText(responseBody) {
-  if (typeof responseBody.output_text === "string") {
-    return responseBody.output_text;
-  }
+  const output = responseBody?.output;
 
-  if (!Array.isArray(responseBody.output)) {
+  if (!Array.isArray(output)) {
     return "";
   }
 
-  const textParts = [];
+  const message = output.find((item) => item.type === "message");
 
-  for (const item of responseBody.output) {
-    if (!Array.isArray(item.content)) {
-      continue;
-    }
-
-    for (const content of item.content) {
-      if (content.type === "output_text" && typeof content.text === "string") {
-        textParts.push(content.text);
-      }
-    }
+  if (!message || !Array.isArray(message.content)) {
+    return "";
   }
 
-  return textParts.join("");
+  const outputText = message.content.find((item) => item.type === "output_text");
+
+  return outputText?.text || "";
 }
 
-function isValidAiResponse(data) {
-  if (!data || typeof data !== "object" || Array.isArray(data)) {
+function buildPrompt(body) {
+  const sanitized = FIELD_NAMES.map((fieldName) => {
+    const value = body[fieldName];
+    return `${fieldName}: ${typeof value === "string" ? value.trim() : ""}`;
+  }).join("\n");
+
+  return [
+    "以下の引越し情報をもとに、引越し準備を整理してください。",
+    "必ずJSONで返してください。",
+    "schema: { summary: string, boxEstimate: string, packingMaterials: string[], checklist: string[], riskNotes: string[], disclaimer: string }",
+    sanitized,
+  ].join("\n");
+}
+
+function isValidAiResponse(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
     return false;
   }
 
-  for (const field of REQUIRED_AI_RESPONSE_FIELDS) {
-    if (!(field in data)) {
-      return false;
-    }
-  }
-
-  if (typeof data.summary !== "string") {
-    return false;
-  }
-
-  if (typeof data.boxEstimate !== "string") {
-    return false;
-  }
-
-  if (!Array.isArray(data.packingMaterials)) {
-    return false;
-  }
-
-  if (!Array.isArray(data.checklist)) {
-    return false;
-  }
-
-  if (!Array.isArray(data.riskNotes)) {
-    return false;
-  }
-
-  if (typeof data.disclaimer !== "string") {
-    return false;
-  }
-
-  return true;
+  return REQUIRED_AI_RESPONSE_FIELDS.every((fieldName) => fieldName in value);
 }
 
 function buildFallbackResponse() {
   return {
-    summary: "入力内容をもとに、引越し準備の初期チェックリストを作成しました。",
-    boxEstimate: "ダンボール目安: 8〜12箱",
+    summary: "入力内容をもとに、引越し準備のたたき台を作成しました。",
+    boxEstimate: "荷物量に応じて、ダンボール・緩衝材・テープを余裕を持って準備してください。",
     packingMaterials: [
       "ダンボール",
       "ガムテープ",
       "緩衝材",
       "油性ペン",
-      "小物用袋",
+      "ゴミ袋",
     ],
     checklist: [
-      "本や重い物は小さめの箱に分けて梱包する",
-      "家電や電子機器は緩衝材やタオルで保護する",
-      "衣類は衣装ケース・スーツケース・大きめの袋に分類する",
-      "搬入経路、エレベーター、駐車スペースを事前確認する",
-      "引越し1週間前までに不要品を処分する",
+      "不要品を先に分別する",
+      "使用頻度の低いものから梱包する",
+      "割れ物や精密機器は緩衝材で保護する",
+      "当日使うものは別袋にまとめる",
+      "退去前に掃除と忘れ物確認を行う",
     ],
     riskNotes: [
-      "重い物を大きな箱にまとめると運搬時に危険です",
-      "電子機器は衝撃と水濡れに注意してください",
+      "大型家具や重量物は、無理に一人で運ばないでください。",
+      "貴重品、契約書類、身分証などは手荷物で管理してください。",
     ],
-    disclaimer:
-      "これはAI引越し診断のフォールバック結果です。正式な引越し業者の見積もりではありません。",
+    disclaimer: "この結果は引越し準備の目安です。正式な見積もりや契約条件は、引越し会社・管理会社・勤務先の案内を確認してください。",
   };
-}
-
-async function checkRateLimit(request, env) {
-  if (!env.RATE_LIMIT_KV) {
-    return { allowed: true };
-  }
-
-  const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
-  const now = new Date();
-
-  const minuteKey = `rate:moving-assistant:minute:${clientIp}:${formatMinuteWindow(now)}`;
-  const dayKey = `rate:moving-assistant:day:${clientIp}:${formatDayWindow(now)}`;
-
-  const minuteCount = await incrementCounter(
-    env.RATE_LIMIT_KV,
-    minuteKey,
-    RATE_LIMIT_RETRY_AFTER_SECONDS
-  );
-
-  if (minuteCount > RATE_LIMIT_PER_MINUTE) {
-    return { allowed: false, reason: "minute_limit_exceeded" };
-  }
-
-  const dayCount = await incrementCounter(
-    env.RATE_LIMIT_KV,
-    dayKey,
-    secondsUntilNextDay(now)
-  );
-
-  if (dayCount > RATE_LIMIT_PER_DAY) {
-    return { allowed: false, reason: "day_limit_exceeded" };
-  }
-
-  return { allowed: true };
-}
-
-async function safeRecordUsage(env, metricName) {
-  try {
-    await recordUsage(env, metricName);
-  } catch (error) {
-    console.warn("usage_record_failed", metricName, error?.message || error);
-  }
-}
-
-async function recordUsage(env, metricName) {
-  if (!env.RATE_LIMIT_KV) {
-    return;
-  }
-
-  const now = new Date();
-  const key = `usage:moving-assistant:${metricName}:${formatDayWindow(now)}`;
-
-  await incrementCounter(env.RATE_LIMIT_KV, key, secondsUntilNextDay(now));
-}
-
-async function incrementCounter(kv, key, expirationTtl) {
-  const currentValue = await kv.get(key);
-  const currentCount = Number.parseInt(currentValue || "0", 10);
-  const nextCount = currentCount + 1;
-
-  await kv.put(key, String(nextCount), {
-    expirationTtl,
-  });
-
-  return nextCount;
-}
-
-async function incrementNumericValue(kv, key, incrementBy, expirationTtl) {
-  const currentValue = await kv.get(key);
-  const currentNumber = Number.parseFloat(currentValue || "0");
-  const nextNumber = currentNumber + incrementBy;
-
-  await kv.put(key, String(nextNumber), {
-    expirationTtl,
-  });
-
-  return nextNumber;
-}
-
-function formatMinuteWindow(date) {
-  return [
-    date.getUTCFullYear(),
-    pad2(date.getUTCMonth() + 1),
-    pad2(date.getUTCDate()),
-    pad2(date.getUTCHours()),
-    pad2(date.getUTCMinutes()),
-  ].join("");
-}
-
-function formatDayWindow(date) {
-  return [
-    date.getUTCFullYear(),
-    pad2(date.getUTCMonth() + 1),
-    pad2(date.getUTCDate()),
-  ].join("");
-}
-
-function formatMonthWindow(date) {
-  return [
-    date.getUTCFullYear(),
-    pad2(date.getUTCMonth() + 1),
-  ].join("");
-}
-
-function secondsUntilNextDay(date) {
-  const nextDay = new Date(date);
-  nextDay.setUTCHours(24, 0, 0, 0);
-
-  return Math.max(60, Math.ceil((nextDay.getTime() - date.getTime()) / 1000));
-}
-
-function secondsUntilNextMonth(date) {
-  const nextMonth = new Date(Date.UTC(
-    date.getUTCFullYear(),
-    date.getUTCMonth() + 1,
-    1,
-    0,
-    0,
-    0
-  ));
-
-  return Math.max(60, Math.ceil((nextMonth.getTime() - date.getTime()) / 1000));
-}
-
-function pad2(value) {
-  return String(value).padStart(2, "0");
 }
 
 function handleOptions() {
@@ -891,7 +811,7 @@ function handleOptions() {
 
 function jsonResponse(data, init = {}) {
   return new Response(JSON.stringify(data), {
-    ...init,
+    status: init.status || 200,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       ...corsHeaders(),
@@ -900,7 +820,7 @@ function jsonResponse(data, init = {}) {
   });
 }
 
-function errorResponse(code, message, status, extraHeaders = {}) {
+function errorResponse(code, message, status) {
   return jsonResponse(
     {
       error: {
@@ -908,10 +828,7 @@ function errorResponse(code, message, status, extraHeaders = {}) {
         message,
       },
     },
-    {
-      status,
-      headers: extraHeaders,
-    }
+    { status }
   );
 }
 
@@ -920,6 +837,54 @@ function corsHeaders() {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, X-Grafana-Webhook-Secret",
-    "Access-Control-Max-Age": "86400",
   };
+}
+
+async function safeRecordUsage(env, metricName) {
+  if (!env.RATE_LIMIT_KV) {
+    return;
+  }
+
+  try {
+    const now = new Date();
+    const key = `usage:${metricName}:${formatDayWindow(now)}`;
+    await incrementCounter(env.RATE_LIMIT_KV, key, secondsUntilNextDay(now));
+  } catch (error) {
+    console.warn("usage_record_failed", metricName, error?.message || error);
+  }
+}
+
+async function incrementCounter(kv, key, expirationTtl) {
+  const currentValue = await kv.get(key);
+  const currentCount = Number.parseInt(currentValue || "0", 10);
+  const nextCount = currentCount + 1;
+  await kv.put(key, String(nextCount), { expirationTtl });
+  return nextCount;
+}
+
+async function incrementNumericValue(kv, key, amount, expirationTtl) {
+  const currentValue = await kv.get(key);
+  const currentAmount = Number.parseFloat(currentValue || "0");
+  const nextAmount = currentAmount + amount;
+  await kv.put(key, String(nextAmount), { expirationTtl });
+  return nextAmount;
+}
+
+function secondsUntilNextDay(now) {
+  const nextDay = new Date(now);
+  nextDay.setUTCHours(24, 0, 0, 0);
+  return Math.max(60, Math.floor((nextDay.getTime() - now.getTime()) / 1000));
+}
+
+function secondsUntilNextMonth(now) {
+  const nextMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
+  return Math.max(60, Math.floor((nextMonth.getTime() - now.getTime()) / 1000));
+}
+
+function formatDayWindow(now) {
+  return now.toISOString().slice(0, 10);
+}
+
+function formatMonthWindow(now) {
+  return now.toISOString().slice(0, 7);
 }
