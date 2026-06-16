@@ -19,8 +19,8 @@ Level 5: Partially implemented, alert-to-Issue entry point operational
 Estimated operating ratio:
 
 ```text
-Manual work: 20-30%
-Automated / AI-assisted work: 70-80%
+Manual work: 12-20%
+Automated / AI-assisted work: 80-88%
 ```
 
 Target operating ratio:
@@ -166,10 +166,12 @@ Issue is closed with completion note
 - ChatGPT can merge safe PRs.
 - ChatGPT can verify main branch content after merge.
 - ChatGPT can close completed Issues.
+- ChatGPT can record completion reports.
 - GitHub Actions runs required file checks.
 - GitHub Actions runs API syntax checks.
 - Worker deploy workflow exists.
 - Worker deploy workflow runs post-deploy smoke tests.
+- Validate Grafana Dedupe runs after successful Deploy Worker runs.
 - Grafana can create GitHub Issues through the Cloudflare Worker webhook.
 
 ## What Still Requires Human Input
@@ -184,6 +186,7 @@ Human input remains required for:
 - Secret values and credential entry
 - approval for production-impacting code changes
 - approval for ambiguous, destructive, billing, or infrastructure-cost-impacting changes
+- starting Codex manually when automatic Codex start is not available through connected tools
 
 ## Current Active Services
 
@@ -206,22 +209,31 @@ Removed service alerts should become stale monitoring cleanup tasks, not service
 
 ## Standard Completion Report
 
+Use:
+
+```text
+docs/completion-report-template.md
+```
+
 Each completed workflow should report:
 
-- what changed
-- Issue number if applicable
-- PR number if applicable
-- merge commit if applicable
-- main verification result
-- deployment or smoke-test result if applicable
-- remaining gaps or next task
+```text
+Issue:
+PR:
+Merge commit:
+Validation:
+Deploy:
+Monitoring:
+Remaining follow-up:
+Close decision:
+```
 
 ## Next Automation Priorities
 
-To move from the current 70-80% automation range toward 90-95%, prioritize:
+To move from the current 80-88% automation range toward 90-95%, prioritize:
 
-1. Use Codex consistently from Issues for implementation work.
-2. Strengthen CI so code PRs are more self-verifying.
-3. Verify Cloudflare Worker deploy workflow with real GitHub Actions runs.
-4. Add deduplication for Grafana-created Issues.
-5. Move from Grafana-created Issue to AI investigation and incident/runbook updates.
+1. Use the `codex` label operating rule consistently for implementation-ready Issues.
+2. Use the standard completion report for Issue/PR closures.
+3. Confirm #2 production/visual verification and close when evidence is recorded.
+4. Confirm #50 after the next successful Deploy Worker run automatically triggers Validate Grafana Dedupe.
+5. Add direct Codex auto-start integration if the external Codex/GitHub App capability becomes available.
