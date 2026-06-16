@@ -243,6 +243,24 @@ button:hover { color: #ffffff; transform: translateY(-1px); }
   white-space: nowrap;
 }
 
+.hero-illustration-card {
+  display: grid;
+  align-items: center;
+  min-height: 300px;
+  padding: clamp(10px, 2vw, 18px);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: linear-gradient(135deg, #f8fafc, #ffffff 60%, #eef7ff);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+}
+.hero-illustration {
+  display: block;
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  margin: 0 auto;
+}
+
 .card,
 .tool-card,
 .scenario-card,
@@ -482,44 +500,7 @@ textarea { min-height: 96px; resize: vertical; }
   background: linear-gradient(135deg, #f8fafc, #ffffff);
   box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
 }
-.prep-hero-visual {
-  display: grid;
-  min-height: 280px;
-  place-items: center;
-}
-.prep-hero-visual__board {
-  width: min(100%, 390px);
-  padding: 22px;
-}
-.prep-hero-visual__top,
-.timeline-preview-card__header {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  margin-bottom: 18px;
-}
-.prep-hero-visual__top span,
-.timeline-preview-card__header span { color: #64748b; font-size: 0.84rem; font-weight: 850; }
-.prep-hero-visual__rows { display: grid; gap: 12px; }
-.prep-hero-visual__rows div {
-  display: grid;
-  grid-template-columns: minmax(80px, 0.7fr) minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 16px;
-  background: #f8fbff;
-}
-.prep-hero-visual__rows div > span,
-.prep-hero-visual__boxes,
-.prep-hero-visual__sheet,
-.timeline-visual-kit,
-.output-preview-visual,
-.prep-card__mini,
-.template-feature-card__mini { display: none !important; }
-.prep-hero-visual__rows strong { color: #0f172a; font-size: 0.92rem; }
-.prep-hero-visual__rows em { color: #64748b; font-size: 0.86rem; font-style: normal; }
+.prep-hero-visual { display: none !important; }
 
 .timeline-preview-card { width: min(100%, 430px); margin: 0 auto; padding: 20px; }
 .timeline-preview-list { display: grid; gap: 10px; list-style: none; margin: 0; padding: 0; }
@@ -676,6 +657,11 @@ textarea { min-height: 96px; resize: vertical; }
   }
   .lp-visual,
   .sample-document-visual { padding: 14px; border-radius: 20px; }
+  .hero-illustration-card {
+    min-height: 0;
+    padding: 8px;
+    border-radius: 22px;
+  }
 
   .card,
   .tool-card,
@@ -727,9 +713,6 @@ textarea { min-height: 96px; resize: vertical; }
     text-align: center;
   }
 
-  .prep-hero-visual { min-height: 0; }
-  .prep-hero-visual__board { width: 100%; padding: 18px; }
-  .prep-hero-visual__rows div { grid-template-columns: 1fr; }
   .timeline-checklist__item { padding-left: 34px; }
   .timeline-checklist::before { left: 14px; }
 }
