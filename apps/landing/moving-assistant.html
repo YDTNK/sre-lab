@@ -18,6 +18,7 @@
         <a href="index.html">トップ</a>
         <a href="#moving-form">入力する</a>
         <a href="moving-checklist-sample.html">無料サンプル</a>
+        <a href="moving-template.html">PDFテンプレート</a>
       </nav>
     </div>
   </header>
@@ -90,7 +91,7 @@
             </div>
           </div>
 
-          <form id="movingAssistantForm">
+          <form id="movingAssistantForm" novalidate>
             <div>
               <label for="furniture">家具</label>
               <textarea id="furniture" name="furniture" placeholder="例: デスク1台、椅子1脚、ベッドなし、衣装ケース1つ"></textarea>
@@ -234,12 +235,13 @@
         <span class="section__eyebrow">Free Checklist</span>
         <h2>準備ボードと時系列サンプルを並べて確認</h2>
         <p>
-          まずは自分の荷物を整理し、必要に応じて無料サンプルで時期別の準備を確認できます。将来的にはPDFテンプレートの拡充も検討しています。
+          まずは自分の荷物を整理し、必要に応じて無料サンプルで時期別の準備を確認できます。さらに詳しく整理したい場合は、PDFテンプレート導線も確認できます。
         </p>
       </div>
       <div class="cta-band__actions">
         <a class="button" href="#moving-form">準備ボードを作る</a>
         <a class="button button-secondary" href="moving-checklist-sample.html">時系列サンプルを見る</a>
+        <a class="button button-secondary" href="moving-template.html">PDFテンプレートを見る</a>
       </div>
     </section>
 
@@ -267,7 +269,7 @@
         </article>
         <article class="faq-item">
           <h3>無料サンプルは何に使えますか？</h3>
-          <p>1ヶ月前から当日・引越し後までの準備を見返すための見本です。今後、PDFテンプレートの拡充も検討しています。</p>
+          <p>1ヶ月前から当日・引越し後までの準備を見返すための見本です。有料PDFテンプレートは、無料サンプルより印刷・保存しやすい形にする販売準備中の商品です。</p>
         </article>
       </div>
     </section>
@@ -293,6 +295,8 @@
       </div>
       <div class="site-footer__links">
         <a href="index.html">トップ</a>
+        <a href="moving-checklist-sample.html">無料サンプル</a>
+        <a href="moving-template.html">PDFテンプレート</a>
         <a href="#notices">ご利用にあたって</a>
       </div>
     </div>
@@ -303,20 +307,21 @@
 
     const form = document.getElementById("movingAssistantForm");
     const result = document.getElementById("result");
+    const inputFieldIds = ["furniture", "clothes", "electronics", "books", "movingDate", "notes"];
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      result.innerHTML = "<p>準備ボードを作成しています...</p>";
+      const payload = buildPayload();
+      const validation = validatePayload(payload);
 
-      const payload = {
-        furniture: document.getElementById("furniture").value,
-        clothes: document.getElementById("clothes").value,
-        electronics: document.getElementById("electronics").value,
-        books: document.getElementById("books").value,
-        movingDate: document.getElementById("movingDate").value,
-        notes: document.getElementById("notes").value
-      };
+      if (!validation.isValid) {
+        result.innerHTML = renderValidationMessage(validation.message);
+        document.getElementById(validation.focusId)?.focus();
+        return;
+      }
+
+      result.innerHTML = "<p>準備ボードを作成しています...</p>";
 
       try {
         const response = await fetch(`${API_BASE_URL}/api/moving-assistant`, {
@@ -329,15 +334,71 @@
 
         if (!response.ok) {
           const message = data?.error?.message || "診断結果の作成に失敗しました。";
-          result.innerHTML = `<p>${escapeHtml(message)}</p>`;
+          result.innerHTML = renderErrorMessage(message);
           return;
         }
 
         renderResult(data);
       } catch (error) {
-        result.innerHTML = "<p>通信エラーが発生しました。時間をおいて再度お試しください。</p>";
+        result.innerHTML = renderErrorMessage("通信エラーが発生しました。時間をおいて再度お試しください。入力内容は保存されないため、再送信前に内容を確認してください。");
       }
     });
+
+    function buildPayload() {
+      return {
+        furniture: document.getElementById("furniture").value.trim(),
+        clothes: document.getElementById("clothes").value.trim(),
+        electronics: document.getElementById("electronics").value.trim(),
+        books: document.getElementById("books").value.trim(),
+        movingDate: document.getElementById("movingDate").value.trim(),
+        notes: document.getElementById("notes").value.trim()
+      };
+    }
+
+    function validatePayload(payload) {
+      const requiredContentFields = ["furniture", "clothes", "electronics", "books", "notes"];
+      const hasAnyContent = requiredContentFields.some((field) => payload[field].length > 0);
+
+      if (!hasAnyContent) {
+        return {
+          isValid: false,
+          focusId: "furniture",
+          message: "家具・衣類・家電・本や小物・補足情報のうち、最低1項目は入力してください。引越し予定日だけでは準備ボードを作成できません。"
+        };
+      }
+
+      const tooLongField = inputFieldIds.find((field) => payload[field].length > 500);
+
+      if (tooLongField) {
+        return {
+          isValid: false,
+          focusId: tooLongField,
+          message: "入力内容が長すぎます。各項目は500文字以内で、荷物や不安な点だけを簡潔に入力してください。"
+        };
+      }
+
+      return { isValid: true };
+    }
+
+    function renderValidationMessage(message) {
+      return `
+        <div class="result-alert" role="alert">
+          <h3>入力内容を確認してください</h3>
+          <p>${escapeHtml(message)}</p>
+          <p>例: 「デスク1台、衣類3箱分、PC、モニター、本30冊」のように、分かる範囲で入力すれば大丈夫です。</p>
+        </div>
+      `;
+    }
+
+    function renderErrorMessage(message) {
+      return `
+        <div class="result-alert" role="alert">
+          <h3>準備ボードを作成できませんでした</h3>
+          <p>${escapeHtml(message)}</p>
+          <p>入力内容を短くして、時間をおいて再度お試しください。</p>
+        </div>
+      `;
+    }
 
     function renderResult(data) {
       const checklist = Array.isArray(data.checklist) ? data.checklist : [];
@@ -360,18 +421,19 @@
         <h4>注意点</h4>
         ${renderList(risks)}
 
-        <div class="monetization-cta" aria-label="引越し準備チェックリスト無料サンプル">
-          <p class="status">Free Sample</p>
-          <h4>時系列チェックリスト無料サンプル</h4>
+        <div class="monetization-cta" aria-label="引越し準備チェックリスト無料サンプルとPDFテンプレート">
+          <p class="status">Next Step</p>
+          <h4>時系列チェックリストとPDFテンプレート</h4>
           <p>
-            診断結果とあわせて見返せる、引越し準備チェックリストの無料サンプルを公開しています。
-            1ヶ月前から当日・引越し後までの準備順を確認できます。
+            診断結果とあわせて見返せる無料サンプルを公開しています。
+            さらに印刷・保存して使いたい場合は、有料PDFテンプレート導線も確認できます。
           </p>
           <div class="hero__actions monetization-cta__actions">
             <a class="button" href="moving-checklist-sample.html">時系列サンプルを見る</a>
+            <a class="button button-secondary" href="moving-template.html">PDFテンプレートを見る</a>
           </div>
           <p class="monetization-cta__note">
-            現在は無料サンプルとして公開しています。決済や個人情報の入力は不要です。
+            現時点ではPDFテンプレートの決済接続は未実装です。住所、氏名、電話番号、メールアドレスの入力は不要です。
           </p>
         </div>
 
