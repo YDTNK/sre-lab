@@ -1,85 +1,146 @@
 ---
 name: Codex implementation task
-description: Give Codex a scoped implementation task from an Issue
+description: Give Codex a complete implementation task that can be executed from an Issue number
 title: "[Codex] "
 labels: ["codex", "ops"]
 ---
 
-## Objective
+## Goal
 
-What should Codex implement?
-
-## Background
-
-Why is this change needed?
-
-## Parent / tracking Issue
-
-- Related to #
-
-## Required reading
-
-Codex must read these before changing files:
-
-- [ ] `AGENTS.md`
-- [ ] `README.md`
-- [ ] `docs/automation-first-working-policy.md`
-- [ ] `docs/ai-organization-operating-model.md`
-- [ ] `docs/sre-lab-workflow.md`
-- [ ] `docs/codex-workflow.md`
-- [ ] `docs/revenue-release-before-cka.md`
-- [ ] `docs/service-state-checklist.md`
-- [ ] `docs/services.md`
-- [ ] `docs/runbook.md`
-
-## Files likely to change
+What should Codex make true by the end of this task?
 
 - 
 
-## Allowed scope
+## Current State
+
+Where is the project now?
+
+- Current source of truth: `engineering-career-hq/projects/sre-lab/status.md`
+- Related PR / Issue:
+- Current blocker:
+
+## Why This Matters
+
+Why should this be done now?
+
+- 
+
+## Required Reading
+
+Codex must read these before changing files.
+
+### Implementation repository
+
+- [ ] `AGENTS.md`
+- [ ] `START_HERE_FOR_AI.md`
+- [ ] `docs/mandatory-context-registry.md`
+- [ ] `docs/codex-workflow.md`
+- [ ] `docs/ai-assisted-85-90-workflow.md`
+- [ ] `docs/sre-lab-workflow.md`
+- [ ] `docs/service-state-checklist.md`
+- [ ] `docs/runbook.md`
+
+### Management repository
+
+- [ ] `YDTNK/engineering-career-hq/projects/sre-lab/status.md`
+- [ ] `YDTNK/engineering-career-hq/projects/sre-lab/project-context.md`
+- [ ] `YDTNK/engineering-career-hq/projects/sre-lab/standards/mandatory-context-registry.md`
+- [ ] `YDTNK/engineering-career-hq/projects/sre-lab/standards/status-management-standard.md`
+- [ ] `YDTNK/engineering-career-hq/projects/sre-lab/issues.md`
+
+## Target Files / Areas
+
+Files or areas Codex is expected to inspect or edit.
+
+- 
+
+## Allowed Scope
 
 What may Codex change?
 
 - 
 
-## Out of scope
+## Out of Scope
 
 What must Codex not change?
 
 - 
 
-## Implementation requirements
+## Implementation Requirements
 
 - [ ] Keep the change scoped to this Issue.
+- [ ] Preserve AI startup / mandatory context documents.
+- [ ] Preserve existing service-state decisions.
 - [ ] Do not restore removed services.
 - [ ] Do not commit secrets.
-- [ ] Do not change billing, payment, or infrastructure-cost behavior unless explicitly approved.
+- [ ] Do not change billing, payment, external account, or infrastructure-cost behavior unless explicitly approved in this Issue.
+- [ ] Do not add personal-information collection fields unless explicitly approved in this Issue.
 - [ ] Link the PR to this Issue.
 - [ ] Include validation notes in the PR.
 
-## Validation
+## Completion Conditions
 
-How should Codex validate the change?
+The task is complete when:
+
+- [ ] 
+- [ ] 
+- [ ] A reviewable Draft PR is opened or updated.
+- [ ] The PR body includes summary, changed files, validation, risk, and rollback notes.
+
+## Validation Checklist
+
+Codex should run or explain why it could not run:
 
 - [ ] Existing GitHub Actions pass.
-- [ ] Add or update tests/checks when useful.
-- [ ] Document manual validation if automation is not available.
+- [ ] `git diff --check`
+- [ ] Project-specific validation, if applicable:
+  - 
+- [ ] Manual preview / visual check instructions are included when UI changes are involved.
 
-## PR requirements
+## PR Requirements
 
-The PR should include:
+The PR must include:
 
 - Summary
 - Changed files
-- Validation
+- Validation results or not-run reason
 - Risk level
 - Rollback notes if relevant
 - Linked Issue
+- Remaining manual review items
 
-## Review / merge policy
+Use one of:
 
-- [ ] ChatGPT may review and merge if the change is small, safe, and checks pass.
-- [ ] Human approval required before merge.
+```text
+Closes #<issue-number>
+Related to #<issue-number>
+Part of #<issue-number>
+```
+
+## Review / Merge Policy
+
+- [ ] Open as Draft PR by default.
+- [ ] Do not auto-merge unless this Issue explicitly says it is safe.
+- [ ] Human approval is required before production-impacting merge.
+- [ ] ChatGPT reviews the PR against this Issue before merge.
+
+## Codex Efficiency Rule
+
+Codex should assume a limited usage window, including the 5-hour limit.
+
+- [ ] Avoid fragmented follow-up work.
+- [ ] Make the best complete attempt in one run.
+- [ ] If not fully complete, leave a clear PR comment with remaining blockers.
+
+## Minimal User Command Target
+
+This Issue should be complete enough that a user can later say:
+
+```text
+Codex: execute Issue #<number>
+```
+
+and Codex can proceed without asking for basic context.
 
 ## Notes
 
