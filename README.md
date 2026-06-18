@@ -1,5 +1,35 @@
 # SRE Lab
 
+## AI Startup Entry
+
+AIがSRE Lab関連の質問・レビュー・実装判断を行う場合、最初に以下を確認してください。
+
+```text
+START_HERE_FOR_AI.md
+AGENTS.md
+docs/mandatory-context-registry.md
+```
+
+SRE Labは2リポジトリ構成です。
+
+```text
+YDTNK/sre-lab
+= implementation repository
+
+YDTNK/engineering-career-hq
+= project management / roadmap / memory repository
+```
+
+片方だけを確認して、SRE Labの状態確認完了とは判断しないでください。
+
+管理側の正本:
+
+```text
+YDTNK/engineering-career-hq/projects/sre-lab/project-context.md
+YDTNK/engineering-career-hq/projects/sre-lab/standards/mandatory-context-registry.md
+YDTNK/engineering-career-hq/projects/sre-lab/issues.md
+```
+
 [![CI](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml)
 [![Deploy Worker](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml)
 
@@ -117,107 +147,3 @@ Workers / KV / Analytics integration only when needed
 ## アーキテクチャ概要
 
 SRE Labは、Cloudflare PagesとCloudflare Workersを中心に構成しています。
-
-概要:
-
-- ユーザーはCloudflare Pages上のフロントエンドにアクセスする
-- AI Moving Assistantは専用のフロントエンドページを持つ
-- フロントエンドからCloudflare Workers APIを呼び出す
-- Workers APIでリクエスト検証とサービス処理を行う
-- Grafana Synthetic MonitoringでフロントエンドとAPI endpointを監視する
-- Grafana AlertingからEmail contact pointへ通知する
-- Runbookと運用記録で障害対応と変更履歴を管理する
-- GitHub ActionsでCIとWorkersデプロイを実行する
-
-詳細:
-
-- docs/architecture.md
-
-## 監視・アラート
-
-現在、以下の監視を設定しています。
-
-| 監視対象 | Method | 期待値 | Alert |
-|---|---|---|---|
-| フロントエンド | GET | 200 | sre-lab-uptime-down |
-| AI Moving Assistant API | POST | 2xx | sre-lab-api-down |
-
-共通設定:
-
-- Metric: probe_success
-- 条件: below 0.5
-- 評価間隔: 1m
-- Pending period: 2m
-- Contact point: sre-lab-email
-- Runbook: docs/runbook.md
-
-## API安全化
-
-公開API運用と、将来AI APIを再有効化する場合に備えて、Workers API側で以下の安全対策を実装しています。
-
-- Method validation
-- Path validation
-- Content-Type validation
-- JSON parse error handling
-- Request size limit
-- Total input length limit
-- Standardized JSON error response
-- Rate limiting
-- Cost limit behavior design
-
-## CI/CD
-
-GitHub ActionsでCIとWorkers APIの自動デプロイを設定しています。
-
-CIで確認している内容:
-
-- 必須ファイルの存在確認
-- API dependencies install
-- API syntax check
-
-Workers APIのデプロイ:
-
-- main branchへのpushで自動デプロイ
-- apps/api配下の変更を対象
-- workflow_dispatchによる手動実行にも対応
-- Cloudflare API TokenとAccount IDはGitHub Secretsで管理
-
-## 運用ドキュメント
-
-| ドキュメント | 役割 |
-|---|---|
-| docs/portfolio-submission.md | 面談・提出用のポートフォリオ要約 |
-| docs/architecture.md | 詳細アーキテクチャと信頼性フロー |
-| docs/runbook.md | 障害対応手順 |
-| docs/incidents.md | Incident Log / Operational Records |
-| docs/operations.md | 日次/週次運用とデプロイ確認 |
-| docs/services.md | サービス企画と運用状況 |
-| docs/moving-assistant.md | AI Moving Assistant仕様 |
-| docs/ai-api-design.md | AI API連携設計 |
-| docs/cost.md | AI利用量とコスト管理 |
-| docs/usage-cost-report.md | 利用量・コストスナップショット記録 |
-| docs/dashboard-design.md | Docs-based Revenue / Cost Dashboard運用と将来の実装方針 |
-
-## 実装・運用で工夫した点
-
-このプロジェクトでは、アプリの機能だけでなく、運用面まで含めて整備しています。
-
-- フロントエンドとAPIを分離した構成にした
-- Cloudflare Workersで軽量なAPIを実装した
-- GitHub ActionsでCI/CDを構成した
-- Workers APIの自動デプロイを設定した
-- Grafana Synthetic Monitoringで外形監視を設定した
-- AlertからRunbookを参照できるようにした
-- Incident Log / Operational Recordsを残した
-- 現行のAI Moving Assistant APIでfallback responseを返すようにした
-- Cost limit behaviorを実装し、課金事故を防ぐ設計にした
-- 収益化検証用にPDFチェックリストCTAを追加した
-- 無料チェックリストサンプル導線を追加した
-
-## 停止ポリシー
-
-- CKA / Kubernetes 学習開始前に、AI Moving Assistant の初回収益化リリースを完了させる
-- 初回収益化リリース後は、新規SRE Lab機能追加を当面行わない
-- CKA / Kubernetes 学習期間中は、監視確認、障害対応、軽微な文言修正、収益/コスト記録などの定期メンテナンスのみ行う
-- 決済、アフィリエイト、メール収集、個人情報収集は、初回収益化導線として明示的に判断したもの以外は追加しない
-- Future Consumer AI Serviceは、AI Moving Assistant の収益化リリース後、かつCKA学習を遅らせない場合のみ評価する
