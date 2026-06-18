@@ -33,6 +33,7 @@ Required implementation-side context:
 ```text
 YDTNK/sre-lab/AGENTS.md
 YDTNK/sre-lab/docs/mandatory-context-registry.md
+YDTNK/sre-lab/docs/issue-number-execution.md
 YDTNK/sre-lab/docs/codex-workflow.md
 YDTNK/sre-lab/docs/ai-assisted-85-90-workflow.md
 YDTNK/sre-lab/docs/sre-lab-workflow.md
@@ -50,21 +51,22 @@ Before answering or changing anything in this repository, read the following fil
 
 1. `AGENTS.md`
 2. `docs/mandatory-context-registry.md`
-3. `README.md`
-4. `docs/automation-first-working-policy.md`
-5. `docs/ai-organization-operating-model.md`
-6. `docs/sre-lab-workflow.md`
-7. `docs/ai-assisted-85-90-workflow.md`
-8. `docs/codex-workflow.md`
-9. `docs/completion-report-template.md`
-10. `docs/deploy-failure-investigation.md`
-11. `docs/grafana-issue-ai-investigation.md`
-12. `docs/incident-record-rules.md`
-13. `docs/revenue-release-before-cka.md`
-14. `docs/service-state-checklist.md`
-15. `docs/services.md`
-16. `docs/runbook.md`
-17. Latest relevant records under `docs/incidents/`
+3. `docs/issue-number-execution.md`
+4. `README.md`
+5. `docs/automation-first-working-policy.md`
+6. `docs/ai-organization-operating-model.md`
+7. `docs/sre-lab-workflow.md`
+8. `docs/ai-assisted-85-90-workflow.md`
+9. `docs/codex-workflow.md`
+10. `docs/completion-report-template.md`
+11. `docs/deploy-failure-investigation.md`
+12. `docs/grafana-issue-ai-investigation.md`
+13. `docs/incident-record-rules.md`
+14. `docs/revenue-release-before-cka.md`
+15. `docs/service-state-checklist.md`
+16. `docs/services.md`
+17. `docs/runbook.md`
+18. Latest relevant records under `docs/incidents/`
 
 ## Core Working Policy
 
@@ -90,6 +92,23 @@ This includes, when available and safe:
 - Runbook and policy updates
 - Completion report creation
 
+## Issue Number Execution
+
+For implementation tasks, the desired minimal handoff is:
+
+```text
+Execute Issue #<number>
+```
+
+The Issue must be complete enough for the implementation agent to proceed without repeated clarification.
+
+Use and follow:
+
+```text
+.github/ISSUE_TEMPLATE/codex_task.md
+docs/issue-number-execution.md
+```
+
 ## AI Organization Operating Model
 
 The target operating model is documented in:
@@ -99,6 +118,7 @@ docs/ai-organization-operating-model.md
 docs/sre-lab-workflow.md
 docs/ai-assisted-85-90-workflow.md
 docs/codex-workflow.md
+docs/issue-number-execution.md
 docs/completion-report-template.md
 docs/deploy-failure-investigation.md
 docs/grafana-issue-ai-investigation.md
