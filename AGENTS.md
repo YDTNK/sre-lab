@@ -2,26 +2,69 @@
 
 This file is the first entry point for ChatGPT, Codex, GitHub Copilot agents, and other AI-assisted tools working on this repository.
 
+## Cross Repository Context Contract
+
+SRE Lab work spans two repositories.
+
+```text
+YDTNK/sre-lab
+= implementation repository
+
+YDTNK/engineering-career-hq
+= project management / roadmap / memory repository
+```
+
+Before answering, reviewing, implementing, or creating a PR for SRE Lab, check both repositories.
+
+Do not rely on only one repository.
+
+Required management-side context:
+
+```text
+YDTNK/engineering-career-hq/projects/sre-lab/project-context.md
+YDTNK/engineering-career-hq/projects/sre-lab/standards/mandatory-context-registry.md
+YDTNK/engineering-career-hq/projects/sre-lab/issues.md
+YDTNK/engineering-career-hq/projects/sre-lab/progress.md
+YDTNK/engineering-career-hq/projects/sre-lab/phase1-20-roadmap.md
+```
+
+Required implementation-side context:
+
+```text
+YDTNK/sre-lab/AGENTS.md
+YDTNK/sre-lab/docs/mandatory-context-registry.md
+YDTNK/sre-lab/docs/codex-workflow.md
+YDTNK/sre-lab/docs/ai-assisted-85-90-workflow.md
+YDTNK/sre-lab/docs/sre-lab-workflow.md
+```
+
+For Codex work, also check the `Codex Prompt Efficiency Policy` in:
+
+```text
+YDTNK/engineering-career-hq/projects/sre-lab/issues.md
+```
+
 ## Read These First
 
 Before answering or changing anything in this repository, read the following files in this order:
 
 1. `AGENTS.md`
-2. `README.md`
-3. `docs/automation-first-working-policy.md`
-4. `docs/ai-organization-operating-model.md`
-5. `docs/sre-lab-workflow.md`
-6. `docs/ai-assisted-85-90-workflow.md`
-7. `docs/codex-workflow.md`
-8. `docs/completion-report-template.md`
-9. `docs/deploy-failure-investigation.md`
-10. `docs/grafana-issue-ai-investigation.md`
-11. `docs/incident-record-rules.md`
-12. `docs/revenue-release-before-cka.md`
-13. `docs/service-state-checklist.md`
-14. `docs/services.md`
-15. `docs/runbook.md`
-16. Latest relevant records under `docs/incidents/`
+2. `docs/mandatory-context-registry.md`
+3. `README.md`
+4. `docs/automation-first-working-policy.md`
+5. `docs/ai-organization-operating-model.md`
+6. `docs/sre-lab-workflow.md`
+7. `docs/ai-assisted-85-90-workflow.md`
+8. `docs/codex-workflow.md`
+9. `docs/completion-report-template.md`
+10. `docs/deploy-failure-investigation.md`
+11. `docs/grafana-issue-ai-investigation.md`
+12. `docs/incident-record-rules.md`
+13. `docs/revenue-release-before-cka.md`
+14. `docs/service-state-checklist.md`
+15. `docs/services.md`
+16. `docs/runbook.md`
+17. Latest relevant records under `docs/incidents/`
 
 ## Core Working Policy
 
