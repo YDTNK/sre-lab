@@ -1,93 +1,128 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="640" viewBox="0 0 1440 640" role="img" aria-labelledby="title desc">
   <title id="title">Moving preparation hero image</title>
-  <desc id="desc">A clean wide vector illustration of cardboard boxes, a checklist, suitcase, plants, and packing tape for moving preparation.</desc>
+  <desc id="desc">A wide hero illustration with empty fade space on the left and moving preparation objects on the right: cardboard boxes, checklist, suitcase, tape, and plants.</desc>
 
   <defs>
-    <linearGradient id="fade-left" x1="0" y1="0" x2="1" y2="0">
+    <linearGradient id="soft-background" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
-      <stop offset="0.32" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="0.46" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.62" stop-color="#f7fbff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#eaf5ff" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="left-fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.44" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.62" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="0.80" stop-color="#ffffff" stop-opacity="0"/>
       <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="box-front" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#f4b76c"/>
-      <stop offset="1" stop-color="#dd8f3e"/>
+      <stop offset="0" stop-color="#ffc879"/>
+      <stop offset="1" stop-color="#e18f34"/>
     </linearGradient>
     <linearGradient id="box-side" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f7c885"/>
-      <stop offset="1" stop-color="#d98935"/>
+      <stop offset="0" stop-color="#ffd694"/>
+      <stop offset="1" stop-color="#c97526"/>
+    </linearGradient>
+    <linearGradient id="box-top" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffe0ad"/>
+      <stop offset="1" stop-color="#f4aa54"/>
     </linearGradient>
     <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#eef6ff"/>
+      <stop offset="1" stop-color="#eaf4ff"/>
     </linearGradient>
-    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="150%">
-      <feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#406080" flood-opacity="0.18"/>
+    <linearGradient id="suitcase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#82bcff"/>
+      <stop offset="1" stop-color="#4c82e6"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#24435c" flood-opacity="0.20"/>
+    </filter>
+    <filter id="small-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#24435c" flood-opacity="0.16"/>
     </filter>
   </defs>
 
-  <rect width="960" height="420" fill="#ffffff" opacity="0"/>
-  <path d="M378 79C449 33 563 17 663 42c106 27 188 94 219 178 28 77-6 133-86 158-84 27-216 16-313-26-96-43-155-117-151-188 2-34 18-63 46-85Z" fill="#eaf5ff" opacity="0.82"/>
-  <path d="M462 126c78-51 207-56 291-12 87 46 100 132 29 190-71 59-203 68-295 20-91-48-103-139-25-198Z" fill="#f7fbff" opacity="0.92"/>
+  <!-- Left side intentionally remains empty so page text can sit over it. -->
+  <rect width="1440" height="640" fill="transparent"/>
 
-  <g filter="url(#soft-shadow)">
-    <ellipse cx="657" cy="350" rx="250" ry="32" fill="#d8e8f6" opacity="0.55"/>
+  <!-- Soft right-side ambience. Starts after the text area to avoid a hard vertical image edge. -->
+  <path d="M650 114C772 31 994 8 1176 72c176 62 279 193 248 324-32 137-207 213-416 189-215-25-382-134-415-271-19-78 2-150 57-200Z" fill="url(#soft-background)"/>
+  <path d="M790 145c111-59 272-56 389 8 116 64 162 173 105 269-58 99-205 151-360 125-158-27-272-121-277-227-4-72 48-139 143-175Z" fill="#f7fbff" opacity="0.82"/>
+  <path d="M704 96c90-43 217-39 326 10 109 49 177 131 174 209-3 81-83 139-202 147-121 8-248-39-322-118-75-81-66-188 24-248Z" fill="#eef8ff" opacity="0.54"/>
 
-    <!-- Back box -->
-    <g transform="translate(520 176)">
-      <path d="M0 54 86 18l104 34-86 39Z" fill="#f9c986"/>
-      <path d="M0 54v103l104 41V91Z" fill="url(#box-front)"/>
-      <path d="M104 91v107l86-47V52Z" fill="url(#box-side)"/>
-      <path d="M42 37 132 72" stroke="#bf7530" stroke-width="6" stroke-linecap="round" opacity="0.38"/>
-      <path d="M23 91 83 115" stroke="#bd7431" stroke-width="7" stroke-linecap="round" opacity="0.26"/>
+  <g filter="url(#shadow)">
+    <ellipse cx="1062" cy="530" rx="310" ry="44" fill="#cfe1ef" opacity="0.56"/>
+
+    <!-- Main cardboard box cluster: kept on right side only. -->
+    <g transform="translate(835 278)">
+      <path d="M0 74 126 20l158 52-129 61Z" fill="url(#box-top)"/>
+      <path d="M0 74v154l155 66V133Z" fill="url(#box-front)"/>
+      <path d="M155 133v161l129-73V72Z" fill="url(#box-side)"/>
+      <path d="M64 47 216 100" stroke="#b96924" stroke-width="9" stroke-linecap="round" opacity="0.34"/>
+      <path d="M46 135 126 169" stroke="#9d5c20" stroke-width="10" stroke-linecap="round" opacity="0.30"/>
+      <path d="M47 178 151 221" stroke="#9d5c20" stroke-width="10" stroke-linecap="round" opacity="0.22"/>
+      <path d="M58 95 94 110" stroke="#fff0d7" stroke-width="7" stroke-linecap="round" opacity="0.38"/>
     </g>
 
-    <!-- Suitcase -->
-    <g transform="translate(704 154)">
-      <rect x="22" y="34" width="110" height="160" rx="22" fill="#6aa4ff"/>
-      <rect x="38" y="54" width="78" height="118" rx="12" fill="#89bbff" opacity="0.72"/>
-      <path d="M54 34V20c0-11 9-20 20-20h8c11 0 20 9 20 20v14" fill="none" stroke="#3d74cf" stroke-width="10" stroke-linecap="round"/>
-      <path d="M54 78h50M54 110h50M54 142h50" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
-      <circle cx="50" cy="204" r="10" fill="#2f5ea8"/>
-      <circle cx="106" cy="204" r="10" fill="#2f5ea8"/>
+    <g transform="translate(1015 194)">
+      <path d="M0 58 96 18l132 42-98 48Z" fill="#ffda9b"/>
+      <path d="M0 58v124l130 54V108Z" fill="#f0aa5e"/>
+      <path d="M130 108v128l98-58V60Z" fill="#d8893d"/>
+      <path d="M46 37 166 81" stroke="#bd7431" stroke-width="8" stroke-linecap="round" opacity="0.30"/>
     </g>
 
-    <!-- Front box -->
-    <g transform="translate(400 210)">
-      <path d="M0 48 86 12l116 40-88 40Z" fill="#ffd08e"/>
-      <path d="M0 48v112l114 48V92Z" fill="#eda75b"/>
-      <path d="M114 92v116l88-51V52Z" fill="#db8b38"/>
-      <path d="M42 29 150 67" stroke="#bd7431" stroke-width="6" stroke-linecap="round" opacity="0.34"/>
-      <path d="M31 93 86 118" stroke="#a96527" stroke-width="7" stroke-linecap="round" opacity="0.28"/>
-      <path d="M31 124 102 154" stroke="#a96527" stroke-width="7" stroke-linecap="round" opacity="0.22"/>
+    <!-- Checklist board, right-of-center. -->
+    <g transform="translate(760 120) rotate(-6)">
+      <rect x="0" y="0" width="214" height="284" rx="22" fill="url(#paper)" stroke="#c7dff5" stroke-width="5"/>
+      <rect x="61" y="-15" width="92" height="36" rx="13" fill="#6aa4ff"/>
+      <path d="M47 76h122M47 121h124M47 166h124M47 211h105" stroke="#9fbad4" stroke-width="9" stroke-linecap="round"/>
+      <path d="M22 72l12 13 21-28M22 117l12 13 21-28M22 162l12 13 21-28" fill="none" stroke="#2fb366" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="36" cy="212" r="12" fill="#dcecff" stroke="#96b7da" stroke-width="6"/>
     </g>
 
-    <!-- Checklist board -->
-    <g transform="translate(585 72) rotate(-7)">
-      <rect x="0" y="0" width="170" height="225" rx="18" fill="url(#paper)" stroke="#cde4f8" stroke-width="4"/>
-      <rect x="48" y="-12" width="74" height="28" rx="10" fill="#6aa4ff"/>
-      <path d="M36 58h95M36 93h96M36 128h96M36 163h82" stroke="#a8c2db" stroke-width="7" stroke-linecap="round"/>
-      <path d="M18 55l9 9 16-20M18 90l9 9 16-20M18 125l9 9 16-20" fill="none" stroke="#34a853" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="27" cy="164" r="10" fill="#dcecff" stroke="#9ebde0" stroke-width="5"/>
+    <!-- Suitcase stays far right. -->
+    <g transform="translate(1132 154)">
+      <rect x="28" y="46" width="150" height="214" rx="28" fill="url(#suitcase)"/>
+      <rect x="52" y="74" width="102" height="154" rx="16" fill="#9dccff" opacity="0.72"/>
+      <path d="M73 46V28c0-15 12-27 27-27h10c15 0 27 12 27 27v18" fill="none" stroke="#3c71ca" stroke-width="13" stroke-linecap="round"/>
+      <path d="M74 106h62M74 148h62M74 190h62" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.68"/>
+      <circle cx="66" cy="274" r="13" fill="#2f5ea8"/>
+      <circle cx="142" cy="274" r="13" fill="#2f5ea8"/>
     </g>
 
-    <!-- Packing tape -->
-    <g transform="translate(760 302)">
-      <circle cx="50" cy="50" r="47" fill="#ffd84d"/>
-      <circle cx="50" cy="50" r="24" fill="#fff8cd"/>
-      <path d="M50 3a47 47 0 0 1 43 29l-31 10A17 17 0 0 0 50 33Z" fill="#f4bd23" opacity="0.8"/>
+    <!-- Packing tape near right bottom. -->
+    <g transform="translate(1190 396)">
+      <circle cx="70" cy="70" r="66" fill="#ffd94d"/>
+      <circle cx="70" cy="70" r="32" fill="#fff7cb"/>
+      <path d="M70 4a66 66 0 0 1 61 41L88 59a23 23 0 0 0-18-21Z" fill="#f4bb22" opacity="0.82"/>
+      <path d="M22 112c24 21 71 24 103 2" fill="none" stroke="#d79b19" stroke-width="7" stroke-linecap="round" opacity="0.38"/>
     </g>
 
-    <!-- Plant -->
-    <g transform="translate(824 172)">
-      <path d="M48 114c-16-30-17-61-3-96" fill="none" stroke="#4b9b69" stroke-width="7" stroke-linecap="round"/>
-      <path d="M45 48C10 30 17 3 52 26c-6 10-5 18-7 22Z" fill="#6fc48d"/>
-      <path d="M52 72c35-18 49 7 16 30-8-11-14-19-16-30Z" fill="#49a66e"/>
-      <path d="M48 92C10 90 2 60 39 64c2 11 5 20 9 28Z" fill="#75cf96"/>
-      <path d="M20 126h65l-10 78H30Z" fill="#f39a56"/>
-      <path d="M26 145h53" stroke="#c46f34" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+    <!-- Small plant at far right edge. -->
+    <g transform="translate(1290 224)">
+      <path d="M57 142c-19-39-20-79-3-123" fill="none" stroke="#408c5c" stroke-width="8" stroke-linecap="round"/>
+      <path d="M54 56C12 36 20 2 62 30c-8 13-6 23-8 26Z" fill="#72c98f"/>
+      <path d="M64 86c43-21 60 10 18 38-10-14-17-24-18-38Z" fill="#48a66d"/>
+      <path d="M57 113C10 111 1 74 47 80c2 14 6 25 10 33Z" fill="#7ad69a"/>
+      <path d="M22 154h78L88 250H34Z" fill="#f39a56"/>
+      <path d="M31 178h59" stroke="#c46f34" stroke-width="7" stroke-linecap="round" opacity="0.46"/>
     </g>
   </g>
 
-  <!-- Transparent fade helper: prevents a hard visual edge when placed under page gradients. -->
-  <rect width="960" height="420" fill="url(#fade-left)"/>
+  <!-- Extra tiny details, all placed on the right half only. -->
+  <g filter="url(#small-shadow)" opacity="0.95">
+    <g transform="translate(690 392)">
+      <rect x="0" y="0" width="88" height="62" rx="12" fill="#ffffff" stroke="#cfe2f4" stroke-width="4"/>
+      <path d="M18 20h52M18 39h42" stroke="#96b2cf" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(725 468)">
+      <rect x="0" y="0" width="126" height="58" rx="14" fill="#fff4d7" stroke="#f2c875" stroke-width="4"/>
+      <path d="M22 28h80" stroke="#cd8a2f" stroke-width="7" stroke-linecap="round" opacity="0.55"/>
+    </g>
+  </g>
+
+  <!-- Transparent helper layer so the left side visually blends into the page instead of ending as a rectangle. -->
+  <rect width="1440" height="640" fill="url(#left-fade)"/>
 </svg>
