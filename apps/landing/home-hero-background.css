@@ -31,9 +31,9 @@
   z-index: 0;
   background-image: url("/assets/images/hero-moving-prep-main.svg");
   background-repeat: no-repeat;
-  /* The SVG wraps a 480x320 WebP. Avoid scaling it above native height. */
-  background-size: auto min(72%, 320px);
-  background-position: right 6% center;
+  /* The asset is now a wide pure vector SVG, so it can be displayed large without raster blur. */
+  background-size: auto min(94%, 450px);
+  background-position: right 3% center;
   background-color: #ffffff;
 }
 
@@ -78,8 +78,8 @@
   }
 
   .home-redesign-hero__visual-bg {
-    background-size: auto min(70%, 310px);
-    background-position: right 0 center;
+    background-size: auto min(88%, 420px);
+    background-position: right -8px center;
   }
 
   .home-redesign-hero--background .home-redesign-hero__copy {
@@ -106,8 +106,8 @@
   }
 
   .home-redesign-hero__visual-bg {
-    background-size: auto min(68%, 300px);
-    background-position: right -48px center;
+    background-size: auto 88%;
+    background-position: right -96px center;
   }
 
   .home-redesign-hero--background .home-redesign-hero__copy {
@@ -148,8 +148,8 @@
   }
 
   .home-redesign-hero__visual-bg {
-    background-size: auto min(62%, 280px);
-    background-position: right -78px center;
+    background-size: auto 80%;
+    background-position: right -130px center;
   }
 
   .home-redesign-hero--background .home-redesign-hero__copy {
