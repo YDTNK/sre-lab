@@ -188,6 +188,49 @@
   animation: reliability-status-breathe 3.2s ease-in-out infinite;
 }
 
+.reliability-operational-bar {
+  position: relative;
+  overflow: hidden;
+  height: 3px;
+  margin: -10px 22px 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(22, 135, 95, 0.08), rgba(22, 135, 95, 0.18), rgba(22, 135, 95, 0.08));
+}
+
+.reliability-operational-bar span {
+  position: absolute;
+  inset: 0 auto 0 -42%;
+  width: 42%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(22, 135, 95, 0.78), transparent);
+  box-shadow: 0 0 14px rgba(22, 135, 95, 0.28);
+  animation: reliability-operational-flow 3.8s ease-in-out infinite;
+}
+
+@keyframes reliability-operational-flow {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  82% {
+    opacity: 0.35;
+  }
+
+  100% {
+    transform: translateX(340%);
+    opacity: 0;
+  }
+}
+
 @keyframes reliability-status-breathe {
   0%,
   100% {
@@ -210,6 +253,11 @@
 
 .status-card__pulse[data-live-pulse="degraded"] {
   animation: none;
+}
+
+.status-card__state[data-live-state="degraded"] + .reliability-operational-bar span {
+  animation: none;
+  opacity: 0;
 }
 
 .reliability-flow p {
@@ -277,6 +325,10 @@
   .reliability-status-grid,
   .reliability-metric-grid {
     border-left: 0;
+  }
+
+  .reliability-operational-bar {
+    margin: -8px 22px 18px;
   }
 
   .reliability-note-card h3,
