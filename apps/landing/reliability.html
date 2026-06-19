@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reliability | SRE Lab Portfolio</title>
+  <meta
+    name="description"
+    content="Reliability Demo APIのサービス状態、SLO、エンドポイント挙動、Runbook、Incident、Postmortemへの証跡をまとめたSREポートフォリオページです。"
+  />
+  <link rel="stylesheet" href="/portfolio.css?v=20260620-reliability-1" />
+  <link rel="stylesheet" href="/architecture.css?v=20260620-reliability-1" />
+  <link rel="stylesheet" href="/reliability.css?v=20260620-reliability-1" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">本文へスキップ</a>
+
+  <aside class="sidebar" aria-label="ポートフォリオナビゲーション">
+    <div class="sidebar__brand">
+      <a href="/">Yudai Tanaka</a>
+      <p>Portfolio</p>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="/">
+        <span>01</span>トップ
+      </a>
+      <a class="sidebar__link" href="/architecture.html">
+        <span>02</span>構成
+      </a>
+      <a class="sidebar__link sidebar__link--active" href="/reliability.html">
+        <span>03</span>信頼性
+      </a>
+      <a class="sidebar__link" href="/monitoring.html">
+        <span>04</span>監視
+      </a>
+      <a class="sidebar__link" href="/cicd.html">
+        <span>05</span>CI/CD
+      </a>
+      <a class="sidebar__link" href="/incidents.html">
+        <span>06</span>障害対応
+      </a>
+      <a class="sidebar__link" href="/cost.html">
+        <span>07</span>コスト制御
+      </a>
+      <a class="sidebar__link" href="https://github.com/YDTNK/sre-lab">
+        <span>08</span>GitHub
+      </a>
+    </nav>
+
+    <p class="sidebar__meta">Cloudflare · Grafana · GitHub</p>
+  </aside>
+
+  <main class="main" id="main-content">
+    <div class="main__inner">
+      <section class="page-hero" aria-labelledby="reliability-title">
+        <div>
+          <p class="eyebrow">Reliability</p>
+          <h1 id="reliability-title">Reliability<br />Dashboard</h1>
+          <p class="page-title-ja">信頼性</p>
+          <p class="page-hero__lead">
+            <span class="copy-desktop">Reliability Demo APIのサービス状態、SLO、エンドポイント挙動、運用証跡を一つの画面で確認できるように整理します。</span>
+            <span class="copy-mobile">Reliability Demo APIの状態、SLO、挙動、運用証跡を一画面で確認します。</span>
+          </p>
+        </div>
+        <div class="page-summary" aria-label="Reliability summary">
+          <p>Current scope</p>
+          <strong>Service State · SLO · Endpoints · Evidence</strong>
+          <span>Static dashboard / API unchanged</span>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="service-state-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Service State</p>
+            <h2 id="service-state-title">現在の状態</h2>
+          </div>
+          <p class="section-heading__count">Operational view</p>
+        </div>
+
+        <div class="reliability-status-grid">
+          <article class="status-card reliability-status-card" aria-labelledby="api-state-title">
+            <div class="status-card__header">
+              <p id="api-state-title">Current Status</p>
+              <span class="status-card__pulse" aria-hidden="true"></span>
+            </div>
+            <p class="status-card__state">
+              <span aria-hidden="true"></span>
+              Operational
+            </p>
+            <dl class="status-card__metrics">
+              <div>
+                <dt>API base</dt>
+                <dd>Workers</dd>
+              </div>
+              <div>
+                <dt>Primary SLI</dt>
+                <dd class="metric--success">/health</dd>
+              </div>
+              <div>
+                <dt>Error demo</dt>
+                <dd class="metric--danger">expected</dd>
+              </div>
+            </dl>
+            <a href="https://sre-lab-api.daisan-tanaka.workers.dev/api/health">Live health <span aria-hidden="true">↗</span></a>
+          </article>
+
+          <article class="reliability-note-card">
+            <span>API</span>
+            <h3>Production endpoint</h3>
+            <p>本番APIは Cloudflare Workers 上で稼働しています。このページは静的な運用ダッシュボードであり、ライブ監視値を直接取得する実装ではありません。</p>
+            <a href="https://sre-lab-api.daisan-tanaka.workers.dev">API base <span aria-hidden="true">↗</span></a>
+          </article>
+
+          <article class="reliability-note-card">
+            <span>VER</span>
+            <h3>Latest verification</h3>
+            <p>2026-06-19の本番確認では、health / status / fallback / slow / error の期待ステータスを確認済みです。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md">Verification record <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="slo-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">SLO / SLI</p>
+            <h2 id="slo-title">SLOと判定基準</h2>
+          </div>
+          <p class="section-heading__count">99.0% availability</p>
+        </div>
+
+        <div class="reliability-metric-grid">
+          <article>
+            <span>01</span>
+            <h3>Availability SLO</h3>
+            <strong>99.0%</strong>
+            <p>30日間の /api/health Synthetic Check を基準に、HTTP 200をGood Eventとして扱います。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Latency SLI</h3>
+            <strong>p95 &lt; 1000ms</strong>
+            <p>/api/health の成功レスポンスを対象にします。意図的な遅延デモである /api/slow は通常SLIから分けます。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Error budget</h3>
+            <strong>1.0%</strong>
+            <p>エラーバジェット消費が進んだ場合は、変更確認、信頼性修正、Incident / Postmortem対応へ進みます。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="endpoints-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Endpoint Behavior</p>
+            <h2 id="endpoints-title">エンドポイント挙動</h2>
+          </div>
+          <p class="section-heading__count">Expected responses</p>
+        </div>
+
+        <div class="endpoint-list">
+          <article>
+            <span>01</span>
+            <code>GET /api/health</code>
+            <strong class="metric--success">200</strong>
+            <p>本番稼働確認のPrimary uptime checkです。Availability SLIの中心として扱います。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <code>GET /api/status</code>
+            <strong class="metric--success">200</strong>
+            <p>サービスの状態、構成、アクティブなエンドポイントを確認するためのInventory checkです。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <code>GET /api/fallback</code>
+            <strong class="metric--success">200</strong>
+            <p>縮退運転を想定したfallback demoです。依存障害時の graceful degradation を説明するために使います。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <code>GET /api/slow?delayMs=1000</code>
+            <strong class="metric--success">200</strong>
+            <p>制御された遅延を返すlatency demoです。通常の /api/health latency SLIとは分けて扱います。</p>
+          </article>
+          <article class="endpoint-list__expected-error">
+            <span>05</span>
+            <code>GET /api/error</code>
+            <strong class="metric--danger">500 expected</strong>
+            <p>意図的な500エラーデモです。手動実行やデモ用途の結果であり、通常のAvailability計算には含めません。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="operations" aria-labelledby="reliability-flow-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Operations Flow</p>
+            <h2 id="reliability-flow-title">運用対応の流れ</h2>
+          </div>
+          <p class="section-heading__count">Signal to follow-up</p>
+        </div>
+
+        <ol class="architecture-flow architecture-flow--five reliability-flow">
+          <li><span>01</span><div class="flow-icon" aria-hidden="true">SYN</div><strong>Synthetic check</strong><p>/api/health や /api/status を外形監視します。</p></li>
+          <li><span>02</span><div class="flow-icon" aria-hidden="true">ALRT</div><strong>Alert rule</strong><p>連続失敗や遅延悪化を検知します。</p></li>
+          <li><span>03</span><div class="flow-icon" aria-hidden="true">ISS</div><strong>GitHub Issue</strong><p>アラートを運用タスクとして記録します。</p></li>
+          <li><span>04</span><div class="flow-icon" aria-hidden="true">RUN</div><strong>Runbook</strong><p>切り分け、確認、復旧判断を実施します。</p></li>
+          <li><span>05</span><div class="flow-icon" aria-hidden="true">PR</div><strong>Follow-up PR</strong><p>原因修正や再発防止をPull Requestで追跡します。</p></li>
+        </ol>
+      </section>
+
+      <section class="evidence" aria-labelledby="evidence-links-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Operational Evidence</p>
+            <h2 id="evidence-links-title">運用証跡</h2>
+          </div>
+          <p class="section-heading__count">Docs and records</p>
+        </div>
+
+        <div class="reliability-evidence-list">
+          <article>
+            <span>SLO</span>
+            <h3>SLO / SLI document</h3>
+            <p>Availability、Latency、Error rate、Error budget policyを定義しています。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/slo/reliability-demo-api.md">Open document <span aria-hidden="true">↗</span></a>
+          </article>
+          <article>
+            <span>RUN</span>
+            <h3>Runbook</h3>
+            <p>Health failure、Latency investigation、Fallback behaviorの確認手順をまとめています。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/runbooks/reliability-demo-api.md">Open runbook <span aria-hidden="true">↗</span></a>
+          </article>
+          <article>
+            <span>INC</span>
+            <h3>Production verification</h3>
+            <p>Reliability Demo API MVPの本番確認記録です。実障害ではなく運用証跡として扱います。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md">Open record <span aria-hidden="true">↗</span></a>
+          </article>
+          <article>
+            <span>PM</span>
+            <h3>Postmortem template</h3>
+            <p>実障害が発生した場合に、Impact、Detection、Timeline、Root cause、Follow-upを記録します。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/postmortems/template.md">Open template <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>SRE Lab — Reliability Demo APIのSLO・監視・障害対応・改善サイクルを示すポートフォリオ。</p>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
