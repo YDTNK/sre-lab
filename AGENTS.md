@@ -2,30 +2,37 @@
 
 This file is the first entry point for ChatGPT, Codex, GitHub Copilot agents, and other AI-assisted tools working on this repository.
 
-## Cross Repository Context Contract
+## Public / Private Context Contract
 
-SRE Lab work spans two repositories.
+SRE Lab separates public portfolio evidence from private maintainer context.
 
 ```text
-YDTNK/sre-lab
-= implementation repository
+Public implementation repository:
+- YDTNK/sre-lab
 
-YDTNK/engineering-career-hq
-= project management / roadmap / memory repository
+Private management context:
+- project status
+- roadmap
+- decision log
+- issue planning
+- progress notes
 ```
 
-Before answering, reviewing, implementing, or creating a PR for SRE Lab, check both repositories.
+Before answering, reviewing, implementing, or creating a PR for SRE Lab, check both the public implementation repository and the private management context when available.
 
-Do not rely on only one repository.
+Do not rely on only one context source.
+
+If the private management context is unavailable, state that limitation before making roadmap, priority, or project-state decisions.
 
 Required management-side context:
 
 ```text
-YDTNK/engineering-career-hq/projects/sre-lab/status.md
-YDTNK/engineering-career-hq/projects/sre-lab/project-context.md
-YDTNK/engineering-career-hq/projects/sre-lab/issues.md
-YDTNK/engineering-career-hq/projects/sre-lab/progress.md
-YDTNK/engineering-career-hq/projects/sre-lab/standards/mandatory-context-registry.md
+private management context for SRE Lab:
+- status.md
+- project-context.md
+- issues.md
+- progress.md
+- mandatory-context-registry.md
 ```
 
 Required implementation-side context:
@@ -40,11 +47,7 @@ YDTNK/sre-lab/docs/ai-assisted-85-90-workflow.md
 YDTNK/sre-lab/docs/sre-lab-workflow.md
 ```
 
-For Codex work, also check the `Codex Prompt Efficiency Policy` in:
-
-```text
-YDTNK/engineering-career-hq/projects/sre-lab/issues.md
-```
+For Codex work, also check the Codex Prompt Efficiency Policy in the private management context when available.
 
 ## Read These First
 
@@ -86,7 +89,7 @@ Primary focus: Reliability Demo API.
 Show: SLO / SLI, monitoring, alerting, CI/CD, incident response, runbooks, postmortems, API safety, and cost guardrails.
 ```
 
-Do not return to the old revenue-first direction unless the management-side `status.md` explicitly changes.
+Do not return to the old revenue-first direction unless the private management context explicitly changes.
 
 ## Stopped Work
 
@@ -217,14 +220,4 @@ Avoid rewriting the large aggregate file:
 
 ```text
 docs/incidents.md
-```
-
-unless the full current content is safely loaded and the change is small and verified.
-
-## Completion Reports
-
-When closing Issues, reporting merged PRs, documenting incident follow-up, or completing Grafana-created investigations, use:
-
-```text
-docs/completion-report-template.md
 ```

@@ -1,36 +1,5 @@
 # SRE Lab
 
-## AI Startup Entry
-
-AIがSRE Lab関連の質問・レビュー・実装判断を行う場合、最初に以下を確認してください。
-
-```text
-START_HERE_FOR_AI.md
-AGENTS.md
-docs/mandatory-context-registry.md
-```
-
-SRE Labは2リポジトリ構成です。
-
-```text
-YDTNK/sre-lab
-= implementation repository
-
-YDTNK/engineering-career-hq
-= project management / roadmap / memory repository
-```
-
-片方だけを確認して、SRE Labの状態確認完了とは判断しないでください。
-
-管理側の正本:
-
-```text
-YDTNK/engineering-career-hq/projects/sre-lab/status.md
-YDTNK/engineering-career-hq/projects/sre-lab/project-context.md
-YDTNK/engineering-career-hq/projects/sre-lab/issues.md
-YDTNK/engineering-career-hq/projects/sre-lab/progress.md
-```
-
 [![CI](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml)
 [![Deploy Worker](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml)
 
@@ -54,6 +23,12 @@ SRE Lab should show:
 - Cost guardrails
 - GitHub Issue / PR based operations
 ```
+
+## AI-Assisted Workflow
+
+This project uses AI-assisted development for design review, implementation support, documentation consistency checks, and operational workflow improvement.
+
+Public portfolio documentation and private maintainer context are intentionally managed separately. This README describes the externally reviewable portfolio. Maintainer-only planning notes, roadmap details, and decision logs are not part of the public portfolio surface.
 
 ## Current State
 
@@ -102,7 +77,6 @@ The previous Moving Prep / revenue work is no longer the active direction, but t
 Preserve and adapt:
 
 ```text
-- AI startup / cross-repository context rules
 - Issue-first workflow
 - Codex-ready Issue workflow
 - GitHub Actions CI/CD

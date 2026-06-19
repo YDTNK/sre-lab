@@ -2,46 +2,49 @@
 
 ## Purpose
 
-This document prevents AI assistants from checking only one of the two SRE Lab repositories.
+This document prevents AI assistants from checking only the public implementation repository when working on SRE Lab.
 
-SRE Lab has two repositories with different roles:
+SRE Lab uses two kinds of context:
+
+```text
+1. Public implementation context
+2. Internal planning context
+```
+
+The public implementation context is this repository:
 
 ```text
 YDTNK/sre-lab
-= implementation repository
-
-YDTNK/engineering-career-hq
-= project management / roadmap / memory repository
 ```
 
-Neither repository alone is sufficient for reliable work.
+The internal planning context contains project status, roadmap, decision logs, issue planning, and progress notes.
 
-## Cross Repository Context Contract
+Do not expose internal planning notes as part of the public portfolio surface.
 
-Before answering, reviewing, implementing, or creating a PR for SRE Lab, AI assistants must check both repositories.
+## Context Contract
+
+Before answering, reviewing, implementing, or creating a PR for SRE Lab, AI assistants should check both context sources when available.
+
+If the internal planning context is unavailable, state that limitation before making roadmap, priority, or project-state decisions.
+
+## Required Internal Planning Context
+
+When available, check:
 
 ```text
-Do not answer from only YDTNK/sre-lab.
-Do not answer from only YDTNK/engineering-career-hq.
+- project-context.md
+- mandatory-context-registry.md
+- issues.md
+- progress.md
+- phase1-20-roadmap.md
 ```
 
-## Required engineering-career-hq Files
+## Required Implementation Context
 
-Always check these management-side files first:
-
-```text
-YDTNK/engineering-career-hq/projects/sre-lab/project-context.md
-YDTNK/engineering-career-hq/projects/sre-lab/standards/mandatory-context-registry.md
-YDTNK/engineering-career-hq/projects/sre-lab/issues.md
-YDTNK/engineering-career-hq/projects/sre-lab/progress.md
-YDTNK/engineering-career-hq/projects/sre-lab/phase1-20-roadmap.md
-```
-
-## Required sre-lab Files
-
-Always check these implementation-side files before implementation work:
+Before implementation work, check:
 
 ```text
+YDTNK/sre-lab/START_HERE_FOR_AI.md
 YDTNK/sre-lab/AGENTS.md
 YDTNK/sre-lab/docs/mandatory-context-registry.md
 YDTNK/sre-lab/docs/codex-workflow.md
@@ -50,47 +53,17 @@ YDTNK/sre-lab/docs/sre-lab-workflow.md
 YDTNK/sre-lab/.github/ISSUE_TEMPLATE/codex_task.md
 ```
 
-## Codex Prompt Efficiency Requirement
-
-When preparing Codex work, also check:
-
-```text
-YDTNK/engineering-career-hq/projects/sre-lab/issues.md
-Section: Codex Prompt Efficiency Policy
-```
-
-Codex instructions must assume the 5-hour limit and should be written so Codex can plan, implement, validate, and open a reviewable Draft PR without repeated clarification.
-
 ## Required Declaration
 
-At the start of substantial SRE Lab work, include a short declaration in the response or daily-log:
+At the start of substantial SRE Lab work, include:
 
 ```text
-Checked repositories:
-- YDTNK/engineering-career-hq
-- YDTNK/sre-lab
-
-Checked required docs:
-- project-context.md
-- mandatory-context-registry.md
-- issues.md
-- AGENTS.md
-- codex-workflow.md
+Checked context sources:
+- public implementation context
+- internal planning context / unavailable
 
 Missing docs:
 - none / <list>
 ```
 
-If either repository has not been checked, do not claim that the project context is fully confirmed.
-
-## Failure Prevention Checklist
-
-```text
-[ ] Did I check engineering-career-hq?
-[ ] Did I check sre-lab?
-[ ] Did I check the management-side mandatory registry?
-[ ] Did I check this implementation-side mandatory registry?
-[ ] Did I check issues.md when Codex or roadmap priority is involved?
-[ ] Did I check AGENTS.md when implementation is involved?
-[ ] Did I check the current daily-log?
-```
+If the internal planning context has not been checked, do not claim that the full project context has been confirmed.
