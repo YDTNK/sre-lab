@@ -12,9 +12,9 @@ Public implementation repository:
 
 Private management context:
 - project status
-- roadmap
+- portfolio requirements
+- roadmap / issue planning
 - decision log
-- issue planning
 - progress notes
 ```
 
@@ -29,6 +29,7 @@ Required management-side context:
 ```text
 private management context for SRE Lab:
 - status.md
+- portfolio-requirements.md
 - project-context.md
 - issues.md
 - progress.md
@@ -58,35 +59,40 @@ Before answering or changing anything in this repository, read the following fil
 3. `docs/mandatory-context-registry.md`
 4. `docs/issue-number-execution.md`
 5. `README.md`
-6. `docs/automation-first-working-policy.md`
-7. `docs/ai-organization-operating-model.md`
-8. `docs/sre-lab-workflow.md`
-9. `docs/ai-assisted-85-90-workflow.md`
-10. `docs/codex-workflow.md`
-11. `docs/completion-report-template.md`
-12. `docs/deploy-failure-investigation.md`
-13. `docs/grafana-issue-ai-investigation.md`
-14. `docs/incident-record-rules.md`
-15. `docs/service-state-checklist.md`
-16. `docs/services.md`
-17. `docs/runbook.md`
-18. Latest relevant records under `docs/incidents/`
+6. `docs/services.md`
+7. `docs/runbooks/reliability-demo-api.md`
+8. `docs/slo/reliability-demo-api.md`
+9. `docs/operations.md`
+10. `docs/cost.md`
+11. `docs/automation-first-working-policy.md`
+12. `docs/ai-organization-operating-model.md`
+13. `docs/sre-lab-workflow.md`
+14. `docs/ai-assisted-85-90-workflow.md`
+15. `docs/codex-workflow.md`
+16. `docs/completion-report-template.md`
+17. `docs/deploy-failure-investigation.md`
+18. `docs/grafana-issue-ai-investigation.md`
+19. `docs/incident-record-rules.md`
+20. `docs/service-state-checklist.md`
+21. Latest relevant records under `docs/incidents/`
 
 ## Current Project Direction
 
-SRE Lab is now SRE portfolio-first.
+SRE Lab is SRE portfolio-first.
 
 ```text
-Current active target: Reliability Demo API MVP
-Tracking Issue: #74
+Current phase: Portfolio evidence loop completed
+Current active target: Final full-site QA and optional polish
+Tracking Issue: #88
+Reliability Demo API: implemented / active portfolio demonstration service
 ```
 
 The accepted direction is:
 
 ```text
 SRE Lab = SRE / Platform Engineer portfolio.
-Primary focus: Reliability Demo API.
-Show: SLO / SLI, monitoring, alerting, CI/CD, incident response, runbooks, postmortems, API safety, and cost guardrails.
+Primary focus: Reliability Demo API and operational evidence.
+Show: architecture, SLO / SLI, monitoring, alerting, CI/CD, incident response, runbooks, postmortems, API safety, and cost guardrails.
 ```
 
 Do not return to the old revenue-first direction unless the private management context explicitly changes.
@@ -102,11 +108,15 @@ Do not continue these as active work:
 - Stripe CTA connection
 - PR #66
 - Issue #67
+- Issue #69 revenue research route
+- Issue #70 primary service decision route
+- Issue #74 as current active work
+- PR #60 as current active work
 - consumer AI service expansion
 - revenue-first market research route
 ```
 
-Historical records may remain, but they must not drive current implementation.
+Historical records may remain under archive paths, but they must not drive current implementation.
 
 ## Core Working Policy
 
@@ -195,18 +205,18 @@ Pause and ask for explicit confirmation before completing or merging changes tha
 
 ## Service State Gate
 
-Before restoring any endpoint, page, monitor, or alert target, confirm whether the target is active, degraded, deprecated, removed, replaced, or unknown.
+Before restoring any endpoint, page, monitor, or alert target, confirm whether the target is active, degraded, deprecated, removed, replaced, historical, or unknown.
 
 Current target service state:
 
 ```text
-Reliability Demo API: planned active target
+Reliability Demo API: implemented / active portfolio service
 AI Moving Assistant / Moving Prep Board: historical implementation asset, not monetization target
 AWS Cost Simulator: removed historical service
 Digital Product LP Starter Kit: stopped / not planned
 ```
 
-Do not restore removed or stopped services just because a page, alert, or monitor references them.
+Do not restore removed, stopped, or historical services just because a page, alert, or monitor references them.
 
 ## Incident and Release Records
 
