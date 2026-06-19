@@ -30,6 +30,7 @@ html {
 body {
   min-width: 320px;
   margin: 0;
+  overflow-x: hidden;
   color: var(--color-text);
   background: var(--color-bg);
   font-family:
@@ -156,9 +157,16 @@ a {
   min-height: 520px;
   padding: 54px 0 72px;
   border-bottom: 1px solid var(--color-border);
-  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.75fr);
-  gap: clamp(48px, 8vw, 112px);
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.75fr);
+  gap: clamp(48px, 7vw, 96px);
   align-items: center;
+}
+
+.hero__content,
+.status-card,
+.evidence-card,
+.operations-flow li {
+  min-width: 0;
 }
 
 .eyebrow {
@@ -186,6 +194,18 @@ a {
   color: var(--color-muted);
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   line-height: 1.75;
+}
+
+.hero__lead,
+.evidence-card > p,
+.footer p {
+  overflow-wrap: anywhere;
+  line-break: strict;
+}
+
+.button,
+.operations-flow strong {
+  overflow-wrap: anywhere;
 }
 
 .hero__actions {
@@ -511,7 +531,7 @@ a {
   outline-offset: 3px;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1199px) {
   :root {
     --main-padding-x: 40px;
     --main-padding-y: 44px;
@@ -537,6 +557,7 @@ a {
     margin: 0 -28px;
     padding: 0 28px;
     border-top: 1px solid var(--color-border);
+    white-space: nowrap;
     scrollbar-width: thin;
   }
 
@@ -562,7 +583,8 @@ a {
 
   .hero {
     min-height: auto;
-    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+    gap: 40px;
   }
 
   .hero h1 {
@@ -590,7 +612,7 @@ a {
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 899px) {
   :root {
     --main-padding-x: 22px;
     --main-padding-y: 18px;
@@ -624,15 +646,20 @@ a {
   }
 
   .hero__lead {
+    max-width: 100%;
     margin-top: 24px;
     font-size: 1rem;
+    line-height: 1.8;
   }
 
   .hero__actions {
     display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .button {
+    width: 100%;
     justify-content: space-between;
   }
 
@@ -658,7 +685,7 @@ a {
   }
 
   .evidence-card {
-    min-height: 260px;
+    min-height: auto;
   }
 
   .operations-flow {
@@ -690,6 +717,45 @@ a {
 
   .footer {
     display: grid;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --main-padding-x: 18px;
+  }
+
+  .sidebar {
+    padding: 18px 18px 0;
+  }
+
+  .sidebar__nav {
+    margin: 0 -18px;
+    padding: 0 18px;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 16vw, 4.4rem);
+  }
+
+  .section-heading h2 {
+    font-size: 2rem;
+  }
+
+  .evidence-card {
+    padding: 24px;
+  }
+
+  .evidence-card > p {
+    min-height: 0;
+  }
+
+  .status-card__metrics div {
+    display: grid;
+    min-height: auto;
+    padding: 10px 0;
+    gap: 4px;
+    justify-content: stretch;
   }
 }
 
