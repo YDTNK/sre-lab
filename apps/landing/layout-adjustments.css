@@ -1,3 +1,16 @@
+.copy-mobile {
+  display: none;
+}
+
+.copy-desktop,
+.copy-mobile {
+  text-wrap: pretty;
+}
+
+.keep-together {
+  white-space: nowrap;
+}
+
 .evidence-grid {
   border-left: 0;
   grid-template-columns: 1fr;
@@ -43,6 +56,14 @@
 }
 
 @media (max-width: 899px) {
+  .copy-desktop {
+    display: none;
+  }
+
+  .copy-mobile {
+    display: inline;
+  }
+
   .evidence-card,
   .evidence-card--future {
     padding: 20px 0;
