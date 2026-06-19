@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRE Lab | Reliability Portfolio</title>
+  <title>SRE Lab | SREポートフォリオ</title>
   <meta
     name="description"
-    content="SLO、監視、障害対応、Runbook、CI/CDの証拠を見せるSRE / Platform Engineeringポートフォリオです。"
+    content="Reliability Demo APIを題材に、SLO、監視、障害対応、Runbook、CI/CDの考え方を公開するSRE / Platform Engineeringポートフォリオです。"
   />
   <link rel="stylesheet" href="/portfolio.css" />
 </head>
@@ -16,30 +16,30 @@
   <aside class="sidebar" aria-label="ポートフォリオナビゲーション">
     <div class="sidebar__brand">
       <a href="#top">SRE Lab</a>
-      <p>Reliability Portfolio</p>
+      <p>SRE Portfolio</p>
     </div>
 
     <nav class="sidebar__nav">
       <a class="sidebar__link sidebar__link--active" href="#top">
-        <span>01</span>Top
+        <span>01</span>トップ
       </a>
       <a class="sidebar__link" href="/architecture.html">
-        <span>02</span>Architecture
+        <span>02</span>構成
       </a>
       <a class="sidebar__link" href="#evidence">
-        <span>03</span>Reliability
+        <span>03</span>信頼性
       </a>
       <a class="sidebar__link" href="/monitoring.html">
-        <span>04</span>Monitoring
+        <span>04</span>監視
       </a>
       <a class="sidebar__link" href="/cicd.html">
         <span>05</span>CI/CD
       </a>
       <a class="sidebar__link" href="/incidents.html">
-        <span>06</span>Incidents
+        <span>06</span>障害対応
       </a>
       <a class="sidebar__link" href="/cost.html">
-        <span>07</span>Cost
+        <span>07</span>コスト制御
       </a>
       <a class="sidebar__link" href="https://github.com/YDTNK/sre-lab">
         <span>08</span>GitHub
@@ -56,7 +56,7 @@
           <p class="eyebrow">SRE / Platform Engineering Portfolio</p>
           <h1 id="hero-title">Reliability<br />Demo API</h1>
           <p class="hero__lead">
-            小さな本番APIを題材に、SLO・監視・障害対応・Runbook・CI/CDの証拠を見せるポートフォリオです。
+            APIの正常系・遅延・エラー・fallbackをあえて用意し、監視、SLO、Runbook、障害対応までを一つの流れで見せるポートフォリオです。
           </p>
 
           <div class="hero__actions">
@@ -64,15 +64,15 @@
               class="button button--primary"
               href="https://sre-lab-api.daisan-tanaka.workers.dev/api/health"
             >
-              Live API
+              稼働中のAPIを見る
               <span aria-hidden="true">↗</span>
             </a>
             <a class="button" href="#evidence">
-              運用証拠を見る
+              運用設計を見る
               <span aria-hidden="true">→</span>
             </a>
             <a class="button" href="https://github.com/YDTNK/sre-lab">
-              GitHub
+              GitHubを見る
               <span aria-hidden="true">↗</span>
             </a>
           </div>
@@ -80,12 +80,12 @@
 
         <article class="status-card" aria-labelledby="status-title">
           <div class="status-card__header">
-            <p id="status-title">Current Status</p>
+            <p id="status-title">稼働状況</p>
             <span class="status-card__pulse" aria-hidden="true"></span>
           </div>
           <p class="status-card__state">
             <span aria-hidden="true"></span>
-            Operational
+            正常稼働
           </p>
           <dl class="status-card__metrics">
             <div>
@@ -93,7 +93,7 @@
               <dd>99.0%</dd>
             </div>
             <div>
-              <dt>Health</dt>
+              <dt>Health check</dt>
               <dd class="metric--success">200</dd>
             </div>
             <div>
@@ -101,17 +101,17 @@
               <dd class="metric--danger">500 expected</dd>
             </div>
           </dl>
-          <a href="#evidence">運用証拠を見る <span aria-hidden="true">→</span></a>
+          <a href="#evidence">運用設計を見る <span aria-hidden="true">→</span></a>
         </article>
       </section>
 
       <section class="evidence" id="evidence" aria-labelledby="evidence-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">System Evidence</p>
-            <h2 id="evidence-title">Operational Evidence</h2>
+            <p class="eyebrow">Operational Design</p>
+            <h2 id="evidence-title">見せる運用設計</h2>
           </div>
-          <p class="section-heading__count">06 modules</p>
+          <p class="section-heading__count">06 areas</p>
         </div>
 
         <div class="evidence-grid">
@@ -120,9 +120,9 @@
               <p class="evidence-card__number">01</p>
               <span class="tag">System diagram</span>
             </div>
-            <h3>Architecture</h3>
-            <p>構成図、リクエストフロー、監視フロー、GitHub Issue化の流れを整理します。</p>
-            <a href="/architecture.html" aria-label="Architecture evidenceを見る">
+            <h3>構成</h3>
+            <p>Cloudflare Pages、Workers API、Grafana、GitHub Issueの役割とつながりを整理します。</p>
+            <a href="/architecture.html" aria-label="構成ページを見る">
               詳細を見る <span aria-hidden="true">→</span>
             </a>
           </article>
@@ -132,9 +132,9 @@
               <p class="evidence-card__number">02</p>
               <span class="tag">SLO 99.0%</span>
             </div>
-            <h3>Reliability</h3>
-            <p>SLO、SLI、Error Budget、各APIエンドポイントの挙動を見せます。</p>
-            <a href="#evidence" aria-label="Reliability evidenceを見る">
+            <h3>信頼性</h3>
+            <p>正常応答、遅延、意図的な500、fallbackを使い、API運用で見るべき状態を整理します。</p>
+            <a href="#evidence" aria-label="信頼性の説明を見る">
               このページで確認 <span aria-hidden="true">→</span>
             </a>
           </article>
@@ -144,9 +144,9 @@
               <p class="evidence-card__number">03</p>
               <span class="tag">Alert flow</span>
             </div>
-            <h3>Monitoring</h3>
-            <p>Synthetic checks、alert rules、routing、dedupeの設計を見せます。</p>
-            <a href="/monitoring.html" aria-label="Monitoring evidenceを見る">
+            <h3>監視</h3>
+            <p>外形監視、アラート条件、通知先、GitHub Issue化までの流れを見せます。</p>
+            <a href="/monitoring.html" aria-label="監視ページを見る">
               詳細を見る <span aria-hidden="true">→</span>
             </a>
           </article>
@@ -157,8 +157,8 @@
               <span class="tag">Deploy flow</span>
             </div>
             <h3>CI/CD</h3>
-            <p>PR、CI、deploy、smoke test、failure handling、rollback policyを見せます。</p>
-            <a href="/cicd.html" aria-label="CI/CD evidenceを見る">
+            <p>Pull Request、CI、デプロイ、smoke test、失敗時の切り戻し方針を整理します。</p>
+            <a href="/cicd.html" aria-label="CI/CDページを見る">
               詳細を見る <span aria-hidden="true">→</span>
             </a>
           </article>
@@ -166,11 +166,11 @@
           <article class="evidence-card">
             <div class="evidence-card__header">
               <p class="evidence-card__number">05</p>
-              <span class="tag">Game Day passed</span>
+              <span class="tag">Game Day</span>
             </div>
-            <h3>Incidents</h3>
-            <p>本番検証、Game Day、Postmortem方針をケーススタディとして残します。</p>
-            <a href="/incidents.html" aria-label="Incident evidenceを見る">
+            <h3>障害対応</h3>
+            <p>Game Day、本番確認、Runbook、Postmortem方針を運用の記録として残します。</p>
+            <a href="/incidents.html" aria-label="障害対応ページを見る">
               詳細を見る <span aria-hidden="true">→</span>
             </a>
           </article>
@@ -180,9 +180,9 @@
               <p class="evidence-card__number">06</p>
               <span class="tag">Future phase</span>
             </div>
-            <h3>Cost Guardrails</h3>
-            <p>Rate limit、usage counter、budget threshold、cost alertの設計を追加予定です。</p>
-            <a href="/cost.html" aria-label="Cost Guardrails roadmapを見る">
+            <h3>コスト制御</h3>
+            <p>Rate limit、利用量の把握、予算しきい値、コスト超過時の対応を追加予定です。</p>
+            <a href="/cost.html" aria-label="コスト制御ロードマップを見る">
               Roadmapを見る <span aria-hidden="true">→</span>
             </a>
           </article>
@@ -192,8 +192,8 @@
       <section class="operations" aria-labelledby="operations-title">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Request to Response</p>
-            <h2 id="operations-title">Core Operations Flow</h2>
+            <p class="eyebrow">Operations Flow</p>
+            <h2 id="operations-title">運用の流れ</h2>
           </div>
           <p class="section-heading__count">End-to-end</p>
         </div>
@@ -201,7 +201,7 @@
         <ol class="operations-flow">
           <li>
             <span>01</span>
-            <strong>User</strong>
+            <strong>利用者</strong>
           </li>
           <li>
             <span>02</span>
@@ -227,8 +227,8 @@
       </section>
 
       <footer class="footer">
-        <p>SRE Lab — Reliability Demo APIで運用証拠を見せるポートフォリオ。</p>
-        <p>Historical product demos remain archived, not primary.</p>
+        <p>SRE Lab — Reliability Demo APIを題材に、運用設計と改善の証拠を残すポートフォリオ。</p>
+        <p>過去のデモは履歴資産として保持し、現在の主役はReliability Demo APIです。</p>
       </footer>
     </div>
   </main>
