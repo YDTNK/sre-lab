@@ -1,0 +1,38 @@
+.evidence-grid {
+  border-left: 0;
+  grid-template-columns: 1fr;
+}
+
+.evidence-card,
+.evidence-card--future {
+  display: grid;
+  min-height: auto;
+  padding: 24px 0;
+  border-right: 0;
+  background: transparent;
+  grid-template-columns: 74px minmax(0, 1fr) auto;
+  column-gap: 22px;
+  align-items: start;
+}
+
+.evidence-card__header {
+  display: grid;
+  gap: 10px;
+}
+
+.evidence-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.18rem;
+}
+
+.evidence-card > p {
+  max-width: 720px;
+  min-height: 0;
+  font-size: 0.95rem;
+  line-height: 1.78;
+}
+
+.evidence-card > a {
+  margin-top: 2px;
+  white-space: nowrap;
+}
