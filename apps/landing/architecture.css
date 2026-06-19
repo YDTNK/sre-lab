@@ -101,6 +101,14 @@
   .architecture-flow p {
     grid-column: 3 / 4;
     padding-top: 0;
+    font-size: 0.88rem;
+    line-height: 1.72;
+  }
+
+  .architecture-card p,
+  .detail-list p {
+    font-size: 0.84rem;
+    line-height: 1.7;
   }
 }
 
@@ -113,5 +121,16 @@
   .architecture-card h3,
   .detail-list h3 {
     font-size: 0.86rem;
+  }
+
+  .architecture-flow p {
+    font-size: 0.86rem;
+    line-height: 1.72;
+  }
+
+  .architecture-card p,
+  .detail-list p {
+    font-size: 0.8rem;
+    line-height: 1.68;
   }
 }
