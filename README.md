@@ -86,6 +86,18 @@ Planned initial endpoints:
 /api/status
 ```
 
+The MVP endpoints are implemented by the Cloudflare Workers API:
+
+| Endpoint | Behavior |
+|---|---|
+| `GET /api/health` | Returns HTTP 200 with `status: healthy` |
+| `GET /api/slow?delayMs=1000` | Returns HTTP 200 after a controlled delay; values are clamped to 0-5000 ms |
+| `GET /api/error` | Returns a controlled HTTP 500 using the standard JSON error format |
+| `GET /api/fallback` | Returns HTTP 200 with deterministic fallback mode active |
+| `GET /api/status` | Returns HTTP 200 with service state and available demo endpoints |
+
+Existing `/api/moving-assistant` and `/api/grafana-alert` behavior remains available.
+
 The first MVP should demonstrate:
 
 ```text

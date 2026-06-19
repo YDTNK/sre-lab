@@ -5,37 +5,42 @@ This document describes the current SRE Lab architecture.
 ## Current Status
 
 ```text
-Stopped at Phase 16 v1 checkpoint
+SRE portfolio-first
+Reliability Demo API MVP implemented
 ```
 
-SRE Lab currently keeps one active consumer-facing service running and stops new feature expansion for now.
+SRE Lab preserves the historical Moving Assistant implementation while making Reliability Demo API the active portfolio target.
 
 ## Overview
 
-SRE Lab is a small service platform for building, operating, monitoring, and improving AI-powered micro services.
+SRE Lab is a small service platform for demonstrating production-oriented SRE and platform engineering practices.
 
-The current active service is AI Moving Assistant, a Japanese moving preparation assistant.
+The active target is Reliability Demo API, which exposes controlled healthy, slow, error, fallback, and status behaviors.
 
-AWS Cost Simulator was removed from the active service portfolio and is now historical context only.
+AI Moving Assistant remains a historical implementation asset. AWS Cost Simulator remains removed.
 
 ## Current Architecture
 
 ```mermaid
 flowchart TD
     U[User] --> P[Cloudflare Pages<br/>SRE Lab Frontend]
-    P --> F[AI Moving Assistant<br/>Japanese Form UI]
-    F --> W[Cloudflare Workers API<br/>POST /api/moving-assistant]
-    W --> M[Deterministic Fallback Response<br/>Moving Checklist JSON]
-    F --> S[Free Moving Checklist Sample<br/>moving-checklist-sample.html]
-    W -. Inactive code path / future only .-> AI[OpenAI API]
+    U --> W[Cloudflare Workers API]
+    W --> H[GET /api/health<br/>Healthy response]
+    W --> L[GET /api/slow<br/>Controlled latency]
+    W --> E[GET /api/error<br/>Controlled HTTP 500]
+    W --> FB[GET /api/fallback<br/>Deterministic fallback]
+    W --> ST[GET /api/status<br/>Service state]
+    P --> F[Historical AI Moving Assistant UI]
+    F --> W
 
     G[Grafana Synthetic Monitoring] --> P
     G --> W
 
     G --> A[Grafana Alerting]
-    A --> E[Email Notification]
+    A --> GA[POST /api/grafana-alert]
+    GA --> GI[GitHub Issue<br/>with dedupe]
     A --> R[Runbook<br/>docs/runbook.md]
-    A --> I[Incident Log<br/>docs/incidents.md]
+    GI --> I[Incident Records<br/>docs/incidents/]
 
     CI[GitHub Actions CI] --> P
     CI --> W
@@ -76,16 +81,23 @@ Current production behavior:
 Cloudflare Workers provides the backend API layer.
 
 - API URL: https://sre-lab-api.daisan-tanaka.workers.dev
-- Endpoint: POST /api/moving-assistant
+- Active demo endpoints: GET `/api/health`, `/api/slow`, `/api/error`, `/api/fallback`, `/api/status`
+- Preserved endpoints: POST `/api/moving-assistant`, POST `/api/grafana-alert`
 - App path: apps/api
 - Main file: apps/api/src/index.js
 
 Current behavior:
 
+- Returns a healthy response for uptime monitoring
+- Adds controlled latency with a safe 5000 ms maximum
+- Generates a controlled standard-format HTTP 500 response
+- Demonstrates deterministic fallback/degraded mode
+- Reports active service state and endpoint inventory
 - Validates JSON input
 - Rejects empty requests
 - Applies safety controls and rate limiting
 - Returns fallback moving checklist response
+- Creates or deduplicates GitHub Issues from Grafana alerts
 
 Inactive / future behavior only if SRE Lab resumes:
 
@@ -175,6 +187,7 @@ flowchart LR
 Current production scope:
 
 - Static frontend
+- Reliability Demo API
 - Workers fallback API
 - Deterministic fallback response for AI Moving Assistant
 - Frontend to API connection

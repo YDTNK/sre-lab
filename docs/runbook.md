@@ -32,6 +32,41 @@ AWS Cost Simulator is currently treated as a removed service. Alerts for `/api/a
 
 ---
 
+## Reliability Demo API
+
+### Endpoint expectations
+
+| Endpoint | Expected result | Operational purpose |
+|---|---:|---|
+| `GET /api/health` | 200 | Primary health and uptime target |
+| `GET /api/slow?delayMs=<value>` | 200 | Controlled latency; delay is clamped to 0-5000 ms |
+| `GET /api/error` | 500 | Intentional error-rate and alert demonstration |
+| `GET /api/fallback` | 200 | Deterministic degraded/fallback-mode response |
+| `GET /api/status` | 200 | Active service state and endpoint inventory |
+
+The `/api/error` response is intentionally unhealthy. Do not treat a manual request to that endpoint as an incident by itself.
+
+### Health or status failure
+
+1. Confirm the Reliability Demo API is still `active` in `docs/services.md`.
+2. Test `/api/health` and `/api/status`.
+3. Check the latest Deploy Worker workflow and recent changes to `apps/api/src/index.js`.
+4. Run `bash scripts/smoke-test.sh` against the deployed API.
+5. If a recent deployment caused the failure, roll back to the previous working Worker version.
+
+### Unexpected latency
+
+1. Confirm the requested `delayMs` value.
+2. Verify responses report `delayMs` no greater than 5000.
+3. Compare `/api/health` latency with `/api/slow` latency to separate platform latency from intentional delay.
+4. Treat latency above the requested/clamped delay plus normal network overhead as unexpected degradation.
+
+### Fallback mode
+
+`/api/fallback` intentionally returns HTTP 200 with `fallbackActive: true` and `status: degraded`. Use it to demonstrate graceful degradation without creating a real dependency failure.
+
+---
+
 ## Alert: sre-lab-uptime-down
 
 ### Summary

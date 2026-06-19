@@ -1,11 +1,18 @@
 const MOVING_ASSISTANT_API_PATH = "/api/moving-assistant";
 const GRAFANA_ALERT_API_PATH = "/api/grafana-alert";
+const RELIABILITY_HEALTH_API_PATH = "/api/health";
+const RELIABILITY_SLOW_API_PATH = "/api/slow";
+const RELIABILITY_ERROR_API_PATH = "/api/error";
+const RELIABILITY_FALLBACK_API_PATH = "/api/fallback";
+const RELIABILITY_STATUS_API_PATH = "/api/status";
 const GRAFANA_WEBHOOK_SECRET_HEADER = "x-grafana-webhook-secret";
 const GITHUB_API_BASE_URL = "https://api.github.com";
 const GRAFANA_DEDUPE_LABEL = "grafana-alert";
 
 const MAX_REQUEST_BYTES = 8 * 1024;
 const MAX_TOTAL_INPUT_LENGTH = 2000;
+const DEFAULT_SLOW_DELAY_MS = 1000;
+const MAX_SLOW_DELAY_MS = 5000;
 
 const RATE_LIMIT_PER_MINUTE = 10;
 const RATE_LIMIT_PER_DAY = 50;
@@ -51,6 +58,26 @@ export default {
       return handleOptions();
     }
 
+    if (url.pathname === RELIABILITY_HEALTH_API_PATH) {
+      return handleReliabilityHealth(request, env);
+    }
+
+    if (url.pathname === RELIABILITY_SLOW_API_PATH) {
+      return handleReliabilitySlow(request, env, url);
+    }
+
+    if (url.pathname === RELIABILITY_ERROR_API_PATH) {
+      return handleReliabilityError(request, env);
+    }
+
+    if (url.pathname === RELIABILITY_FALLBACK_API_PATH) {
+      return handleReliabilityFallback(request, env);
+    }
+
+    if (url.pathname === RELIABILITY_STATUS_API_PATH) {
+      return handleReliabilityStatus(request, env);
+    }
+
     if (url.pathname === MOVING_ASSISTANT_API_PATH) {
       return handleMovingAssistantMock(request, env);
     }
@@ -67,6 +94,138 @@ export default {
     );
   },
 };
+
+async function handleReliabilityHealth(request, env) {
+  const methodError = await requireGet(request, env);
+
+  if (methodError) {
+    return methodError;
+  }
+
+  await safeRecordUsage(env, "api_success");
+
+  return jsonResponse({
+    ok: true,
+    service: "reliability-demo-api",
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+  });
+}
+
+async function handleReliabilitySlow(request, env, url) {
+  const methodError = await requireGet(request, env);
+
+  if (methodError) {
+    return methodError;
+  }
+
+  const delayMs = parseSafeDelayMs(url.searchParams.get("delayMs"));
+  await sleep(delayMs);
+  await safeRecordUsage(env, "api_success");
+
+  return jsonResponse({
+    ok: true,
+    service: "reliability-demo-api",
+    status: "healthy",
+    behavior: "intentional_latency",
+    delayMs,
+    maxDelayMs: MAX_SLOW_DELAY_MS,
+  });
+}
+
+async function handleReliabilityError(request, env) {
+  const methodError = await requireGet(request, env);
+
+  if (methodError) {
+    return methodError;
+  }
+
+  await safeRecordUsage(env, "api_errors");
+
+  return errorResponse(
+    "intentional_demo_error",
+    "This controlled error is generated for reliability monitoring demonstrations.",
+    500
+  );
+}
+
+async function handleReliabilityFallback(request, env) {
+  const methodError = await requireGet(request, env);
+
+  if (methodError) {
+    return methodError;
+  }
+
+  await safeRecordUsage(env, "api_success");
+
+  return jsonResponse({
+    ok: true,
+    service: "reliability-demo-api",
+    status: "degraded",
+    mode: "fallback",
+    fallbackActive: true,
+    message: "A deterministic fallback response is active.",
+  });
+}
+
+async function handleReliabilityStatus(request, env) {
+  const methodError = await requireGet(request, env);
+
+  if (methodError) {
+    return methodError;
+  }
+
+  await safeRecordUsage(env, "api_success");
+
+  return jsonResponse({
+    ok: true,
+    service: "reliability-demo-api",
+    status: "operational",
+    state: "active",
+    availableEndpoints: [
+      { path: RELIABILITY_HEALTH_API_PATH, behavior: "healthy response" },
+      { path: RELIABILITY_SLOW_API_PATH, behavior: "controlled latency" },
+      { path: RELIABILITY_ERROR_API_PATH, behavior: "controlled HTTP 500" },
+      { path: RELIABILITY_FALLBACK_API_PATH, behavior: "fallback response" },
+      { path: RELIABILITY_STATUS_API_PATH, behavior: "service status" },
+    ],
+    preservedEndpoints: [
+      MOVING_ASSISTANT_API_PATH,
+      GRAFANA_ALERT_API_PATH,
+    ],
+  });
+}
+
+async function requireGet(request, env) {
+  if (request.method === "GET") {
+    return null;
+  }
+
+  await safeRecordUsage(env, "api_errors");
+  return errorResponse(
+    "method_not_allowed",
+    "Only GET requests are allowed for this endpoint.",
+    405
+  );
+}
+
+function parseSafeDelayMs(rawDelayMs) {
+  if (rawDelayMs === null || rawDelayMs.trim() === "") {
+    return DEFAULT_SLOW_DELAY_MS;
+  }
+
+  const parsedDelayMs = Number.parseInt(rawDelayMs, 10);
+
+  if (!Number.isFinite(parsedDelayMs)) {
+    return DEFAULT_SLOW_DELAY_MS;
+  }
+
+  return Math.min(Math.max(parsedDelayMs, 0), MAX_SLOW_DELAY_MS);
+}
+
+function sleep(delayMs) {
+  return new Promise((resolve) => setTimeout(resolve, delayMs));
+}
 
 async function handleMovingAssistantMock(request, env) {
   if (request.method !== "POST") {
@@ -839,7 +998,7 @@ function errorResponse(code, message, status) {
 function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, X-Grafana-Webhook-Secret",
   };
 }
