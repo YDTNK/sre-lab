@@ -1,303 +1,149 @@
-# SRE Lab Cost Operations
+# SRE Lab Cost Guardrails
 
-This document defines the initial cost management policy for SRE Lab.
+This document defines the current cost management policy for SRE Lab as an SRE / Platform Engineering portfolio.
 
-The current cost focus is the AI Moving Assistant Workers API, manual revenue/cost review, and keeping paid AI usage inactive unless SRE Lab resumes.
+## Current Scope
 
-## Cost Policy
-
-SRE Lab is currently in the pre-monetization phase.
-
-The priority is not maximizing AI usage. The priority is preventing unexpected cost growth while maintaining a safe public portfolio service.
-
-## Current Budget Guardrails
-
-| Item | Value |
-|---|---:|
-| OpenAI initial credit | 5 USD |
-| Auto recharge | Off |
-| SRE Lab monthly AI budget | 500 JPY |
-| Monthly warning threshold | 300 JPY |
-| Monthly stop threshold | 500 JPY |
-| Daily hard limit | 100 JPY |
-
-These values are retained as guardrails from the previous AI integration work. The current production path returns a deterministic fallback response and does not actively call OpenAI API.
-
-## Inactive AI Limits
-
-| Limit | Value |
-|---|---:|
-| Service AI daily limit | 30 requests / day |
-| Per-IP AI daily limit | 5 requests / day |
-| AI limit response | 429 / ai_limit_reached |
-| Retry-After | 86400 seconds |
-
-## Current Cost Tracking Storage
-
-Initial cost tracking design used Cloudflare KV.
-
-KV binding:
-
-- RATE_LIMIT_KV
-
-This remains useful as an operational reference, but the Phase 16 checkpoint uses the docs-based Revenue / Cost Dashboard as the current source of record.
-
-A future version may move historical cost data to Cloudflare D1 or another database if reporting requirements grow.
-
-## Cost KV Keys
-
-Daily estimated input tokens:
-
-- cost:moving-assistant:input_tokens:{yyyyMMdd}
-
-Daily estimated output tokens:
-
-- cost:moving-assistant:output_tokens:{yyyyMMdd}
-
-Daily estimated cost:
-
-- cost:moving-assistant:estimated_jpy:{yyyyMMdd}
-
-Monthly estimated cost:
-
-- cost:moving-assistant:estimated_jpy:{yyyyMM}
-
-## Usage KV Keys
-
-AI call count:
-
-- usage:moving-assistant:ai_calls:{yyyyMMdd}
-
-AI success count:
-
-- usage:moving-assistant:ai_success:{yyyyMMdd}
-
-AI error count:
-
-- usage:moving-assistant:ai_errors:{yyyyMMdd}
-
-AI limit count:
-
-- usage:moving-assistant:ai_limited:{yyyyMMdd}
-
-## Daily Cost Check Commands
-
-Replace the date suffix with the current UTC date.
-
-Example for 2026-06-14:
-
-```bash
-cd apps/api
-
-npx wrangler kv key get "usage:moving-assistant:ai_calls:20260614" --binding RATE_LIMIT_KV --remote --text
-npx wrangler kv key get "usage:moving-assistant:ai_success:20260614" --binding RATE_LIMIT_KV --remote --text
-npx wrangler kv key get "usage:moving-assistant:ai_errors:20260614" --binding RATE_LIMIT_KV --remote --text
-npx wrangler kv key get "usage:moving-assistant:ai_limited:20260614" --binding RATE_LIMIT_KV --remote --text
-
-npx wrangler kv key get "cost:moving-assistant:input_tokens:20260614" --binding RATE_LIMIT_KV --remote --text
-npx wrangler kv key get "cost:moving-assistant:output_tokens:20260614" --binding RATE_LIMIT_KV --remote --text
-npx wrangler kv key get "cost:moving-assistant:estimated_jpy:20260614" --binding RATE_LIMIT_KV --remote --text
-npx wrangler kv key get "cost:moving-assistant:estimated_jpy:202606" --binding RATE_LIMIT_KV --remote --text
+```text
+Current service: Reliability Demo API
+Current phase: Portfolio evidence loop completed
+Current active target: Final full-site QA and optional polish
+Paid AI API usage: not active
+Revenue route: stopped / historical
 ```
 
-## OpenAI Platform Checks
+The current cost focus is not monetization or paid AI expansion.
 
-OpenAI Platform should be checked only if paid AI calls are intentionally re-enabled or if previous usage needs reconciliation.
+The current cost focus is:
 
-Check:
-
-- Usage
-- Billing
-- Credit balance
-- Auto recharge status
-- Monthly spend limit
-
-Current policy:
-
-- Credit balance is manually topped up
-- Auto recharge is off
-- OpenAI API is not treated as the active production path at the Phase 16 checkpoint
-
-## Cost Limit Behavior
-
-If the estimated monthly cost reaches the stop threshold in a resumed AI-enabled path, the Worker must not call OpenAI API.
-
-Expected response:
-
-```json
-{
-  "error": {
-    "code": "cost_limit_reached",
-    "message": "AI diagnosis is temporarily unavailable due to usage limits."
-  }
-}
+```text
+- keep the public portfolio low-cost
+- avoid runaway usage
+- document guardrail decisions clearly
+- separate implemented controls from future work
+- show cost-aware operations as SRE portfolio evidence
 ```
 
-Expected status:
+## Current Cost Assumptions
 
-- 503 Service Unavailable
-
-## AI Limit Behavior
-
-If the service or per-IP AI daily limit is reached, the Worker should return:
-
-```json
-{
-  "error": {
-    "code": "ai_limit_reached",
-    "message": "AI diagnosis limit reached. Please try again later."
-  }
-}
-```
-
-Expected status:
-
-- 429 Too Many Requests
-
-Expected header:
-
-- Retry-After: 86400
-
-## Review Cadence
-
-| Stage | Review Cadence |
+| Area | Current assumption |
 |---|---|
-| Initial AI rollout | Daily |
-| Stable low-traffic operation | Weekly |
-| Revenue experiment phase | Weekly and monthly |
+| GitHub | Free tier for current repo usage |
+| Cloudflare Pages | Free or low-cost at current traffic |
+| Cloudflare Workers | Free or low-cost at current traffic |
+| Grafana Cloud | Free tier / low usage monitoring |
+| Paid AI API | Not active in the current Reliability Demo API path |
+| Payment provider | Not active |
+| Additional fixed SaaS | Not used |
 
-## Cost Incident Criteria
+## Guardrail Policy
 
-Create an operational record in docs/incidents.md if any of the following occurs after paid AI usage is intentionally re-enabled:
+SRE Lab should avoid adding fixed monthly costs unless the benefit is clearly tied to portfolio evidence.
 
-- Estimated monthly cost exceeds 300 JPY
-- Estimated monthly cost reaches 500 JPY
-- OpenAI credit decreases faster than expected
-- AI errors spike
-- ai_limit_reached appears frequently
-- cost_limit_reached appears
-- OpenAI API billing or quota errors occur
+Allowed low-cost portfolio value:
 
-## Follow-up Improvements
+```text
+- public static portfolio site
+- small Workers API
+- synthetic monitoring
+- GitHub Actions validation
+- documentation-backed SLO / runbook / incident evidence
+```
 
-- Compare estimated KV cost with OpenAI Platform usage
-- Add cost_limit_reached test case
-- Add monthly cost review section to operations.md
-- Consider Grafana alerting for cost thresholds
-- Consider D1 for historical cost reporting
-- Add revenue versus cost tracking after monetization experiments begin
+Avoid by default:
 
-## Usage / Cost Snapshot Procedure
+```text
+- paid ads
+- paid analytics SaaS
+- paid AI calls as the default path
+- unnecessary always-on infrastructure
+- payment/revenue tooling unless the project direction explicitly changes
+```
 
-Use this procedure for manual review when usage changes or when the management dashboard is updated.
+## Cost Guardrail Concepts
 
-1. Check Cloudflare KV usage counters if the Worker path being reviewed writes them.
-2. Check Cloudflare KV estimated token and cost counters if AI usage is active.
-3. Check OpenAI Platform actual usage only if paid AI calls were intentionally enabled.
-4. Check OpenAI credit balance when OpenAI usage is being reconciled.
-5. Confirm auto recharge is off.
-6. Record the result in docs/usage-cost-report.md or the management repository dashboard.
-7. Create an operational record in docs/incidents.md if thresholds are exceeded or abnormal behavior is found.
+The public cost page demonstrates these concepts:
 
-Snapshot report:
+```text
+- request volume awareness
+- compute time awareness
+- external dependency awareness
+- rate limit policy
+- usage counter policy
+- budget threshold policy
+- cost incident response flow
+```
 
-- docs/usage-cost-report.md
+Public page:
 
-Recommended current cadence:
+```text
+/cost.html
+```
 
-- Monthly or when an event occurs during the Phase 16 stop checkpoint
+## Implemented vs Future Work
 
-## Usage Source of Truth
+### Implemented evidence
 
-During any resumed AI rollout, Cloudflare KV can be treated as the primary source for immediate operational decisions.
+```text
+- Cost Guardrail public portfolio page
+- Cost response flow documentation
+- Budget threshold example policy
+- Cost incident scenario
+- Future implementation list clearly labeled as future work
+```
 
-OpenAI Platform Usage is treated as a secondary reconciliation source because it may be affected by reporting delay, project or group filters, and usage aggregation timing.
+### Future work
 
-### Primary Operational Source
+```text
+- route-level rate limiting for Reliability Demo API
+- usage counter storage for Reliability Demo API
+- automated cost threshold alerting
+- dedicated cost runbook
+- cost incident game-day record
+```
 
-| Data | Source | Purpose |
-|---|---|---|
-| API request count | Cloudflare KV | Immediate service usage review |
-| AI call count | Cloudflare KV | Immediate AI usage review |
-| AI success/error count | Cloudflare KV | Immediate reliability review |
-| Estimated input/output tokens | Cloudflare KV | Immediate cost estimation |
-| Estimated daily/monthly JPY cost | Cloudflare KV | Immediate cost guard decision |
+Do not describe future work as already implemented runtime behavior.
 
-### Secondary Reconciliation Source
+## Initial Budget Threshold Example
 
-| Data | Source | Purpose |
-|---|---|---|
-| Actual API requests | OpenAI Platform Usage | Later reconciliation |
-| Actual token usage | OpenAI Platform Usage | Later reconciliation |
-| Actual spend | OpenAI Platform Usage / Billing | Later reconciliation |
-| Credit balance | OpenAI Billing | Budget confirmation |
+The public cost page uses a general threshold policy:
 
-### Policy
+| Threshold | Meaning | Example response |
+|---:|---|---|
+| 50% | Early notice | Review recent changes and usage trend |
+| 80% | Action required | Consider rate limits or reduce heavy operations |
+| 100% | Containment | Temporarily restrict non-critical behavior and investigate |
 
-- Do not wait for OpenAI Platform Usage to update before enforcing local cost guards.
-- Use Cloudflare KV estimated cost for cost_limit_reached behavior.
-- Use OpenAI Platform Usage to compare and adjust the estimate later.
-- If OpenAI Usage remains 0 while KV records generated AI responses, check project selection, group filter, API key project, and reporting delay.
-- Record any mismatch in docs/usage-cost-report.md.
+These thresholds are portfolio examples unless a future implementation wires them to actual runtime counters.
 
-### Recheck Cadence
+## External API Policy
 
-| Situation | Recheck Timing |
-|---|---|
-| Initial AI rollout | Same day and next day |
-| OpenAI Usage shows 0 but Worker generated responses | Recheck after several hours or next day |
-| Stable operation | Weekly |
-| Billing or quota issue | Immediately and after mitigation |
+Paid external APIs should remain disabled by default.
 
-## Docs-based Usage / Cost Dashboard
+If a paid external API is introduced later, the work must include:
 
-The current Revenue / Cost Dashboard is docs-based in the management repository.
+```text
+- explicit Issue
+- cost estimate
+- budget threshold
+- rate limit
+- failure / fallback policy
+- runbook update
+- monitoring update
+- validation evidence
+```
 
-Current monitoring uses the management repository dashboard, docs/usage-cost-report.md when needed, and manual provider checks only if the relevant provider is active.
+## Current Source of Truth
 
-The dashboard design is documented in:
+For current project state and requirements, use:
 
-- docs/dashboard-design.md
+```text
+README.md
+docs/services.md
+docs/cost.md
+docs/runbooks/reliability-demo-api.md
+management-side status.md
+management-side portfolio-requirements.md
+```
 
-If an implementation-backed dashboard is built later, its goals should be:
-
-- Show API usage
-- Show AI usage
-- Show AI success and error counts
-- Show estimated daily and monthly cost
-- Show AI limit and cost limit activity
-- Support future multi-service SRE Lab operation
-
-The recommended path is:
-
-1. Continue KV + manual snapshots.
-2. Add generated Markdown reports if manual work becomes repetitive.
-3. Introduce Cloudflare D1 for historical reporting.
-4. Build a lightweight internal dashboard.
-5. Extend to multi-service dashboard only after a separate service decision.
-
-## Phase 7 Completion Summary
-
-Phase 7 established the initial usage and cost monitoring model for SRE Lab.
-
-### Completed
-
-- Manual usage and cost snapshot procedure
-- Initial usage and cost snapshot record
-- Cloudflare KV as the primary operational source
-- OpenAI Platform Usage as secondary reconciliation source
-- OpenAI Usage mismatch handling policy
-- Future usage/cost dashboard design
-
-### Current Decision
-
-Do not implement an application-backed dashboard now.
-
-Continue with the docs-based Revenue / Cost Dashboard until usage becomes regular, repetitive, or a real revenue route requires stronger reporting.
-
-### Next Improvement Candidates
-
-- Generated Markdown usage/cost reports
-- Cloudflare D1 daily summary table
-- Lightweight internal dashboard
-- Grafana-based cost threshold visualization
+Historical revenue or AI cost tracking documents under archive paths are not current sources of truth.
