@@ -1,257 +1,224 @@
 # Services
 
-This document describes the service direction for SRE Lab.
+This document describes the active and historical service direction for SRE Lab.
 
 ## Current Status
 
 ```text
-Stopped at Phase 16 v1 checkpoint
+Current direction: SRE portfolio-first
+Current active target: Reliability Demo API MVP
+Tracking Issue: #74
 ```
-
-Current policy:
-
-- Do not add new SRE Lab features for now
-- Do not start Phase 17 until a real revenue route exists
-- Keep the docs-based Revenue / Cost Dashboard updated monthly or when an event occurs
-- Move active learning focus to Kubernetes / CKA preparation
-
----
 
 ## Service Selection Policy
 
-SRE Lab services should meet the following criteria:
+SRE Lab services should be selected for SRE portfolio value first.
 
-- Useful for general users
-- Possible to build as a small MVP
-- Can be operated with monitoring and alerting
-- Can be improved through real user feedback
-- Has potential for small monetization experiments
-- Does not require continuous manual content posting
+A service is a good fit when it can demonstrate:
 
----
+- SLO / SLI
+- monitoring and alerting
+- incident response
+- runbooks and postmortems
+- CI/CD validation
+- API safety
+- cost guardrails
+- GitHub Issue / PR based operations
 
-## Current Primary Service: AI Moving Assistant
+A service is not a good fit when it mainly requires:
+
+- product sales copy
+- SEO/content production
+- payment/delivery operations
+- consumer AI feature expansion without reliability value
+- manual content posting
+
+## Active Target Service: Reliability Demo API
 
 ### Overview
 
-AI Moving Assistant helps users plan a move by estimating required packing materials, identifying preparation tasks, and generating a simple moving checklist based on user input.
+Reliability Demo API is the first target service for the SRE portfolio direction.
 
-### Target Users
+It is intentionally designed to make reliability behavior visible and testable.
 
-- People planning a move
-- People living alone
-- People unsure how many boxes or packing materials they need
-- People who want a quick checklist before moving
-
-### User Problem
-
-Moving preparation is confusing because users often do not know:
-
-- How many boxes they need
-- What packing materials to request
-- What tasks they should do before moving day
-- What risks they should check in advance
-
-### MVP Features
-
-The current MVP supports:
-
-- User input form
-  - Furniture list
-  - Number of clothing/storage items
-  - Electronics
-  - Books/documents
-  - Moving date
-  - Optional notes
-- Generated estimate
-  - Number of cardboard boxes
-  - Packing material suggestions
-  - Preparation checklist
-  - Risk notes
-- API-backed fallback result display
-- PDF checklist CTA for monetization demand check
-- Clickable free sample CTA
-- Static free moving checklist sample page
-
-### Monetization Ideas
-
-Future monetization options:
-
-- Moving checklist PDF / template
-- Affiliate links for moving supplies or related services
-- Small paid report
-- Ads after traffic grows
-
-Current revenue status:
+### Planned Endpoints
 
 ```text
-Revenue: 0 JPY
-Payment flow: not implemented
-Affiliate flow: not implemented
-PDF / template sale: not implemented
-Free sample CTA: implemented
-Phase 17: not started
+/api/health
+/api/slow
+/api/error
+/api/fallback
+/api/status
 ```
+
+### Purpose
+
+Reliability Demo API should demonstrate:
+
+- healthy response
+- intentional latency
+- intentional 5xx
+- timeout/fallback behavior
+- service status
+- monitoring target
+- alerting path
+- runbook and incident response
+- postmortem and improvement loop
 
 ### SRE / Operations Value
 
 This service can be used to demonstrate:
 
-- Frontend deployment
-- API endpoint operation
-- AI API cost control design for any future re-enabled paid AI path
-- Request/response monitoring
-- Error handling
-- Alerting
-- Incident management
-- Monetization experiment tracking
-- Docs-based revenue / cost dashboard operation
+- Four Golden Signals style monitoring
+- SLO / SLI design
+- synthetic monitoring
+- alert triage
+- GitHub Issue based incident intake
+- runbook-driven response
+- postmortem creation
+- CI/CD validation
+- rollback / mitigation notes
+- API safety validation
 
-### Current Success Criteria
+### MVP Completion Criteria
 
-Current checkpoint is completed when:
+The MVP is complete when:
 
-- Public page is available
-- User can submit moving information
-- A result is generated
-- PDF checklist CTA is displayed
-- Free sample CTA is clickable
-- Free sample page is accessible
-- Basic errors are handled
-- Usage and failures can be monitored
-- Docs-based Revenue / Cost Dashboard exists
+- endpoints are implemented
+- CI passes
+- smoke tests exist
+- SLO document exists
+- runbooks exist for latency, 5xx, fallback, and deploy failure
+- at least one sample incident or game-day record exists
+- portfolio README and architecture page point to Reliability Demo API
 
-This checkpoint is now complete.
+## Planned Future Services
 
----
+These are not active until Reliability Demo API has a complete operational loop.
 
-## Removed Service: AWS Cost Simulator
+### Cloud Cost Guardrail Demo
 
-AWS Cost Simulator was previously implemented as the second service in SRE Lab.
+Purpose:
 
-It has been removed from the active service portfolio.
+- show API usage limits
+- show cost thresholds
+- show budget policy
+- show abnormal usage response
+- show external API cost guardrails
 
-Reason:
+### SRE Learning Coach
 
-- The current monetization strategy focuses on consumer AI services
-- AWS Cost Simulator does not fit the future consumer AI service group
-- It adds noise to the SRE Lab positioning
-- It has lower monetization potential than AI Moving Assistant and future consumer AI service candidates
-- The project should focus on AI Moving Assistant and the Phase 16 stop checkpoint
+Purpose:
 
-Historical note:
+- later AI-dependent service operations demo
+- prompt/version/fallback/rate-limit/cost-control example
 
-- AWS Cost Simulator demonstrated deterministic API design and cloud cost awareness
-- It is no longer part of the active frontend, API, or service navigation
+This should not be built as a generic AI learning app. It should only be added if it strengthens SRE portfolio evidence.
 
----
+## Historical Services
 
-## Future Consumer AI Service Ideas
-
-Future services should stay closer to general consumer pain points.
-
-Candidates:
-
-- AI Career Assistant
-- AI Learning Coach
-- Personal Budget Review Assistant
-- Real estate / moving support assistant
-
-These should be evaluated after the AI Moving Assistant monetization and acquisition experiment is stable, and only when it does not delay the main Kubernetes / CKA learning focus.
-
----
-
-## Internal Operations Services
-
-Revenue / Cost Dashboard is not a consumer-facing service.
-
-It is treated as a docs-based internal operations tool in the management repository:
-
-```text
-YDTNK/engineering-career-hq
-projects/sre-lab/revenue-cost-dashboard.md
-```
-
-It supports:
-
-- revenue tracking
-- cost tracking
-- gross profit tracking
-- monthly review
-- scale-or-stop decision support
-
----
-
-## Service Navigation Policy
-
-SRE Lab should not mix unrelated service forms on a single page.
-
-The frontend should use the top page as a focused entry point and provide dedicated pages for active services.
-
-Current active page structure:
-
-- index.html
-- moving-assistant.html
-- moving-checklist-sample.html
-
-Removed page:
-
-- aws-cost-simulator.html
-
-Related document:
-
-- docs/frontend-navigation.md
-
----
-
-## Current Operating Status
-
-### AI Moving Assistant
+### AI Moving Assistant / Moving Prep Board
 
 Status:
 
 ```text
-Production / stopped at Phase 16 v1 checkpoint
+historical implementation asset
+not active monetization target
 ```
 
-Purpose:
+Historical value:
 
-- Japanese moving preparation support
-- First monetization experiment target
-- API safety, rate limiting, cost tracking, and fallback behavior
-- PDF checklist CTA demand check
-- Free sample CTA / static sample page as first measurable conversion point
-
-Operational features:
-
-- Dedicated frontend page
-- Dedicated sample page
-- Dedicated Workers API endpoint
-- Cloudflare Workers Secret support for AI key management if paid AI usage is re-enabled
-- KV-based usage and cost tracking design
-- Cost limit behavior design
+- Cloudflare Pages frontend
+- Cloudflare Workers API
+- request validation
+- fallback response
 - Grafana Synthetic Monitoring
 - Grafana Alerting
-- Runbook and operational records
+- Runbook
+- Incident records
+- GitHub Actions CI/CD
 
-### Portfolio Value
+Stopped active work:
 
-The project now demonstrates focused operation of one active consumer AI service with:
+- paid PDF
+- Stripe CTA
+- product LP
+- Moving Prep Board monetization expansion
 
-- service-specific frontend
-- API separation
-- monitoring
-- alerting
-- operational documentation
-- incident and operational records
-- safe API design
-- cost-aware product design
-- monetization experiment design
-- docs-based revenue / cost dashboard
+### AWS Cost Simulator
 
-## Next
+Status:
 
-- Do not add new SRE Lab features for now
-- Keep the Revenue / Cost Dashboard updated monthly or when an event occurs
-- Do not start Phase 17 until a real revenue route exists
-- Move active learning focus to Kubernetes / CKA preparation
+```text
+removed historical service
+```
+
+Historical value:
+
+- deterministic API design
+- cloud cost awareness
+
+Do not restore it as an active service just because stale files, monitors, or references exist.
+
+### Digital Product LP Starter Kit
+
+Status:
+
+```text
+stopped / not planned
+```
+
+Reason:
+
+```text
+The revenue upside was too low relative to LP, content, delivery, SEO, payment, and maintenance effort.
+```
+
+Do not implement `/products/digital-product-lp-starter-kit` unless the management-side `status.md` explicitly changes.
+
+## Service Navigation Policy
+
+The frontend should present SRE Lab as an SRE portfolio, not a consumer AI service collection.
+
+Current target navigation should emphasize:
+
+- Reliability Demo API
+- Architecture
+- Reliability / SLO
+- Incidents
+- Runbooks
+- CI/CD
+- Security & Cost
+- Roadmap
+
+Historical consumer-facing pages should be removed from active navigation after the Reliability Demo API surface is ready.
+
+## Service State Gate
+
+Before restoring an endpoint, page, monitor, or alert target, classify the target as:
+
+```text
+active
+planned
+degraded
+deprecated
+removed
+replaced
+historical
+unknown
+```
+
+If the target is historical, removed, stopped, or unknown, do not restore it by default.
+
+Check:
+
+```text
+README.md
+docs/services.md
+docs/service-state-checklist.md
+docs/runbook.md
+latest records under docs/incidents/
+apps/api/src/index.js
+apps/landing/
+Grafana Synthetic Monitoring target list
+```

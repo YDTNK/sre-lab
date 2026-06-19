@@ -21,16 +21,17 @@ Do not rely on only one repository.
 Required management-side context:
 
 ```text
+YDTNK/engineering-career-hq/projects/sre-lab/status.md
 YDTNK/engineering-career-hq/projects/sre-lab/project-context.md
-YDTNK/engineering-career-hq/projects/sre-lab/standards/mandatory-context-registry.md
 YDTNK/engineering-career-hq/projects/sre-lab/issues.md
 YDTNK/engineering-career-hq/projects/sre-lab/progress.md
-YDTNK/engineering-career-hq/projects/sre-lab/phase1-20-roadmap.md
+YDTNK/engineering-career-hq/projects/sre-lab/standards/mandatory-context-registry.md
 ```
 
 Required implementation-side context:
 
 ```text
+YDTNK/sre-lab/START_HERE_FOR_AI.md
 YDTNK/sre-lab/AGENTS.md
 YDTNK/sre-lab/docs/mandatory-context-registry.md
 YDTNK/sre-lab/docs/issue-number-execution.md
@@ -49,24 +50,60 @@ YDTNK/engineering-career-hq/projects/sre-lab/issues.md
 
 Before answering or changing anything in this repository, read the following files in this order:
 
-1. `AGENTS.md`
-2. `docs/mandatory-context-registry.md`
-3. `docs/issue-number-execution.md`
-4. `README.md`
-5. `docs/automation-first-working-policy.md`
-6. `docs/ai-organization-operating-model.md`
-7. `docs/sre-lab-workflow.md`
-8. `docs/ai-assisted-85-90-workflow.md`
-9. `docs/codex-workflow.md`
-10. `docs/completion-report-template.md`
-11. `docs/deploy-failure-investigation.md`
-12. `docs/grafana-issue-ai-investigation.md`
-13. `docs/incident-record-rules.md`
-14. `docs/revenue-release-before-cka.md`
+1. `START_HERE_FOR_AI.md`
+2. `AGENTS.md`
+3. `docs/mandatory-context-registry.md`
+4. `docs/issue-number-execution.md`
+5. `README.md`
+6. `docs/automation-first-working-policy.md`
+7. `docs/ai-organization-operating-model.md`
+8. `docs/sre-lab-workflow.md`
+9. `docs/ai-assisted-85-90-workflow.md`
+10. `docs/codex-workflow.md`
+11. `docs/completion-report-template.md`
+12. `docs/deploy-failure-investigation.md`
+13. `docs/grafana-issue-ai-investigation.md`
+14. `docs/incident-record-rules.md`
 15. `docs/service-state-checklist.md`
 16. `docs/services.md`
 17. `docs/runbook.md`
 18. Latest relevant records under `docs/incidents/`
+
+## Current Project Direction
+
+SRE Lab is now SRE portfolio-first.
+
+```text
+Current active target: Reliability Demo API MVP
+Tracking Issue: #74
+```
+
+The accepted direction is:
+
+```text
+SRE Lab = SRE / Platform Engineer portfolio.
+Primary focus: Reliability Demo API.
+Show: SLO / SLI, monitoring, alerting, CI/CD, incident response, runbooks, postmortems, API safety, and cost guardrails.
+```
+
+Do not return to the old revenue-first direction unless the management-side `status.md` explicitly changes.
+
+## Stopped Work
+
+Do not continue these as active work:
+
+```text
+- Digital Product LP Starter Kit
+- Issue #73 product LP implementation
+- Moving Prep Board paid PDF
+- Stripe CTA connection
+- PR #66
+- Issue #67
+- consumer AI service expansion
+- revenue-first market research route
+```
+
+Historical records may remain, but they must not drive current implementation.
 
 ## Core Working Policy
 
@@ -111,7 +148,7 @@ docs/issue-number-execution.md
 
 ## AI Organization Operating Model
 
-The target operating model is documented in:
+The operating model is documented in:
 
 ```text
 docs/ai-organization-operating-model.md
@@ -153,27 +190,20 @@ Pause and ask for explicit confirmation before completing or merging changes tha
 - Infrastructure changes that may create cost or outage risk
 - Ambiguous instructions where the intended final state is unclear
 
-## Current Project Direction
-
-SRE Lab should complete the first customer-facing AI Moving Assistant revenue release before Kubernetes / CKA becomes the main learning focus.
-
-At CKA start, the intended state is:
-
-```text
-AI Moving Assistant is publicly available
-A free sample is publicly available
-A revenue content page, paid content page, or affiliate/revenue link is publicly available
-If user traffic arrives and converts, revenue can be generated
-SRE Lab is monitored and maintained during CKA
-```
-
-During Kubernetes / CKA learning, SRE Lab should be maintenance-only by default.
-
 ## Service State Gate
 
 Before restoring any endpoint, page, monitor, or alert target, confirm whether the target is active, degraded, deprecated, removed, replaced, or unknown.
 
-AWS Cost Simulator is currently a removed service. Do not restore it as an active service unless the project policy is explicitly changed.
+Current target service state:
+
+```text
+Reliability Demo API: planned active target
+AI Moving Assistant / Moving Prep Board: historical implementation asset, not monetization target
+AWS Cost Simulator: removed historical service
+Digital Product LP Starter Kit: stopped / not planned
+```
+
+Do not restore removed or stopped services just because a page, alert, or monitor references them.
 
 ## Incident and Release Records
 

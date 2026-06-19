@@ -25,125 +25,156 @@ YDTNK/engineering-career-hq
 管理側の正本:
 
 ```text
+YDTNK/engineering-career-hq/projects/sre-lab/status.md
 YDTNK/engineering-career-hq/projects/sre-lab/project-context.md
-YDTNK/engineering-career-hq/projects/sre-lab/standards/mandatory-context-registry.md
 YDTNK/engineering-career-hq/projects/sre-lab/issues.md
+YDTNK/engineering-career-hq/projects/sre-lab/progress.md
 ```
 
 [![CI](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml)
 [![Deploy Worker](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml)
 
-SRE Lab は、一般向けAIミニサービスを継続的に開発・運用するポートフォリオプロジェクトです。
+## Project Purpose
 
-単にWebアプリを作るだけではなく、公開、CI/CD、監視、アラート、Runbook、運用記録、API安全化、コスト管理、収益化検証まで含めて、小さなサービスを実運用に近い形で育てることを目的としています。
+SRE Lab is an SRE / Platform Engineer portfolio project.
 
-## 現在の状態
+The goal is not to build a consumer AI service collection or a revenue-first product site. The goal is to operate small public Web/API services in a way that demonstrates production-oriented SRE practices.
 
-```text
-Phase 16 v1 checkpoint complete
-Revenue release before CKA: planned
-Maintenance-only during CKA: planned after revenue release
-```
-
-現在は、AI Moving Assistant の初回収益化リリースを CKA / Kubernetes 学習開始前に完了させる方針です。
+SRE Lab should show:
 
 ```text
-Revenue: 0 JPY
-Payment flow: not implemented
-Affiliate flow: not implemented
-PDF / template sale: not implemented
-Free sample CTA: implemented
-Phase 17: planned only for first revenue-route validation
-```
-
-CKA / Kubernetes 学習開始後は、新規SRE Lab機能追加を止め、定期メンテナンスのみで運用します。
-
-## 公開URL
-
-- SRE Labトップページ: https://sre-lab.pages.dev/
-- Workers API: https://sre-lab-api.daisan-tanaka.workers.dev
-- AI Moving Assistant / AI引越し診断: https://sre-lab.pages.dev/moving-assistant.html
-- 無料チェックリストサンプル: https://sre-lab.pages.dev/moving-checklist-sample.html
-- AI Moving Assistant API: POST /api/moving-assistant
-
-## プロジェクトの位置づけ
-
-このプロジェクトでは、SRE運用基盤の上で、一般ユーザー向けAIサービスを継続的に運用・改善することを重視しています。
-
-現在のPrimary Serviceは以下です。
-
-- AI Moving Assistant / AI引越し診断
-
-AWS Cost Simulatorは過去に2つ目のサービスとして実装していましたが、収益化・自動運転の主軸を一般向けAIサービスへ集中するため、公開サービスから削除しました。
-
-## 実装済みサービス
-
-### AI Moving Assistant / AI引越し診断
-
-日本語の引越し準備支援サービスです。
-
-ユーザーが家具、衣類、家電、本・小物、引越し日、補足メモを入力すると、引越し準備のサマリー、必要資材、チェックリスト、リスクメモ、注意事項を返します。
-
-現在は、安定運用と収益化検証を優先し、fallback responseを返す設計にしています。
-
-実装内容:
-
-- 専用フロントエンドページ
-- Cloudflare Workers API
-- フロントエンドにAPI keyを置かない構成
-- リクエスト検証
-- Rate limiting
-- Timeoutとfallback response
-- Grafana Synthetic Monitoring
-- Grafana Alerting
+- SLO / SLI
+- Monitoring
+- Alerting
+- CI/CD
+- Incident response
 - Runbook
-- 運用記録
-- PDFチェックリストCTA
-- クリック可能な無料サンプルCTA
-- 無料チェックリストサンプルページ
-
-Endpoint:
-
-```text
-POST /api/moving-assistant
+- Postmortem
+- API safety
+- Cost guardrails
+- GitHub Issue / PR based operations
 ```
 
-## 技術構成
+## Current State
 
-| 領域 | 技術 |
+```text
+Current direction: SRE portfolio-first
+Current active target: Reliability Demo API MVP
+Stopped route: Digital Product LP / revenue-first route
+Tracking Issue: #74
+```
+
+Issue #74:
+
+```text
+https://github.com/YDTNK/sre-lab/issues/74
+```
+
+## Target MVP
+
+```text
+Reliability Demo API
+```
+
+Planned initial endpoints:
+
+```text
+/api/health
+/api/slow
+/api/error
+/api/fallback
+/api/status
+```
+
+The first MVP should demonstrate:
+
+```text
+- healthy response
+- intentional latency
+- intentional 5xx
+- timeout/fallback behavior
+- status endpoint
+- monitoring target
+- alert/runbook/incident/postmortem flow
+```
+
+## What Is Preserved From The Existing Repository
+
+The previous Moving Prep / revenue work is no longer the active direction, but the operational assets remain valuable.
+
+Preserve and adapt:
+
+```text
+- AI startup / cross-repository context rules
+- Issue-first workflow
+- Codex-ready Issue workflow
+- GitHub Actions CI/CD
+- Cloudflare Worker deploy workflow
+- Grafana alert to GitHub Issue flow
+- Grafana dedupe logic
+- Runbook structure
+- Incident and postmortem records
+- Completion report template
+- Service State Gate
+- CI guardrails
+```
+
+## Stopped Active Work
+
+Do not continue these as active work:
+
+```text
+- Digital Product LP Starter Kit
+- /products/digital-product-lp-starter-kit
+- Stripe CTA connection
+- Moving Prep Board paid PDF
+- Moving Prep Board monetization expansion
+- Consumer AI service expansion
+- Revenue-first market research route
+```
+
+Historical records may remain for context, but they must not drive active implementation.
+
+## Current Technology Stack
+
+| Area | Technology |
 |---|---|
-| フロントエンド | HTML, CSS, JavaScript |
-| ホスティング | Cloudflare Pages |
+| Frontend | HTML, CSS, JavaScript |
+| Hosting | Cloudflare Pages |
 | API | Cloudflare Workers |
-| Secrets管理 | Cloudflare Workers Secrets |
-| 利用量・コスト記録 | Cloudflare KV design / docs-based dashboard |
 | CI/CD | GitHub Actions, Wrangler |
-| 監視 | Grafana Cloud Synthetic Monitoring |
-| アラート | Grafana Alerting |
-| ドキュメント | Markdown |
-| リポジトリ | GitHub |
+| Monitoring | Grafana Cloud Synthetic Monitoring |
+| Alerting | Grafana Alerting |
+| Incident intake | Grafana alert → Cloudflare Worker → GitHub Issue |
+| Documentation | Markdown |
+| Repository | GitHub |
 
-## Phase 16 Dashboard Policy
+## Current Public URLs
 
-Revenue / Cost Dashboardは、管理リポジトリ側でdocsベース運用としています。
-
-```text
-YDTNK/engineering-career-hq
-projects/sre-lab/revenue-cost-dashboard.md
-```
-
-Policy:
+These may be changed as the Reliability Demo API replaces the old surface.
 
 ```text
-Docs-based Revenue / Cost Dashboard
-↓
-First revenue route validation before CKA
-↓
-Maintenance-only operation during Kubernetes / CKA learning
-↓
-Workers / KV / Analytics integration only when needed
+SRE Lab frontend: https://sre-lab.pages.dev/
+Workers API: https://sre-lab-api.daisan-tanaka.workers.dev
 ```
 
-## アーキテクチャ概要
+## Next Work Order
 
-SRE Labは、Cloudflare PagesとCloudflare Workersを中心に構成しています。
+```text
+1. Finish source-of-truth pivot documentation.
+2. Close/supersede stale revenue and Moving Prep work.
+3. Update CI guardrails away from Moving Assistant assumptions.
+4. Create Codex-ready Issue for Reliability Demo API MVP.
+5. Implement Reliability Demo API.
+6. Add SLO, runbook, incident, postmortem, and portfolio pages around it.
+```
+
+## Interview Positioning
+
+SRE Lab should be explainable as:
+
+```text
+A small public Web/API portfolio that demonstrates SLOs, monitoring, alerting, CI/CD, incident response, runbooks, postmortems, API safety, and cost guardrails using GitHub, Cloudflare, and Grafana.
+```
+
+This is the core portfolio value. New app features should be added only when they strengthen that explanation.

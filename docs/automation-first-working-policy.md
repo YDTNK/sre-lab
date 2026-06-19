@@ -30,6 +30,17 @@ This includes, when technically available:
 - Documentation updates
 - Runbook and policy updates
 
+## Current Project Direction
+
+SRE Lab is now SRE portfolio-first.
+
+```text
+Current active target: Reliability Demo API MVP
+Tracking Issue: #74
+```
+
+Do not prioritize revenue-first work, Digital Product LP implementation, Moving Prep Board monetization, or consumer AI service expansion unless the management-side `status.md` explicitly changes.
+
 ## Issue-First Rule
 
 Non-trivial work should be Issue-first by default.
@@ -45,7 +56,6 @@ Create or reuse a GitHub Issue before making repository changes for:
 - CI / GitHub Actions changes
 - Cloudflare deploy or Worker behavior changes
 - Grafana monitoring or alerting changes
-- revenue release tasks
 - service-state changes
 - incident, runbook, or remediation work
 - multi-step documentation changes
@@ -90,7 +100,7 @@ Report the final completed result
 The user should mainly handle:
 
 - Direction and priority decisions
-- Product/business judgment
+- Portfolio/business judgment
 - External UI actions that the assistant cannot access
 - Credentials or secrets entry
 - Final judgment for risky or ambiguous production-impacting changes
@@ -125,23 +135,25 @@ The assistant should pause and ask for explicit confirmation before completing o
 
 Even in these cases, the assistant should still do safe preparatory work when possible, such as reading files, drafting a plan, creating a non-destructive proposal, or preparing a reviewable PR.
 
-## Relationship to SRE Lab Revenue / CKA Policy
+## Relationship to SRE Lab Portfolio Policy
 
 This policy supports the current project direction:
 
 ```text
-Complete the first customer-facing AI Moving Assistant revenue release before CKA.
-Then operate SRE Lab in maintenance-only mode during Kubernetes / CKA learning.
+Build SRE Lab as an SRE / Platform Engineer portfolio.
+Use Reliability Demo API as the first MVP to show SLO, monitoring, alerting, CI/CD, incident response, runbooks, postmortems, API safety, and cost guardrails.
 ```
 
-During CKA learning, automation-first operation should be used to reduce maintenance burden:
+Automation-first operation should be used to reduce maintenance burden:
 
 - Monitoring checks
 - Incident records
 - Small documentation fixes
-- Revenue / cost record updates
 - Broken link fixes
 - Grafana alert documentation updates
+- Runbook updates
+- CI guardrail updates
+- Service-state cleanup
 
 ## Practical Rule
 
