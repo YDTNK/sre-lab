@@ -1,111 +1,237 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRE Lab | Reliability Demo API</title>
+  <title>SRE Lab | Reliability Portfolio</title>
   <meta
     name="description"
-    content="SRE Labは、Reliability Demo APIを題材にSLO・監視・Runbook・Incident・Postmortemを見せるSREポートフォリオです。"
+    content="A public SRE and Platform Engineering portfolio for SLOs, monitoring, incidents, runbooks, and CI/CD evidence."
   />
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="stylesheet" href="/site-completion.css" />
-  <link rel="stylesheet" href="/home-typography-balance.css" />
-  <link rel="stylesheet" href="/home-hero-background.css" />
+  <link rel="stylesheet" href="/portfolio.css" />
 </head>
-<body class="page-home page-home-redesign">
-  <header class="site-header home-redesign-header">
-    <div class="container site-header__inner home-redesign-header__inner">
-      <a class="site-brand home-redesign-brand" href="/">SRE Lab</a>
-      <nav class="site-nav home-redesign-nav" aria-label="主要ナビゲーション">
-        <a href="reliability.html">Reliability</a>
-        <a href="reliability.html#slo">SLO</a>
-        <a href="reliability.html#ops">Runbooks</a>
-        <a href="moving-assistant.html#moving-form">Historical Demo</a>
-      </nav>
-    </div>
-  </header>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
-  <main class="container home-redesign-main">
-    <section class="home-redesign-firstview" aria-label="SRE Labのファーストビュー">
-      <div class="home-redesign-hero home-redesign-hero--background" aria-labelledby="hero-title">
-        <div class="home-redesign-hero__visual-bg" aria-hidden="true"></div>
-        <div class="home-redesign-hero__copy">
-          <p class="home-redesign-hero__eyebrow">SRE / Platform Engineering Portfolio</p>
-          <h1 id="hero-title">Reliability Demo APIで、<br><span>運用を見せる。</span></h1>
-          <p class="home-redesign-hero__lead">
-            SRE Labは、小さなCloudflare Workers APIを題材に、SLO・監視・Runbook・Incident・Postmortem・CI/CDを見せるポートフォリオです。
+  <aside class="sidebar" aria-label="Portfolio navigation">
+    <div class="sidebar__brand">
+      <a href="#top">SRE Lab</a>
+      <p>Reliability Portfolio</p>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a class="sidebar__link sidebar__link--active" href="#top">
+        <span>01</span>Top
+      </a>
+      <a class="sidebar__link" href="/architecture.html">
+        <span>02</span>Architecture
+      </a>
+      <a class="sidebar__link" href="/reliability.html">
+        <span>03</span>Reliability
+      </a>
+      <a class="sidebar__link" href="/monitoring.html">
+        <span>04</span>Monitoring
+      </a>
+      <a class="sidebar__link" href="/cicd.html">
+        <span>05</span>CI/CD
+      </a>
+      <a class="sidebar__link" href="/incidents.html">
+        <span>06</span>Incidents
+      </a>
+      <a class="sidebar__link" href="/cost.html">
+        <span>07</span>Cost
+      </a>
+      <a class="sidebar__link" href="https://github.com/YDTNK/sre-lab">
+        <span>08</span>GitHub
+      </a>
+    </nav>
+
+    <p class="sidebar__meta">Cloudflare · Grafana · GitHub</p>
+  </aside>
+
+  <main class="main" id="main-content">
+    <div class="main__inner">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero__content">
+          <p class="eyebrow">SRE / Platform Engineering Portfolio</p>
+          <h1 id="hero-title">Reliability<br />Demo API</h1>
+          <p class="hero__lead">
+            A public operations portfolio for SLOs, monitoring, incidents,
+            runbooks, and CI/CD evidence.
           </p>
-          <div class="home-redesign-hero__actions">
-            <a class="button" href="reliability.html">Reliability Dashboardを見る</a>
-            <a class="button button-secondary" href="https://github.com/YDTNK/sre-lab">GitHubを見る</a>
-          </div>
-          <div class="home-redesign-hero__api-card" aria-label="Reliability Demo API status">
-            <span class="home-redesign-hero__api-label">Production API</span>
-            <span class="home-redesign-hero__api-pill">health 200</span>
-            <span class="home-redesign-hero__api-pill">status 200</span>
-            <span class="home-redesign-hero__api-pill home-redesign-hero__api-pill--demo">error demo 500</span>
+
+          <div class="hero__actions">
+            <a
+              class="button button--primary"
+              href="https://sre-lab-api.daisan-tanaka.workers.dev/api/health"
+            >
+              Live API
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a class="button" href="/reliability.html">
+              Operations Dashboard
+              <span aria-hidden="true">→</span>
+            </a>
+            <a class="button" href="https://github.com/YDTNK/sre-lab">
+              GitHub
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
-      </div>
 
-      <section class="home-redesign-feature-strip" id="features" aria-label="SRE Labの特徴">
-        <article>
-          <span aria-hidden="true">✓</span>
-          <h2>SLO / SLI</h2>
-          <p>Reliability Demo APIの可用性・レイテンシ・エラー率を定義します。</p>
-        </article>
-        <article>
-          <span aria-hidden="true">📈</span>
-          <h2>Monitoring</h2>
-          <p>Grafana Synthetic Monitoringで本番APIの状態を確認します。</p>
-        </article>
-        <article>
-          <span aria-hidden="true">🧯</span>
-          <h2>Incident Response</h2>
-          <p>Runbook、Incident記録、Postmortemテンプレートを運用証跡として残します。</p>
+        <article class="status-card" aria-labelledby="status-title">
+          <div class="status-card__header">
+            <p id="status-title">Current Status</p>
+            <span class="status-card__pulse" aria-hidden="true"></span>
+          </div>
+          <p class="status-card__state">
+            <span aria-hidden="true"></span>
+            Operational
+          </p>
+          <dl class="status-card__metrics">
+            <div>
+              <dt>Availability SLO</dt>
+              <dd>99.0%</dd>
+            </div>
+            <div>
+              <dt>Health</dt>
+              <dd class="metric--success">200</dd>
+            </div>
+            <div>
+              <dt>Error demo</dt>
+              <dd class="metric--danger">500 expected</dd>
+            </div>
+          </dl>
+          <a href="/reliability.html">View operational evidence <span aria-hidden="true">→</span></a>
         </article>
       </section>
-    </section>
 
-    <section class="home-redesign-section" id="how-it-works">
-      <p class="home-redesign-section__label">OPERATIONS LOOP</p>
-      <h2>小さなAPIで、本番運用の流れを再現します。</h2>
-      <div class="home-redesign-steps">
-        <article>
-          <span>01</span>
-          <h3>正常・遅延・エラーを公開</h3>
-          <p><code>/api/health</code>、<code>/api/slow</code>、<code>/api/error</code>などで信頼性イベントを再現します。</p>
-        </article>
-        <article>
-          <span>02</span>
-          <h3>SLOとRunbookを定義</h3>
-          <p>SLO、error budget、監視対象、対応手順をドキュメント化します。</p>
-        </article>
-        <article>
-          <span>03</span>
-          <h3>Incidentと改善を残す</h3>
-          <p>本番検証、Game Day、PostmortemをGitHub上に証跡として残します。</p>
-        </article>
-      </div>
-    </section>
+      <section class="evidence" aria-labelledby="evidence-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">System Evidence</p>
+            <h2 id="evidence-title">Operational Evidence</h2>
+          </div>
+          <p class="section-heading__count">06 modules</p>
+        </div>
 
-    <section class="home-redesign-section home-redesign-cta-panel">
-      <p class="home-redesign-section__label">DASHBOARD</p>
-      <h2>Reliability Demo APIの運用状況を確認する</h2>
-      <p>
-        APIエンドポイント、SLO、Runbook、Incident、Postmortemテンプレートを一覧で確認できます。
-      </p>
-      <a class="button" href="reliability.html">Reliability Dashboardへ</a>
-    </section>
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <div class="evidence-card__header">
+              <p class="evidence-card__number">01</p>
+              <span class="tag">System diagram</span>
+            </div>
+            <h3>Architecture</h3>
+            <p>System diagram, request flow, monitoring flow, and GitHub Issue intake.</p>
+            <a href="/architecture.html" aria-label="View Architecture evidence">
+              View evidence <span aria-hidden="true">→</span>
+            </a>
+          </article>
 
-    <section class="home-redesign-section" aria-label="Historical demo">
-      <p class="home-redesign-section__label">HISTORICAL DEMO</p>
-      <h2>AI Moving Assistantは過去実装として保持</h2>
-      <p>
-        引越し準備ボードは現在の主軸ではなく、Cloudflare Pages / Workers / fallback設計の履歴資産として保持しています。
-      </p>
-    </section>
+          <article class="evidence-card">
+            <div class="evidence-card__header">
+              <p class="evidence-card__number">02</p>
+              <span class="tag">SLO 99.0%</span>
+            </div>
+            <h3>Reliability</h3>
+            <p>SLO, SLI, error budget, and endpoint behavior for the demo API.</p>
+            <a href="/reliability.html" aria-label="View Reliability evidence">
+              View evidence <span aria-hidden="true">→</span>
+            </a>
+          </article>
+
+          <article class="evidence-card">
+            <div class="evidence-card__header">
+              <p class="evidence-card__number">03</p>
+              <span class="tag">Alert flow</span>
+            </div>
+            <h3>Monitoring</h3>
+            <p>Synthetic checks, alert rules, routing, and dedupe behavior.</p>
+            <a href="/monitoring.html" aria-label="View Monitoring evidence">
+              View evidence <span aria-hidden="true">→</span>
+            </a>
+          </article>
+
+          <article class="evidence-card">
+            <div class="evidence-card__header">
+              <p class="evidence-card__number">04</p>
+              <span class="tag">Deploy flow</span>
+            </div>
+            <h3>CI/CD</h3>
+            <p>PR, CI, deploy, smoke test, failure handling, and rollback policy.</p>
+            <a href="/cicd.html" aria-label="View CI/CD evidence">
+              View evidence <span aria-hidden="true">→</span>
+            </a>
+          </article>
+
+          <article class="evidence-card">
+            <div class="evidence-card__header">
+              <p class="evidence-card__number">05</p>
+              <span class="tag">Game Day passed</span>
+            </div>
+            <h3>Incidents</h3>
+            <p>Production verification, Game Day records, and postmortem policy.</p>
+            <a href="/incidents.html" aria-label="View Incident evidence">
+              View evidence <span aria-hidden="true">→</span>
+            </a>
+          </article>
+
+          <article class="evidence-card evidence-card--future">
+            <div class="evidence-card__header">
+              <p class="evidence-card__number">06</p>
+              <span class="tag">Future phase</span>
+            </div>
+            <h3>Cost Guardrails</h3>
+            <p>Rate limits, usage counters, budget thresholds, and cost alerts.</p>
+            <a href="/cost.html" aria-label="View Cost Guardrails evidence">
+              View roadmap <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section class="operations" aria-labelledby="operations-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Request to Response</p>
+            <h2 id="operations-title">Core Operations Flow</h2>
+          </div>
+          <p class="section-heading__count">End-to-end</p>
+        </div>
+
+        <ol class="operations-flow">
+          <li>
+            <span>01</span>
+            <strong>User</strong>
+          </li>
+          <li>
+            <span>02</span>
+            <strong>Pages</strong>
+          </li>
+          <li>
+            <span>03</span>
+            <strong>Workers API</strong>
+          </li>
+          <li>
+            <span>04</span>
+            <strong>Grafana</strong>
+          </li>
+          <li>
+            <span>05</span>
+            <strong>GitHub Issue</strong>
+          </li>
+          <li>
+            <span>06</span>
+            <strong>Runbook</strong>
+          </li>
+        </ol>
+      </section>
+
+      <footer class="footer">
+        <p>SRE Lab — reliability engineering demonstrated through working evidence.</p>
+        <p>Historical product demos remain archived, not primary.</p>
+      </footer>
+    </div>
   </main>
 </body>
 </html>
