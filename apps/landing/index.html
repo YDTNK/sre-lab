@@ -10,14 +10,22 @@
   />
   <link rel="stylesheet" href="/portfolio.css" />
   <style>
-    @media (max-width: 899px) {
-      br.desktop-break {
-        display: none !important;
-      }
+    .hero-copy-mobile {
+      display: none;
     }
 
-    .hero__lead .no-break {
-      white-space: nowrap;
+    @media (max-width: 899px) {
+      .hero-copy-desktop {
+        display: none;
+      }
+
+      .hero-copy-mobile {
+        display: inline;
+      }
+
+      .hero__lead {
+        overflow-wrap: normal !important;
+      }
     }
   </style>
 </head>
@@ -67,7 +75,8 @@
           <p class="eyebrow">SRE / Platform Engineering Portfolio</p>
           <h1 id="hero-title">Reliability<br />Ops Lab</h1>
           <p class="hero__lead">
-            Reliability Demo APIを通じて、監視、SLO、Runbook、<br class="desktop-break" />障害対応までの運用プロセスを一つの流れで<span class="no-break">示します。</span>
+            <span class="hero-copy-desktop">Reliability Demo APIを通じて、監視、SLO、Runbook、<br />障害対応までの運用プロセスを一つの流れで示します。</span>
+            <span class="hero-copy-mobile">Reliability Demo APIを通じて、監視・SLO・Runbook・障害対応までの流れを示します。</span>
           </p>
 
           <div class="hero__actions">
