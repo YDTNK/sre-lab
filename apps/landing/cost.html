@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cost Guardrails | SRE Lab Portfolio</title>
+  <meta
+    name="description"
+    content="SRE LabのCloud Cost Guardrail Demoです。利用量制御、予算しきい値、コストアラート、Runbook、Cost incident対応をまとめたSREポートフォリオページです。"
+  />
+  <link rel="stylesheet" href="/portfolio.css?v=20260620-cost-1" />
+  <link rel="stylesheet" href="/architecture.css?v=20260620-cost-1" />
+  <link rel="stylesheet" href="/cost.css?v=20260620-cost-1" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">本文へスキップ</a>
+
+  <aside class="sidebar" aria-label="ポートフォリオナビゲーション">
+    <div class="sidebar__brand">
+      <a href="/">Yudai Tanaka</a>
+      <p>Portfolio</p>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="/">
+        <span>01</span>トップ
+      </a>
+      <a class="sidebar__link" href="/architecture.html">
+        <span>02</span>構成
+      </a>
+      <a class="sidebar__link" href="/reliability.html">
+        <span>03</span>信頼性
+      </a>
+      <a class="sidebar__link" href="/monitoring.html">
+        <span>04</span>監視
+      </a>
+      <a class="sidebar__link" href="/cicd.html">
+        <span>05</span>CI/CD
+      </a>
+      <a class="sidebar__link" href="/incidents.html">
+        <span>06</span>障害対応
+      </a>
+      <a class="sidebar__link sidebar__link--active" href="/cost.html">
+        <span>07</span>コスト制御
+      </a>
+      <a class="sidebar__link" href="https://github.com/YDTNK/sre-lab">
+        <span>08</span>GitHub
+      </a>
+    </nav>
+
+    <p class="sidebar__meta">Cloudflare · Grafana · GitHub</p>
+  </aside>
+
+  <main class="main" id="main-content">
+    <div class="main__inner">
+      <section class="page-hero" aria-labelledby="cost-title">
+        <div>
+          <p class="eyebrow">Cost Guardrails</p>
+          <h1 id="cost-title">Cloud Cost<br />Guardrail</h1>
+          <p class="page-title-ja">コスト制御</p>
+          <p class="page-hero__lead">
+            <span class="copy-desktop">小さな公開APIでも、 runaway usage、予算超過、無制限リクエストを避けるための運用設計を整理します。</span>
+            <span class="copy-mobile">公開APIの利用量、予算超過、無制限リクエストを抑える運用設計を整理します。</span>
+          </p>
+        </div>
+        <div class="page-summary" aria-label="Cost guardrail summary">
+          <p>Current scope</p>
+          <strong>Rate Limit · Usage Counter · Budget Threshold · Cost Incident</strong>
+          <span>Design evidence / API unchanged</span>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="guardrail-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Guardrail Design</p>
+            <h2 id="guardrail-title">制御対象</h2>
+          </div>
+          <p class="section-heading__count">Runaway prevention</p>
+        </div>
+
+        <div class="guardrail-list">
+          <article>
+            <span>REQ</span>
+            <h3>Request volume</h3>
+            <p>短時間の連続リクエストや想定外のアクセス増加を検知し、API利用量の急増を抑える設計です。</p>
+          </article>
+          <article>
+            <span>CPU</span>
+            <h3>Compute time</h3>
+            <p>Worker実行時間や遅延デモのような重い処理を監視対象にし、不要な実行コスト増加を避けます。</p>
+          </article>
+          <article>
+            <span>EXT</span>
+            <h3>External dependency</h3>
+            <p>将来的に外部APIや有料APIを使う場合、呼び出し回数・失敗時リトライ・上限値を明確にします。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="controls-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Controls</p>
+            <h2 id="controls-title">ガードレール</h2>
+          </div>
+          <p class="section-heading__count">Policy candidates</p>
+        </div>
+
+        <div class="control-grid">
+          <article>
+            <span>01</span>
+            <h3>Rate limit</h3>
+            <p>IP、route、time window単位でリクエスト数を制限し、過剰アクセス時は429を返す設計にします。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Usage counter</h3>
+            <p>日次・月次のリクエスト数を集計し、想定利用量との差分を確認できるようにします。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Budget threshold</h3>
+            <p>月額上限や無料枠に近づいた時点で、通知・機能縮退・一時停止の判断に進みます。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="operations" aria-labelledby="cost-flow-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Cost Response Flow</p>
+            <h2 id="cost-flow-title">コスト対応の流れ</h2>
+          </div>
+          <p class="section-heading__count">Signal to control</p>
+        </div>
+
+        <ol class="architecture-flow architecture-flow--five cost-flow">
+          <li><span>01</span><div class="flow-icon" aria-hidden="true">USE</div><strong>Usage signal</strong><p>リクエスト数、実行時間、外部API利用量の増加を検知します。</p></li>
+          <li><span>02</span><div class="flow-icon" aria-hidden="true">THR</div><strong>Threshold</strong><p>予算しきい値や利用上限に近づいたかを判定します。</p></li>
+          <li><span>03</span><div class="flow-icon" aria-hidden="true">ALRT</div><strong>Alert</strong><p>通知やIssue化で、対応すべきコストリスクとして記録します。</p></li>
+          <li><span>04</span><div class="flow-icon" aria-hidden="true">CTRL</div><strong>Control</strong><p>Rate limit、縮退、一時停止などの制御を検討します。</p></li>
+          <li><span>05</span><div class="flow-icon" aria-hidden="true">REV</div><strong>Review</strong><p>原因、影響、再発防止を記録し、必要な実装改善へつなげます。</p></li>
+        </ol>
+      </section>
+
+      <section class="evidence" aria-labelledby="budget-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Budget Policy</p>
+            <h2 id="budget-title">予算しきい値</h2>
+          </div>
+          <p class="section-heading__count">Example policy</p>
+        </div>
+
+        <div class="budget-list">
+          <article>
+            <span>50%</span>
+            <h3>Early notice</h3>
+            <p>想定月額の半分に到達したら、利用量の傾向と直近変更を確認します。</p>
+          </article>
+          <article>
+            <span>80%</span>
+            <h3>Action required</h3>
+            <p>上限接近時は、レート制限、重い処理の停止、外部API呼び出し削減を検討します。</p>
+          </article>
+          <article>
+            <span>100%</span>
+            <h3>Containment</h3>
+            <p>上限超過時は、非重要機能の停止、公開範囲の制限、原因調査を優先します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="cost-incident-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Cost Incident</p>
+            <h2 id="cost-incident-title">想定インシデント</h2>
+          </div>
+          <p class="section-heading__count">Game day scenario</p>
+        </div>
+
+        <div class="cost-incident-list">
+          <article>
+            <h3>Scenario</h3>
+            <p>外部から短時間に多数のリクエストが発生し、Worker実行回数や外部API呼び出しが想定を超える。</p>
+          </article>
+          <article>
+            <h3>Detection</h3>
+            <p>Usage counter、Cloudflare analytics、GitHub Issue化された通知から異常を把握します。</p>
+          </article>
+          <article>
+            <h3>Mitigation</h3>
+            <p>Rate limit、対象routeの一時制限、重い処理の停止、キャッシュ活用で増加を抑えます。</p>
+          </article>
+          <article>
+            <h3>Follow-up</h3>
+            <p>しきい値、通知条件、制限対象、Runbookを見直し、再発防止をIssue / PRで追跡します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="implementation-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Implementation Plan</p>
+            <h2 id="implementation-title">今後の実装候補</h2>
+          </div>
+          <p class="section-heading__count">Future work</p>
+        </div>
+
+        <div class="implementation-list">
+          <article>
+            <span>RL</span>
+            <h3>Route-level rate limit</h3>
+            <p>Cloudflare Workers側でrouteごとの制限を追加し、過剰アクセス時に429を返す実装候補です。</p>
+          </article>
+          <article>
+            <span>KV</span>
+            <h3>Usage counter storage</h3>
+            <p>KV、D1、Analyticsなどを使い、日次・月次の利用量を記録する実装候補です。</p>
+          </article>
+          <article>
+            <span>RUN</span>
+            <h3>Cost runbook</h3>
+            <p>コスト急増時の確認手順、停止判断、復旧判断をRunbookとして追加する候補です。</p>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>SRE Lab — Cloud Cost Guardrail design for small public API operations.</p>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
