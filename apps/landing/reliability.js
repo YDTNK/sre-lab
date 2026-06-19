@@ -63,11 +63,11 @@ function setOverallState(state, label) {
   }
 
   stateLabel.dataset.liveState = state;
-  stateLabel.childNodes.forEach((node) => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      node.textContent = ` ${label}`;
-    }
-  });
+  stateLabel.replaceChildren();
+
+  const dot = document.createElement("span");
+  dot.setAttribute("aria-hidden", "true");
+  stateLabel.append(dot, ` ${label}`);
 
   const pulse = document.querySelector("[data-live-pulse]");
   if (pulse) {
