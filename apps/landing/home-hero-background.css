@@ -29,12 +29,12 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url("/assets/images/hero-moving-prep-wide.png");
+  background-image: url("/assets/images/sre-lab-iot-cyber-hero.jpg");
   background-repeat: no-repeat;
-  /* Hero-ready wide PNG generated from the original image. Left side is outpainted/faded for text; objects remain on the right. */
-  background-size: auto min(94%, 450px);
-  background-position: right 3% center;
-  background-color: #ffffff;
+  /* 2:1 IoT/cyber-style SRE hero image. Left side is reserved for headline text; main visual stays center-right. */
+  background-size: cover;
+  background-position: center right;
+  background-color: #071226;
 }
 
 .home-redesign-hero--background .home-redesign-hero__copy {
@@ -78,8 +78,8 @@
   }
 
   .home-redesign-hero__visual-bg {
-    background-size: auto min(88%, 420px);
-    background-position: right -8px center;
+    background-size: cover;
+    background-position: center right;
   }
 
   .home-redesign-hero--background .home-redesign-hero__copy {
@@ -106,8 +106,8 @@
   }
 
   .home-redesign-hero__visual-bg {
-    background-size: auto 88%;
-    background-position: right -96px center;
+    background-size: cover;
+    background-position: 70% center;
   }
 
   .home-redesign-hero--background .home-redesign-hero__copy {
@@ -148,8 +148,8 @@
   }
 
   .home-redesign-hero__visual-bg {
-    background-size: auto 80%;
-    background-position: right -130px center;
+    background-size: cover;
+    background-position: 74% center;
   }
 
   .home-redesign-hero--background .home-redesign-hero__copy {

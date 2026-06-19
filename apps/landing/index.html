@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>引越し準備ボード | 引越し準備を最短で確実に</title>
+  <title>SRE Lab | Reliability Demo API</title>
   <meta
     name="description"
-    content="引越し準備を最短で確実に進めるための無料Webサービスです。荷物量・必要資材・スケジュール・チェックリストを住所入力なしで整理できます。"
+    content="SRE Labは、Reliability Demo APIを題材にSLO・監視・Runbook・Incident・Postmortemを見せるSREポートフォリオです。"
   />
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/site-completion.css" />
@@ -16,113 +16,89 @@
 <body class="page-home page-home-redesign">
   <header class="site-header home-redesign-header">
     <div class="container site-header__inner home-redesign-header__inner">
-      <a class="site-brand home-redesign-brand" href="/">引越し準備ボード</a>
+      <a class="site-brand home-redesign-brand" href="/">SRE Lab</a>
       <nav class="site-nav home-redesign-nav" aria-label="主要ナビゲーション">
-        <a href="#features">特徴</a>
-        <a href="#how-it-works">使い方</a>
-        <a href="moving-assistant.html#moving-form">診断</a>
-        <a href="moving-template.html">テンプレート</a>
-        <a href="#faq">FAQ</a>
-        <a class="home-redesign-nav__cta" href="moving-assistant.html#moving-form">無料で診断する</a>
+        <a href="reliability.html">Reliability</a>
+        <a href="reliability.html#slo">SLO</a>
+        <a href="reliability.html#ops">Runbooks</a>
+        <a href="moving-assistant.html#moving-form">Historical Demo</a>
       </nav>
     </div>
   </header>
 
   <main class="container home-redesign-main">
-    <section class="home-redesign-firstview" aria-label="引越し準備ボードのファーストビュー">
+    <section class="home-redesign-firstview" aria-label="SRE Labのファーストビュー">
       <div class="home-redesign-hero home-redesign-hero--background" aria-labelledby="hero-title">
         <div class="home-redesign-hero__visual-bg" aria-hidden="true"></div>
         <div class="home-redesign-hero__copy">
-          <p class="home-redesign-hero__eyebrow">＼ もう引越し準備で迷わない ／</p>
-          <h1 id="hero-title">引越し準備を、<br><span>最短で、確実に。</span></h1>
+          <p class="home-redesign-hero__eyebrow">SRE / Platform Engineering Portfolio</p>
+          <h1 id="hero-title">Reliability Demo APIで、<br><span>運用を見せる。</span></h1>
           <p class="home-redesign-hero__lead">
-            あなたの状況に合わせた最適なタスクリストとスケジュールを自動で作成。
-            やることが一目でわかり、スムーズに引越し準備を進められます。
+            SRE Labは、小さなCloudflare Workers APIを題材に、SLO・監視・Runbook・Incident・Postmortem・CI/CDを見せるポートフォリオです。
           </p>
           <div class="home-redesign-hero__actions">
-            <a class="button" href="moving-assistant.html#moving-form">無料で引越し準備を診断する</a>
-            <a class="button button-secondary" href="moving-template.html">引越し準備PDFテンプレートを見る</a>
+            <a class="button" href="reliability.html">Reliability Dashboardを見る</a>
+            <a class="button button-secondary" href="https://github.com/YDTNK/sre-lab">GitHubを見る</a>
           </div>
-          <p class="home-redesign-hero__note">もう忘れ物ゼロへ！</p>
+          <p class="home-redesign-hero__note">Production API: /api/health, /api/slow, /api/error, /api/fallback, /api/status</p>
         </div>
       </div>
 
-      <section class="home-redesign-feature-strip" id="features" aria-label="引越し準備ボードの特徴">
+      <section class="home-redesign-feature-strip" id="features" aria-label="SRE Labの特徴">
         <article>
           <span aria-hidden="true">✓</span>
-          <h2>あなただけの最適プラン</h2>
-          <p>荷物量に応じて、資材と準備タスクを整理します。</p>
+          <h2>SLO / SLI</h2>
+          <p>Reliability Demo APIの可用性・レイテンシ・エラー率を定義します。</p>
         </article>
         <article>
-          <span aria-hidden="true">📅</span>
-          <h2>一目でわかるスケジュール</h2>
-          <p>いつ何をすべきか、準備の流れを確認できます。</p>
+          <span aria-hidden="true">📈</span>
+          <h2>Monitoring</h2>
+          <p>Grafana Synthetic Monitoringで本番APIの状態を確認します。</p>
         </article>
         <article>
-          <span aria-hidden="true">📦</span>
-          <h2>見積もり前に整理</h2>
-          <p>住所入力なしで、準備に必要な観点だけを確認できます。</p>
+          <span aria-hidden="true">🧯</span>
+          <h2>Incident Response</h2>
+          <p>Runbook、Incident記録、Postmortemテンプレートを運用証跡として残します。</p>
         </article>
       </section>
     </section>
 
     <section class="home-redesign-section" id="how-it-works">
-      <p class="home-redesign-section__label">HOW IT WORKS</p>
-      <h2>3ステップで、引越し準備の抜け漏れを減らします。</h2>
+      <p class="home-redesign-section__label">OPERATIONS LOOP</p>
+      <h2>小さなAPIで、本番運用の流れを再現します。</h2>
       <div class="home-redesign-steps">
         <article>
           <span>01</span>
-          <h3>荷物量を入力</h3>
-          <p>家具・衣類・家電・本や小物など、今ある荷物をざっくり入力します。</p>
+          <h3>正常・遅延・エラーを公開</h3>
+          <p><code>/api/health</code>、<code>/api/slow</code>、<code>/api/error</code>などで信頼性イベントを再現します。</p>
         </article>
         <article>
           <span>02</span>
-          <h3>準備タスクを確認</h3>
-          <p>段ボール、資材、手続き、当日準備まで、やることを整理します。</p>
+          <h3>SLOとRunbookを定義</h3>
+          <p>SLO、error budget、監視対象、対応手順をドキュメント化します。</p>
         </article>
         <article>
           <span>03</span>
-          <h3>テンプレートで管理</h3>
-          <p>無料サンプルやPDFテンプレートを使って、準備状況を見える化します。</p>
+          <h3>Incidentと改善を残す</h3>
+          <p>本番検証、Game Day、PostmortemをGitHub上に証跡として残します。</p>
         </article>
       </div>
     </section>
 
     <section class="home-redesign-section home-redesign-cta-panel">
-      <p class="home-redesign-section__label">START</p>
-      <h2>まずは無料診断で、必要な準備を確認しましょう。</h2>
+      <p class="home-redesign-section__label">DASHBOARD</p>
+      <h2>Reliability Demo APIの運用状況を確認する</h2>
       <p>
-        引越し準備は、後回しにすると一気に負担が増えます。
-        いまの荷物量を入力して、必要な資材と準備タスクを整理してください。
+        APIエンドポイント、SLO、Runbook、Incident、Postmortemテンプレートを一覧で確認できます。
       </p>
-      <a class="button" href="moving-assistant.html#moving-form">無料で診断を始める</a>
+      <a class="button" href="reliability.html">Reliability Dashboardへ</a>
     </section>
 
-    <section class="home-redesign-section" id="faq">
-      <p class="home-redesign-section__label">FAQ</p>
-      <h2>よくある質問</h2>
-      <div class="home-redesign-faq">
-        <details>
-          <summary>住所入力は必要ですか？</summary>
-          <p>不要です。荷物量や準備状況だけで、引越し準備の目安を整理できます。</p>
-        </details>
-        <details>
-          <summary>見積もり金額が分かりますか？</summary>
-          <p>正確な見積もり金額ではなく、準備すべき項目や資材の目安を整理するサービスです。</p>
-        </details>
-        <details>
-          <summary>PDFテンプレートは何に使えますか？</summary>
-          <p>荷物整理、段ボール準備、手続き、前日確認などをチェックリスト形式で管理できます。</p>
-        </details>
-      </div>
-    </section>
-
-    <section class="home-redesign-section" aria-label="利用上の注意">
-      <p class="home-redesign-section__label">NOTICE</p>
-      <h2>AI引越し診断のご利用にあたって</h2>
+    <section class="home-redesign-section" aria-label="Historical demo">
+      <p class="home-redesign-section__label">HISTORICAL DEMO</p>
+      <h2>AI Moving Assistantは過去実装として保持</h2>
       <p>
-        診断結果は引越し準備の目安です。正式な見積もりや契約内容ではありません。
-        住所・氏名・連絡先など、不要な機微情報は入力しないでください。
+        引越し準備ボードは現在の主軸ではなく、Cloudflare Pages / Workers / fallback設計の履歴資産として保持しています。
       </p>
     </section>
   </main>
