@@ -25,13 +25,14 @@
   background: transparent;
   grid-template-columns: 72px minmax(160px, 240px) minmax(0, 1fr) 92px;
   column-gap: 22px;
-  align-items: start;
+  align-items: center;
 }
 
 .evidence-card__header {
   display: grid;
   gap: 10px;
   grid-column: 1 / 2;
+  align-self: center;
 }
 
 .evidence-card h3 {
@@ -39,20 +40,24 @@
   font-size: 1.18rem;
   line-height: 1.45;
   grid-column: 2 / 3;
+  align-self: center;
 }
 
 .evidence-card > p {
   max-width: 560px;
   min-height: 0;
+  margin: 0;
   font-size: 0.95rem;
   line-height: 1.78;
   grid-column: 3 / 4;
+  align-self: center;
 }
 
 .evidence-card > a {
-  margin-top: 2px;
+  margin-top: 0;
   white-space: nowrap;
   grid-column: 4 / 5;
+  align-self: center;
 }
 
 @media (max-width: 899px) {
@@ -69,11 +74,13 @@
     padding: 20px 0;
     grid-template-columns: 54px minmax(0, 1fr);
     gap: 14px;
+    align-items: center;
   }
 
   .evidence-card__header {
     grid-column: 1 / 2;
     grid-row: 1 / 4;
+    align-self: center;
   }
 
   .evidence-card h3,
@@ -95,6 +102,7 @@
   .evidence-card > a {
     margin-top: 4px;
     font-size: 0.76rem;
+    align-self: start;
   }
 
   .operations-flow {

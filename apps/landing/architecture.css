@@ -37,7 +37,7 @@
   background: transparent;
   grid-template-columns: 54px 64px minmax(180px, 0.32fr) minmax(0, 1fr);
   gap: 18px;
-  align-items: start;
+  align-items: center;
 }
 
 .detail-list article,
@@ -49,6 +49,7 @@
   background: transparent;
   grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
   gap: 22px;
+  align-items: center;
 }
 
 .node-mark,
@@ -64,6 +65,14 @@
   font-weight: 800;
   letter-spacing: 0.04em;
   place-items: center;
+  align-self: center;
+  justify-self: center;
+}
+
+.architecture-card > span,
+.architecture-flow li > span {
+  align-self: center;
+  justify-self: start;
 }
 
 .architecture-card h3,
@@ -73,6 +82,7 @@
   display: block;
   font-size: 1.05rem;
   line-height: 1.45;
+  align-self: center;
 }
 
 .architecture-card p,
@@ -81,12 +91,14 @@
   color: var(--color-muted);
   font-size: 0.95rem;
   line-height: 1.78;
+  align-self: center;
 }
 
 .detail-list h3 {
   margin: 0;
   font-size: 1.05rem;
   letter-spacing: -0.025em;
+  align-self: center;
 }
 
 .detail-list p {
@@ -94,6 +106,7 @@
   color: var(--color-muted);
   font-size: 0.95rem;
   line-height: 1.78;
+  align-self: center;
 }
 
 .architecture-flow li:not(:last-child)::after,
@@ -120,6 +133,7 @@
     padding: 20px 0;
     grid-template-columns: 38px 44px minmax(0, 1fr);
     gap: 12px;
+    align-items: center;
   }
 
   .detail-list article,
@@ -127,6 +141,7 @@
     padding: 20px 0;
     grid-template-columns: 1fr;
     gap: 8px;
+    align-items: start;
   }
 
   .node-mark,
