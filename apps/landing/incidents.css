@@ -1,0 +1,213 @@
+.copy-mobile {
+  display: none;
+}
+
+.copy-desktop,
+.copy-mobile {
+  text-wrap: pretty;
+}
+
+.incident-flow p,
+.case-summary p,
+.timeline-list p,
+.policy-list p,
+.postmortem-list p,
+.incident-evidence-list p {
+  color: var(--color-accent-dark);
+}
+
+.case-summary,
+.timeline-list,
+.policy-list,
+.postmortem-list,
+.incident-evidence-list {
+  display: grid;
+  border-top: 1px solid var(--color-border);
+  grid-template-columns: 1fr;
+}
+
+.case-summary article {
+  display: grid;
+  min-height: auto;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: 64px minmax(220px, 0.34fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.case-summary article > span,
+.timeline-list article > span,
+.postmortem-list article > span,
+.incident-evidence-list article > span {
+  color: var(--color-accent-dark);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+}
+
+.case-summary h3,
+.timeline-list h3,
+.policy-list h3,
+.postmortem-list h3,
+.incident-evidence-list h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.05rem;
+  font-weight: 760;
+  letter-spacing: -0.025em;
+  line-height: 1.45;
+}
+
+.case-summary p,
+.timeline-list p,
+.policy-list p,
+.postmortem-list p,
+.incident-evidence-list p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.78;
+}
+
+.timeline-list article {
+  display: grid;
+  min-height: auto;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: 64px minmax(210px, 0.32fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.timeline-list article > span,
+.postmortem-list article > span,
+.incident-evidence-list article > span {
+  display: inline-grid;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--color-border);
+  background: var(--color-accent-soft);
+  place-items: center;
+}
+
+.policy-list article {
+  display: grid;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+}
+
+.postmortem-list article,
+.incident-evidence-list article {
+  display: grid;
+  min-height: auto;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: 64px minmax(210px, 0.32fr) minmax(0, 1fr) 132px;
+  gap: 20px;
+  align-items: center;
+}
+
+.incident-evidence-list a {
+  display: inline-flex;
+  width: fit-content;
+  color: var(--color-text-subtle);
+  font-size: 0.76rem;
+  font-weight: 720;
+  text-decoration: none;
+  gap: 14px;
+}
+
+.incident-evidence-list a:hover,
+.incident-evidence-list a:focus-visible {
+  color: var(--color-accent-dark);
+}
+
+@media (max-width: 1199px) {
+  .case-summary article,
+  .timeline-list article,
+  .postmortem-list article,
+  .incident-evidence-list article {
+    grid-template-columns: 48px minmax(190px, 0.34fr) minmax(0, 1fr);
+  }
+
+  .incident-evidence-list a {
+    grid-column: 3 / 4;
+  }
+}
+
+@media (max-width: 899px) {
+  .copy-desktop {
+    display: none;
+  }
+
+  .copy-mobile {
+    display: inline;
+  }
+
+  .case-summary article,
+  .timeline-list article,
+  .postmortem-list article,
+  .incident-evidence-list article {
+    padding: 20px 0;
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+  }
+
+  .timeline-list article > span,
+  .postmortem-list article > span,
+  .incident-evidence-list article > span {
+    width: 36px;
+    height: 36px;
+    grid-row: 1 / 4;
+  }
+
+  .case-summary article > span {
+    grid-row: 1 / 4;
+  }
+
+  .case-summary h3,
+  .case-summary p,
+  .timeline-list h3,
+  .timeline-list p,
+  .postmortem-list h3,
+  .postmortem-list p,
+  .incident-evidence-list h3,
+  .incident-evidence-list p,
+  .incident-evidence-list a {
+    grid-column: 2 / 3;
+  }
+
+  .case-summary h3,
+  .timeline-list h3,
+  .policy-list h3,
+  .postmortem-list h3,
+  .incident-evidence-list h3 {
+    font-size: 1rem;
+  }
+
+  .case-summary p,
+  .timeline-list p,
+  .policy-list p,
+  .postmortem-list p,
+  .incident-evidence-list p {
+    font-size: 0.88rem;
+    line-height: 1.76;
+  }
+
+  .policy-list article {
+    padding: 20px 0;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    align-items: start;
+  }
+
+  .incident-evidence-list a {
+    font-size: 0.74rem;
+  }
+}
