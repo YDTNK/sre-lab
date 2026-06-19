@@ -61,20 +61,27 @@
 }
 
 .reliability-note-card a,
-.reliability-evidence-list a {
+.reliability-evidence-list a,
+.reliability-refresh-button {
   display: inline-flex;
   width: fit-content;
+  border: 0;
+  background: transparent;
   color: var(--color-text-subtle);
+  font: inherit;
   font-size: 0.76rem;
   font-weight: 720;
   text-decoration: none;
+  cursor: pointer;
   gap: 14px;
 }
 
 .reliability-note-card a:hover,
 .reliability-note-card a:focus-visible,
 .reliability-evidence-list a:hover,
-.reliability-evidence-list a:focus-visible {
+.reliability-evidence-list a:focus-visible,
+.reliability-refresh-button:hover,
+.reliability-refresh-button:focus-visible {
   color: var(--color-accent-dark);
 }
 
@@ -141,6 +148,45 @@
 
 .endpoint-list__expected-error {
   background: linear-gradient(90deg, transparent, rgba(164, 60, 60, 0.045));
+}
+
+.endpoint-latency {
+  display: inline-flex;
+  margin-left: 6px;
+  color: var(--color-muted-light);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.endpoint-list article[data-live-result="ok"] strong,
+.status-card__metrics dd[data-live-primary-sli="ok"] {
+  color: var(--color-success);
+}
+
+.endpoint-list article[data-live-result="expected"] strong,
+.status-card__metrics dd[data-live-error-demo="expected"] {
+  color: var(--color-danger);
+}
+
+.endpoint-list article[data-live-result="failed"] strong,
+.status-card__metrics dd[data-live-primary-sli="failed"] {
+  color: var(--color-danger);
+}
+
+.endpoint-list article[data-live-result="checking"] strong {
+  color: var(--color-muted-light);
+}
+
+.status-card__state[data-live-state="operational"] span,
+.status-card__pulse[data-live-pulse="operational"] {
+  background: var(--color-success);
+}
+
+.status-card__state[data-live-state="degraded"] span,
+.status-card__pulse[data-live-pulse="degraded"] {
+  background: var(--color-danger);
 }
 
 .reliability-flow p {
@@ -247,6 +293,12 @@
 
   .endpoint-list p {
     grid-column: 2 / 4;
+  }
+
+  .endpoint-latency {
+    display: block;
+    margin: 4px 0 0;
+    font-size: 0.68rem;
   }
 
   .reliability-evidence-list article {
