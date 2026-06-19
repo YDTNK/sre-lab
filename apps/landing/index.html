@@ -9,6 +9,17 @@
     content="Reliability Demo APIを題材に、SLO、監視、障害対応、Runbook、CI/CDの考え方を公開するSRE / Platform Engineeringポートフォリオです。"
   />
   <link rel="stylesheet" href="/portfolio.css" />
+  <style>
+    @media (max-width: 899px) {
+      br.desktop-break {
+        display: none !important;
+      }
+    }
+
+    .hero__lead .no-break {
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content">本文へスキップ</a>
@@ -56,7 +67,7 @@
           <p class="eyebrow">SRE / Platform Engineering Portfolio</p>
           <h1 id="hero-title">Reliability<br />Ops Lab</h1>
           <p class="hero__lead">
-            Reliability Demo APIを通じて、監視、SLO、Runbook、<br class="desktop-break" />障害対応までの運用プロセスを一つの流れで示します。
+            Reliability Demo APIを通じて、監視、SLO、Runbook、<br class="desktop-break" />障害対応までの運用プロセスを一つの流れで<span class="no-break">示します。</span>
           </p>
 
           <div class="hero__actions">
