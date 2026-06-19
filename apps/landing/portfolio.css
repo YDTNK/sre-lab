@@ -183,7 +183,7 @@ a {
 .hero__lead {
   max-width: 650px;
   margin: 30px 0 0;
-  color: var(--color-text-subtle);
+  color: var(--color-muted);
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   line-height: 1.75;
 }
