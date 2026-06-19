@@ -1,6 +1,6 @@
-# Reliability Demo API MVP Production Verification
+# Reliability Demo API 本番確認記録
 
-## Summary
+## 概要
 
 ```text
 Date: 2026-06-19
@@ -11,13 +11,13 @@ Related PR: #78
 Related Issue: #77
 ```
 
-## Purpose
+## 目的
 
-Record the first production verification after merging the Reliability Demo API MVP.
+この文書は、Reliability Demo API MVPを本番反映した後に、期待どおり応答することを確認した記録です。
 
-This is not an outage postmortem. It is an operational evidence record for the SRE portfolio.
+Postmortemではありません。SREポートフォリオとして、本番確認の結果と次の改善事項を残すための運用証跡です。
 
-## Verification results
+## 確認結果
 
 | Check | Expected | Actual | Result |
 |---|---:|---:|---|
@@ -27,17 +27,19 @@ This is not an outage postmortem. It is an operational evidence record for the S
 | `GET /api/slow?delayMs=1000` | 200 | 200 | passed |
 | `GET /api/error` | 500 | 500 | passed |
 
-## Notes
+## 補足
 
-`GET /api/error` returning HTTP 500 is expected. It is a controlled reliability demo endpoint.
+`GET /api/error` がHTTP 500を返すのは期待された挙動です。
 
-## Evidence
+このエンドポイントは、エラー応答、監視設計、Runbook、Incident対応を説明するための制御されたデモです。通常の可用性SLIには含めません。
 
-Manual curl verification from local terminal confirmed the expected status codes and response bodies.
+## 確認方法
 
-## Follow-up
+ローカル端末からcurlで本番APIを確認し、期待ステータスとレスポンス本文を確認しました。
 
-- Define SLO / SLI document for Reliability Demo API.
-- Update runbook primary API target from Moving Assistant to Reliability Demo API.
-- Configure or confirm Grafana Synthetic Monitoring targets for `/api/health` and `/api/status`.
-- Create postmortem template for future incidents.
+## フォローアップ
+
+- Reliability Demo API の SLO / SLI 文書を定義する。
+- Runbookの対象を Reliability Demo API に合わせて整える。
+- Grafana Synthetic Monitoring の対象として `/api/health` と `/api/status` を確認する。
+- 将来のPostmortemに備えてテンプレートを用意する。
