@@ -6,8 +6,9 @@ This document describes the active and historical service direction for SRE Lab.
 
 ```text
 Current direction: SRE portfolio-first
-Current active target: Reliability Demo API MVP
-Tracking Issue: #74
+Current active target: Final full-site QA and optional polish
+Tracking Issue: #88
+Reliability Demo API: implemented / active portfolio demonstration service
 ```
 
 ## Service Selection Policy
@@ -16,6 +17,7 @@ SRE Lab services should be selected for SRE portfolio value first.
 
 A service is a good fit when it can demonstrate:
 
+- architecture and dependency boundaries
 - SLO / SLI
 - monitoring and alerting
 - incident response
@@ -33,27 +35,27 @@ A service is not a good fit when it mainly requires:
 - consumer AI feature expansion without reliability value
 - manual content posting
 
-## Active Target Service: Reliability Demo API
+## Active Service: Reliability Demo API
 
 ### Overview
 
-Reliability Demo API is the first target service for the SRE portfolio direction.
+Reliability Demo API is the active service used for the SRE portfolio direction.
 
 It is intentionally designed to make reliability behavior visible and testable.
 
-### Planned Endpoints
+### Active Endpoints
 
 ```text
-/api/health
-/api/slow
-/api/error
-/api/fallback
-/api/status
+GET /api/health
+GET /api/slow?delayMs=1000
+GET /api/error
+GET /api/fallback
+GET /api/status
 ```
 
 ### Purpose
 
-Reliability Demo API should demonstrate:
+Reliability Demo API demonstrates:
 
 - healthy response
 - intentional latency
@@ -80,40 +82,40 @@ This service can be used to demonstrate:
 - rollback / mitigation notes
 - API safety validation
 
-### MVP Completion Criteria
+### Completion State
 
-The MVP is complete when:
+```text
+Reliability Demo API MVP: implemented
+SLO document: implemented
+Runbook: implemented
+Incident evidence: implemented
+Portfolio pages: implemented
+Current state: final full-site QA and optional polish
+```
 
-- endpoints are implemented
-- CI passes
-- smoke tests exist
-- SLO document exists
-- runbooks exist for latency, 5xx, fallback, and deploy failure
-- at least one sample incident or game-day record exists
-- portfolio README and architecture page point to Reliability Demo API
+## Implemented Portfolio Evidence
 
-## Planned Future Services
+```text
+Home portfolio surface: implemented
+Architecture page: implemented
+Reliability page: implemented
+Monitoring / Alerting page: implemented
+CI/CD page: implemented
+Incident / Postmortem page: implemented
+Cost Guardrail page: implemented
+```
 
-These are not active until Reliability Demo API has a complete operational loop.
+## Current Portfolio Pages
 
-### Cloud Cost Guardrail Demo
-
-Purpose:
-
-- show API usage limits
-- show cost thresholds
-- show budget policy
-- show abnormal usage response
-- show external API cost guardrails
-
-### SRE Learning Coach
-
-Purpose:
-
-- later AI-dependent service operations demo
-- prompt/version/fallback/rate-limit/cost-control example
-
-This should not be built as a generic AI learning app. It should only be added if it strengthens SRE portfolio evidence.
+```text
+/
+/architecture.html
+/reliability.html
+/monitoring.html
+/cicd.html
+/incidents.html
+/cost.html
+```
 
 ## Historical Services
 
@@ -144,6 +146,8 @@ Stopped active work:
 - Stripe CTA
 - product LP
 - Moving Prep Board monetization expansion
+
+Do not restore it as an active product or monetization route unless management-side `status.md` explicitly changes.
 
 ### AWS Cost Simulator
 
@@ -182,16 +186,16 @@ The frontend should present SRE Lab as an SRE portfolio, not a consumer AI servi
 
 Current target navigation should emphasize:
 
-- Reliability Demo API
+- Home
 - Architecture
 - Reliability / SLO
-- Incidents
-- Runbooks
+- Monitoring / Alerting
 - CI/CD
-- Security & Cost
-- Roadmap
+- Incidents / Postmortems
+- Cost Guardrails
+- GitHub evidence
 
-Historical consumer-facing pages should be removed from active navigation after the Reliability Demo API surface is ready.
+Historical consumer-facing pages should not be present in active navigation.
 
 ## Service State Gate
 
@@ -216,8 +220,8 @@ Check:
 README.md
 docs/services.md
 docs/service-state-checklist.md
-docs/runbook.md
-latest records under docs/incidents/
+docs/runbooks/reliability-demo-api.md
+docs/incidents/
 apps/api/src/index.js
 apps/landing/
 Grafana Synthetic Monitoring target list
