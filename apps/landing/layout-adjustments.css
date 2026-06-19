@@ -11,6 +11,68 @@
   white-space: nowrap;
 }
 
+.home-status-pulse {
+  animation: home-status-breathe 3.2s ease-in-out infinite;
+}
+
+.home-operational-bar {
+  position: relative;
+  overflow: hidden;
+  height: 3px;
+  margin: -10px 22px 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(22, 135, 95, 0.08), rgba(22, 135, 95, 0.18), rgba(22, 135, 95, 0.08));
+}
+
+.home-operational-bar span {
+  position: absolute;
+  inset: 0 auto 0 -42%;
+  width: 42%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(22, 135, 95, 0.78), transparent);
+  box-shadow: 0 0 14px rgba(22, 135, 95, 0.28);
+  animation: home-operational-flow 3.8s ease-in-out infinite;
+}
+
+@keyframes home-status-breathe {
+  0%,
+  100% {
+    opacity: 0.52;
+    box-shadow: 0 0 0 4px rgba(22, 135, 95, 0.08), 0 0 8px rgba(22, 135, 95, 0.16);
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 7px rgba(22, 135, 95, 0.16), 0 0 18px rgba(22, 135, 95, 0.34);
+    transform: scale(1.08);
+  }
+}
+
+@keyframes home-operational-flow {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  82% {
+    opacity: 0.35;
+  }
+
+  100% {
+    transform: translateX(340%);
+    opacity: 0;
+  }
+}
+
 .evidence-grid {
   border-left: 0;
   grid-template-columns: 1fr;
@@ -81,6 +143,10 @@
 
   .copy-mobile {
     display: inline;
+  }
+
+  .home-operational-bar {
+    margin: -8px 22px 18px;
   }
 
   .evidence-card,
