@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Incidents | SRE Lab Portfolio</title>
+  <meta
+    name="description"
+    content="Reliability Demo APIの本番確認記録、障害対応方針、Postmortemテンプレート、フォローアップ管理をまとめたSREポートフォリオページです。"
+  />
+  <link rel="stylesheet" href="/portfolio.css?v=20260620-incidents-1" />
+  <link rel="stylesheet" href="/architecture.css?v=20260620-incidents-1" />
+  <link rel="stylesheet" href="/incidents.css?v=20260620-incidents-1" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">本文へスキップ</a>
+
+  <aside class="sidebar" aria-label="ポートフォリオナビゲーション">
+    <div class="sidebar__brand">
+      <a href="/">Yudai Tanaka</a>
+      <p>Portfolio</p>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="/">
+        <span>01</span>トップ
+      </a>
+      <a class="sidebar__link" href="/architecture.html">
+        <span>02</span>構成
+      </a>
+      <a class="sidebar__link" href="/reliability.html">
+        <span>03</span>信頼性
+      </a>
+      <a class="sidebar__link" href="/monitoring.html">
+        <span>04</span>監視
+      </a>
+      <a class="sidebar__link" href="/cicd.html">
+        <span>05</span>CI/CD
+      </a>
+      <a class="sidebar__link sidebar__link--active" href="/incidents.html">
+        <span>06</span>障害対応
+      </a>
+      <a class="sidebar__link" href="/cost.html">
+        <span>07</span>コスト制御
+      </a>
+      <a class="sidebar__link" href="https://github.com/YDTNK/sre-lab">
+        <span>08</span>GitHub
+      </a>
+    </nav>
+
+    <p class="sidebar__meta">Cloudflare · Grafana · GitHub</p>
+  </aside>
+
+  <main class="main" id="main-content">
+    <div class="main__inner">
+      <section class="page-hero" aria-labelledby="incidents-title">
+        <div>
+          <p class="eyebrow">Incidents</p>
+          <h1 id="incidents-title">Incident<br />Evidence</h1>
+          <p class="page-title-ja">障害対応</p>
+          <p class="page-hero__lead">
+            <span class="copy-desktop">本番確認記録、障害対応方針、Postmortemテンプレート、フォローアップ管理を整理します。</span>
+            <span class="copy-mobile">本番確認、障害対応方針、Postmortem、フォローアップを整理します。</span>
+          </p>
+        </div>
+        <div class="page-summary" aria-label="Incident summary">
+          <p>Current scope</p>
+          <strong>Verification · Incident Policy · Postmortem · Follow-up</strong>
+          <span>Expected demo errors are not real incidents</span>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="case-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Case Study</p>
+            <h2 id="case-title">本番確認記録</h2>
+          </div>
+          <p class="section-heading__count">Production verification</p>
+        </div>
+
+        <div class="case-summary">
+          <article>
+            <span>TYPE</span>
+            <h3>Production verification record</h3>
+            <p>Reliability Demo API MVPを本番反映後に確認した記録です。実障害ではなく、運用証跡として扱います。</p>
+          </article>
+          <article>
+            <span>DATE</span>
+            <h3>2026-06-19</h3>
+            <p>health、status、fallback、slow、error の期待ステータスとレスポンスを手動確認しました。</p>
+          </article>
+          <article>
+            <span>RESULT</span>
+            <h3>Passed</h3>
+            <p>/api/error の500は意図的なデモ応答です。Availability failureや実障害として扱いません。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="timeline-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Timeline</p>
+            <h2 id="timeline-title">確認の流れ</h2>
+          </div>
+          <p class="section-heading__count">Verification path</p>
+        </div>
+
+        <div class="timeline-list">
+          <article>
+            <span>01</span>
+            <h3>MVP merged</h3>
+            <p>Reliability Demo API MVPをPRとして取り込み、Production verificationの対象にしました。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Endpoint checks</h3>
+            <p>/api/health、/api/status、/api/fallback、/api/slow、/api/error の期待ステータスを確認しました。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Evidence recorded</h3>
+            <p>本番確認結果を `docs/incidents/` 配下に記録し、SLO、Runbook、Postmortem整備へつなげました。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Follow-up created</h3>
+            <p>SLO / Runbook / Monitoring / Postmortem template整備をフォローアップとして残しました。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="operations" aria-labelledby="response-flow-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Response Flow</p>
+            <h2 id="response-flow-title">障害対応の流れ</h2>
+          </div>
+          <p class="section-heading__count">Signal to learning</p>
+        </div>
+
+        <ol class="architecture-flow architecture-flow--five incident-flow">
+          <li><span>01</span><div class="flow-icon" aria-hidden="true">SIG</div><strong>Signal</strong><p>監視、手動確認、ユーザー影響などの異常シグナルを受け取ります。</p></li>
+          <li><span>02</span><div class="flow-icon" aria-hidden="true">TRI</div><strong>Triage</strong><p>期待されたデモ応答か、実際の影響かを切り分けます。</p></li>
+          <li><span>03</span><div class="flow-icon" aria-hidden="true">RUN</div><strong>Runbook</strong><p>定義済み手順で確認、復旧判断、影響範囲の把握を進めます。</p></li>
+          <li><span>04</span><div class="flow-icon" aria-hidden="true">POST</div><strong>Postmortem</strong><p>実障害の場合はImpact、Detection、Timeline、Root causeを記録します。</p></li>
+          <li><span>05</span><div class="flow-icon" aria-hidden="true">FIX</div><strong>Follow-up</strong><p>再発防止のIssue / PRへつなげ、改善を追跡します。</p></li>
+        </ol>
+      </section>
+
+      <section class="evidence" aria-labelledby="policy-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Incident Policy</p>
+            <h2 id="policy-title">扱いの方針</h2>
+          </div>
+          <p class="section-heading__count">Do not overclaim</p>
+        </div>
+
+        <div class="policy-list">
+          <article>
+            <h3>Expected demo behavior</h3>
+            <p>/api/error の500や /api/slow の制御遅延は、デモ用途の期待挙動です。それ単体では実障害として扱いません。</p>
+          </article>
+          <article>
+            <h3>Real incident condition</h3>
+            <p>/api/health の継続失敗、ユーザー影響、デプロイ後の想定外エラーなどがある場合にIncidentとして扱います。</p>
+          </article>
+          <article>
+            <h3>Postmortem condition</h3>
+            <p>実際の影響、SLO違反、復旧判断、再発防止が必要な場合にPostmortemを作成します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="postmortem-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Postmortem</p>
+            <h2 id="postmortem-title">記録テンプレート</h2>
+          </div>
+          <p class="section-heading__count">Learning system</p>
+        </div>
+
+        <div class="postmortem-list">
+          <article>
+            <span>IMP</span>
+            <h3>Impact</h3>
+            <p>誰に、何が、どのくらい影響したかを記録します。</p>
+          </article>
+          <article>
+            <span>DET</span>
+            <h3>Detection</h3>
+            <p>どの監視・通知・手動確認で検知したかを明確にします。</p>
+          </article>
+          <article>
+            <span>TL</span>
+            <h3>Timeline</h3>
+            <p>検知、判断、復旧、再発防止までの時系列を残します。</p>
+          </article>
+          <article>
+            <span>RCA</span>
+            <h3>Root cause</h3>
+            <p>技術的原因と運用上の原因を分けて整理します。</p>
+          </article>
+          <article>
+            <span>ACT</span>
+            <h3>Follow-up actions</h3>
+            <p>Issue / PR / owner / statusを対応可能な粒度で追跡します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="evidence-links-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Evidence Links</p>
+            <h2 id="evidence-links-title">関連証跡</h2>
+          </div>
+          <p class="section-heading__count">Docs</p>
+        </div>
+
+        <div class="incident-evidence-list">
+          <article>
+            <span>REC</span>
+            <h3>Production verification record</h3>
+            <p>Reliability Demo API MVPの本番確認記録です。実障害ではなく運用証跡です。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md">Open record <span aria-hidden="true">↗</span></a>
+          </article>
+          <article>
+            <span>PM</span>
+            <h3>Postmortem template</h3>
+            <p>実障害が起きた場合に、Impact、Detection、Timeline、Root cause、Follow-upを記録します。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/postmortems/template.md">Open template <span aria-hidden="true">↗</span></a>
+          </article>
+          <article>
+            <span>RUN</span>
+            <h3>Runbook</h3>
+            <p>Health failure、Latency investigation、Fallback behaviorの切り分け手順です。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/runbooks/reliability-demo-api.md">Open runbook <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>SRE Lab — Incident response and postmortem evidence for Reliability Demo API.</p>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
