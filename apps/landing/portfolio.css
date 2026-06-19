@@ -208,6 +208,10 @@ a {
   overflow-wrap: anywhere;
 }
 
+.desktop-break {
+  display: inline;
+}
+
 .hero__actions {
   display: flex;
   margin-top: 34px;
@@ -616,6 +620,10 @@ a {
   :root {
     --main-padding-x: 22px;
     --main-padding-y: 14px;
+  }
+
+  .desktop-break {
+    display: none;
   }
 
   .sidebar {
