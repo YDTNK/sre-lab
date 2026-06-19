@@ -1,0 +1,248 @@
+.copy-mobile {
+  display: none;
+}
+
+.copy-desktop,
+.copy-mobile {
+  text-wrap: pretty;
+}
+
+.cicd-flow p,
+.workflow-list p,
+.verification-list p,
+.failure-policy-list p,
+.dora-list p {
+  color: var(--color-accent-dark);
+}
+
+.workflow-list,
+.verification-list,
+.failure-policy-list,
+.dora-list {
+  display: grid;
+  border-top: 1px solid var(--color-border);
+  grid-template-columns: 1fr;
+}
+
+.workflow-list article,
+.dora-list article {
+  display: grid;
+  min-height: auto;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: 64px minmax(210px, 0.32fr) minmax(0, 1fr) 132px;
+  gap: 20px;
+  align-items: center;
+}
+
+.workflow-list article > span,
+.dora-list article > span,
+.verification-list article > span {
+  color: var(--color-accent-dark);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+}
+
+.workflow-list article > span,
+.dora-list article > span {
+  display: inline-grid;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--color-border);
+  background: var(--color-accent-soft);
+  place-items: center;
+}
+
+.workflow-list h3,
+.failure-policy-list h3,
+.dora-list h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.05rem;
+  font-weight: 760;
+  letter-spacing: -0.025em;
+  line-height: 1.45;
+}
+
+.workflow-list p,
+.verification-list p,
+.failure-policy-list p,
+.dora-list p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.78;
+}
+
+.workflow-list a {
+  display: inline-flex;
+  width: fit-content;
+  color: var(--color-text-subtle);
+  font-size: 0.76rem;
+  font-weight: 720;
+  text-decoration: none;
+  gap: 14px;
+}
+
+.workflow-list a:hover,
+.workflow-list a:focus-visible {
+  color: var(--color-accent-dark);
+}
+
+.verification-list article {
+  display: grid;
+  min-height: auto;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: 54px minmax(240px, 0.38fr) 130px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.verification-list code {
+  color: var(--color-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+  font-weight: 760;
+  letter-spacing: -0.02em;
+}
+
+.verification-list strong {
+  color: var(--color-success);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.verification-list__expected-error {
+  background: linear-gradient(90deg, transparent, rgba(164, 60, 60, 0.045));
+}
+
+.verification-list__expected-error strong {
+  color: var(--color-danger);
+}
+
+.failure-policy-list article {
+  display: grid;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+}
+
+@media (max-width: 1199px) {
+  .workflow-list article,
+  .dora-list article {
+    grid-template-columns: 48px minmax(190px, 0.34fr) minmax(0, 1fr);
+  }
+
+  .workflow-list a {
+    grid-column: 3 / 4;
+  }
+
+  .verification-list article {
+    grid-template-columns: 48px minmax(190px, 0.34fr) minmax(0, 1fr);
+  }
+
+  .verification-list p {
+    grid-column: 3 / 4;
+  }
+}
+
+@media (max-width: 899px) {
+  .copy-desktop {
+    display: none;
+  }
+
+  .copy-mobile {
+    display: inline;
+  }
+
+  .workflow-list article,
+  .dora-list article {
+    padding: 20px 0;
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+  }
+
+  .workflow-list article > span,
+  .dora-list article > span {
+    width: 36px;
+    height: 36px;
+    grid-row: 1 / 4;
+  }
+
+  .workflow-list h3,
+  .workflow-list p,
+  .workflow-list a,
+  .dora-list h3,
+  .dora-list p {
+    grid-column: 2 / 3;
+  }
+
+  .workflow-list h3,
+  .failure-policy-list h3,
+  .dora-list h3 {
+    font-size: 1rem;
+  }
+
+  .workflow-list p,
+  .verification-list p,
+  .failure-policy-list p,
+  .dora-list p {
+    font-size: 0.88rem;
+    line-height: 1.76;
+  }
+
+  .workflow-list a {
+    font-size: 0.74rem;
+  }
+
+  .verification-list article {
+    padding: 20px 0;
+    grid-template-columns: 38px minmax(0, 1fr) 96px;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .verification-list code {
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .verification-list strong {
+    justify-self: end;
+    font-size: 0.68rem;
+  }
+
+  .verification-list p {
+    grid-column: 2 / 4;
+  }
+
+  .failure-policy-list article {
+    padding: 20px 0;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    align-items: start;
+  }
+}
+
+@media (max-width: 480px) {
+  .verification-list article {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .verification-list strong {
+    grid-column: 2 / 3;
+    justify-self: start;
+  }
+
+  .verification-list p {
+    grid-column: 2 / 3;
+  }
+}
