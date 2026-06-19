@@ -8,9 +8,9 @@
     name="description"
     content="Reliability Demo APIのサービス状態、SLO、エンドポイント挙動、Runbook、Incident、Postmortemへの証跡をまとめたSREポートフォリオページです。"
   />
-  <link rel="stylesheet" href="/portfolio.css?v=20260620-reliability-live-1" />
-  <link rel="stylesheet" href="/architecture.css?v=20260620-reliability-live-1" />
-  <link rel="stylesheet" href="/reliability.css?v=20260620-operational-bar-1" />
+  <link rel="stylesheet" href="/portfolio.css?v=20260620-naming-1" />
+  <link rel="stylesheet" href="/architecture.css?v=20260620-naming-1" />
+  <link rel="stylesheet" href="/reliability.css?v=20260620-naming-1" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">本文へスキップ</a>
@@ -59,8 +59,8 @@
           <h1 id="reliability-title">Reliability<br />Dashboard</h1>
           <p class="page-title-ja">信頼性</p>
           <p class="page-hero__lead">
-            <span class="copy-desktop">Reliability Demo APIのサービス状態、SLO、エンドポイント挙動、運用証跡を一つの画面で確認できるように整理します。</span>
-            <span class="copy-mobile">Reliability Demo APIの状態、SLO、挙動、運用証跡を一画面で確認します。</span>
+            <span class="copy-desktop">Reliability Demo APIは、信頼性運用を説明するための公開デモAPIです。この画面では、現在の状態、SLO、エンドポイント挙動、運用証跡を確認できます。</span>
+            <span class="copy-mobile">Reliability Demo APIは、信頼性運用を説明するための公開デモAPIです。状態、SLO、挙動、証跡を確認できます。</span>
           </p>
         </div>
         <div class="page-summary" aria-label="Reliability summary">
@@ -134,67 +134,72 @@
           <p class="section-heading__count">99.0% availability</p>
         </div>
 
-        <div class="reliability-metric-grid">
+        <div class="slo-grid">
           <article>
             <span>01</span>
             <h3>Availability SLO</h3>
+            <p>30日間で99.0%以上の正常応答を目標にします。</p>
             <strong>99.0%</strong>
-            <p>30日間の /api/health Synthetic Check を基準に、HTTP 200をGood Eventとして扱います。</p>
           </article>
           <article>
             <span>02</span>
             <h3>Latency SLI</h3>
+            <p>通常のhealth checkでは、p95の応答時間を継続的に見ます。</p>
             <strong>p95 &lt; 1000ms</strong>
-            <p>/api/health の成功レスポンスを対象にします。意図的な遅延デモである /api/slow は通常SLIから分けます。</p>
           </article>
           <article>
             <span>03</span>
             <h3>Error budget</h3>
+            <p>意図的な /api/error は可用性計算から除外します。</p>
             <strong>1.0%</strong>
-            <p>エラーバジェット消費が進んだ場合は、変更確認、信頼性修正、Incident / Postmortem対応へ進みます。</p>
           </article>
         </div>
       </section>
 
-      <section class="evidence" aria-labelledby="endpoints-title">
+      <section class="evidence" aria-labelledby="endpoint-title">
         <div class="section-heading">
           <div>
             <p class="eyebrow">Endpoint Behavior</p>
-            <h2 id="endpoints-title">エンドポイント挙動</h2>
+            <h2 id="endpoint-title">エンドポイントの挙動</h2>
           </div>
-          <p class="section-heading__count">Expected responses</p>
+          <p class="section-heading__count">Live checks</p>
         </div>
 
         <div class="endpoint-list" data-live-endpoints>
           <article data-live-endpoint="health">
-            <span>01</span>
-            <code>GET /api/health</code>
-            <strong class="metric--success" data-live-status>checking</strong>
-            <p><span data-live-description>本番稼働確認のPrimary uptime checkです。</span> <span class="endpoint-latency" data-live-latency></span></p>
+            <span>GET</span>
+            <code>/api/health</code>
+            <strong data-live-status>checking</strong>
+            <p data-live-description>正常性確認用のhealth checkです。</p>
+            <small class="endpoint-latency" data-live-latency>--</small>
           </article>
           <article data-live-endpoint="status">
-            <span>02</span>
-            <code>GET /api/status</code>
-            <strong class="metric--success" data-live-status>checking</strong>
-            <p><span data-live-description>サービスの状態、構成、アクティブなエンドポイントを確認します。</span> <span class="endpoint-latency" data-live-latency></span></p>
+            <span>GET</span>
+            <code>/api/status</code>
+            <strong data-live-status>checking</strong>
+            <p data-live-description>APIの状態と利用可能なエンドポイントを返します。</p>
+            <small class="endpoint-latency" data-live-latency>--</small>
           </article>
           <article data-live-endpoint="fallback">
-            <span>03</span>
-            <code>GET /api/fallback</code>
-            <strong class="metric--success" data-live-status>checking</strong>
-            <p><span data-live-description>縮退運転を想定したfallback demoです。</span> <span class="endpoint-latency" data-live-latency></span></p>
+            <span>GET</span>
+            <code>/api/fallback</code>
+            <strong data-live-status>checking</strong>
+            <p data-live-description>fallback動作を示すデモです。</p>
+            <small class="endpoint-latency" data-live-latency>--</small>
           </article>
           <article data-live-endpoint="slow">
-            <span>04</span>
-            <code>GET /api/slow?delayMs=1000</code>
-            <strong class="metric--success" data-live-status>checking</strong>
-            <p><span data-live-description>制御された遅延を返すlatency demoです。</span> <span class="endpoint-latency" data-live-latency></span></p>
+            <span>GET</span>
+            <code>/api/slow?delayMs=1000</code>
+            <strong data-live-status>checking</strong>
+            <p data-live-description>制御された遅延を発生させるデモです。</p>
+            <small class="endpoint-latency" data-live-latency>--</small>
           </article>
           <article class="endpoint-list__expected-error" data-live-endpoint="error">
-            <span>05</span>
-            <code>GET /api/error</code>
-            <strong class="metric--danger" data-live-status>checking</strong>
-            <p><span data-live-description>意図的な500エラーデモです。通常のAvailability計算には含めません。</span> <span class="endpoint-latency" data-live-latency></span></p>
+            <span>GET</span>
+            <code>/api/error</code>
+            <strong data-live-status>checking</strong>
+            <p data-live-description>意図的な500エラーです。通常のavailabilityには含めません。</p>
+            <small class="endpoint-latency" data-live-latency>--</small>
           </article>
         </div>
       </section>
@@ -203,17 +208,17 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">Operations Flow</p>
-            <h2 id="reliability-flow-title">運用対応の流れ</h2>
+            <h2 id="reliability-flow-title">信頼性確認の流れ</h2>
           </div>
-          <p class="section-heading__count">Signal to follow-up</p>
+          <p class="section-heading__count">Detect to improve</p>
         </div>
 
         <ol class="architecture-flow architecture-flow--five reliability-flow">
-          <li><span>01</span><div class="flow-icon" aria-hidden="true">SYN</div><strong>Synthetic check</strong><p>/api/health や /api/status を外形監視します。</p></li>
-          <li><span>02</span><div class="flow-icon" aria-hidden="true">ALRT</div><strong>Alert rule</strong><p>連続失敗や遅延悪化を検知します。</p></li>
-          <li><span>03</span><div class="flow-icon" aria-hidden="true">ISS</div><strong>GitHub Issue</strong><p>アラートを運用タスクとして記録します。</p></li>
-          <li><span>04</span><div class="flow-icon" aria-hidden="true">RUN</div><strong>Runbook</strong><p>切り分け、確認、復旧判断を実施します。</p></li>
-          <li><span>05</span><div class="flow-icon" aria-hidden="true">PR</div><strong>Follow-up PR</strong><p>原因修正や再発防止をPull Requestで追跡します。</p></li>
+          <li><span>01</span><div class="flow-icon" aria-hidden="true">SYN</div><strong>Synthetic check</strong><p>/api/health を外形監視します。</p></li>
+          <li><span>02</span><div class="flow-icon" aria-hidden="true">ALRT</div><strong>Alert rule</strong><p>失敗や遅延を条件として検知します。</p></li>
+          <li><span>03</span><div class="flow-icon" aria-hidden="true">ISS</div><strong>GitHub Issue</strong><p>アラートを対応可能なタスクとして残します。</p></li>
+          <li><span>04</span><div class="flow-icon" aria-hidden="true">RUN</div><strong>Runbook</strong><p>確認手順に沿って切り分けます。</p></li>
+          <li><span>05</span><div class="flow-icon" aria-hidden="true">PR</div><strong>Follow-up PR</strong><p>改善内容をPull Requestで反映します。</p></li>
         </ol>
       </section>
 
@@ -223,42 +228,43 @@
             <p class="eyebrow">Operational Evidence</p>
             <h2 id="evidence-links-title">運用証跡</h2>
           </div>
-          <p class="section-heading__count">Docs and records</p>
+          <p class="section-heading__count">Docs</p>
         </div>
 
-        <div class="reliability-evidence-list">
+        <div class="evidence-link-list">
           <article>
             <span>SLO</span>
             <h3>SLO / SLI document</h3>
-            <p>Availability、Latency、Error rate、Error budget policyを定義しています。</p>
+            <p>可用性、遅延、Error budgetの基準を定義します。</p>
             <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/slo/reliability-demo-api.md">Open document <span aria-hidden="true">↗</span></a>
           </article>
           <article>
             <span>RUN</span>
             <h3>Runbook</h3>
-            <p>Health failure、Latency investigation、Fallback behaviorの確認手順をまとめています。</p>
+            <p>障害時の確認手順と切り分け方針を整理します。</p>
             <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/runbooks/reliability-demo-api.md">Open runbook <span aria-hidden="true">↗</span></a>
           </article>
           <article>
             <span>INC</span>
             <h3>Production verification</h3>
-            <p>Reliability Demo API MVPの本番確認記録です。実障害ではなく運用証跡として扱います。</p>
+            <p>MVP本番確認の記録です。</p>
             <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md">Open record <span aria-hidden="true">↗</span></a>
           </article>
           <article>
-            <span>PM</span>
+            <span>POST</span>
             <h3>Postmortem template</h3>
-            <p>実障害が発生した場合に、Impact、Detection、Timeline、Root cause、Follow-upを記録します。</p>
+            <p>再発防止と学習のためのテンプレートです。</p>
             <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/postmortems/template.md">Open template <span aria-hidden="true">↗</span></a>
           </article>
         </div>
       </section>
 
       <footer class="footer">
-        <p>SRE Lab — Reliability Demo APIのSLO・監視・障害対応・改善サイクルを示すポートフォリオ。</p>
+        <p>SRE Lab — Reliability Demo APIの状態、SLO、運用証跡を確認するページ。</p>
       </footer>
     </div>
   </main>
-  <script src="/reliability.js?v=20260620-operational-bar-1" defer></script>
+
+  <script src="/reliability.js?v=20260620-naming-1" defer></script>
 </body>
 </html>
