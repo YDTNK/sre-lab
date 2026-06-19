@@ -11,6 +11,18 @@
   white-space: nowrap;
 }
 
+.sidebar__brand a {
+  font-size: 0;
+}
+
+.sidebar__brand a::after {
+  content: "Yudai Tanaka's";
+  color: var(--color-text);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
 .page-title-ja {
   margin: 16px 0 0;
   color: var(--color-muted-light);
@@ -167,6 +179,10 @@
 
   .copy-mobile {
     display: inline;
+  }
+
+  .sidebar__brand a::after {
+    font-size: 0.95rem;
   }
 
   .page-title-ja {
