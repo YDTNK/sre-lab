@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture | SRE Lab Portfolio</title>
+  <meta
+    name="description"
+    content="SRE LabのArchitectureページです。Cloudflare Pages、Workers API、Grafana、GitHub Actions、GitHub Issuesの役割と運用フローを整理しています。"
+  />
+  <link rel="stylesheet" href="/portfolio.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">本文へスキップ</a>
+
+  <aside class="sidebar" aria-label="ポートフォリオナビゲーション">
+    <div class="sidebar__brand">
+      <a href="/">Yudai Tanaka</a>
+      <p>Portfolio</p>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="/">
+        <span>01</span>トップ
+      </a>
+      <a class="sidebar__link sidebar__link--active" href="/architecture.html">
+        <span>02</span>構成
+      </a>
+      <a class="sidebar__link" href="/#evidence">
+        <span>03</span>信頼性
+      </a>
+      <a class="sidebar__link" href="/monitoring.html">
+        <span>04</span>監視
+      </a>
+      <a class="sidebar__link" href="/cicd.html">
+        <span>05</span>CI/CD
+      </a>
+      <a class="sidebar__link" href="/incidents.html">
+        <span>06</span>障害対応
+      </a>
+      <a class="sidebar__link" href="/cost.html">
+        <span>07</span>コスト制御
+      </a>
+      <a class="sidebar__link" href="https://github.com/YDTNK/sre-lab">
+        <span>08</span>GitHub
+      </a>
+    </nav>
+
+    <p class="sidebar__meta">Cloudflare · Grafana · GitHub</p>
+  </aside>
+
+  <main class="main" id="main-content">
+    <div class="main__inner">
+      <section class="page-hero" aria-labelledby="architecture-title">
+        <div>
+          <p class="eyebrow">Architecture</p>
+          <h1 id="architecture-title">System<br />Architecture</h1>
+          <p class="page-hero__lead">Reliability Demo APIを中心に、公開ページ、API、監視、CI/CD、Issue運用のつながりを整理します。</p>
+        </div>
+        <div class="page-summary" aria-label="Architecture summary">
+          <p>Current scope</p>
+          <strong>Pages · Workers · Grafana · GitHub</strong>
+          <span>API / Worker behavior unchanged</span>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="system-overview-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">System Overview</p>
+            <h2 id="system-overview-title">役割</h2>
+          </div>
+          <p class="section-heading__count">05 components</p>
+        </div>
+
+        <div class="architecture-grid">
+          <article class="architecture-card">
+            <span>01</span>
+            <h3>Cloudflare Pages</h3>
+            <p>静的なポートフォリオ画面を配信します。訪問者はここからAPI、運用ドキュメント、GitHub上の証跡へ移動します。</p>
+          </article>
+          <article class="architecture-card">
+            <span>02</span>
+            <h3>Cloudflare Workers</h3>
+            <p>Reliability Demo APIを提供します。ヘルスチェック、遅延、意図的なエラー、fallback、statusを扱います。</p>
+          </article>
+          <article class="architecture-card">
+            <span>03</span>
+            <h3>Grafana Cloud</h3>
+            <p>Synthetic MonitoringとAlertingを担当します。外形監視でAPIの状態を確認し、異常時の通知起点になります。</p>
+          </article>
+          <article class="architecture-card">
+            <span>04</span>
+            <h3>GitHub Actions</h3>
+            <p>CI、デプロイ、Smoke Testを自動化します。Pull Requestから本番反映までの変更経路を管理します。</p>
+          </article>
+          <article class="architecture-card">
+            <span>05</span>
+            <h3>GitHub Issues</h3>
+            <p>アラート、障害対応、改善タスクを記録します。運用上の判断や対応履歴をIssue / PR単位で追跡します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="operations" aria-labelledby="request-flow-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Request Flow</p>
+            <h2 id="request-flow-title">リクエストの流れ</h2>
+          </div>
+          <p class="section-heading__count">Frontend to API</p>
+        </div>
+
+        <ol class="architecture-flow">
+          <li><span>01</span><strong>Visitor</strong><p>公開サイトにアクセスします。</p></li>
+          <li><span>02</span><strong>Cloudflare Pages</strong><p>静的HTML/CSSを配信します。</p></li>
+          <li><span>03</span><strong>Workers API</strong><p>Reliability Demo APIへリクエストします。</p></li>
+          <li><span>04</span><strong>JSON response</strong><p>ヘルス状態やデモ応答を返します。</p></li>
+        </ol>
+      </section>
+
+      <section class="operations" aria-labelledby="monitoring-flow-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Monitoring / Alert Flow</p>
+            <h2 id="monitoring-flow-title">監視とアラートの流れ</h2>
+          </div>
+          <p class="section-heading__count">Synthetic check to Issue</p>
+        </div>
+
+        <ol class="architecture-flow architecture-flow--five">
+          <li><span>01</span><strong>Grafana Synthetic Monitoring</strong><p>/api/health や /api/status を外形監視します。</p></li>
+          <li><span>02</span><strong>Alert rule</strong><p>失敗や遅延悪化を条件として検知します。</p></li>
+          <li><span>03</span><strong>Worker webhook</strong><p>Grafana通知を受け取り、Issue化に必要な情報を整えます。</p></li>
+          <li><span>04</span><strong>GitHub Issue</strong><p>アラート内容を運用タスクとして記録します。</p></li>
+          <li><span>05</span><strong>Runbook</strong><p>確認手順、切り分け、復旧判断へつなげます。</p></li>
+        </ol>
+      </section>
+
+      <section class="operations" aria-labelledby="cicd-flow-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CI/CD Flow</p>
+            <h2 id="cicd-flow-title">変更反映の流れ</h2>
+          </div>
+          <p class="section-heading__count">PR to production</p>
+        </div>
+
+        <ol class="architecture-flow architecture-flow--five">
+          <li><span>01</span><strong>Pull Request</strong><p>変更内容をレビュー可能な単位に分けます。</p></li>
+          <li><span>02</span><strong>GitHub Actions CI</strong><p>静的チェックや検証を実行します。</p></li>
+          <li><span>03</span><strong>Worker deploy</strong><p>Cloudflare Workersへ反映します。</p></li>
+          <li><span>04</span><strong>Smoke test</strong><p>本番APIの基本応答を確認します。</p></li>
+          <li><span>05</span><strong>Production verification</strong><p>本番反映後の状態を記録します。</p></li>
+        </ol>
+      </section>
+
+      <section class="evidence" aria-labelledby="tech-choices-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Technology Choices</p>
+            <h2 id="tech-choices-title">技術選定</h2>
+          </div>
+          <p class="section-heading__count">Current stack</p>
+        </div>
+
+        <div class="detail-list">
+          <article>
+            <h3>Cloudflare Pages / Workers</h3>
+            <p>小さな公開Web/APIポートフォリオを軽量に公開し、APIの応答やデモ挙動を管理しやすくするために使用しています。</p>
+          </article>
+          <article>
+            <h3>Grafana Cloud</h3>
+            <p>外形監視とアラート設計を見せるために使用しています。SLOや障害対応の入口として扱います。</p>
+          </article>
+          <article>
+            <h3>GitHub Actions / Issues</h3>
+            <p>変更管理、CI/CD、アラート記録、改善タスク管理をGitHub上に集約します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="future-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Future Expansion</p>
+            <h2 id="future-title">今後の拡張候補</h2>
+          </div>
+          <p class="section-heading__count">Not current</p>
+        </div>
+
+        <div class="detail-list detail-list--future">
+          <article>
+            <h3>AWS / Terraform</h3>
+            <p>将来的なインフラ構成の実演候補です。現在のArchitectureページでは、既存構成の説明に限定します。</p>
+          </article>
+          <article>
+            <h3>ECS / EKS</h3>
+            <p>将来的なコンテナ基盤の実演候補です。Reliability系ページが揃った後に検討します。</p>
+          </article>
+          <article>
+            <h3>OpenTelemetry / Cost Guardrails</h3>
+            <p>トレース、メトリクス、コスト制御は今後の拡張候補です。現時点で実装済みのようには扱いません。</p>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>SRE Lab — Architecture page for Reliability Demo API operations flow.</p>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
