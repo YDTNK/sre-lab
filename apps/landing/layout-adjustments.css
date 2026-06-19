@@ -37,7 +37,11 @@
 
 .evidence-card h3 {
   margin: 0;
+  color: var(--color-text);
+  font-family: inherit;
   font-size: 1.18rem;
+  font-weight: 760;
+  letter-spacing: -0.025em;
   line-height: 1.45;
   grid-column: 2 / 3;
   align-self: center;
@@ -47,10 +51,20 @@
   max-width: 560px;
   min-height: 0;
   margin: 0;
+  color: var(--color-muted);
+  font-family: inherit;
   font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: normal;
   line-height: 1.78;
   grid-column: 3 / 4;
   align-self: center;
+}
+
+.evidence-card > p span {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
 }
 
 .evidence-card > a {
