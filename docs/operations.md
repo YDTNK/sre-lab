@@ -1,553 +1,199 @@
 # Operations Guide
 
-This document defines the basic operational workflow for SRE Lab.
+This document defines the current operational workflow for SRE Lab as an SRE / Platform Engineering portfolio.
 
-## Daily Checks
+The previous aggregate operations guide mixed current portfolio operations with legacy revenue-route and AI Moving Assistant material. It has been archived under:
 
-- Check Cloudflare Pages deployment status
-- Check Grafana Synthetic Monitoring status for landing page and API
-- Check alert rule status
-- Check GitHub Actions status
+```text
+docs/archive/legacy-revenue-route/operations.md
+```
 
-## Weekly Checks
+## Current State
 
-- Review uptime and response time trends
-- Review incidents and follow-up actions
-- Review runbook accuracy
-- Review cost and usage
+```text
+Current direction: SRE portfolio-first
+Current active target: Final full-site QA and optional polish
+Current active service: Reliability Demo API
+Tracking Issue: #88
+```
+
+## Daily / Periodic Checks
+
+For the current portfolio state, checks are lightweight and evidence-focused.
+
+```text
+- Confirm portfolio site is available.
+- Confirm Reliability Demo API health endpoint is available.
+- Confirm GitHub Actions are passing for recent changes.
+- Confirm public docs do not expose private planning context.
+- Confirm implemented behavior and future work are not mixed.
+```
+
+## Final Full-Site QA
+
+Current QA target:
+
+```text
+Issue #88
+```
+
+QA should confirm:
+
+```text
+- / loads on PC and mobile.
+- /architecture.html loads on PC and mobile.
+- /reliability.html loads on PC and mobile.
+- /monitoring.html loads on PC and mobile.
+- /cicd.html loads on PC and mobile.
+- /incidents.html loads on PC and mobile.
+- /cost.html loads on PC and mobile.
+- Navigation works across all pages.
+- Home primary CTA opens Reliability Dashboard.
+- Public pages do not expose private management context.
+- Future work is clearly labeled as future work.
+- Expected demo errors are not mislabeled as real incidents.
+- Cost guardrail future items are not overclaimed as implemented runtime behavior.
+```
 
 ## Deployment Checks
 
 Before deployment:
 
-- Confirm GitHub Actions passes
-- Confirm landing page files exist
-- Confirm README and docs are updated when operational behavior changes
+```text
+- Confirm GitHub Actions passes.
+- Confirm changed files are within the intended scope.
+- Confirm README and docs are updated when operational behavior changes.
+```
 
 After deployment:
 
-- Confirm Cloudflare Pages deployment succeeded
-- Confirm https://sre-lab.pages.dev/ returns HTTP 200
-- Confirm Grafana uptime checks for landing page and API remain healthy
+```text
+- Confirm Cloudflare Pages deployment succeeded when frontend changed.
+- Confirm Cloudflare Workers deployment succeeded when API changed.
+- Run or review smoke tests when API behavior changed.
+- Confirm monitored surfaces remain healthy when monitoring is affected.
+```
 
-## API Operations
+## Reliability Demo API Operations
 
-The AI Moving Assistant API is operated as a Cloudflare Workers endpoint.
+Active endpoints:
+
+```text
+GET /api/health
+GET /api/status
+GET /api/slow?delayMs=1000
+GET /api/error
+GET /api/fallback
+```
 
 Operational checks:
 
-- Confirm Worker deployment status
-- Confirm POST /api/moving-assistant returns HTTP 200
-- Confirm Grafana API synthetic check is healthy
-- Confirm API alert rule is normal
-- Confirm frontend can call the production API endpoint
+```text
+- Confirm GET /api/health returns HTTP 200.
+- Confirm GET /api/status returns HTTP 200 and reports active service state.
+- Confirm /api/error is treated as an intentional demo error.
+- Confirm /api/slow and /api/fallback are not treated as real incidents when they behave as designed.
+```
 
-## Worker Auto Deployment
+Active runbook:
+
+```text
+docs/runbooks/reliability-demo-api.md
+```
+
+## Worker Deployment
 
 The Cloudflare Workers API is deployed through GitHub Actions.
 
-### Workflow
+Workflow file:
 
-- Workflow file: .github/workflows/deploy-worker.yml
-- Trigger:
-  - Push to main when files under apps/api change
-  - Manual workflow dispatch
-- Deployment target: sre-lab-api
-
-### Required Secrets
-
-- CLOUDFLARE_API_TOKEN
-- CLOUDFLARE_ACCOUNT_ID
-
-### Deployment Flow
-
-1. Push changes to main
-2. GitHub Actions starts the Deploy Worker workflow
-3. Install API dependencies
-4. Run API syntax check
-5. Deploy Cloudflare Worker with wrangler
-6. Verify Workers API availability through Grafana Synthetic Monitoring
-
-### Verification
-
-Initial Worker auto deployment was verified successfully.
-
-- Deploy Worker workflow status: succeeded
-- API syntax check: passed
-- Cloudflare Workers deploy: completed
-- Deployment date: 2026-06-14
-
-### Operational Notes
-
-- Do not commit Cloudflare API tokens or account IDs to the repository
-- Store deployment secrets only in GitHub Actions Secrets
-- Check GitHub Actions after API changes
-- Check Grafana Synthetic Monitoring after deployments
-- Record deployment-related failures in docs/incidents.md
-
-## API Safety Operations
-
-The Workers API includes safety checks to reduce invalid requests and keep the public fallback API safe.
-
-Operational checks:
-
-- Confirm valid POST returns HTTP 200
-- Confirm empty JSON returns 400 / missing_input
-- Confirm invalid JSON returns 400 / invalid_json
-- Confirm unknown path returns 404 / not_found
-- Confirm unsupported method returns 405 / method_not_allowed
-- Confirm oversized input returns 413 / input_too_large
-- Confirm missing JSON Content-Type returns 415 / unsupported_media_type
-
-Safety controls:
-
-- Request size limit
-- Total input length limit
-- Content-Type validation
-- Standardized error response
-- Deterministic fallback response preserved for valid requests
-
-Follow-up actions:
-
-- Review API safety behavior after each API deployment
-- Do not add new SRE Lab API features during the Phase 16 stop checkpoint
-
-## Rate Limiting Operations
-
-Rate limiting is part of the AI Moving Assistant safety design.
-
-### Design Decision
-
-- Storage: Cloudflare KV
-- Target endpoint: POST /api/moving-assistant
-- Initial minute limit: 10 requests / minute / client IP
-- Initial daily limit: 50 requests / day / client IP
-- Error response: 429 / rate_limited
-- Retry header: Retry-After: 60
-
-### Operational Purpose
-
-- Prevent repeated automated POST requests
-- Reduce abuse for the public API
-- Avoid unexpected AI API cost spikes
-- Keep the service safe for low-cost operation
-
-### Operational Checks After Implementation
-
-- Confirm valid requests still return 200
-- Confirm more than 10 requests per minute returns 429
-- Confirm more than 50 requests per day returns 429
-- Confirm Retry-After header is present
-- Confirm standardized JSON error response is returned
-- Confirm Grafana API monitoring remains healthy
-- Record verification results in docs/incidents.md
-
-### Follow-up
-
-If paid AI usage is intentionally re-enabled later, keep rate limiting in place before exposing that path publicly.
-
-
-## OpenAI Secret and Model Configuration Operations
-
-This section describes how to manage the OpenAI API key and model configuration.
-
-### Secret Setup
-
-The OpenAI API key must be stored as a Cloudflare Workers Secret.
-
-Command:
-
-```bash
-cd apps/api
-npx wrangler secret put OPENAI_API_KEY
+```text
+.github/workflows/deploy-worker.yml
 ```
 
-The secret value must not be committed to GitHub or pasted into documentation.
+Operational notes:
 
-### Model Configuration
-
-The model is configured in wrangler.toml.
-
-Current planned variable:
-
-```toml
-[vars]
-AI_MODEL = "gpt-4.1-nano"
+```text
+- Do not commit Cloudflare API tokens or account IDs to the repository.
+- Store deployment secrets only in GitHub Actions Secrets.
+- Check GitHub Actions after API changes.
+- Check smoke test results after Worker deployment.
+- Record deployment-related failures under docs/incidents/ when appropriate.
 ```
 
-The model value can be changed later without exposing secrets.
+## Monitoring and Alerting
 
-### Verification
+SRE Lab uses monitoring and alerting as portfolio evidence.
 
-After setting the secret and model configuration:
+Current monitoring should focus on active portfolio surfaces:
 
-1. Confirm wrangler.toml contains AI_MODEL.
-2. Confirm OPENAI_API_KEY is configured in Cloudflare Workers secrets.
-3. Confirm no API key exists in repository files.
-4. Confirm deploy succeeds.
-5. Confirm the existing fallback API behavior remains healthy.
+```text
+- portfolio site availability
+- Reliability Demo API health
+- deployment / smoke test outcomes
+- Grafana alert to GitHub Issue path when active
+```
 
-### Secret Rotation
-
-If the API key is suspected to be exposed:
-
-1. Revoke the exposed OpenAI API key.
-2. Create a new OpenAI API key.
-3. Update OPENAI_API_KEY using wrangler secret put.
-4. Re-deploy the Worker if required.
-5. Record the event in docs/incidents.md.
-
-## Cost Operations
-
-Cost operations are retained to prevent unexpected paid usage and to support the docs-based Revenue / Cost Dashboard.
-
-The detailed cost policy is documented in docs/cost.md.
-
-### Checks When Paid AI Usage Is Re-enabled
-
-- Check Cloudflare KV AI usage counters if the active Worker path writes them
-- Check Cloudflare KV estimated daily cost if AI usage is active
-- Check Cloudflare KV estimated monthly cost if AI usage is active
-- Check OpenAI Platform Usage when reconciling paid AI usage
-- Check OpenAI credit balance when OpenAI usage is active
-- Confirm auto recharge is off
-- Confirm Grafana API check remains healthy
-
-### Weekly Checks
-
-- Review estimated monthly cost trend
-- Compare Cloudflare KV estimated cost with OpenAI Platform usage
-- Review ai_errors count
-- Review ai_limited count
-- Decide whether AI daily limits should be adjusted
-
-### Initial Thresholds
-
-| Item | Threshold |
-|---|---:|
-| Monthly warning threshold | 300 JPY |
-| Monthly stop threshold | 500 JPY |
-| Daily hard limit | 100 JPY |
-| Service AI daily limit | 30 requests / day |
-| Per-IP AI daily limit | 5 requests / day |
-
-### References
-
-- docs/cost.md
-- docs/runbook.md
-- docs/incidents.md
-
-## Inactive Real AI API Integration Operations
-
-This section records the operational policy for the previous real AI API integration work. At the Phase 16 checkpoint, the production Worker path returns a deterministic fallback response and paid AI calls are not the active focus.
-
-### Provider Decision
-
-- Initial provider: OpenAI API
-- Initial model class: low-cost mini/nano model
-- Claude API: reserved for future Terraform Review AI or AI Incident Summarizer
-
-### Secret Management
-
-The OpenAI API key must be managed as a Cloudflare Workers Secret.
-
-Planned secret:
-
-- OPENAI_API_KEY
-
-The API key must not be committed to GitHub or placed in frontend code.
-
-### Initial Usage Limits
-
-| Item | Initial Value |
-|---|---:|
-| Monthly budget | 500 JPY |
-| Monthly warning threshold | 300 JPY |
-| Monthly stop threshold | 500 JPY |
-| Service AI diagnoses per day | 20-50 |
-| AI diagnoses per IP per day | 5 |
-| Timeout | 8 seconds |
-
-### Operation Checks If Re-enabled
-
-If paid AI usage is intentionally re-enabled, check the following during the rollout:
-
-- API request count
-- AI call count
-- AI error count
-- Rate limited count
-- Estimated daily cost
-- Estimated monthly cost
-- Grafana API check status
-- Whether fallback responses increased
-
-### Deployment Verification After Implementation
-
-After deploying real AI integration:
-
-1. Confirm valid POST returns AI or fallback JSON.
-2. Confirm API key is not exposed in frontend.
-3. Confirm invalid input still returns standardized errors.
-4. Confirm rate limiting still works.
-5. Confirm usage counters are recorded.
-6. Confirm estimated cost counters are recorded.
-7. Confirm timeout returns fallback.
-8. Confirm invalid AI response returns fallback.
-9. Confirm Grafana API check remains healthy.
-10. Record results in docs/incidents.md.
-
-### Rollback Policy
-
-If AI integration causes instability, disable AI API calls and return fallback responses.
-
-Rollback options:
-
-- Disable AI call path in Worker code
-- Remove or rotate OPENAI_API_KEY
-- Lower AI daily limits
-- Lower cost thresholds
-- Return mock response until the issue is fixed
-
-
-## Usage and Cost Tracking Operations
-
-Usage and cost tracking design is retained as an operational reference. The current Phase 16 source of record is the docs-based Revenue / Cost Dashboard.
-
-### Design Decision
-
-- Initial storage: Cloudflare KV
-- Future storage option: Cloudflare D1 or another database
-- Monthly budget: 500 JPY
-- Monthly warning threshold: 300 JPY
-- Monthly stop threshold: 500 JPY
-- Daily soft limit: 50 JPY
-- Daily hard limit: 100 JPY
-
-### Metrics to Track If Active
-
-API usage:
-
-- API requests
-- API successes
-- API errors
-- Rate limited requests
-
-AI API usage if paid AI calls are active:
-
-- AI API calls
-- AI API successes
-- AI API errors
-- Estimated input tokens
-- Estimated output tokens
-- Estimated cost in JPY
-
-### Operational Checks If Active
-
-- Confirm API request counts are recorded
-- Confirm rate limited requests are recorded
-- Confirm estimated daily cost is recorded
-- Confirm estimated monthly cost is recorded
-- Confirm AI API calls stop when the monthly stop threshold is reached
-- Confirm cost_limit_reached response is returned
-- Record verification results in docs/incidents.md
-
-### Review Cadence
-
-- Monthly or when an event occurs during the Phase 16 stop checkpoint
-- Daily only if paid AI usage is intentionally re-enabled
-- Weekly after stable paid-AI operation
-
+Do not restore stale monitors for removed or historical services by default.
 
 ## Incident Response Flow
 
-1. Receive alert
-2. Check Grafana alert details
-3. Check Cloudflare Pages deployment status
-4. Check recent GitHub commits
-5. Identify root cause
-6. Mitigate the issue
-7. Record the incident in docs/incidents.md
-8. Update runbook if needed
+```text
+Alert or verification failure
+↓
+Check service state
+↓
+Confirm whether the target is active, historical, removed, or unknown
+↓
+Use the active runbook
+↓
+Mitigate or document expected demo behavior
+↓
+Create one incident record under docs/incidents/ if criteria are met
+↓
+Update runbook or docs if response process changed
+```
 
-## Cost Control
+## Cost Operations
 
-Current expected monthly cost:
+Current cost operations are documented in:
 
-- GitHub: Free
-- Cloudflare Pages: Free
-- Grafana Cloud: Free tier
-- Domain: Not used yet
-- AI API: Not active in the current production path
+```text
+docs/cost.md
+/cost.html
+```
 
-Cost review should be performed before re-enabling paid AI usage or introducing paid services such as custom domains or external monitoring tools.
+Current cost focus:
 
-## Reliability Targets
+```text
+- keep the public portfolio low-cost
+- avoid runaway usage
+- document guardrail decisions
+- separate implemented controls from future work
+```
 
-Initial reliability targets:
+Paid AI API usage and revenue-route tracking are not active.
 
-- Availability target: 99.0%
-- Expected HTTP status: 200
-- Primary probe location: Tokyo, JP
-- Alert pending period: 2m
+## Current Source of Truth
 
-These targets may be updated if SRE Lab resumes.
+```text
+README.md
+docs/services.md
+docs/operations.md
+docs/runbook.md
+docs/runbooks/reliability-demo-api.md
+docs/slo/reliability-demo-api.md
+docs/cost.md
+management-side status.md
+management-side portfolio-requirements.md
+```
 
-## Usage / Cost Snapshot
+## Historical Material
 
-During the Phase 16 stop checkpoint, update usage and cost records monthly or when an event occurs.
+Legacy revenue-route and previous service-operation material is archived under:
 
-### Checklist
+```text
+docs/archive/legacy-revenue-route/
+```
 
-- Check the docs-based Revenue / Cost Dashboard in the management repository
-- Check API usage counters in Cloudflare KV if they are needed for the event being reviewed
-- Check AI usage and estimated cost counters only if paid AI usage was intentionally re-enabled
-- Check OpenAI Platform usage only when reconciling paid AI usage
-- Confirm auto recharge is off
-- Record results in docs/usage-cost-report.md or the management dashboard
-
-### Status Classification
-
-| Status | Meaning |
-|---|---|
-| normal | Usage and cost are within expected range |
-| warning | Usage or cost is approaching threshold |
-| action required | Limit reached, error spike, or unexpected cost increase |
-
-### Related Documents
-
-- docs/cost.md
-- docs/usage-cost-report.md
-- docs/incidents.md
-
-## OpenAI Usage Recheck Policy
-
-Cloudflare KV is the primary source for immediate SRE Lab usage and cost monitoring.
-
-OpenAI Platform Usage should be used for later reconciliation, not as the only real-time source of truth.
-
-### When OpenAI Usage Shows 0
-
-If OpenAI Platform Usage shows 0 requests, 0 tokens, and $0.00 while the Worker has returned aiStatus: generated, do not immediately treat it as an incident.
-
-Check the following:
-
-- OpenAI Platform project selector
-- Usage group or project filter
-- API key project
-- Usage date range
-- Billing credit balance
-- Whether usage reporting may be delayed
-
-### Operational Decision
-
-- Use Cloudflare KV values for immediate cost guard decisions
-- Use OpenAI Platform Usage for later reconciliation
-- Record mismatches in docs/usage-cost-report.md
-- Create an operational record if the mismatch persists or affects budget decisions
-
-### Related Documents
-
-- docs/cost.md
-- docs/usage-cost-report.md
-- docs/incidents.md
-
-## Docs-based Dashboard Operations
-
-The current Revenue / Cost Dashboard is docs-based in the management repository.
-
-Application-backed Workers / KV / Analytics dashboard work is deferred until it is justified by real usage or revenue flow.
-
-### Dashboard Design
-
-- docs/dashboard-design.md
-
-### Current / Future Dashboard Should Show
-
-- API requests
-- API success and error counts
-- AI calls
-- AI success and error counts
-- AI limited count
-- Estimated daily cost
-- Estimated monthly cost
-- Monthly cost usage ratio
-- Recent operational notes
-
-### When to Implement an Application-backed Dashboard
-
-Do not implement a dashboard too early.
-
-Consider implementation when one of the following is true:
-
-- Manual snapshots become repetitive
-- AI Moving Assistant receives regular external usage
-- A second service is added
-- Monthly cost becomes non-trivial
-- Portfolio presentation would benefit from a visual dashboard
-
-## Phase 7 Usage / Cost Monitoring Summary
-
-Phase 7 introduced usage and cost monitoring operations for AI Moving Assistant. This is now historical context for the Phase 16 checkpoint.
-
-### Completed Items
-
-- Usage and cost snapshot procedure
-- Initial usage and cost snapshot
-- Cloudflare KV as the primary operational source
-- OpenAI Platform Usage as a secondary reconciliation source
-- OpenAI Usage recheck policy
-- Future usage/cost dashboard design
-- README and documentation update
-
-### Current Operating Model
-
-| Area | Current Approach |
-|---|---|
-| Immediate usage monitoring | Cloudflare KV |
-| Immediate estimated cost monitoring | Cloudflare KV |
-| Actual usage reconciliation | OpenAI Platform Usage |
-| Manual reporting | docs/usage-cost-report.md |
-| Dashboard design | docs/dashboard-design.md |
-
-### Current Phase
-
-SRE Lab is stopped at the Phase 16 v1 checkpoint.
-
-Do not start Phase 17 or a new service until there is a separate decision and a real revenue route exists.
-
-## Dedicated Service Page Operations Policy
-
-If SRE Lab later adds more services, each service should have a dedicated frontend page and API endpoint.
-
-The top page should remain a service directory and portfolio entry point.
-
-Operational benefits:
-
-- Easier service ownership explanation
-- Easier frontend monitoring by page
-- Easier API monitoring by endpoint
-- Cleaner portfolio storytelling
-- Lower risk of confusing unrelated user flows
-
-Current active pages:
-
-| Service | Page | API Endpoint |
-|---|---|---|
-| AI Moving Assistant | moving-assistant.html | POST /api/moving-assistant |
-
-Related document:
-
-- docs/frontend-navigation.md
-
-## Historical Service Note: AWS Cost Simulator
-
-AWS Cost Simulator was previously implemented as the second service, including a page and `POST /api/aws-cost-simulator` endpoint.
-
-It has been removed from the active service portfolio and should not be operated as a current production service.
-
-Current policy:
-
-- Do not re-add `aws-cost-simulator.html` to the active frontend
-- Do not monitor `POST /api/aws-cost-simulator` as an active endpoint
-- Treat AWS Cost Simulator records in docs/incidents.md as historical operational context
-- Keep the active learning focus on Kubernetes / CKA preparation
+Treat archive files as historical only unless the management-side `status.md` explicitly reactivates that route.
