@@ -1,10 +1,12 @@
 # Reliability Demo API Runbook
 
-## Purpose
+## このRunbookの目的
 
-Runbook for Reliability Demo API production checks and incident response.
+このRunbookは、Reliability Demo APIで異常が疑われる場合に、何をどの順番で確認するかを整理したものです。
 
-## Active targets
+Reliability Demo API は、信頼性運用を説明するための公開デモAPIです。`/api/health` を中心に、正常応答、遅延、意図的なエラー、fallbackの挙動を確認できます。
+
+## 対象エンドポイント
 
 ```text
 GET https://sre-lab-api.daisan-tanaka.workers.dev/api/health
@@ -14,50 +16,69 @@ GET https://sre-lab-api.daisan-tanaka.workers.dev/api/slow?delayMs=1000
 GET https://sre-lab-api.daisan-tanaka.workers.dev/api/error
 ```
 
-## Expected responses
+## 期待される応答
 
-| Endpoint | Expected status | Notes |
+| エンドポイント | 期待ステータス | 補足 |
 |---|---:|---|
-| `/api/health` | 200 | Primary uptime check |
-| `/api/status` | 200 | Service inventory |
-| `/api/fallback` | 200 | Expected degraded/fallback demo |
-| `/api/slow?delayMs=1000` | 200 | Controlled latency |
-| `/api/error` | 500 | Intentional demo error |
+| `/api/health` | 200 | 稼働確認の中心となるヘルスチェック |
+| `/api/status` | 200 | APIの状態確認 |
+| `/api/fallback` | 200 | fallbackデモ |
+| `/api/slow?delayMs=1000` | 200 | 制御された遅延デモ |
+| `/api/error` | 500 | 意図的なエラーデモ |
 
-`/api/error` returning 500 is expected. Do not treat a manual request to this endpoint as an incident by itself.
+`/api/error` が500を返すのは期待された挙動です。手動でこのエンドポイントを呼び出した結果だけで、実障害として扱わないでください。
 
-## Health failure response
+## `/api/health` が失敗した場合
 
-1. Confirm Reliability Demo API is still active in `docs/services.md`.
-2. Test `/api/health` and `/api/status` with curl.
-3. Check the latest Deploy Worker workflow.
-4. Check recent changes to `apps/api/src/index.js`.
-5. Run `bash scripts/smoke-test.sh` from a local environment that can resolve the Worker domain.
-6. If a recent deployment caused the failure, revert or redeploy the previous working Worker version.
-7. Record an incident under `docs/incidents/` if there was monitor-visible or user-visible impact.
+1. `GET /api/health` を再実行し、一時的な失敗か継続的な失敗かを確認します。
+2. `GET /api/status` を実行し、API全体の応答状態を確認します。
+3. 直近のPull Request、mainへのmerge、Worker deployの有無を確認します。
+4. GitHub ActionsのDeploy Worker workflowを確認します。
+5. `apps/api/src/index.js` の直近変更を確認します。
+6. ローカルまたはGitHub Actionsから `bash scripts/smoke-test.sh` を実行し、本番URLの応答を確認します。
+7. 直近のデプロイが原因と判断できる場合は、revertまたは前回安定版への戻しを検討します。
+8. 監視上または利用者目線で影響があった場合は、`docs/incidents/` に記録します。
 
-## Latency investigation
+## レイテンシが悪化した場合
 
-1. Confirm the requested `delayMs` value.
-2. Verify the response reports `delayMs` no greater than 5000.
-3. Compare `/api/health` latency with `/api/slow` latency.
-4. If `/api/health` is also slow, investigate Cloudflare Worker or network conditions.
-5. If only `/api/slow` is slow within the requested delay, treat it as expected demo behavior.
+1. `/api/health` の応答時間を確認します。
+2. `/api/slow?delayMs=1000` の結果と比較します。
+3. `/api/slow` の遅延が指定値の範囲内であれば、デモ挙動として扱います。
+4. `/api/health` も遅い場合は、Cloudflare Workers、ネットワーク、直近変更を確認します。
+5. 継続的な遅延でSLOに影響する場合は、Incidentまたは改善Issueとして記録します。
 
-## Fallback behavior
+## fallbackの確認
 
-`/api/fallback` intentionally returns HTTP 200 with fallback mode active.
+`/api/fallback` は、縮退運転を想定したデモです。
 
-Use it to demonstrate graceful degradation without creating a real dependency outage.
+このエンドポイントはHTTP 200を返し、依存先障害がなくても「fallbackという考え方」を説明するために使います。
 
-## SLO reference
+## 実障害として扱う条件
+
+以下のような場合は、Incidentとして扱うことを検討します。
+
+```text
+- /api/health が継続して失敗する
+- /api/status も失敗する
+- Worker deploy後に想定外のエラーが出る
+- 本番確認チェックが失敗する
+- SLOや利用者影響が発生する
+```
+
+## 実障害として扱わない例
+
+```text
+- 手動で /api/error を呼び出して500が返った
+- /api/slow が指定した範囲内で遅延した
+- /api/fallback がfallback modeを返した
+```
+
+これらは、信頼性運用を説明するためのデモ挙動です。
+
+## 関連ドキュメント
 
 ```text
 docs/slo/reliability-demo-api.md
-```
-
-## Postmortem reference
-
-```text
+docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md
 docs/postmortems/template.md
 ```

@@ -1,26 +1,28 @@
-# Postmortem Template
+# Postmortem テンプレート
 
-## Summary
+## 概要
 
 ```text
-Incident title:
+Title:
 Date:
 Service:
 Severity:
 Status:
 ```
 
-## Impact
+## 影響
 
-Describe user-visible impact.
+サービスや利用者への影響を記録します。
 
 ```text
-Who was affected?
-What failed?
-How long did it last?
+対象:
+内容:
+時間:
 ```
 
-## Detection
+## 検知
+
+最初に気づいたきっかけを記録します。
 
 ```text
 Detected by:
@@ -28,37 +30,50 @@ First signal:
 Alert / issue link:
 ```
 
-## Timeline
+## タイムライン
 
 | Time | Event |
 |---|---|
-| YYYY-MM-DD HH:mm | Event description |
+| YYYY-MM-DD HH:mm | 内容を記録する |
 
-## Root cause
+## 原因
 
-Describe the technical and operational root cause.
+技術面と運用面に分けて整理します。
 
-## Mitigation
+```text
+Technical cause:
+Operational cause:
+```
 
-Describe what restored or stabilized the service.
+## 対応
 
-## What went well
+実施した対応を記録します。
 
-- Item 1
-- Item 2
+```text
+Initial action:
+Service action:
+Communication:
+```
 
-## What went poorly
+## 良かった点
 
-- Item 1
-- Item 2
+- 検知できたこと
+- 切り分けに役立ったこと
+- 既存のRunbookや監視が役立ったこと
 
-## Follow-up actions
+## 改善点
+
+- 判断で迷った点
+- 手順を明確にすべき点
+- 追加すべき監視や自動化
+
+## フォローアップ
 
 | Action | Owner | Issue / PR | Status |
 |---|---|---|---|
-| Add action | TBD | TBD | open |
+| 改善内容を記載する | TBD | TBD | open |
 
-## SLO impact
+## SLOへの影響
 
 ```text
 Affected SLO:
@@ -66,6 +81,6 @@ Error budget impact:
 SLO missed: yes/no
 ```
 
-## Lessons learned
+## 学び
 
-Write the operational learning that should improve SRE Lab.
+次回に向けて、検知、判断、対応を改善するための学びを記録します。

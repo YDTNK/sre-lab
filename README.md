@@ -7,7 +7,7 @@
 
 SRE Lab は、Reliability Demo API を題材にした SRE / Platform Engineering の公開ポートフォリオです。
 
-小さな公開 Web/API サービスを使い、信頼性、監視、障害対応、CI/CD、Runbook、改善サイクルをどのように設計・運用するかを整理しています。
+Reliability Demo API は、信頼性運用を説明するための公開デモAPIです。SLO、外形監視、障害対応、CI/CD、Runbook、改善サイクルをどのように設計・運用するかを確認できるようにしています。
 
 ## 扱うテーマ
 
@@ -53,7 +53,7 @@ SLO、Runbook、障害記録、Postmortemテンプレートは以下に整理し
 
 ```text
 docs/slo/reliability-demo-api.md
-docs/runbook.md
+docs/runbooks/reliability-demo-api.md
 docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md
 docs/postmortems/template.md
 ```
