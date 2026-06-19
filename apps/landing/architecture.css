@@ -20,16 +20,28 @@
 }
 
 .architecture-grid,
-.architecture-flow,
-.architecture-flow--five,
 .detail-list {
   display: grid;
   border-left: 0;
   grid-template-columns: 1fr;
 }
 
-.architecture-card,
-.architecture-flow li {
+.architecture-flow,
+.architecture-flow--five {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  list-style: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.architecture-flow--five {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.architecture-card {
   display: grid;
   min-height: auto;
   padding: 24px 0;
@@ -38,6 +50,39 @@
   grid-template-columns: 54px 64px minmax(180px, 0.32fr) minmax(0, 1fr);
   gap: 18px;
   align-items: center;
+}
+
+.architecture-flow li {
+  position: relative;
+  display: grid;
+  min-height: 190px;
+  padding: 22px 18px;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-surface);
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-content: start;
+}
+
+.architecture-flow li:last-child,
+.architecture-flow--five li:last-child {
+  border-right: 0;
+}
+
+.architecture-flow li:not(:last-child)::after,
+.architecture-flow--five li:not(:last-child)::after {
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  z-index: 2;
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-top: 1px solid var(--color-accent);
+  border-right: 1px solid var(--color-accent);
+  background: var(--color-surface);
+  content: "";
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .detail-list article,
@@ -69,6 +114,10 @@
   justify-self: center;
 }
 
+.architecture-flow .flow-icon {
+  justify-self: start;
+}
+
 .architecture-card > span,
 .architecture-flow li > span {
   align-self: center;
@@ -94,10 +143,10 @@
 .architecture-flow p,
 .detail-list p {
   margin: 0;
-  color: var(--color-muted);
+  color: var(--color-accent-dark);
   font-family: inherit;
   font-size: 0.95rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: normal;
   line-height: 1.78;
   align-self: center;
@@ -109,11 +158,6 @@
   color: inherit;
   font: inherit;
   letter-spacing: inherit;
-}
-
-.architecture-flow li:not(:last-child)::after,
-.architecture-flow--five li:not(:last-child)::after {
-  display: none;
 }
 
 @media (max-width: 899px) {
@@ -130,12 +174,39 @@
     font-size: 0.78rem;
   }
 
+  .architecture-flow,
+  .architecture-flow--five {
+    border: 0;
+    background: transparent;
+    grid-template-columns: 1fr;
+  }
+
   .architecture-card,
   .architecture-flow li {
+    min-height: auto;
     padding: 20px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+    background: transparent;
     grid-template-columns: 38px 44px minmax(0, 1fr);
     gap: 12px;
     align-items: center;
+  }
+
+  .architecture-flow li:last-child,
+  .architecture-flow--five li:last-child {
+    border-bottom: 0;
+  }
+
+  .architecture-flow li:not(:last-child)::after,
+  .architecture-flow--five li:not(:last-child)::after {
+    top: auto;
+    right: 24px;
+    bottom: -7px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    transform: rotate(135deg);
   }
 
   .detail-list article,

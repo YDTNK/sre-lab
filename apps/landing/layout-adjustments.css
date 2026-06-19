@@ -20,17 +20,17 @@
 .evidence-card--future {
   display: grid;
   min-height: auto;
-  padding: 24px 0;
+  padding: 22px 0;
   border-right: 0;
   background: transparent;
-  grid-template-columns: 72px minmax(160px, 240px) minmax(0, 1fr) 92px;
-  column-gap: 22px;
+  grid-template-columns: 68px minmax(150px, 220px) minmax(0, 1fr) 82px;
+  column-gap: 18px;
   align-items: center;
 }
 
 .evidence-card__header {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   grid-column: 1 / 2;
   align-self: center;
 }
@@ -48,13 +48,13 @@
 }
 
 .evidence-card > p {
-  max-width: 560px;
+  max-width: 620px;
   min-height: 0;
   margin: 0;
-  color: var(--color-muted);
+  color: var(--color-accent-dark);
   font-family: inherit;
   font-size: 0.95rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: normal;
   line-height: 1.78;
   grid-column: 3 / 4;
