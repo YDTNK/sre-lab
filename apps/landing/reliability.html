@@ -8,9 +8,9 @@
     name="description"
     content="Reliability Demo APIのサービス状態、SLO、エンドポイント挙動、Runbook、Incident、Postmortemへの証跡をまとめたSREポートフォリオページです。"
   />
-  <link rel="stylesheet" href="/portfolio.css?v=20260620-reliability-1" />
-  <link rel="stylesheet" href="/architecture.css?v=20260620-reliability-1" />
-  <link rel="stylesheet" href="/reliability.css?v=20260620-reliability-1" />
+  <link rel="stylesheet" href="/portfolio.css?v=20260620-reliability-live-1" />
+  <link rel="stylesheet" href="/architecture.css?v=20260620-reliability-live-1" />
+  <link rel="stylesheet" href="/reliability.css?v=20260620-reliability-live-1" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">本文へスキップ</a>
@@ -66,7 +66,7 @@
         <div class="page-summary" aria-label="Reliability summary">
           <p>Current scope</p>
           <strong>Service State · SLO · Endpoints · Evidence</strong>
-          <span>Static dashboard / API unchanged</span>
+          <span>Browser live checks / API unchanged</span>
         </div>
       </section>
 
@@ -83,11 +83,11 @@
           <article class="status-card reliability-status-card" aria-labelledby="api-state-title">
             <div class="status-card__header">
               <p id="api-state-title">Current Status</p>
-              <span class="status-card__pulse" aria-hidden="true"></span>
+              <span class="status-card__pulse" aria-hidden="true" data-live-pulse></span>
             </div>
-            <p class="status-card__state">
+            <p class="status-card__state" data-live-overall-state>
               <span aria-hidden="true"></span>
-              Operational
+              Checking...
             </p>
             <dl class="status-card__metrics">
               <div>
@@ -96,11 +96,11 @@
               </div>
               <div>
                 <dt>Primary SLI</dt>
-                <dd class="metric--success">/health</dd>
+                <dd data-live-primary-sli>/health</dd>
               </div>
               <div>
                 <dt>Error demo</dt>
-                <dd class="metric--danger">expected</dd>
+                <dd class="metric--danger" data-live-error-demo>expected</dd>
               </div>
             </dl>
             <a href="https://sre-lab-api.daisan-tanaka.workers.dev/api/health">Live health <span aria-hidden="true">↗</span></a>
@@ -109,15 +109,15 @@
           <article class="reliability-note-card">
             <span>API</span>
             <h3>Production endpoint</h3>
-            <p>本番APIは Cloudflare Workers 上で稼働しています。このページは静的な運用ダッシュボードであり、ライブ監視値を直接取得する実装ではありません。</p>
+            <p>本番APIは Cloudflare Workers 上で稼働しています。このページはブラウザから各エンドポイントを直接確認し、HTTPステータスと応答時間を表示します。</p>
             <a href="https://sre-lab-api.daisan-tanaka.workers.dev">API base <span aria-hidden="true">↗</span></a>
           </article>
 
           <article class="reliability-note-card">
-            <span>VER</span>
+            <span>LIVE</span>
             <h3>Latest verification</h3>
-            <p>2026-06-19の本番確認では、health / status / fallback / slow / error の期待ステータスを確認済みです。</p>
-            <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md">Verification record <span aria-hidden="true">↗</span></a>
+            <p><span data-live-checked-at>確認中...</span><br />health / status / fallback / slow / error の現在の期待ステータスを確認します。</p>
+            <button class="reliability-refresh-button" type="button" data-live-refresh>再チェック</button>
           </article>
         </div>
       </section>
@@ -162,36 +162,36 @@
           <p class="section-heading__count">Expected responses</p>
         </div>
 
-        <div class="endpoint-list">
-          <article>
+        <div class="endpoint-list" data-live-endpoints>
+          <article data-live-endpoint="health">
             <span>01</span>
             <code>GET /api/health</code>
-            <strong class="metric--success">200</strong>
-            <p>本番稼働確認のPrimary uptime checkです。Availability SLIの中心として扱います。</p>
+            <strong class="metric--success" data-live-status>checking</strong>
+            <p><span data-live-description>本番稼働確認のPrimary uptime checkです。</span> <span class="endpoint-latency" data-live-latency></span></p>
           </article>
-          <article>
+          <article data-live-endpoint="status">
             <span>02</span>
             <code>GET /api/status</code>
-            <strong class="metric--success">200</strong>
-            <p>サービスの状態、構成、アクティブなエンドポイントを確認するためのInventory checkです。</p>
+            <strong class="metric--success" data-live-status>checking</strong>
+            <p><span data-live-description>サービスの状態、構成、アクティブなエンドポイントを確認します。</span> <span class="endpoint-latency" data-live-latency></span></p>
           </article>
-          <article>
+          <article data-live-endpoint="fallback">
             <span>03</span>
             <code>GET /api/fallback</code>
-            <strong class="metric--success">200</strong>
-            <p>縮退運転を想定したfallback demoです。依存障害時の graceful degradation を説明するために使います。</p>
+            <strong class="metric--success" data-live-status>checking</strong>
+            <p><span data-live-description>縮退運転を想定したfallback demoです。</span> <span class="endpoint-latency" data-live-latency></span></p>
           </article>
-          <article>
+          <article data-live-endpoint="slow">
             <span>04</span>
             <code>GET /api/slow?delayMs=1000</code>
-            <strong class="metric--success">200</strong>
-            <p>制御された遅延を返すlatency demoです。通常の /api/health latency SLIとは分けて扱います。</p>
+            <strong class="metric--success" data-live-status>checking</strong>
+            <p><span data-live-description>制御された遅延を返すlatency demoです。</span> <span class="endpoint-latency" data-live-latency></span></p>
           </article>
-          <article class="endpoint-list__expected-error">
+          <article class="endpoint-list__expected-error" data-live-endpoint="error">
             <span>05</span>
             <code>GET /api/error</code>
-            <strong class="metric--danger">500 expected</strong>
-            <p>意図的な500エラーデモです。手動実行やデモ用途の結果であり、通常のAvailability計算には含めません。</p>
+            <strong class="metric--danger" data-live-status>checking</strong>
+            <p><span data-live-description>意図的な500エラーデモです。通常のAvailability計算には含めません。</span> <span class="endpoint-latency" data-live-latency></span></p>
           </article>
         </div>
       </section>
@@ -256,5 +256,6 @@
       </footer>
     </div>
   </main>
+  <script src="/reliability.js?v=20260620-reliability-live-1" defer></script>
 </body>
 </html>
