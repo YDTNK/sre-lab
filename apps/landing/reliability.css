@@ -184,9 +184,32 @@
   background: var(--color-success);
 }
 
+.status-card__pulse[data-live-pulse="operational"] {
+  animation: reliability-status-breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes reliability-status-breathe {
+  0%,
+  100% {
+    opacity: 0.52;
+    box-shadow: 0 0 0 4px rgba(22, 135, 95, 0.08), 0 0 8px rgba(22, 135, 95, 0.16);
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 7px rgba(22, 135, 95, 0.16), 0 0 18px rgba(22, 135, 95, 0.34);
+    transform: scale(1.08);
+  }
+}
+
 .status-card__state[data-live-state="degraded"] span,
 .status-card__pulse[data-live-pulse="degraded"] {
   background: var(--color-danger);
+}
+
+.status-card__pulse[data-live-pulse="degraded"] {
+  animation: none;
 }
 
 .reliability-flow p {
