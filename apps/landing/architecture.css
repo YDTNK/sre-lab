@@ -6,14 +6,36 @@
   letter-spacing: 0.16em;
 }
 
-.architecture-grid {
-  position: relative;
+.architecture-grid,
+.architecture-flow,
+.architecture-flow--five,
+.detail-list {
+  display: grid;
+  border-left: 0;
+  grid-template-columns: 1fr;
 }
 
-.architecture-card {
+.architecture-card,
+.architecture-flow li {
   display: grid;
-  grid-template-rows: auto auto minmax(52px, auto) 1fr;
-  gap: 14px;
+  min-height: auto;
+  padding: 24px 0;
+  border-right: 0;
+  background: transparent;
+  grid-template-columns: 54px 64px minmax(180px, 0.32fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.detail-list article,
+.detail-list--future article {
+  display: grid;
+  min-height: auto;
+  padding: 24px 0;
+  border-right: 0;
+  background: transparent;
+  grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
+  gap: 22px;
 }
 
 .node-mark,
@@ -31,36 +53,39 @@
   place-items: center;
 }
 
-.node-mark {
-  margin-top: 18px;
-}
-
-.architecture-card h3 {
-  min-height: 52px;
-  margin: 0;
-  display: flex;
-  align-items: end;
-}
-
-.architecture-flow li {
-  grid-template-rows: auto auto minmax(54px, auto) 1fr;
-}
-
+.architecture-card h3,
 .architecture-flow strong {
-  display: flex;
-  min-height: 54px;
-  align-items: end;
-  line-height: 1.35;
+  min-height: 0;
+  margin: 0;
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.45;
 }
 
+.architecture-card p,
 .architecture-flow p {
-  padding-top: 4px;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.78;
 }
 
-.architecture-flow li:not(:last-child)::after {
-  width: 14px;
-  height: 14px;
-  right: -8px;
+.detail-list h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: -0.025em;
+}
+
+.detail-list p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.78;
+}
+
+.architecture-flow li:not(:last-child)::after,
+.architecture-flow--five li:not(:last-child)::after {
+  display: none;
 }
 
 @media (max-width: 899px) {
@@ -69,33 +94,18 @@
     font-size: 0.78rem;
   }
 
-  .architecture-grid,
-  .architecture-flow,
-  .architecture-flow--five,
-  .detail-list {
-    display: grid;
-    border-left: 0;
-    grid-template-columns: 1fr;
-  }
-
   .architecture-card,
-  .architecture-flow li,
-  .architecture-flow--five li,
-  .detail-list article,
-  .detail-list--future article {
-    display: grid;
-    min-height: auto;
+  .architecture-flow li {
     padding: 20px 0;
-    border-right: 0;
-    background: transparent;
-    grid-template-columns: 44px 52px minmax(0, 1fr);
+    grid-template-columns: 38px 44px minmax(0, 1fr);
     gap: 12px;
-    align-items: start;
   }
 
   .detail-list article,
   .detail-list--future article {
+    padding: 20px 0;
     grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .node-mark,
@@ -107,28 +117,18 @@
 
   .architecture-card h3,
   .architecture-flow strong {
-    min-height: 0;
-    margin: 0 0 6px;
     font-size: 1rem;
     line-height: 1.4;
-    align-items: start;
   }
 
   .architecture-card p,
   .architecture-flow p {
     grid-column: 3 / 4;
-    padding-top: 0;
     font-size: 0.88rem;
     line-height: 1.76;
   }
 
-  .architecture-flow li:not(:last-child)::after,
-  .architecture-flow--five li:not(:last-child)::after {
-    display: none;
-  }
-
   .detail-list h3 {
-    margin-bottom: 8px;
     font-size: 1rem;
   }
 
@@ -139,13 +139,6 @@
 }
 
 @media (max-width: 480px) {
-  .architecture-grid,
-  .architecture-flow,
-  .architecture-flow--five,
-  .detail-list {
-    grid-template-columns: 1fr;
-  }
-
   .architecture-card h3,
   .architecture-flow strong,
   .detail-list h3 {
