@@ -1,3 +1,16 @@
+.copy-mobile {
+  display: none;
+}
+
+.copy-desktop,
+.copy-mobile {
+  text-wrap: pretty;
+}
+
+.keep-together {
+  white-space: nowrap;
+}
+
 .page-title-ja {
   margin: 16px 0 0;
   color: var(--color-muted-light);
@@ -89,6 +102,14 @@
 }
 
 @media (max-width: 899px) {
+  .copy-desktop {
+    display: none;
+  }
+
+  .copy-mobile {
+    display: inline;
+  }
+
   .page-title-ja {
     margin-top: 10px;
     font-size: 0.78rem;
