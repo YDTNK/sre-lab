@@ -198,13 +198,18 @@ a {
 
 .hero__lead,
 .evidence-card > p,
-.footer p {
+.footer p,
+.page-hero__lead,
+.architecture-card p,
+.architecture-flow p,
+.detail-list p {
   overflow-wrap: anywhere;
   line-break: strict;
 }
 
 .button,
-.operations-flow strong {
+.operations-flow strong,
+.architecture-flow strong {
   overflow-wrap: anywhere;
 }
 
@@ -516,6 +521,174 @@ a {
   font-size: 0.86rem;
 }
 
+.page-hero {
+  display: grid;
+  min-height: 380px;
+  padding: 62px 0 72px;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.6fr);
+  gap: clamp(36px, 6vw, 82px);
+  align-items: center;
+}
+
+.page-hero h1 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(3.3rem, 6.6vw, 6.4rem);
+  font-weight: 720;
+  letter-spacing: -0.075em;
+  line-height: 0.92;
+}
+
+.page-hero__lead {
+  max-width: 690px;
+  margin: 28px 0 0;
+  color: var(--color-muted);
+  font-size: clamp(1rem, 1.5vw, 1.16rem);
+  line-height: 1.8;
+}
+
+.page-summary {
+  display: grid;
+  min-height: 210px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  align-content: space-between;
+}
+
+.page-summary p,
+.page-summary span {
+  margin: 0;
+  color: var(--color-muted-light);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.page-summary strong {
+  font-size: 1.35rem;
+  line-height: 1.35;
+  letter-spacing: -0.035em;
+}
+
+.architecture-grid {
+  display: grid;
+  border-top: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.architecture-card {
+  min-height: 260px;
+  padding: 24px;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.architecture-card span,
+.architecture-flow span {
+  color: var(--color-accent-dark);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+}
+
+.architecture-card h3 {
+  margin: 42px 0 12px;
+  font-size: 1.08rem;
+  letter-spacing: -0.025em;
+}
+
+.architecture-card p,
+.architecture-flow p,
+.detail-list p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  line-height: 1.68;
+}
+
+.architecture-flow {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  list-style: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.architecture-flow--five {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.architecture-flow li {
+  position: relative;
+  display: grid;
+  min-height: 185px;
+  padding: 23px 20px;
+  border-right: 1px solid var(--color-border);
+  align-content: space-between;
+  gap: 18px;
+}
+
+.architecture-flow li:last-child {
+  border-right: 0;
+}
+
+.architecture-flow li:not(:last-child)::after {
+  position: absolute;
+  top: 50%;
+  right: -7px;
+  z-index: 2;
+  width: 12px;
+  height: 12px;
+  border-top: 1px solid var(--color-accent);
+  border-right: 1px solid var(--color-accent);
+  background: var(--color-surface);
+  content: "";
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.architecture-flow strong {
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+}
+
+.detail-list {
+  display: grid;
+  border-top: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.detail-list article {
+  min-height: 190px;
+  padding: 26px;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.detail-list--future article {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      var(--color-surface),
+      var(--color-surface) 10px,
+      #fafafa 10px,
+      #fafafa 20px
+    );
+}
+
+.detail-list h3 {
+  margin: 0 0 16px;
+  font-size: 1.05rem;
+  letter-spacing: -0.025em;
+}
+
 .footer {
   display: flex;
   min-height: 104px;
@@ -595,7 +768,36 @@ a {
     font-size: clamp(3.7rem, 8.8vw, 6rem);
   }
 
-  .evidence-grid {
+  .page-hero {
+    min-height: auto;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+    gap: 36px;
+  }
+
+  .architecture-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .architecture-flow,
+  .architecture-flow--five {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .architecture-flow li:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .architecture-flow li:nth-child(-n + 3),
+  .architecture-flow--five li:nth-child(-n + 4) {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .architecture-flow li:nth-child(2n)::after {
+    display: none;
+  }
+
+  .evidence-grid,
+  .detail-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -651,21 +853,33 @@ a {
     padding-bottom: 24px;
   }
 
-  .hero {
+  .hero,
+  .page-hero {
     padding: 38px 0 42px;
     grid-template-columns: 1fr;
     gap: 30px;
   }
 
-  .hero h1 {
+  .hero h1,
+  .page-hero h1 {
     font-size: clamp(3.35rem, 16vw, 4.9rem);
   }
 
-  .hero__lead {
+  .hero__lead,
+  .page-hero__lead {
     max-width: 100%;
     margin-top: 20px;
     font-size: 0.96rem;
     line-height: 1.72;
+  }
+
+  .page-summary {
+    min-height: 150px;
+    padding: 18px;
+  }
+
+  .page-summary strong {
+    font-size: 1.05rem;
   }
 
   .hero__actions {
@@ -775,11 +989,15 @@ a {
     display: none;
   }
 
-  .evidence-grid {
+  .evidence-grid,
+  .architecture-grid,
+  .detail-list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .evidence-card {
+  .evidence-card,
+  .architecture-card,
+  .detail-list article {
     min-height: auto;
     padding: 14px;
   }
@@ -801,12 +1019,16 @@ a {
     line-height: 1.2;
   }
 
-  .evidence-card h3 {
+  .evidence-card h3,
+  .architecture-card h3,
+  .detail-list h3 {
     margin: 18px 0 7px;
     font-size: 0.98rem;
   }
 
-  .evidence-card > p {
+  .evidence-card > p,
+  .architecture-card p,
+  .detail-list p {
     min-height: 0;
     font-size: 0.7rem;
     line-height: 1.48;
@@ -818,10 +1040,14 @@ a {
     gap: 8px;
   }
 
+  .architecture-flow,
+  .architecture-flow--five,
   .operations-flow {
     grid-template-columns: 1fr;
   }
 
+  .architecture-flow li,
+  .architecture-flow--five li,
   .operations-flow li,
   .operations-flow li:nth-child(3) {
     min-height: 70px;
@@ -833,10 +1059,14 @@ a {
     align-items: center;
   }
 
+  .architecture-flow li:last-child,
+  .architecture-flow--five li:last-child,
   .operations-flow li:last-child {
     border-bottom: 0;
   }
 
+  .architecture-flow li:not(:last-child)::after,
+  .architecture-flow--five li:not(:last-child)::after,
   .operations-flow li:not(:last-child)::after,
   .operations-flow li:nth-child(3)::after {
     top: auto;
@@ -844,6 +1074,10 @@ a {
     bottom: -7px;
     display: block;
     transform: rotate(135deg);
+  }
+
+  .architecture-flow p {
+    font-size: 0.7rem;
   }
 
   .footer {
@@ -871,16 +1105,19 @@ a {
     padding: 0 18px;
   }
 
-  .hero {
+  .hero,
+  .page-hero {
     padding: 34px 0 38px;
     gap: 26px;
   }
 
-  .hero h1 {
+  .hero h1,
+  .page-hero h1 {
     font-size: clamp(3rem, 15.5vw, 4.3rem);
   }
 
-  .hero__lead {
+  .hero__lead,
+  .page-hero__lead {
     margin-top: 18px;
   }
 
@@ -893,17 +1130,27 @@ a {
     padding: 38px 0;
   }
 
-  .evidence-card {
+  .evidence-card,
+  .architecture-card,
+  .detail-list article {
     padding: 11px;
   }
 
-  .evidence-card h3 {
+  .evidence-card h3,
+  .architecture-card h3,
+  .detail-list h3 {
     margin-top: 16px;
     font-size: 0.92rem;
   }
 
-  .evidence-card > p {
+  .evidence-card > p,
+  .architecture-card p,
+  .detail-list p {
     min-height: 0;
+    font-size: 0.66rem;
+  }
+
+  .architecture-flow p {
     font-size: 0.66rem;
   }
 
@@ -919,6 +1166,8 @@ a {
     padding: 7px 8px;
   }
 
+  .architecture-flow li,
+  .architecture-flow--five li,
   .operations-flow li,
   .operations-flow li:nth-child(3) {
     min-height: 64px;
