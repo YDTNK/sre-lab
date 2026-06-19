@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SRE Lab | Reliability Portfolio</title>
   <meta
     name="description"
-    content="A public SRE and Platform Engineering portfolio for SLOs, monitoring, incidents, runbooks, and CI/CD evidence."
+    content="SLO、監視、障害対応、Runbook、CI/CDの証拠を見せるSRE / Platform Engineeringポートフォリオです。"
   />
   <link rel="stylesheet" href="/portfolio.css" />
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Skip to content</a>
+  <a class="skip-link" href="#main-content">本文へスキップ</a>
 
-  <aside class="sidebar" aria-label="Portfolio navigation">
+  <aside class="sidebar" aria-label="ポートフォリオナビゲーション">
     <div class="sidebar__brand">
       <a href="#top">SRE Lab</a>
       <p>Reliability Portfolio</p>
@@ -26,7 +26,7 @@
       <a class="sidebar__link" href="/architecture.html">
         <span>02</span>Architecture
       </a>
-      <a class="sidebar__link" href="/reliability.html">
+      <a class="sidebar__link" href="#evidence">
         <span>03</span>Reliability
       </a>
       <a class="sidebar__link" href="/monitoring.html">
@@ -56,8 +56,7 @@
           <p class="eyebrow">SRE / Platform Engineering Portfolio</p>
           <h1 id="hero-title">Reliability<br />Demo API</h1>
           <p class="hero__lead">
-            A public operations portfolio for SLOs, monitoring, incidents,
-            runbooks, and CI/CD evidence.
+            小さな本番APIを題材に、SLO・監視・障害対応・Runbook・CI/CDの証拠を見せるポートフォリオです。
           </p>
 
           <div class="hero__actions">
@@ -68,8 +67,8 @@
               Live API
               <span aria-hidden="true">↗</span>
             </a>
-            <a class="button" href="/reliability.html">
-              Operations Dashboard
+            <a class="button" href="#evidence">
+              運用証拠を見る
               <span aria-hidden="true">→</span>
             </a>
             <a class="button" href="https://github.com/YDTNK/sre-lab">
@@ -102,11 +101,11 @@
               <dd class="metric--danger">500 expected</dd>
             </div>
           </dl>
-          <a href="/reliability.html">View operational evidence <span aria-hidden="true">→</span></a>
+          <a href="#evidence">運用証拠を見る <span aria-hidden="true">→</span></a>
         </article>
       </section>
 
-      <section class="evidence" aria-labelledby="evidence-title">
+      <section class="evidence" id="evidence" aria-labelledby="evidence-title">
         <div class="section-heading">
           <div>
             <p class="eyebrow">System Evidence</p>
@@ -122,9 +121,9 @@
               <span class="tag">System diagram</span>
             </div>
             <h3>Architecture</h3>
-            <p>System diagram, request flow, monitoring flow, and GitHub Issue intake.</p>
-            <a href="/architecture.html" aria-label="View Architecture evidence">
-              View evidence <span aria-hidden="true">→</span>
+            <p>構成図、リクエストフロー、監視フロー、GitHub Issue化の流れを整理します。</p>
+            <a href="/architecture.html" aria-label="Architecture evidenceを見る">
+              詳細を見る <span aria-hidden="true">→</span>
             </a>
           </article>
 
@@ -134,9 +133,9 @@
               <span class="tag">SLO 99.0%</span>
             </div>
             <h3>Reliability</h3>
-            <p>SLO, SLI, error budget, and endpoint behavior for the demo API.</p>
-            <a href="/reliability.html" aria-label="View Reliability evidence">
-              View evidence <span aria-hidden="true">→</span>
+            <p>SLO、SLI、Error Budget、各APIエンドポイントの挙動を見せます。</p>
+            <a href="#evidence" aria-label="Reliability evidenceを見る">
+              このページで確認 <span aria-hidden="true">→</span>
             </a>
           </article>
 
@@ -146,9 +145,9 @@
               <span class="tag">Alert flow</span>
             </div>
             <h3>Monitoring</h3>
-            <p>Synthetic checks, alert rules, routing, and dedupe behavior.</p>
-            <a href="/monitoring.html" aria-label="View Monitoring evidence">
-              View evidence <span aria-hidden="true">→</span>
+            <p>Synthetic checks、alert rules、routing、dedupeの設計を見せます。</p>
+            <a href="/monitoring.html" aria-label="Monitoring evidenceを見る">
+              詳細を見る <span aria-hidden="true">→</span>
             </a>
           </article>
 
@@ -158,9 +157,9 @@
               <span class="tag">Deploy flow</span>
             </div>
             <h3>CI/CD</h3>
-            <p>PR, CI, deploy, smoke test, failure handling, and rollback policy.</p>
-            <a href="/cicd.html" aria-label="View CI/CD evidence">
-              View evidence <span aria-hidden="true">→</span>
+            <p>PR、CI、deploy、smoke test、failure handling、rollback policyを見せます。</p>
+            <a href="/cicd.html" aria-label="CI/CD evidenceを見る">
+              詳細を見る <span aria-hidden="true">→</span>
             </a>
           </article>
 
@@ -170,9 +169,9 @@
               <span class="tag">Game Day passed</span>
             </div>
             <h3>Incidents</h3>
-            <p>Production verification, Game Day records, and postmortem policy.</p>
-            <a href="/incidents.html" aria-label="View Incident evidence">
-              View evidence <span aria-hidden="true">→</span>
+            <p>本番検証、Game Day、Postmortem方針をケーススタディとして残します。</p>
+            <a href="/incidents.html" aria-label="Incident evidenceを見る">
+              詳細を見る <span aria-hidden="true">→</span>
             </a>
           </article>
 
@@ -182,9 +181,9 @@
               <span class="tag">Future phase</span>
             </div>
             <h3>Cost Guardrails</h3>
-            <p>Rate limits, usage counters, budget thresholds, and cost alerts.</p>
-            <a href="/cost.html" aria-label="View Cost Guardrails evidence">
-              View roadmap <span aria-hidden="true">→</span>
+            <p>Rate limit、usage counter、budget threshold、cost alertの設計を追加予定です。</p>
+            <a href="/cost.html" aria-label="Cost Guardrails roadmapを見る">
+              Roadmapを見る <span aria-hidden="true">→</span>
             </a>
           </article>
         </div>
@@ -228,7 +227,7 @@
       </section>
 
       <footer class="footer">
-        <p>SRE Lab — reliability engineering demonstrated through working evidence.</p>
+        <p>SRE Lab — Reliability Demo APIで運用証拠を見せるポートフォリオ。</p>
         <p>Historical product demos remain archived, not primary.</p>
       </footer>
     </div>
