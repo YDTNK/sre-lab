@@ -76,37 +76,39 @@
 }
 
 .architecture-card h3,
-.architecture-flow strong {
+.architecture-flow strong,
+.detail-list h3 {
   min-height: 0;
   margin: 0;
   display: block;
+  color: var(--color-text);
+  font-family: inherit;
   font-size: 1.05rem;
+  font-weight: 760;
+  letter-spacing: -0.025em;
   line-height: 1.45;
   align-self: center;
 }
 
 .architecture-card p,
-.architecture-flow p {
-  margin: 0;
-  color: var(--color-muted);
-  font-size: 0.95rem;
-  line-height: 1.78;
-  align-self: center;
-}
-
-.detail-list h3 {
-  margin: 0;
-  font-size: 1.05rem;
-  letter-spacing: -0.025em;
-  align-self: center;
-}
-
+.architecture-flow p,
 .detail-list p {
   margin: 0;
   color: var(--color-muted);
+  font-family: inherit;
   font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: normal;
   line-height: 1.78;
   align-self: center;
+}
+
+.architecture-card p span,
+.architecture-flow p span,
+.detail-list p span {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
 }
 
 .architecture-flow li:not(:last-child)::after,
@@ -152,7 +154,8 @@
   }
 
   .architecture-card h3,
-  .architecture-flow strong {
+  .architecture-flow strong,
+  .detail-list h3 {
     font-size: 1rem;
     line-height: 1.4;
   }
@@ -160,14 +163,10 @@
   .architecture-card p,
   .architecture-flow p {
     grid-column: 3 / 4;
-    font-size: 0.88rem;
-    line-height: 1.76;
   }
 
-  .detail-list h3 {
-    font-size: 1rem;
-  }
-
+  .architecture-card p,
+  .architecture-flow p,
   .detail-list p {
     font-size: 0.88rem;
     line-height: 1.76;
