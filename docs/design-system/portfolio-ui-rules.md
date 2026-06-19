@@ -1,19 +1,14 @@
 # Portfolio UI Design Rules
 
-## Purpose
+## 目的
 
-This document defines the visual and layout rules for the SRE Lab public portfolio pages.
+この文書は、SRE Lab の公開ポートフォリオページに適用するUI・レイアウト・文言のルールをまとめたものです。
 
-It is based on the current Home page and Architecture page implementation:
+対象ページ:
 
 ```text
 /
 /architecture.html
-```
-
-Use this document before adding or changing portfolio pages such as:
-
-```text
 /reliability.html
 /monitoring.html
 /cicd.html
@@ -21,7 +16,7 @@ Use this document before adding or changing portfolio pages such as:
 /cost.html
 ```
 
-## Current design direction
+## デザイン方針
 
 ```text
 Monochrome technical portfolio
@@ -29,53 +24,59 @@ Monochrome technical portfolio
 SRE / Platform Engineering evidence dashboard
 ```
 
-The site should feel:
+サイト全体は、次の印象を優先します。
 
 ```text
-- calm
-- technical
-- reliable
-- evidence-first
-- not consumer-service-like
-- not cyber-heavy
-- not revenue-LP-like
+- 落ち着いている
+- 技術的である
+- 信頼できる
+- 証跡が見える
+- 一般消費者向けLPに寄せすぎない
+- サイバー風の装飾に寄せすぎない
+- 収益化サービスの販売ページに見せない
 ```
 
-## Source CSS files
-
-Current CSS structure:
+## CSS構成
 
 ```text
 apps/landing/portfolio.css
 apps/landing/layout-adjustments.css
 apps/landing/architecture.css
+apps/landing/reliability.css
+apps/landing/monitoring.css
+apps/landing/cicd.css
+apps/landing/incidents.css
+apps/landing/cost.css
 ```
 
-Role of each file:
+役割:
 
 ```text
 portfolio.css:
-- base colors
-- typography base
-- sidebar
+- 共通色
+- 基本文字組み
+- サイドバー
 - hero
-- shared sections
-- base cards and flows
+- 共通セクション
+- 基本カード
 
 layout-adjustments.css:
-- Home page row/list refinements
-- PC/mobile copy switching utilities
-- Home Operational Design layout overrides
+- Home固有の調整
+- PC/SPコピー切り替え
+- HomeのOperational Design調整
 
 architecture.css:
-- Architecture page-specific role list and flow layout
-- Architecture PC block flows
-- Architecture mobile vertical flows
+- サブページ共通のrole/flow系レイアウト
+- Architecture系のflow block
+- サブページの可視ブランド統一
+
+各ページ専用CSS:
+- ページ固有の一覧、カード、説明ブロック
 ```
 
-## Color rules
+## 色のルール
 
-Use CSS variables from `portfolio.css`.
+色は `portfolio.css` のCSS変数を使います。
 
 ```css
 --color-bg: #f7f7f5;
@@ -94,51 +95,31 @@ Use CSS variables from `portfolio.css`.
 --color-danger: #a43c3c;
 ```
 
-### Semantic color usage
+使い分け:
 
 ```text
-Main headings:
+見出し:
 - var(--color-text)
 
-Section eyebrow / node labels / explanatory accent copy:
-- var(--color-accent-dark)
+説明文:
+- 原則 var(--color-accent-dark)
 
-General muted text:
+補足テキスト:
 - var(--color-muted)
 
-Low-priority metadata:
+低優先度メタ情報:
 - var(--color-muted-light)
 
-Borders:
-- var(--color-border)
-
-Cards / content surfaces:
-- var(--color-surface)
-
-Positive status:
+正常状態:
 - var(--color-success)
 
-Expected error / danger status:
+期待されたエラーや注意:
 - var(--color-danger)
 ```
 
-### Description copy rule
+## 文字のルール
 
-For the current Home and Architecture pages, description copy is intentionally accent green:
-
-```css
-color: var(--color-accent-dark);
-```
-
-Apply the same rule to Reliability page explanatory copy unless there is a clear reason not to.
-
-Do not accidentally apply node-label monospace styling to body copy.
-
-## Typography rules
-
-### Base font
-
-The site uses:
+基本フォント:
 
 ```css
 font-family:
@@ -151,79 +132,23 @@ font-family:
   sans-serif;
 ```
 
-Use inherited font for Japanese headings and body copy.
+日本語の見出し・本文は通常フォントを継承します。
 
-Use monospace only for:
-
-```text
-- sidebar numbers
-- eyebrow labels
-- card numbers
-- node labels such as PG / API / MON / CI / ISS
-- metric values where appropriate
-```
-
-### PC heading scale
-
-Current approximate PC rules:
+monospaceを使う箇所:
 
 ```text
-Hero title:
-- clamp(4rem, 7.3vw, 7.1rem)
-- very tight line-height around 0.9
-
-Page hero title:
-- clamp(3.3rem, 6.6vw, 6.4rem)
-- tight line-height around 0.92
-
-Section h2:
-- clamp(2rem, 4vw, 3.15rem)
-- line-height around 1
-
-Card h3:
-- Home evidence rows: about 1.18rem after adjustment
-- Architecture role rows / detail rows: about 1.05rem
-- Architecture flow strong labels: about 0.95rem to 1.05rem depending layout
+- サイドバー番号
+- eyebrow label
+- card number
+- PG / API / MON / CI / ISS などのnode label
+- metric value
 ```
 
-### Mobile heading scale
+本文にnode label用のmonospaceが混ざらないようにします。
 
-Current approximate mobile rules:
+## レスポンシブルール
 
-```text
-Hero / page hero title:
-- clamp(3rem, 15.5vw, 4.9rem)
-
-Section h2:
-- about 2rem
-
-Card h3:
-- about 0.98rem to 1.04rem
-```
-
-### Body copy scale
-
-Current approximate rules:
-
-```text
-Hero lead:
-- PC: clamp(1rem, 1.6vw, 1.2rem)
-- Mobile: about 0.96rem
-
-Home evidence description:
-- PC: about 0.95rem
-- Mobile: about 0.88rem
-
-Architecture role / flow / detail description:
-- PC: about 0.95rem
-- Mobile: about 0.88rem
-```
-
-Do not reduce mobile body copy below the current readable range unless the text is purely metadata.
-
-## Layout breakpoints
-
-Current breakpoints:
+使用するbreakpoint:
 
 ```css
 @media (max-width: 1199px)
@@ -231,129 +156,76 @@ Current breakpoints:
 @media (max-width: 480px)
 ```
 
-Use them consistently:
+目安:
 
 ```text
->= 1200px:
-- full desktop layout
-- fixed left sidebar
-- large hero
-- horizontal or multi-column flows/cards where useful
+1200px以上:
+- 左固定サイドバー
+- 大きいhero
+- 横並びflowや複数カラムを使える
 
-900px - 1199px:
-- sidebar becomes top navigation
-- page remains relatively wide
-- some grids reduce columns
-
-<= 899px:
-- mobile layout
-- top horizontal navigation
-- hero becomes 1 column
-- buttons stack
-- flows become vertical
-- copy can switch to shorter mobile text
-
-<= 480px:
-- tighter page padding
-- slightly smaller hero / heading scale
+899px以下:
+- サイドバーは上部ナビになる
+- heroは1カラム
+- ボタンは縦積み
+- flowは縦方向にする
+- 日本語コピーは短めにする
 ```
 
-## Global spacing rules
+## ナビゲーションルール
 
-### Page shell
-
-Current base values:
-
-```css
---sidebar-width: 250px;
---main-max-width: 1220px;
---main-padding-x: 64px;
---main-padding-y: 64px;
-```
-
-Responsive adjustments:
+全ページで同じサイドバー構造を使います。
 
 ```text
-<=1199px:
-- main padding x: 40px
-- main padding y: 44px
-
-<=899px:
-- main padding x: 22px
-- main padding y: 14px
-
-<=480px:
-- main padding x: 18px
+01 トップ
+02 構成
+03 信頼性
+04 監視
+05 CI/CD
+06 障害対応
+07 コスト制御
+08 GitHub
 ```
 
-### Section spacing
+現在ページには `sidebar__link--active` を付けます。
 
-Current rule:
+可視ブランドは `Yudai Tanaka's` に統一します。
+
+## Heroルール
+
+Home:
 
 ```text
-PC:
-- evidence / operations sections: about 80px vertical padding
-
-Mobile:
-- evidence / operations sections: about 38px to 44px vertical padding
+- Reliability Ops Lab を大きく見せる
+- 右側にCurrent Statusを置く
+- Primary CTAは説明ページへ遷移させる
+- raw JSONだけのAPIに初見ユーザーを直接送らない
 ```
 
-Do not introduce sections with much larger or smaller padding unless the page has a clear hierarchy reason.
-
-## Navigation rules
-
-### PC
+Subpage:
 
 ```text
-- Sidebar fixed left
-- Width: 250px
-- Brand at top
-- Navigation links in vertical list
-- Active item gets subtle background and left accent border
+- 英語eyebrow
+- 大きいページタイトル
+- 日本語ラベル
+- 説明コピー
+- summary card
 ```
 
-### Tablet / mobile
+## コピーのルール
+
+日本語コピーは、単純な和訳ではなく、初見で意味が分かる説明にします。
+
+避ける表現:
 
 ```text
-- Sidebar becomes top navigation
-- Navigation links scroll horizontally
-- Numeric prefixes are hidden on mobile
-- Active item gets bottom accent line
+- 漢字だけが続く硬い説明
+- 意味が曖昧な英語混在
+- 実装済みに見えるFuture表現
+- APIやCI/CDなどの専門用語だけで文脈を省く説明
 ```
 
-All portfolio pages should use the same sidebar structure and active link pattern.
-
-## Hero rules
-
-### Home hero
-
-```text
-- Large title: Reliability / Ops Lab
-- Two-column layout on PC
-- Status card on the right
-- One-column layout on mobile
-- CTA buttons stack on mobile
-```
-
-### Subpage hero
-
-```text
-- Use .page-hero
-- English eyebrow
-- Large page title
-- Small Japanese label below title when useful
-- Lead copy
-- Summary card on PC
-- One-column layout on mobile
-```
-
-Future pages should follow the Architecture page hero pattern.
-
-## Copy rules
-
-Use desktop/mobile copy variants when Japanese line breaks become awkward.
-
-Current utilities:
+PCとスマホで読みやすさが変わる場合は、以下をセットで使います。
 
 ```css
 .copy-desktop
@@ -362,258 +234,122 @@ Current utilities:
 .hero-copy-mobile
 ```
 
-Rules:
+## ページ別ルール
+
+### Home
+
+目的:
 
 ```text
-- Desktop copy can be longer and more specific.
-- Mobile copy should be shorter and avoid awkward punctuation-only line breaks.
-- Update desktop and mobile copy together.
-- Do not let terms such as API、 or CI/CD、 become isolated lines.
+初見で、これはSRE / Platform Engineeringの運用ポートフォリオだと分かること。
 ```
 
-## Component rules
-
-## 1. Evidence / navigation rows
-
-Used on Home `Operational Design`.
-
-### PC
-
-Current Home row structure:
+ルール:
 
 ```text
-number/tag column
-+
-title column
-+
-description column
-+
-link column
+- Primary CTAはReliability Dashboardへ送る
+- Current Statusを見せる
+- Operational Designは各証跡ページへの入口にする
+- Future扱いの文言を実装済みページに残さない
 ```
 
-Approximate CSS behavior:
+### Architecture
+
+目的:
 
 ```text
-- display: grid
-- transparent row background
-- no full card border
-- vertical rhythm from row padding
-- description in accent green
-- row content vertically centered
+Pages、Workers、Grafana、GitHub Actions、GitHub Issuesの役割を説明すること。
 ```
 
-Use this pattern for section lists that act as navigation/evidence overview.
-
-### Mobile
+ルール:
 
 ```text
-- two-column layout
-- left column: number/tag
-- right column: title, description, link
-- title and description remain readable
-- link can sit below description
+- 役割は説明リストとして読みやすくする
+- flowはPCではブロック、スマホでは縦並びにする
+- Future itemsは本当に未来のものだけに限定する
 ```
 
-## 2. Architecture role rows
+### Reliability
 
-Used on Architecture `System Overview / 役割`.
-
-### PC
-
-Current row structure:
+目的:
 
 ```text
-number
-+
-node label
-+
-title
-+
-description
+APIの現在状態、SLO、エンドポイント挙動、運用証跡を見せること。
 ```
 
-Rules:
+ルール:
 
 ```text
-- one row per component
-- node label is accent soft box
-- title black
-- description accent green
-- row items vertically centered
+- /api/error は期待されたデモ挙動として明記する
+- Live checkの値は説明とセットで見せる
+- raw JSONを主導線にしない
 ```
 
-### Mobile
+### Monitoring
+
+目的:
 
 ```text
-- compact 3-column structure
-- number + node label + content
-- description remains aligned with content column
+何を監視し、どの条件でアラートにし、どのようにIssueやRunbookへつなげるかを見せること。
 ```
 
-## 3. Flow blocks
+### CI/CD
 
-Used on Architecture:
+目的:
 
 ```text
-Request Flow
-Monitoring / Alert Flow
-CI/CD Flow
+PR、CI、デプロイ、本番確認、切り戻し方針を見せること。
 ```
 
-### PC
+測定済みのDORA指標のように見せず、delivery evidence mappingとして扱います。
+
+### Incidents
+
+目的:
 
 ```text
-- Use block/card layout
-- 4-step flow uses 4 columns
-- 5-step flow uses 5 columns
-- Thin border around the full flow
-- Thin borders between blocks
-- Arrow connector between blocks
-- Flow label uses accent / monospace
-- Flow title uses black text
-- Flow description uses accent green
+本番確認記録、Incident方針、Postmortem、follow-upを見せること。
 ```
 
-### Mobile
+期待されたデモエラーを実障害として扱わないようにします。
+
+### Cost
+
+目的:
 
 ```text
-- Vertical list
-- One step per row
-- Downward arrow between rows
-- Keep row height compact but readable
-- Do not force horizontal scroll for core flow explanation
+利用量、予算しきい値、コスト超過時の対応方針を見せること。
 ```
 
-## 4. Detail explanation lists
+まだ実装していないランタイム制御は、実装候補として明記します。
 
-Used on Architecture:
+## やらないこと
 
 ```text
-Technology Choices
-Future Expansion
+- 一般消費者向けLPのような訴求に戻さない
+- サイバー風の装飾を主役にしない
+- gradient CTAを使わない
+- privateな計画やキャリア文脈を公開ページに出さない
+- future capabilityを実装済みのように見せない
+- mobileで横スクロール前提の主要説明にしない
 ```
 
-Rules:
+## 実装前チェックリスト
 
 ```text
-- Prefer readable explanatory rows/lists
-- Do not force dense multi-column cards on mobile
-- Use black heading and accent green or muted description consistently
+[ ] 全ページでナビ構造が揃っている
+[ ] active navが正しい
+[ ] 可視ブランドがYudai Tanaka'sになっている
+[ ] 見出しは黒、説明文はaccent greenを基本にしている
+[ ] flowはPCでブロック、スマホで縦並びになっている
+[ ] future itemsを実装済みに見せていない
+[ ] private管理情報が公開されていない
+[ ] GitHubリンク先ドキュメントが日本語で読める
+[ ] raw JSON APIを初見向けの主導線にしていない
 ```
 
-## Button rules
+## 保守ルール
 
-```text
-- Primary button: black background, white text
-- Hover primary: accent dark background
-- Secondary button: white surface, border
-- Mobile buttons: full width and stacked
-```
+ページ単位の見た目や情報設計を変えた場合は、この文書も同じPRで更新します。
 
-Do not introduce gradient CTA buttons in the current portfolio style.
-
-## Status / metric card rules
-
-Used on Home status card.
-
-```text
-- Use bordered white surface
-- Header uses monospace uppercase label
-- Operational status uses success green dot
-- Metrics use compact label/value structure
-- Expected demo error can use danger color but must be clearly labeled expected
-```
-
-For Reliability dashboard, reuse this style for service state and SLO cards.
-
-## Page-specific rules
-
-## Home page
-
-Purpose:
-
-```text
-First impression and navigation to operational evidence.
-```
-
-Rules:
-
-```text
-- Keep hero strong and simple.
-- Keep status card visible.
-- Operational Design is a readable evidence/navigation list.
-- Operations Flow is compact and visual.
-```
-
-## Architecture page
-
-Purpose:
-
-```text
-Show system structure and operational flow.
-```
-
-Rules:
-
-```text
-- Role section uses readable role rows.
-- Flow sections use PC block layout and mobile vertical layout.
-- Technology Choices / Future Expansion are explanatory lists.
-- Future items must be labeled as future, not current implementation.
-```
-
-## Reliability page
-
-Purpose:
-
-```text
-Show service state, SLO, endpoint behavior, and operational evidence.
-```
-
-Required design alignment:
-
-```text
-- Use subpage hero pattern from Architecture.
-- Use status / metric card style from Home.
-- Use role/evidence row style for endpoint behavior when text-heavy.
-- Use flow block pattern for monitoring / response flow.
-- Keep /api/error clearly marked as intentional demo behavior.
-```
-
-## Do not do
-
-```text
-- Do not mix consumer LP design into the SRE portfolio.
-- Do not reintroduce cyber-heavy hero imagery as the main visual direction.
-- Do not use gradient CTA buttons.
-- Do not expose private planning or career-management context.
-- Do not make future capabilities look implemented.
-- Do not create mobile layouts that require horizontal scrolling for core reading.
-- Do not let body copy inherit monospace node-label styling.
-- Do not reduce mobile explanatory text to unreadable sizes.
-```
-
-## Implementation checklist for new pages
-
-Before implementing a new portfolio page:
-
-```text
-[ ] Does the page use the shared sidebar/nav structure?
-[ ] Is the active nav item correct?
-[ ] Does it use Home or Architecture patterns intentionally?
-[ ] Are colors assigned by semantic role?
-[ ] Are fonts inherited except for labels/numbers/metrics?
-[ ] Are PC and mobile layouts both defined?
-[ ] Are copy-desktop and copy-mobile needed?
-[ ] Are flow sections cards on PC and vertical on mobile?
-[ ] Are explanation sections readable on mobile?
-[ ] Are CSS version query strings updated when visual changes are made?
-[ ] Is private planning context excluded?
-[ ] Are future capabilities clearly marked as future?
-```
-
-## Maintenance rule
-
-When a page-level visual rule changes, update this document in the same PR.
-
-When a one-off CSS override becomes repeated across pages, promote it to a shared rule in `portfolio.css` rather than duplicating it in page-specific CSS.
+同じCSS overrideが複数ページで繰り返される場合は、ページ専用CSSではなく共通CSSへ移します。
