@@ -17,9 +17,9 @@
   background:
     linear-gradient(90deg,
       rgba(255, 255, 255, 0.98) 0%,
-      rgba(255, 255, 255, 0.94) 32%,
-      rgba(255, 255, 255, 0.68) 48%,
-      rgba(248, 251, 255, 0.12) 61%,
+      rgba(255, 255, 255, 0.94) 34%,
+      rgba(255, 255, 255, 0.70) 50%,
+      rgba(248, 251, 255, 0.14) 64%,
       rgba(248, 251, 255, 0.00) 100%
     );
   pointer-events: none;
@@ -31,9 +31,9 @@
   z-index: 0;
   background-image: url("/assets/images/sre-lab-iot-cyber-hero.jpg");
   background-repeat: no-repeat;
-  /* 2:1 IoT/cyber-style SRE hero image. Push the main visual to the visible right side. */
-  background-size: auto 118%;
-  background-position: calc(100% + 190px) center;
+  /* 2:1 IoT/cyber-style hero. Contain the generated image on the visible right side instead of over-zooming it. */
+  background-size: auto 82%;
+  background-position: right 22px center;
   background-color: #071226;
 }
 
@@ -70,16 +70,16 @@
     background:
       linear-gradient(90deg,
         rgba(255, 255, 255, 0.99) 0%,
-        rgba(255, 255, 255, 0.96) 40%,
-        rgba(255, 255, 255, 0.72) 55%,
-        rgba(248, 251, 255, 0.12) 70%,
+        rgba(255, 255, 255, 0.96) 42%,
+        rgba(255, 255, 255, 0.74) 58%,
+        rgba(248, 251, 255, 0.16) 74%,
         rgba(248, 251, 255, 0.00) 100%
       );
   }
 
   .home-redesign-hero__visual-bg {
-    background-size: auto 112%;
-    background-position: calc(100% + 170px) center;
+    background-size: auto 78%;
+    background-position: right 8px center;
   }
 
   .home-redesign-hero--background .home-redesign-hero__copy {
@@ -106,8 +106,8 @@
   }
 
   .home-redesign-hero__visual-bg {
-    background-size: auto 105%;
-    background-position: calc(100% + 230px) center;
+    background-size: auto 72%;
+    background-position: right -110px center;
   }
 
   .home-redesign-hero--background .home-redesign-hero__copy {
@@ -148,8 +148,8 @@
   }
 
   .home-redesign-hero__visual-bg {
-    background-size: auto 100%;
-    background-position: calc(100% + 250px) center;
+    background-size: auto 68%;
+    background-position: right -140px center;
   }
 
   .home-redesign-hero--background .home-redesign-hero__copy {
