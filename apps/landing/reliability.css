@@ -1,0 +1,289 @@
+.reliability-status-grid {
+  display: grid;
+  border-top: 1px solid var(--color-border);
+  grid-template-columns: minmax(320px, 0.9fr) repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+
+.reliability-status-grid > * {
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.reliability-status-grid > *:last-child {
+  border-right: 0;
+}
+
+.reliability-status-card {
+  min-height: 260px;
+}
+
+.reliability-note-card {
+  display: grid;
+  min-height: 260px;
+  padding: 24px;
+  background: var(--color-surface);
+  align-content: space-between;
+  gap: 18px;
+}
+
+.reliability-note-card span,
+.reliability-metric-grid article > span,
+.endpoint-list article > span,
+.reliability-evidence-list article > span {
+  color: var(--color-accent-dark);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+}
+
+.reliability-note-card h3,
+.reliability-metric-grid h3,
+.reliability-evidence-list h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.05rem;
+  font-weight: 760;
+  letter-spacing: -0.025em;
+  line-height: 1.45;
+}
+
+.reliability-note-card p,
+.reliability-metric-grid p,
+.endpoint-list p,
+.reliability-evidence-list p {
+  margin: 0;
+  color: var(--color-accent-dark);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.78;
+}
+
+.reliability-note-card a,
+.reliability-evidence-list a {
+  display: inline-flex;
+  width: fit-content;
+  color: var(--color-text-subtle);
+  font-size: 0.76rem;
+  font-weight: 720;
+  text-decoration: none;
+  gap: 14px;
+}
+
+.reliability-note-card a:hover,
+.reliability-note-card a:focus-visible,
+.reliability-evidence-list a:hover,
+.reliability-evidence-list a:focus-visible {
+  color: var(--color-accent-dark);
+}
+
+.reliability-metric-grid {
+  display: grid;
+  border-top: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.reliability-metric-grid article {
+  display: grid;
+  min-height: 250px;
+  padding: 24px;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  align-content: space-between;
+  gap: 18px;
+}
+
+.reliability-metric-grid strong {
+  color: var(--color-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.endpoint-list {
+  display: grid;
+  border-top: 1px solid var(--color-border);
+  grid-template-columns: 1fr;
+}
+
+.endpoint-list article {
+  display: grid;
+  min-height: auto;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: 54px minmax(240px, 0.38fr) 130px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.endpoint-list article > span {
+  justify-self: start;
+}
+
+.endpoint-list code {
+  color: var(--color-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+  font-weight: 760;
+  letter-spacing: -0.02em;
+}
+
+.endpoint-list strong {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.endpoint-list__expected-error {
+  background: linear-gradient(90deg, transparent, rgba(164, 60, 60, 0.045));
+}
+
+.reliability-flow p {
+  color: var(--color-accent-dark);
+}
+
+.reliability-evidence-list {
+  display: grid;
+  border-top: 1px solid var(--color-border);
+  grid-template-columns: 1fr;
+}
+
+.reliability-evidence-list article {
+  display: grid;
+  min-height: auto;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-border);
+  grid-template-columns: 64px minmax(210px, 0.32fr) minmax(0, 1fr) 132px;
+  gap: 20px;
+  align-items: center;
+}
+
+.reliability-evidence-list article > span {
+  display: inline-grid;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--color-border);
+  background: var(--color-accent-soft);
+  place-items: center;
+}
+
+@media (max-width: 1199px) {
+  .reliability-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reliability-status-grid > * {
+    border-right: 0;
+  }
+
+  .reliability-metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .endpoint-list article,
+  .reliability-evidence-list article {
+    grid-template-columns: 48px minmax(190px, 0.34fr) minmax(0, 1fr);
+  }
+
+  .endpoint-list strong,
+  .reliability-evidence-list a {
+    grid-column: 3 / 4;
+  }
+}
+
+@media (max-width: 899px) {
+  .reliability-note-card,
+  .reliability-metric-grid article {
+    min-height: auto;
+    padding: 20px 0;
+    border-right: 0;
+    background: transparent;
+  }
+
+  .reliability-status-grid,
+  .reliability-metric-grid {
+    border-left: 0;
+  }
+
+  .reliability-note-card h3,
+  .reliability-metric-grid h3,
+  .reliability-evidence-list h3 {
+    font-size: 1rem;
+  }
+
+  .reliability-note-card p,
+  .reliability-metric-grid p,
+  .endpoint-list p,
+  .reliability-evidence-list p {
+    font-size: 0.88rem;
+    line-height: 1.76;
+  }
+
+  .reliability-metric-grid strong {
+    font-size: 1.5rem;
+  }
+
+  .endpoint-list article {
+    padding: 20px 0;
+    grid-template-columns: 38px minmax(0, 1fr) 96px;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .endpoint-list code {
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .endpoint-list strong {
+    justify-self: end;
+    font-size: 0.68rem;
+  }
+
+  .endpoint-list p {
+    grid-column: 2 / 4;
+  }
+
+  .reliability-evidence-list article {
+    padding: 20px 0;
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+  }
+
+  .reliability-evidence-list article > span {
+    width: 36px;
+    height: 36px;
+    grid-row: 1 / 4;
+  }
+
+  .reliability-evidence-list h3,
+  .reliability-evidence-list p,
+  .reliability-evidence-list a {
+    grid-column: 2 / 3;
+  }
+
+  .reliability-evidence-list a {
+    font-size: 0.74rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .endpoint-list article {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .endpoint-list strong {
+    grid-column: 2 / 3;
+    justify-self: start;
+  }
+
+  .endpoint-list p {
+    grid-column: 2 / 3;
+  }
+}
