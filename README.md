@@ -59,34 +59,20 @@ SRE Lab should show:
 
 ```text
 Current direction: SRE portfolio-first
-Current active target: Reliability Demo API MVP
+Current active target: Reliability Demo API operational loop
+MVP implementation: completed by PR #78
 Stopped route: Digital Product LP / revenue-first route
-Tracking Issue: #74
+Current follow-up Issue: #81
 ```
 
-Issue #74:
+## Reliability Demo API
 
 ```text
-https://github.com/YDTNK/sre-lab/issues/74
+Production base URL:
+https://sre-lab-api.daisan-tanaka.workers.dev
 ```
 
-## Target MVP
-
-```text
-Reliability Demo API
-```
-
-Planned initial endpoints:
-
-```text
-/api/health
-/api/slow
-/api/error
-/api/fallback
-/api/status
-```
-
-The MVP endpoints are implemented by the Cloudflare Workers API:
+Implemented endpoints:
 
 | Endpoint | Behavior |
 |---|---|
@@ -98,16 +84,15 @@ The MVP endpoints are implemented by the Cloudflare Workers API:
 
 Existing `/api/moving-assistant` and `/api/grafana-alert` behavior remains available.
 
-The first MVP should demonstrate:
+## Operational Evidence
+
+Current operational evidence:
 
 ```text
-- healthy response
-- intentional latency
-- intentional 5xx
-- timeout/fallback behavior
-- status endpoint
-- monitoring target
-- alert/runbook/incident/postmortem flow
+docs/slo/reliability-demo-api.md
+docs/runbook.md
+docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md
+docs/postmortems/template.md
 ```
 
 ## What Is Preserved From The Existing Repository
@@ -163,8 +148,6 @@ Historical records may remain for context, but they must not drive active implem
 
 ## Current Public URLs
 
-These may be changed as the Reliability Demo API replaces the old surface.
-
 ```text
 SRE Lab frontend: https://sre-lab.pages.dev/
 Workers API: https://sre-lab-api.daisan-tanaka.workers.dev
@@ -173,12 +156,12 @@ Workers API: https://sre-lab-api.daisan-tanaka.workers.dev
 ## Next Work Order
 
 ```text
-1. Finish source-of-truth pivot documentation.
-2. Close/supersede stale revenue and Moving Prep work.
-3. Update CI guardrails away from Moving Assistant assumptions.
-4. Create Codex-ready Issue for Reliability Demo API MVP.
-5. Implement Reliability Demo API.
-6. Add SLO, runbook, incident, postmortem, and portfolio pages around it.
+1. Confirm or update Grafana Synthetic Monitoring targets to /api/health and /api/status.
+2. Confirm alert rules for health failure and latency degradation.
+3. Add a dashboard or portfolio page section that exposes SLO, incidents, runbooks, and API endpoints.
+4. Run a small game day: intentionally check /api/error and document the expected response flow.
+5. Create a real postmortem only when an actual unexpected failure occurs.
+6. After the Reliability Demo API operational loop is complete, consider Cloud Cost Guardrail Demo.
 ```
 
 ## Interview Positioning
