@@ -25,15 +25,26 @@ reject_grep() {
   fi
 }
 
+require_file START_HERE_FOR_AI.md
 require_file AGENTS.md
 require_file README.md
+require_file docs/mandatory-context-registry.md
+require_file docs/issue-number-execution.md
 require_file docs/automation-first-working-policy.md
 require_file docs/ai-organization-operating-model.md
 require_file docs/sre-lab-workflow.md
+require_file docs/ai-assisted-85-90-workflow.md
 require_file docs/codex-workflow.md
+require_file docs/completion-report-template.md
 require_file docs/service-state-checklist.md
 require_file docs/services.md
 require_file docs/runbook.md
+require_file docs/architecture.md
+require_file docs/operations.md
+require_file docs/incidents.md
+require_file docs/incident-record-rules.md
+require_file docs/grafana-issue-ai-investigation.md
+require_file docs/deploy-failure-investigation.md
 require_file .github/ISSUE_TEMPLATE/codex_task.md
 require_file .github/pull_request_template.md
 require_file .github/workflows/ci.yml
@@ -48,9 +59,18 @@ require_file apps/api/wrangler.toml
 
 bash -n scripts/smoke-test.sh
 
-require_grep 'MOVING_ASSISTANT_API_PATH = "/api/moving-assistant"' apps/api/src/index.js
+# Portfolio pivot guardrails
+require_grep 'Reliability Demo API' README.md
+require_grep 'SRE / Platform Engineer portfolio' README.md
+require_grep 'Reliability Demo API' AGENTS.md
+require_grep 'SRE portfolio-first' AGENTS.md
+require_grep 'Reliability Demo API' docs/services.md
+require_grep 'SLO / SLI' docs/services.md
+require_grep 'SRE portfolio-first' docs/automation-first-working-policy.md
+require_grep 'Issue-first' docs/automation-first-working-policy.md
+
+# Preserve operational assets that remain valuable after the portfolio pivot.
 require_grep 'GRAFANA_ALERT_API_PATH = "/api/grafana-alert"' apps/api/src/index.js
-require_grep 'handleMovingAssistantMock' apps/api/src/index.js
 require_grep 'handleGrafanaAlertWebhook' apps/api/src/index.js
 require_grep 'GRAFANA_WEBHOOK_SECRET_HEADER' apps/api/src/index.js
 require_grep 'GRAFANA_DEDUPE_LABEL' apps/api/src/index.js
@@ -61,20 +81,20 @@ require_grep 'createGitHubIssue' apps/api/src/index.js
 require_grep 'Content-Type must be application/json' apps/api/src/index.js
 require_grep 'Invalid webhook secret' apps/api/src/index.js
 
-require_grep 'moving-assistant.html' apps/landing/index.html
-require_grep 'AI引越し診断' apps/landing/index.html
-require_grep 'styles.css' apps/landing/index.html
-require_grep '<meta name="viewport"' apps/landing/index.html
-require_grep '不要な機微情報は入力しないでください' apps/landing/index.html
-
+# Historical service guardrails.
+require_grep 'AI Moving Assistant' docs/services.md
+require_grep 'historical implementation asset' docs/services.md
 require_grep 'AWS Cost Simulator' docs/services.md
-require_grep 'removed' docs/services.md
+require_grep 'removed historical service' docs/services.md
+require_grep 'Digital Product LP Starter Kit' docs/services.md
+require_grep 'stopped / not planned' docs/services.md
 reject_grep 'aws-cost-simulator.html' apps/landing/index.html
-require_grep 'aws-cost-simulator' scripts/smoke-test.sh
 
+# General AI-assisted operations guardrails.
 require_grep 'Manual work: 5-10%' docs/ai-organization-operating-model.md
 require_grep 'Non-trivial work' docs/automation-first-working-policy.md
 require_grep 'Codex Workflow' docs/codex-workflow.md
+require_grep 'Completion Reports' AGENTS.md
 
 node --check apps/api/src/index.js
 
