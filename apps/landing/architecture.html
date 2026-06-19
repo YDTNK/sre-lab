@@ -9,6 +9,7 @@
     content="SRE LabのArchitectureページです。Cloudflare Pages、Workers API、Grafana、GitHub Actions、GitHub Issuesの役割と運用フローを整理しています。"
   />
   <link rel="stylesheet" href="/portfolio.css" />
+  <link rel="stylesheet" href="/architecture.css" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">本文へスキップ</a>
@@ -55,6 +56,7 @@
         <div>
           <p class="eyebrow">Architecture</p>
           <h1 id="architecture-title">System<br />Architecture</h1>
+          <p class="page-title-ja">構成</p>
           <p class="page-hero__lead">Reliability Demo APIを中心に、公開ページ、API、監視、CI/CD、Issue運用のつながりを整理します。</p>
         </div>
         <div class="page-summary" aria-label="Architecture summary">
@@ -76,26 +78,31 @@
         <div class="architecture-grid">
           <article class="architecture-card">
             <span>01</span>
+            <div class="node-mark" aria-hidden="true">PG</div>
             <h3>Cloudflare Pages</h3>
             <p>静的なポートフォリオ画面を配信します。訪問者はここからAPI、運用ドキュメント、GitHub上の証跡へ移動します。</p>
           </article>
           <article class="architecture-card">
             <span>02</span>
+            <div class="node-mark" aria-hidden="true">API</div>
             <h3>Cloudflare Workers</h3>
             <p>Reliability Demo APIを提供します。ヘルスチェック、遅延、意図的なエラー、fallback、statusを扱います。</p>
           </article>
           <article class="architecture-card">
             <span>03</span>
+            <div class="node-mark" aria-hidden="true">MON</div>
             <h3>Grafana Cloud</h3>
             <p>Synthetic MonitoringとAlertingを担当します。外形監視でAPIの状態を確認し、異常時の通知起点になります。</p>
           </article>
           <article class="architecture-card">
             <span>04</span>
+            <div class="node-mark" aria-hidden="true">CI</div>
             <h3>GitHub Actions</h3>
             <p>CI、デプロイ、Smoke Testを自動化します。Pull Requestから本番反映までの変更経路を管理します。</p>
           </article>
           <article class="architecture-card">
             <span>05</span>
+            <div class="node-mark" aria-hidden="true">ISS</div>
             <h3>GitHub Issues</h3>
             <p>アラート、障害対応、改善タスクを記録します。運用上の判断や対応履歴をIssue / PR単位で追跡します。</p>
           </article>
@@ -112,10 +119,10 @@
         </div>
 
         <ol class="architecture-flow">
-          <li><span>01</span><strong>Visitor</strong><p>公開サイトにアクセスします。</p></li>
-          <li><span>02</span><strong>Cloudflare Pages</strong><p>静的HTML/CSSを配信します。</p></li>
-          <li><span>03</span><strong>Workers API</strong><p>Reliability Demo APIへリクエストします。</p></li>
-          <li><span>04</span><strong>JSON response</strong><p>ヘルス状態やデモ応答を返します。</p></li>
+          <li><span>01</span><div class="flow-icon" aria-hidden="true">USER</div><strong>Visitor</strong><p>公開サイトにアクセスします。</p></li>
+          <li><span>02</span><div class="flow-icon" aria-hidden="true">PAGE</div><strong>Cloudflare Pages</strong><p>静的HTML/CSSを配信します。</p></li>
+          <li><span>03</span><div class="flow-icon" aria-hidden="true">API</div><strong>Workers API</strong><p>Reliability Demo APIへリクエストします。</p></li>
+          <li><span>04</span><div class="flow-icon" aria-hidden="true">JSON</div><strong>JSON response</strong><p>ヘルス状態やデモ応答を返します。</p></li>
         </ol>
       </section>
 
@@ -129,11 +136,11 @@
         </div>
 
         <ol class="architecture-flow architecture-flow--five">
-          <li><span>01</span><strong>Grafana Synthetic Monitoring</strong><p>/api/health や /api/status を外形監視します。</p></li>
-          <li><span>02</span><strong>Alert rule</strong><p>失敗や遅延悪化を条件として検知します。</p></li>
-          <li><span>03</span><strong>Worker webhook</strong><p>Grafana通知を受け取り、Issue化に必要な情報を整えます。</p></li>
-          <li><span>04</span><strong>GitHub Issue</strong><p>アラート内容を運用タスクとして記録します。</p></li>
-          <li><span>05</span><strong>Runbook</strong><p>確認手順、切り分け、復旧判断へつなげます。</p></li>
+          <li><span>01</span><div class="flow-icon" aria-hidden="true">SYN</div><strong>Grafana Synthetic Monitoring</strong><p>/api/health や /api/status を外形監視します。</p></li>
+          <li><span>02</span><div class="flow-icon" aria-hidden="true">ALRT</div><strong>Alert rule</strong><p>失敗や遅延悪化を条件として検知します。</p></li>
+          <li><span>03</span><div class="flow-icon" aria-hidden="true">HOOK</div><strong>Worker webhook</strong><p>Grafana通知を受け取り、Issue化に必要な情報を整えます。</p></li>
+          <li><span>04</span><div class="flow-icon" aria-hidden="true">ISS</div><strong>GitHub Issue</strong><p>アラート内容を運用タスクとして記録します。</p></li>
+          <li><span>05</span><div class="flow-icon" aria-hidden="true">RUN</div><strong>Runbook</strong><p>確認手順、切り分け、復旧判断へつなげます。</p></li>
         </ol>
       </section>
 
@@ -147,11 +154,11 @@
         </div>
 
         <ol class="architecture-flow architecture-flow--five">
-          <li><span>01</span><strong>Pull Request</strong><p>変更内容をレビュー可能な単位に分けます。</p></li>
-          <li><span>02</span><strong>GitHub Actions CI</strong><p>静的チェックや検証を実行します。</p></li>
-          <li><span>03</span><strong>Worker deploy</strong><p>Cloudflare Workersへ反映します。</p></li>
-          <li><span>04</span><strong>Smoke test</strong><p>本番APIの基本応答を確認します。</p></li>
-          <li><span>05</span><strong>Production verification</strong><p>本番反映後の状態を記録します。</p></li>
+          <li><span>01</span><div class="flow-icon" aria-hidden="true">PR</div><strong>Pull Request</strong><p>変更内容をレビュー可能な単位に分けます。</p></li>
+          <li><span>02</span><div class="flow-icon" aria-hidden="true">CI</div><strong>GitHub Actions CI</strong><p>静的チェックや検証を実行します。</p></li>
+          <li><span>03</span><div class="flow-icon" aria-hidden="true">DEP</div><strong>Worker deploy</strong><p>Cloudflare Workersへ反映します。</p></li>
+          <li><span>04</span><div class="flow-icon" aria-hidden="true">TEST</div><strong>Smoke test</strong><p>本番APIの基本応答を確認します。</p></li>
+          <li><span>05</span><div class="flow-icon" aria-hidden="true">PROD</div><strong>Production verification</strong><p>本番反映後の状態を記録します。</p></li>
         </ol>
       </section>
 
