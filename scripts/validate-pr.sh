@@ -70,6 +70,18 @@ require_grep 'SRE portfolio-first' docs/automation-first-working-policy.md
 require_grep 'Issue-first' docs/automation-first-working-policy.md
 
 # Preserve operational assets that remain valuable after the portfolio pivot.
+require_grep 'RELIABILITY_HEALTH_API_PATH = "/api/health"' apps/api/src/index.js
+require_grep 'RELIABILITY_SLOW_API_PATH = "/api/slow"' apps/api/src/index.js
+require_grep 'RELIABILITY_ERROR_API_PATH = "/api/error"' apps/api/src/index.js
+require_grep 'RELIABILITY_FALLBACK_API_PATH = "/api/fallback"' apps/api/src/index.js
+require_grep 'RELIABILITY_STATUS_API_PATH = "/api/status"' apps/api/src/index.js
+require_grep 'MAX_SLOW_DELAY_MS = 5000' apps/api/src/index.js
+require_grep 'intentional_demo_error' apps/api/src/index.js
+require_grep 'check_json_endpoint "health"' scripts/smoke-test.sh
+require_grep 'check_json_endpoint "slow-clamped"' scripts/smoke-test.sh
+require_grep 'check_json_endpoint "error"' scripts/smoke-test.sh
+require_grep 'check_json_endpoint "fallback"' scripts/smoke-test.sh
+require_grep 'check_json_endpoint "status"' scripts/smoke-test.sh
 require_grep 'GRAFANA_ALERT_API_PATH = "/api/grafana-alert"' apps/api/src/index.js
 require_grep 'handleGrafanaAlertWebhook' apps/api/src/index.js
 require_grep 'GRAFANA_WEBHOOK_SECRET_HEADER' apps/api/src/index.js
