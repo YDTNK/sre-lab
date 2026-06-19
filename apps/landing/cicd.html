@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CI/CD | SRE Lab Portfolio</title>
+  <meta
+    name="description"
+    content="SRE LabのPull Request、GitHub Actions、Cloudflare Worker deploy、Smoke Test、Rollback方針をまとめたSREポートフォリオページです。"
+  />
+  <link rel="stylesheet" href="/portfolio.css?v=20260620-cicd-1" />
+  <link rel="stylesheet" href="/architecture.css?v=20260620-cicd-1" />
+  <link rel="stylesheet" href="/cicd.css?v=20260620-cicd-1" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">本文へスキップ</a>
+
+  <aside class="sidebar" aria-label="ポートフォリオナビゲーション">
+    <div class="sidebar__brand">
+      <a href="/">Yudai Tanaka</a>
+      <p>Portfolio</p>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="/">
+        <span>01</span>トップ
+      </a>
+      <a class="sidebar__link" href="/architecture.html">
+        <span>02</span>構成
+      </a>
+      <a class="sidebar__link" href="/reliability.html">
+        <span>03</span>信頼性
+      </a>
+      <a class="sidebar__link" href="/monitoring.html">
+        <span>04</span>監視
+      </a>
+      <a class="sidebar__link sidebar__link--active" href="/cicd.html">
+        <span>05</span>CI/CD
+      </a>
+      <a class="sidebar__link" href="/incidents.html">
+        <span>06</span>障害対応
+      </a>
+      <a class="sidebar__link" href="/cost.html">
+        <span>07</span>コスト制御
+      </a>
+      <a class="sidebar__link" href="https://github.com/YDTNK/sre-lab">
+        <span>08</span>GitHub
+      </a>
+    </nav>
+
+    <p class="sidebar__meta">Cloudflare · Grafana · GitHub</p>
+  </aside>
+
+  <main class="main" id="main-content">
+    <div class="main__inner">
+      <section class="page-hero" aria-labelledby="cicd-title">
+        <div>
+          <p class="eyebrow">CI/CD</p>
+          <h1 id="cicd-title">Delivery<br />Pipeline</h1>
+          <p class="page-title-ja">CI/CD</p>
+          <p class="page-hero__lead">
+            <span class="copy-desktop">Pull Requestから検証、Workerデプロイ、Smoke Test、本番確認までの変更反映フローを整理します。</span>
+            <span class="copy-mobile">Pull Requestから検証、デプロイ、Smoke Test、本番確認までを整理します。</span>
+          </p>
+        </div>
+        <div class="page-summary" aria-label="CI/CD summary">
+          <p>Current scope</p>
+          <strong>PR · CI · Worker Deploy · Smoke Test · Rollback</strong>
+          <span>GitHub Actions evidence / API unchanged</span>
+        </div>
+      </section>
+
+      <section class="operations" aria-labelledby="delivery-flow-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Delivery Flow</p>
+            <h2 id="delivery-flow-title">変更反映の流れ</h2>
+          </div>
+          <p class="section-heading__count">PR to production</p>
+        </div>
+
+        <ol class="architecture-flow architecture-flow--five cicd-flow">
+          <li><span>01</span><div class="flow-icon" aria-hidden="true">PR</div><strong>Pull Request</strong><p>変更をレビュー可能な単位に分け、差分と目的を明確にします。</p></li>
+          <li><span>02</span><div class="flow-icon" aria-hidden="true">CI</div><strong>GitHub Actions CI</strong><p>必須ファイル、依存関係、API構文、PRガードレールを検証します。</p></li>
+          <li><span>03</span><div class="flow-icon" aria-hidden="true">DEP</div><strong>Worker deploy</strong><p>mainへの反映後、対象変更に応じてCloudflare Workerへデプロイします。</p></li>
+          <li><span>04</span><div class="flow-icon" aria-hidden="true">TEST</div><strong>Smoke test</strong><p>本番URLとAPIエンドポイントの期待ステータスを確認します。</p></li>
+          <li><span>05</span><div class="flow-icon" aria-hidden="true">VERIFY</div><strong>Production verification</strong><p>必要に応じて手動確認し、Issueや日次ログへ結果を残します。</p></li>
+        </ol>
+      </section>
+
+      <section class="evidence" aria-labelledby="workflow-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">GitHub Actions</p>
+            <h2 id="workflow-title">ワークフロー</h2>
+          </div>
+          <p class="section-heading__count">Current workflows</p>
+        </div>
+
+        <div class="workflow-list">
+          <article>
+            <span>CI</span>
+            <h3>CI</h3>
+            <p>push / pull_requestで実行し、必要ファイル、Node.js依存関係、API構文、PRガードレールを確認します。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/.github/workflows/ci.yml">Open workflow <span aria-hidden="true">↗</span></a>
+          </article>
+          <article>
+            <span>DEP</span>
+            <h3>Deploy Worker</h3>
+            <p>mainへのAPI関連変更または手動実行でWorkerをデプロイし、post-deploy smoke testへ進みます。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/.github/workflows/deploy-worker.yml">Open workflow <span aria-hidden="true">↗</span></a>
+          </article>
+          <article>
+            <span>SMK</span>
+            <h3>Smoke Test</h3>
+            <p>手動実行可能なSmoke Testです。本番URLとReliability Demo APIの期待応答を確認します。</p>
+            <a href="https://github.com/YDTNK/sre-lab/blob/main/.github/workflows/smoke-test.yml">Open workflow <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="smoke-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Smoke Test</p>
+            <h2 id="smoke-title">本番確認</h2>
+          </div>
+          <p class="section-heading__count">Expected checks</p>
+        </div>
+
+        <div class="smoke-check-list">
+          <article>
+            <span>FE</span>
+            <code>https://sre-lab.pages.dev/</code>
+            <strong>200</strong>
+            <p>公開フロントエンドがHTTP 200を返すことを確認します。</p>
+          </article>
+          <article>
+            <span>API</span>
+            <code>/api/health</code>
+            <strong>200</strong>
+            <p>Primary uptime checkです。Availability SLIの中心として扱います。</p>
+          </article>
+          <article>
+            <span>API</span>
+            <code>/api/status</code>
+            <strong>200</strong>
+            <p>サービス状態とアクティブなエンドポイントを確認します。</p>
+          </article>
+          <article>
+            <span>API</span>
+            <code>/api/fallback</code>
+            <strong>200</strong>
+            <p>fallback demoが期待通り利用可能であることを確認します。</p>
+          </article>
+          <article class="smoke-check-list__expected-error">
+            <span>EXP</span>
+            <code>/api/error</code>
+            <strong>500 expected</strong>
+            <p>意図的なエラーデモです。Smoke Testでは期待値として検証します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="failure-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Failure Handling</p>
+            <h2 id="failure-title">失敗時の対応</h2>
+          </div>
+          <p class="section-heading__count">Rollback policy</p>
+        </div>
+
+        <div class="failure-policy-list">
+          <article>
+            <h3>CI failure</h3>
+            <p>PR上で検証が失敗した場合は、mainへ入れずに差分、依存関係、API構文、ガードレールを修正します。</p>
+          </article>
+          <article>
+            <h3>Deploy failure</h3>
+            <p>Worker deployが失敗した場合は、Secrets、wrangler設定、直近のAPI変更、Actionsログを確認します。</p>
+          </article>
+          <article>
+            <h3>Smoke test failure</h3>
+            <p>本番反映後の確認に失敗した場合は、影響範囲を確認し、必要に応じてrevertまたは前回安定版へ戻します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="dora-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Delivery Evidence</p>
+            <h2 id="dora-title">DORA観点</h2>
+          </div>
+          <p class="section-heading__count">Portfolio mapping</p>
+        </div>
+
+        <div class="dora-list">
+          <article>
+            <span>LT</span>
+            <h3>Lead time for changes</h3>
+            <p>Issue / PR / CI / deploy / smoke testをつなげ、変更が本番へ届く経路を可視化します。</p>
+          </article>
+          <article>
+            <span>DF</span>
+            <h3>Deployment frequency</h3>
+            <p>mainへの変更とCloudflare deployの流れを分けて示し、変更単位を追跡しやすくします。</p>
+          </article>
+          <article>
+            <span>CFR</span>
+            <h3>Change failure rate</h3>
+            <p>Smoke TestやAlertで変更起因の失敗を見つけ、Issue / PRで改善へつなげます。</p>
+          </article>
+          <article>
+            <span>MTTR</span>
+            <h3>Time to restore service</h3>
+            <p>Runbook、revert、postmortemを通じて、復旧と再発防止の流れを残します。</p>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>SRE Lab — CI/CD design and deployment evidence for Reliability Demo API.</p>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
