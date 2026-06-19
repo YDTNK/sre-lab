@@ -615,11 +615,15 @@ a {
 @media (max-width: 899px) {
   :root {
     --main-padding-x: 22px;
-    --main-padding-y: 18px;
+    --main-padding-y: 14px;
   }
 
   .sidebar {
-    padding: 20px 20px 0;
+    padding: 16px 20px 0;
+  }
+
+  .sidebar__brand {
+    padding-bottom: 14px;
   }
 
   .sidebar__nav {
@@ -627,39 +631,45 @@ a {
     padding: 0 20px;
   }
 
+  .sidebar__link {
+    min-height: 42px;
+  }
+
   .sidebar__link span {
     display: none;
   }
 
   .main__inner {
-    padding-bottom: 28px;
+    padding-bottom: 24px;
   }
 
   .hero {
-    padding: 56px 0;
+    padding: 38px 0 42px;
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: 30px;
   }
 
   .hero h1 {
-    font-size: clamp(3.45rem, 18vw, 5.1rem);
+    font-size: clamp(3.35rem, 16vw, 4.9rem);
   }
 
   .hero__lead {
     max-width: 100%;
-    margin-top: 24px;
-    font-size: 1rem;
-    line-height: 1.8;
+    margin-top: 20px;
+    font-size: 0.96rem;
+    line-height: 1.72;
   }
 
   .hero__actions {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
+    margin-top: 26px;
+    gap: 8px;
   }
 
   .button {
     width: 100%;
+    min-height: 42px;
     justify-content: space-between;
   }
 
@@ -667,13 +677,37 @@ a {
     width: 100%;
   }
 
+  .status-card__state {
+    padding: 22px 20px 18px;
+  }
+
+  .status-card__header,
+  .status-card > a {
+    min-height: 48px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .status-card__metrics {
+    padding: 0 20px;
+  }
+
+  .status-card__metrics div {
+    min-height: 42px;
+  }
+
   .evidence,
   .operations {
-    padding: 62px 0;
+    padding: 44px 0;
   }
 
   .section-heading {
+    margin-bottom: 22px;
     align-items: start;
+  }
+
+  .section-heading .eyebrow {
+    margin-bottom: 7px;
   }
 
   .section-heading__count {
@@ -686,6 +720,20 @@ a {
 
   .evidence-card {
     min-height: auto;
+    padding: 22px;
+  }
+
+  .evidence-card h3 {
+    margin: 26px 0 9px;
+  }
+
+  .evidence-card > p {
+    min-height: 0;
+    line-height: 1.62;
+  }
+
+  .evidence-card > a {
+    margin-top: 16px;
   }
 
   .operations-flow {
@@ -694,7 +742,8 @@ a {
 
   .operations-flow li,
   .operations-flow li:nth-child(3) {
-    min-height: 86px;
+    min-height: 70px;
+    padding: 18px 20px;
     border-right: 0;
     border-bottom: 1px solid var(--color-border);
     grid-template-columns: 42px 1fr;
@@ -717,6 +766,8 @@ a {
 
   .footer {
     display: grid;
+    min-height: auto;
+    padding-top: 22px;
   }
 }
 
@@ -726,7 +777,11 @@ a {
   }
 
   .sidebar {
-    padding: 18px 18px 0;
+    padding: 14px 18px 0;
+  }
+
+  .sidebar__brand {
+    padding-bottom: 12px;
   }
 
   .sidebar__nav {
@@ -734,16 +789,34 @@ a {
     padding: 0 18px;
   }
 
+  .hero {
+    padding: 34px 0 38px;
+    gap: 26px;
+  }
+
   .hero h1 {
-    font-size: clamp(3rem, 16vw, 4.4rem);
+    font-size: clamp(3rem, 15.5vw, 4.3rem);
+  }
+
+  .hero__lead {
+    margin-top: 18px;
   }
 
   .section-heading h2 {
     font-size: 2rem;
   }
 
+  .evidence,
+  .operations {
+    padding: 38px 0;
+  }
+
   .evidence-card {
-    padding: 24px;
+    padding: 20px;
+  }
+
+  .evidence-card h3 {
+    margin-top: 22px;
   }
 
   .evidence-card > p {
@@ -753,9 +826,15 @@ a {
   .status-card__metrics div {
     display: grid;
     min-height: auto;
-    padding: 10px 0;
-    gap: 4px;
+    padding: 9px 0;
+    gap: 3px;
     justify-content: stretch;
+  }
+
+  .operations-flow li,
+  .operations-flow li:nth-child(3) {
+    min-height: 64px;
+    padding: 16px 18px;
   }
 }
 
