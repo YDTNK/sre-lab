@@ -8,8 +8,8 @@
     name="description"
     content="SRE LabのArchitectureページです。Cloudflare Pages、Workers API、Grafana、GitHub Actions、GitHub Issuesの役割と運用フローを整理しています。"
   />
-  <link rel="stylesheet" href="/portfolio.css?v=20260620-layout-1" />
-  <link rel="stylesheet" href="/architecture.css?v=20260620-layout-1" />
+  <link rel="stylesheet" href="/portfolio.css?v=20260620-layout-2" />
+  <link rel="stylesheet" href="/architecture.css?v=20260620-layout-2" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">本文へスキップ</a>
@@ -57,7 +57,10 @@
           <p class="eyebrow">Architecture</p>
           <h1 id="architecture-title">System<br />Architecture</h1>
           <p class="page-title-ja">構成</p>
-          <p class="page-hero__lead">Reliability Demo APIを中心に、公開ページ、API、監視、CI/CD、Issue運用のつながりを整理します。</p>
+          <p class="page-hero__lead">
+            <span class="copy-desktop">Reliability Demo APIを中心に、公開ページ、API、監視、CI/CD、Issue運用のつながりを整理します。</span>
+            <span class="copy-mobile">Reliability Demo APIを中心に、公開ページ・API・監視・CI/CDの関係を整理します。</span>
+          </p>
         </div>
         <div class="page-summary" aria-label="Architecture summary">
           <p>Current scope</p>
@@ -80,31 +83,31 @@
             <span>01</span>
             <div class="node-mark" aria-hidden="true">PG</div>
             <h3>Cloudflare Pages</h3>
-            <p>静的なポートフォリオ画面を配信します。訪問者はここからAPI、運用ドキュメント、GitHub上の証跡へ移動します。</p>
+            <p><span class="copy-desktop">静的なポートフォリオ画面を配信し、API・運用ドキュメント・GitHub上の証跡への入口になります。</span><span class="copy-mobile">ポートフォリオ画面を配信し、APIや運用ドキュメントへの入口になります。</span></p>
           </article>
           <article class="architecture-card">
             <span>02</span>
             <div class="node-mark" aria-hidden="true">API</div>
             <h3>Cloudflare Workers</h3>
-            <p>Reliability Demo APIを提供します。ヘルスチェック、遅延、意図的なエラー、fallback、statusを扱います。</p>
+            <p><span class="copy-desktop">Reliability Demo APIを提供し、ヘルスチェック・遅延・意図的なエラー・fallback・statusを扱います。</span><span class="copy-mobile">Reliability Demo APIを提供し、ヘルスチェックや遅延デモを扱います。</span></p>
           </article>
           <article class="architecture-card">
             <span>03</span>
             <div class="node-mark" aria-hidden="true">MON</div>
             <h3>Grafana Cloud</h3>
-            <p>Synthetic MonitoringとAlertingを担当します。外形監視でAPIの状態を確認し、異常時の通知起点になります。</p>
+            <p><span class="copy-desktop">Synthetic MonitoringとAlertingを担当し、APIの状態確認と異常検知の起点になります。</span><span class="copy-mobile">外形監視とアラートを担当し、APIの異常検知につなげます。</span></p>
           </article>
           <article class="architecture-card">
             <span>04</span>
             <div class="node-mark" aria-hidden="true">CI</div>
             <h3>GitHub Actions</h3>
-            <p>CI、デプロイ、Smoke Testを自動化します。Pull Requestから本番反映までの変更経路を管理します。</p>
+            <p><span class="copy-desktop">CI、デプロイ、Smoke Testを自動化し、Pull Requestから本番反映までの変更経路を管理します。</span><span class="copy-mobile">CI、デプロイ、Smoke Testを自動化し、変更経路を管理します。</span></p>
           </article>
           <article class="architecture-card">
             <span>05</span>
             <div class="node-mark" aria-hidden="true">ISS</div>
             <h3>GitHub Issues</h3>
-            <p>アラート、障害対応、改善タスクを記録します。運用上の判断や対応履歴をIssue / PR単位で追跡します。</p>
+            <p><span class="copy-desktop">アラート、障害対応、改善タスクを記録し、運用上の判断や対応履歴をIssue / PR単位で追跡します。</span><span class="copy-mobile">アラート、障害対応、改善タスクをIssueとして記録します。</span></p>
           </article>
         </div>
       </section>
