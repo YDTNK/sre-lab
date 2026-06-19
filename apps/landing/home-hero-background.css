@@ -29,9 +29,9 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url("/assets/images/sre-lab-reliability-hero.svg");
+  background-image: url("/assets/images/sre-lab-iot-cyber-hero.jpg");
   background-repeat: no-repeat;
-  /* 16:9 SRE reliability dashboard hero. Left side is reserved for headline text; main visual stays center-right. */
+  /* 2:1 IoT/cyber-style SRE hero image. Left side is reserved for headline text; main visual stays center-right. */
   background-size: cover;
   background-position: center right;
   background-color: #071226;
