@@ -29,7 +29,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url("/assets/images/sre-lab-iot-cyber-hero.jpg");
+  background-image: url("/assets/images/sre-lab-iot-cyber-hero.png");
   background-repeat: no-repeat;
   /* 2:1 IoT/cyber-style hero. Contain the generated image on the visible right side instead of over-zooming it. */
   background-size: auto 82%;
