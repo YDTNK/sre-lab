@@ -3,65 +3,65 @@
 [![CI](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/ci.yml)
 [![Deploy Worker](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml/badge.svg)](https://github.com/YDTNK/sre-lab/actions/workflows/deploy-worker.yml)
 
-## Project Purpose
+## 概要
 
-SRE Lab is an SRE / Platform Engineer portfolio project.
+SRE Lab は、SRE / Platform Engineer を目指すための公開ポートフォリオです。
 
-The goal is not to build a consumer AI service collection or a revenue-first product site. The goal is to operate small public Web/API services in a way that demonstrates production-oriented SRE practices.
+単なるWebアプリやAIツール集ではなく、小さな公開Web/APIサービスを題材にして、信頼性、監視、障害対応、CI/CD、Runbook、改善サイクルをどのように設計・運用するかを示すことを目的としています。
 
-SRE Lab should show:
+## このリポジトリで見せたいこと
+
+SRE Lab では、以下の要素をポートフォリオ上の評価ポイントとして整理しています。
 
 ```text
 - SLO / SLI
-- Monitoring
-- Alerting
+- 外形監視
+- アラート設計
 - CI/CD
-- Incident response
+- 障害対応
 - Runbook
 - Postmortem
-- API safety
-- Cost guardrails
-- GitHub Issue / PR based operations
+- API安全性
+- コスト制御
+- GitHub Issue / Pull Request ベースの運用
 ```
 
-## AI-Assisted Workflow
+## AI活用について
 
-This project uses AI-assisted development for design review, implementation support, documentation consistency checks, and operational workflow improvement.
+本プロジェクトでは、設計レビュー、実装補助、ドキュメント整合性確認、改善サイクルの整理にAI支援を活用しています。
 
-Public portfolio documentation and private maintainer context are intentionally managed separately. This README describes the externally reviewable portfolio. Maintainer-only planning notes, roadmap details, and decision logs are not part of the public portfolio surface.
+ただし、公開ポートフォリオとして見せる情報と、管理者向けの内部計画・判断メモは分けて管理しています。このREADMEでは、外部から確認できる成果物と運用設計に絞って説明します。
 
-## Current State
+## 現在の方向性
 
 ```text
-Current direction: SRE portfolio-first
-Current active target: Reliability Demo API operational loop
-MVP implementation: completed by PR #78
-Stopped route: Digital Product LP / revenue-first route
-Current follow-up Issue: #81
+現在の主軸: SREポートフォリオ
+現在の題材: Reliability Demo API
+目的: API運用を通じて、監視・SLO・障害対応・改善の流れを示すこと
 ```
+
+過去に作成したデモや実験的な実装は一部残していますが、現在の主軸は収益化やAI便利ツール集ではありません。SRE / Platform Engineering の評価につながる運用設計を優先しています。
 
 ## Reliability Demo API
 
 ```text
-Production base URL:
+Production API:
 https://sre-lab-api.daisan-tanaka.workers.dev
 ```
 
-Implemented endpoints:
-
-| Endpoint | Behavior |
+| Endpoint | 目的 |
 |---|---|
-| `GET /api/health` | Returns HTTP 200 with `status: healthy` |
-| `GET /api/slow?delayMs=1000` | Returns HTTP 200 after a controlled delay; values are clamped to 0-5000 ms |
-| `GET /api/error` | Returns a controlled HTTP 500 using the standard JSON error format |
-| `GET /api/fallback` | Returns HTTP 200 with deterministic fallback mode active |
-| `GET /api/status` | Returns HTTP 200 with service state and available demo endpoints |
+| `GET /api/health` | 正常性確認用のヘルスチェック |
+| `GET /api/status` | APIの状態と利用可能なデモエンドポイントの確認 |
+| `GET /api/slow?delayMs=1000` | 遅延発生時の挙動確認 |
+| `GET /api/error` | 意図的な500エラーを返す障害対応デモ |
+| `GET /api/fallback` | fallback動作の確認 |
 
-Existing `/api/moving-assistant` and `/api/grafana-alert` behavior remains available.
+`/api/error` は意図的な制御エラーです。Availability SLI には含めず、障害対応や監視設計を説明するためのデモとして扱います。
 
-## Operational Evidence
+## 運用証跡
 
-Current operational evidence:
+SRE Lab では、実装だけでなく「運用をどう考えたか」をドキュメントとして残します。
 
 ```text
 docs/slo/reliability-demo-api.md
@@ -70,45 +70,11 @@ docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md
 docs/postmortems/template.md
 ```
 
-## What Is Preserved From The Existing Repository
+これらのドキュメントでは、SLO、Runbook、障害記録、Postmortemテンプレートを確認できます。
 
-The previous Moving Prep / revenue work is no longer the active direction, but the operational assets remain valuable.
+## 技術スタック
 
-Preserve and adapt:
-
-```text
-- Issue-first workflow
-- Codex-ready Issue workflow
-- GitHub Actions CI/CD
-- Cloudflare Worker deploy workflow
-- Grafana alert to GitHub Issue flow
-- Grafana dedupe logic
-- Runbook structure
-- Incident and postmortem records
-- Completion report template
-- Service State Gate
-- CI guardrails
-```
-
-## Stopped Active Work
-
-Do not continue these as active work:
-
-```text
-- Digital Product LP Starter Kit
-- /products/digital-product-lp-starter-kit
-- Stripe CTA connection
-- Moving Prep Board paid PDF
-- Moving Prep Board monetization expansion
-- Consumer AI service expansion
-- Revenue-first market research route
-```
-
-Historical records may remain for context, but they must not drive active implementation.
-
-## Current Technology Stack
-
-| Area | Technology |
+| 領域 | 技術 |
 |---|---|
 | Frontend | HTML, CSS, JavaScript |
 | Hosting | Cloudflare Pages |
@@ -116,34 +82,38 @@ Historical records may remain for context, but they must not drive active implem
 | CI/CD | GitHub Actions, Wrangler |
 | Monitoring | Grafana Cloud Synthetic Monitoring |
 | Alerting | Grafana Alerting |
-| Incident intake | Grafana alert → Cloudflare Worker → GitHub Issue |
+| Incident intake | Grafana Alert → Cloudflare Worker → GitHub Issue |
 | Documentation | Markdown |
 | Repository | GitHub |
 
-## Current Public URLs
+## 公開URL
 
 ```text
-SRE Lab frontend: https://sre-lab.pages.dev/
-Workers API: https://sre-lab-api.daisan-tanaka.workers.dev
+Portfolio site:
+https://sre-lab.pages.dev/
+
+Workers API:
+https://sre-lab-api.daisan-tanaka.workers.dev
 ```
 
-## Next Work Order
+## 現在の改善予定
 
 ```text
-1. Confirm or update Grafana Synthetic Monitoring targets to /api/health and /api/status.
-2. Confirm alert rules for health failure and latency degradation.
-3. Add a dashboard or portfolio page section that exposes SLO, incidents, runbooks, and API endpoints.
-4. Run a small game day: intentionally check /api/error and document the expected response flow.
-5. Create a real postmortem only when an actual unexpected failure occurs.
-6. After the Reliability Demo API operational loop is complete, consider Cloud Cost Guardrail Demo.
+1. Grafana Synthetic Monitoring の監視対象を /api/health と /api/status に整理する
+2. ヘルスチェック失敗・遅延悪化時のアラート条件を確認する
+3. SLO、Incident、Runbook、API状態を見せるページを追加する
+4. /api/error を使った小さなGame Dayを実施し、期待される障害対応フローを記録する
+5. 実障害が発生した場合のみ、実際のPostmortemを作成する
+6. Reliability Demo API の運用ループが整った後に、Cloud Cost Guardrail Demoを追加する
 ```
 
-## Interview Positioning
+## 面接・レビュー時の見どころ
 
-SRE Lab should be explainable as:
+このリポジトリは、以下のように説明できる状態を目指しています。
 
 ```text
-A small public Web/API portfolio that demonstrates SLOs, monitoring, alerting, CI/CD, incident response, runbooks, postmortems, API safety, and cost guardrails using GitHub, Cloudflare, and Grafana.
+Cloudflare Workers / Pages / GitHub Actions / Grafana を使い、
+小さな公開APIを題材に、SLO、監視、障害対応、Runbook、Postmortem、CI/CD、コスト制御を示すSREポートフォリオ。
 ```
 
-This is the core portfolio value. New app features should be added only when they strengthen that explanation.
+アプリの機能数を増やすことよりも、運用設計と改善の流れを説明できることを重視しています。
