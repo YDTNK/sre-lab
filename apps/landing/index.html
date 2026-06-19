@@ -9,7 +9,7 @@
     content="Reliability Demo APIを題材に、SLO、監視、障害対応、Runbook、CI/CDの考え方を公開するSRE / Platform Engineeringポートフォリオです。"
   />
   <link rel="stylesheet" href="/portfolio.css?v=20260620-reliability-1" />
-  <link rel="stylesheet" href="/layout-adjustments.css?v=20260620-reliability-1" />
+  <link rel="stylesheet" href="/layout-adjustments.css?v=20260620-home-status-1" />
   <style>
     .hero-copy-mobile {
       display: none;
@@ -103,12 +103,15 @@
         <article class="status-card" aria-labelledby="status-title">
           <div class="status-card__header">
             <p id="status-title">Current Status</p>
-            <span class="status-card__pulse" aria-hidden="true"></span>
+            <span class="status-card__pulse home-status-pulse" aria-hidden="true"></span>
           </div>
-          <p class="status-card__state">
+          <p class="status-card__state home-status-state">
             <span aria-hidden="true"></span>
             Operational
           </p>
+          <div class="home-operational-bar" aria-hidden="true">
+            <span></span>
+          </div>
           <dl class="status-card__metrics">
             <div>
               <dt>Availability SLO</dt>
