@@ -16,32 +16,27 @@ jobs:
         run: |
           test -f AGENTS.md
           test -f README.md
-          test -f docs/roadmap.md
-          test -f docs/architecture.md
-          test -f docs/runbook.md
-          test -f docs/incidents.md
-          test -f docs/operations.md
-          test -f docs/services.md
-          test -f docs/moving-assistant.md
-          test -f docs/ai-api-design.md
-          test -f docs/automation-first-working-policy.md
-          test -f docs/ai-organization-operating-model.md
-          test -f docs/sre-lab-workflow.md
-          test -f docs/codex-workflow.md
-          test -f docs/revenue-release-before-cka.md
-          test -f docs/service-state-checklist.md
-          test -f .github/ISSUE_TEMPLATE/feature_request.md
-          test -f .github/ISSUE_TEMPLATE/ops_task.md
-          test -f .github/ISSUE_TEMPLATE/bug.md
-          test -f .github/ISSUE_TEMPLATE/revenue.md
-          test -f .github/ISSUE_TEMPLATE/codex_task.md
+          test -f docs/design-system/portfolio-ui-rules.md
+          test -f docs/slo/reliability-demo-api.md
+          test -f docs/runbooks/reliability-demo-api.md
+          test -f docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md
+          test -f docs/postmortems/template.md
+          test -f docs/security/public-exposure.md
           test -f .github/pull_request_template.md
+          test -f .github/workflows/ci.yml
           test -f .github/workflows/smoke-test.yml
           test -f .github/workflows/deploy-worker.yml
           test -f scripts/smoke-test.sh
           test -f scripts/validate-pr.sh
           test -f apps/landing/index.html
-          test -f apps/landing/styles.css
+          test -f apps/landing/architecture.html
+          test -f apps/landing/reliability.html
+          test -f apps/landing/monitoring.html
+          test -f apps/landing/cicd.html
+          test -f apps/landing/incidents.html
+          test -f apps/landing/cost.html
+          test -f apps/landing/portfolio.css
+          test -f apps/landing/layout-adjustments.css
           test -f apps/api/src/index.js
           test -f apps/api/package.json
           test -f apps/api/package-lock.json
