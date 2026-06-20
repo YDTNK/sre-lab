@@ -6,10 +6,10 @@
   <title>Architecture | SRE Lab Portfolio</title>
   <meta
     name="description"
-    content="SRE LabのArchitectureページです。Cloudflare Pages、Workers API、Grafana、GitHub Actions、GitHub Issuesの役割と運用フローを整理しています。"
+    content="SRE LabのArchitectureページです。Cloudflare Pages、Workers API、Grafana、GitHub Actions、GitHub Issuesの役割、設計意図、障害点、運用フローを整理しています。"
   />
-  <link rel="stylesheet" href="/portfolio.css?v=20260620-reliability-1" />
-  <link rel="stylesheet" href="/architecture.css?v=20260620-reliability-1" />
+  <link rel="stylesheet" href="/portfolio.css?v=20260620-hardening-1" />
+  <link rel="stylesheet" href="/architecture.css?v=20260620-hardening-1" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">本文へスキップ</a>
@@ -58,14 +58,14 @@
           <h1 id="architecture-title">System<br />Architecture</h1>
           <p class="page-title-ja">構成</p>
           <p class="page-hero__lead">
-            <span class="copy-desktop">Reliability Demo APIを中心に、公開ページ、API、監視、CI/CD、Issue運用のつながりを整理します。</span>
-            <span class="copy-mobile">Reliability Demo APIを中心に、公開ページ・API・監視・CI/CDの関係を整理します。</span>
+            <span class="copy-desktop">Reliability Demo APIを中心に、公開ページ、API、監視、CI/CD、Issue運用のつながりと障害点を整理します。</span>
+            <span class="copy-mobile">公開ページ・API・監視・CI/CDの関係と障害点を整理します。</span>
           </p>
         </div>
         <div class="page-summary" aria-label="Architecture summary">
           <p>Current scope</p>
           <strong>Pages · Workers · Grafana · GitHub</strong>
-          <span>API / Worker behavior unchanged</span>
+          <span>Design intent / failure points</span>
         </div>
       </section>
 
@@ -101,13 +101,38 @@
             <span>04</span>
             <div class="node-mark" aria-hidden="true">CI</div>
             <h3>GitHub Actions</h3>
-            <p><span class="copy-desktop">CI、デプロイ、Smoke Testを自動化し、Pull Requestから本番反映までの変更経路を管理します。</span><span class="copy-mobile">CI、デプロイ、Smoke Testを自動化し、変更経路を管理します。</span></p>
+            <p><span class="copy-desktop">CI、デプロイ、Production Checkを自動化し、Pull Requestから本番反映までの変更経路を管理します。</span><span class="copy-mobile">CI、デプロイ、本番確認を自動化し、変更経路を管理します。</span></p>
           </article>
           <article class="architecture-card">
             <span>05</span>
             <div class="node-mark" aria-hidden="true">ISS</div>
             <h3>GitHub Issues</h3>
             <p><span class="copy-desktop">アラート、障害対応、改善タスクを記録し、運用上の判断や対応履歴をIssue / PR単位で追跡します。</span><span class="copy-mobile">アラート、障害対応、改善タスクをIssueとして記録します。</span></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="rationale-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Design Rationale</p>
+            <h2 id="rationale-title">設計意図</h2>
+          </div>
+          <p class="section-heading__count">Why this architecture</p>
+        </div>
+
+        <div class="detail-list">
+          <article>
+            <h3>軽量な公開構成</h3>
+            <p>採用評価向けポートフォリオとして、常時稼働コストを抑えながら、公開ページ、API、監視、CI/CDのつながりを説明できる構成にしています。</p>
+          </article>
+          <article>
+            <h3>運用証跡をGitHubに集約</h3>
+            <p>設計、Runbook、Incident、Postmortem、CI/CDの証跡をGitHubに残し、Issue / PR単位で改善履歴を追えるようにしています。</p>
+          </article>
+          <article>
+            <h3>APIを小さく保つ</h3>
+            <p>Reliability Demo APIは、信頼性運用を説明するための題材です。機能を増やすより、SLO、監視、障害対応、改善ループを説明できることを優先しています。</p>
           </article>
         </div>
       </section>
@@ -127,6 +152,35 @@
           <li><span>03</span><div class="flow-icon" aria-hidden="true">API</div><strong>Workers API</strong><p>Reliability Demo APIへリクエストします。</p></li>
           <li><span>04</span><div class="flow-icon" aria-hidden="true">JSON</div><strong>JSON response</strong><p>ヘルス状態やデモ応答を返します。</p></li>
         </ol>
+      </section>
+
+      <section class="evidence" aria-labelledby="failure-points-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Failure Points</p>
+            <h2 id="failure-points-title">障害点と切り分け</h2>
+          </div>
+          <p class="section-heading__count">Where to look first</p>
+        </div>
+
+        <div class="detail-list">
+          <article>
+            <h3>Pages配信の問題</h3>
+            <p>公開サイトだけが表示できない場合は、Cloudflare Pagesのdeploy状態、latest commit、HTML/CSSの変更差分を確認します。</p>
+          </article>
+          <article>
+            <h3>Workers APIの問題</h3>
+            <p>/api/healthや/api/statusが失敗する場合は、Worker deploy、直近のAPI変更、post-deploy check、Cloudflare側の状態を確認します。</p>
+          </article>
+          <article>
+            <h3>監視・通知の問題</h3>
+            <p>APIは正常でも通知が来ない場合は、Grafana Synthetic Monitoring、Alert rule、webhook、Issue化処理を順に確認します。</p>
+          </article>
+          <article>
+            <h3>CI/CDの問題</h3>
+            <p>main反映やWorker deployが止まる場合は、GitHub Actionsの失敗ステップ、Secrets、wrangler設定、required file checkを確認します。</p>
+          </article>
+        </div>
       </section>
 
       <section class="operations" aria-labelledby="monitoring-flow-title">
@@ -160,7 +214,7 @@
           <li><span>01</span><div class="flow-icon" aria-hidden="true">PR</div><strong>Pull Request</strong><p>変更内容をレビュー可能な単位に分けます。</p></li>
           <li><span>02</span><div class="flow-icon" aria-hidden="true">CI</div><strong>GitHub Actions CI</strong><p>静的チェックや検証を実行します。</p></li>
           <li><span>03</span><div class="flow-icon" aria-hidden="true">DEP</div><strong>Worker deploy</strong><p>Cloudflare Workersへ反映します。</p></li>
-          <li><span>04</span><div class="flow-icon" aria-hidden="true">TEST</div><strong>Smoke test</strong><p>本番APIの基本応答を確認します。</p></li>
+          <li><span>04</span><div class="flow-icon" aria-hidden="true">TEST</div><strong>Production check</strong><p>本番APIの基本応答を確認します。</p></li>
           <li><span>05</span><div class="flow-icon" aria-hidden="true">PROD</div><strong>Production verification</strong><p>本番反映後の状態を記録します。</p></li>
         </ol>
       </section>
@@ -177,7 +231,7 @@
         <div class="detail-list">
           <article>
             <h3>Cloudflare Pages / Workers</h3>
-            <p>小さな公開Web/APIポートフォリオを軽量に公開し、APIの応答やデモ挙動を管理しやすくするために使用しています。</p>
+            <p>公開ポートフォリオとデモAPIを低コストで運用し、SLO、監視、CI/CD、障害対応の流れを説明しやすくするために使用しています。</p>
           </article>
           <article>
             <h3>Grafana Cloud</h3>
@@ -202,15 +256,15 @@
         <div class="detail-list detail-list--future">
           <article>
             <h3>AWS / Terraform</h3>
-            <p>将来的なインフラ構成の実演候補です。現在のArchitectureページでは、既存構成の説明に限定します。</p>
+            <p>将来的なインフラ構成の実演候補です。現在のArchitectureページでは、既存のCloudflare中心構成の説明に限定します。</p>
           </article>
           <article>
             <h3>ECS / EKS</h3>
-            <p>将来的なコンテナ基盤の実演候補です。Reliability系ページが揃った後に検討します。</p>
+            <p>将来的なコンテナ基盤の実演候補です。現在の実装済み範囲には含めません。</p>
           </article>
           <article>
-            <h3>OpenTelemetry / Cost Guardrails</h3>
-            <p>トレース、メトリクス、コスト制御は今後の拡張候補です。現時点で実装済みのようには扱いません。</p>
+            <h3>OpenTelemetry tracing</h3>
+            <p>分散トレースは今後の拡張候補です。現在はSLO、外形監視、CI/CD、運用証跡を中心に扱います。</p>
           </article>
         </div>
       </section>
