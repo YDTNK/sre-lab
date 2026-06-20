@@ -6,9 +6,10 @@ This document describes the active and historical service direction for SRE Lab.
 
 ```text
 Current direction: SRE portfolio-first
-Current active target: Final full-site QA and optional polish
-Tracking Issue: #88
+Current phase: Ongoing operation automated and verified
+Current active target: Normal weekly/monthly operation + human review
 Reliability Demo API: implemented / active portfolio demonstration service
+Construction phase: completed
 ```
 
 ## Service Selection Policy
@@ -90,7 +91,8 @@ SLO document: implemented
 Runbook: implemented
 Incident evidence: implemented
 Portfolio pages: implemented
-Current state: final full-site QA and optional polish
+Review automation: implemented on management side
+Current state: normal weekly/monthly operation
 ```
 
 ## Implemented Portfolio Evidence
@@ -126,6 +128,7 @@ Status:
 ```text
 historical implementation asset
 not active monetization target
+not active SRE Lab service
 ```
 
 Historical value:
@@ -147,7 +150,7 @@ Stopped active work:
 - product LP
 - Moving Prep Board monetization expansion
 
-Do not restore it as an active product or monetization route unless management-side `status.md` explicitly changes.
+Do not restore it as an active product, monetization route, or active SRE Lab service unless management-side `status.md` explicitly changes.
 
 ### AWS Cost Simulator
 
