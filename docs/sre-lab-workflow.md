@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document records the current SRE Lab project workflow and the target automation flow used by ChatGPT, Codex, GitHub Issues, Pull Requests, GitHub Actions, Cloudflare, and Grafana.
+This document records the current SRE Lab project workflow and the target automation flow used by ChatGPT, Codex, GitHub Issues, Pull Requests, GitHub Actions, Cloudflare, Grafana, and operations review automation.
 
 This is the practical workflow view of the AI organization operating model.
 
@@ -11,9 +11,12 @@ This is the practical workflow view of the AI organization operating model.
 SRE Lab is currently at:
 
 ```text
-Level 3: Implemented and operational
-Level 4: Partially implemented
-Level 5: Partially implemented, alert-to-Issue entry point operational
+Construction phase: completed
+Operating phase: normal weekly/monthly operation
+Level 2 review automation: implemented and verified in the management repo
+Level 3: implemented and operational for safe GitHub work
+Level 4: partially implemented
+Level 5: partially implemented, alert-to-Issue entry point operational
 ```
 
 Practical public repository operating ratio:
@@ -23,7 +26,7 @@ Manual work: 10-15%
 Automated / AI-assisted work: 85-90%
 ```
 
-Target operating ratio if private/internal Copilot automations become available:
+Target operating ratio if private/internal Codex/Copilot automations become available:
 
 ```text
 Manual work: 5-10%
@@ -34,6 +37,21 @@ For the accepted public repository workflow, see:
 
 ```text
 docs/ai-assisted-85-90-workflow.md
+```
+
+## Repository Placement Rule
+
+```text
+YDTNK/sre-lab:
+- public implementation
+- public portfolio evidence
+- implementation-side workflow rules
+
+YDTNK/engineering-career-hq/projects/sre-lab:
+- current state
+- construction complete policy
+- weekly/monthly review outputs
+- private planning and judgment notes
 ```
 
 ## Issue-First Rule
@@ -57,7 +75,6 @@ This applies to:
 - CI / GitHub Actions changes
 - Cloudflare deploy or Worker behavior changes
 - Grafana monitoring or alerting changes
-- revenue release tasks
 - service-state changes
 - incident, runbook, or remediation work
 - multi-step documentation changes
@@ -105,7 +122,7 @@ Completion report
 
 ## Practical Current Workflow
 
-Because this public repository cannot use Copilot cloud agent Automations directly, the current practical flow is:
+Because this public repository cannot use fully automatic Codex/Copilot cloud-agent execution from Issues, the current practical flow is:
 
 ```text
 Human gives direction
@@ -129,6 +146,34 @@ ChatGPT merges safe or approved PRs
 ChatGPT verifies main branch state
 ↓
 Completion report
+```
+
+## Operations Review Workflow
+
+Weekly/monthly review generation is managed in the management repository.
+
+```text
+GitHub Actions in engineering-career-hq
+↓
+Checks public SRE Lab pages / API / docs
+↓
+Generates review Markdown
+↓
+Stores review under operations/reviews/
+↓
+Human reads generated review
+↓
+Focused issue is created only if a real improvement need is confirmed
+```
+
+Human judgment remains required for:
+
+```text
+- visual layout
+- wording quality
+- interview-readiness
+- implemented vs future-work nuance
+- whether to create follow-up issues
 ```
 
 ## Monitoring-Initiated Workflow
@@ -181,39 +226,46 @@ Issue is closed with completion note
 - Worker deploy workflow runs post-deploy smoke tests.
 - Validate Grafana Dedupe runs after successful Deploy Worker runs.
 - Grafana can create GitHub Issues through the Cloudflare Worker webhook.
+- Weekly/monthly review Markdown is generated in the management repository.
 
 ## What Still Requires Human Input
 
 Human input remains required for:
 
-- business direction and priority decisions
-- revenue route, pricing, and product decisions
-- BOOTH / note / Gumroad / payment provider UI operations
+- direction and priority decisions
+- portfolio judgment
 - Cloudflare or Grafana UI operations that are not available through tools
 - MFA and login approvals
-- Secret values and credential entry
+- secret values and credential entry
 - approval for production-impacting code changes
 - approval for ambiguous, destructive, billing, or infrastructure-cost-impacting changes
 - starting Codex manually when automatic Codex start is not available through connected tools
+- reading generated weekly/monthly reviews and deciding whether to create issues
 
 ## Current Active Services
 
 Active services:
 
+```text
 - SRE Lab frontend
-- AI Moving Assistant API
+- Reliability Demo API
+```
 
-Removed services:
+Historical / removed services:
 
-- AWS Cost Simulator
+```text
+- AI Moving Assistant API: historical implementation asset, not active service
+- AWS Cost Simulator: removed historical service
+- Digital Product LP route: stopped / not planned
+```
 
 Rule:
 
 ```text
-Do not restore removed services just because a page, alert, or monitor references them.
+Do not restore removed, stopped, or historical services just because a page, alert, or monitor references them.
 ```
 
-Removed service alerts should become stale monitoring cleanup tasks, not service recovery tasks.
+Removed or stale service alerts should become stale monitoring cleanup tasks, not service recovery tasks.
 
 ## Standard Completion Report
 
@@ -243,7 +295,7 @@ To keep the public repository operating at 85-90%, prioritize:
 1. Follow `docs/ai-assisted-85-90-workflow.md` for all non-trivial work.
 2. Use the `codex` label operating rule consistently for implementation-ready Issues.
 3. Use the standard completion report for Issue/PR closures.
-4. Confirm #2 production/visual verification and close when evidence is recorded.
-5. Confirm #50 after the next successful Deploy Worker run automatically triggers Validate Grafana Dedupe.
+4. Keep weekly/monthly review outputs on the management side.
+5. Review #50 / #52 / #79 / #80 only when automation/dedupe work resumes.
 
-To reach 90-95%, add a private/internal automation repository or change repository visibility if portfolio requirements allow it.
+To reach 90-95%, add or enable private/internal automation that can safely trigger implementation from Issues.
