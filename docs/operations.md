@@ -12,47 +12,47 @@ docs/archive/legacy-revenue-route/operations.md
 
 ```text
 Current direction: SRE portfolio-first
-Current active target: Final full-site QA and optional polish
+Current phase: Ongoing operation automated and verified
+Current active target: Normal weekly/monthly operation + human review
 Current active service: Reliability Demo API
-Tracking Issue: #88
+Construction phase: completed
 ```
 
-## Daily / Periodic Checks
-
-For the current portfolio state, checks are lightweight and evidence-focused.
+## Public vs Management Operations
 
 ```text
-- Confirm portfolio site is available.
-- Confirm Reliability Demo API health endpoint is available.
-- Confirm GitHub Actions are passing for recent changes.
-- Confirm public docs do not expose private planning context.
-- Confirm implemented behavior and future work are not mixed.
+YDTNK/sre-lab:
+- public portfolio evidence
+- implementation docs
+- public runbooks / SLO / incident / security / cost evidence
+
+YDTNK/engineering-career-hq/projects/sre-lab:
+- current state
+- construction complete policy
+- weekly/monthly review outputs
+- private planning and judgment notes
 ```
 
-## Final Full-Site QA
+Weekly and monthly review generation is managed on the management side. This public repository should expose the portfolio evidence, not private planning records.
 
-Current QA target:
+## Weekly / Monthly Operation
+
+Current operation is lightweight and evidence-focused.
 
 ```text
-Issue #88
+- Weekly review: generated every Saturday 21:00 JST in management repo.
+- Monthly review: generated every month on day 1 21:00 JST in management repo.
+- Human review remains required for design, wording, interview-readiness, and issue creation judgment.
 ```
 
-QA should confirm:
+Public repository checks should confirm:
 
 ```text
-- / loads on PC and mobile.
-- /architecture.html loads on PC and mobile.
-- /reliability.html loads on PC and mobile.
-- /monitoring.html loads on PC and mobile.
-- /cicd.html loads on PC and mobile.
-- /incidents.html loads on PC and mobile.
-- /cost.html loads on PC and mobile.
-- Navigation works across all pages.
-- Home primary CTA opens Reliability Dashboard.
-- Public pages do not expose private management context.
-- Future work is clearly labeled as future work.
-- Expected demo errors are not mislabeled as real incidents.
-- Cost guardrail future items are not overclaimed as implemented runtime behavior.
+- Portfolio site is available.
+- Reliability Demo API health endpoint is available.
+- GitHub Actions are passing for recent changes.
+- Public docs do not expose private planning context.
+- Implemented behavior and future work are not mixed.
 ```
 
 ## Deployment Checks
@@ -186,6 +186,7 @@ docs/slo/reliability-demo-api.md
 docs/cost.md
 management-side status.md
 management-side portfolio-requirements.md
+management-side operations/construction-complete-operating-policy.md
 ```
 
 ## Historical Material
