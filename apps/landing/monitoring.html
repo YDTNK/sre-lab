@@ -6,11 +6,11 @@
   <title>Monitoring | SRE Lab Portfolio</title>
   <meta
     name="description"
-    content="Reliability Demo APIの監視対象、アラート条件、通知経路、重複抑制、Runbookへの導線をまとめたSREポートフォリオページです。"
+    content="Reliability Demo APIの監視対象、4大シグナル、アラート条件、severity、重複抑制、Runbookへの導線をまとめたSREポートフォリオページです。"
   />
-  <link rel="stylesheet" href="/portfolio.css?v=20260620-monitoring-1" />
-  <link rel="stylesheet" href="/architecture.css?v=20260620-monitoring-1" />
-  <link rel="stylesheet" href="/monitoring.css?v=20260620-monitoring-1" />
+  <link rel="stylesheet" href="/portfolio.css?v=20260620-hardening-1" />
+  <link rel="stylesheet" href="/architecture.css?v=20260620-hardening-1" />
+  <link rel="stylesheet" href="/monitoring.css?v=20260620-hardening-1" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">本文へスキップ</a>
@@ -59,14 +59,47 @@
           <h1 id="monitoring-title">Monitoring<br />&amp; Alerting</h1>
           <p class="page-title-ja">監視</p>
           <p class="page-hero__lead">
-            <span class="copy-desktop">Reliability Demo APIの監視対象、アラート条件、通知経路、Runbookへのつながりを整理します。</span>
-            <span class="copy-mobile">監視対象、アラート条件、通知経路、Runbookへの流れを整理します。</span>
+            <span class="copy-desktop">Reliability Demo APIの監視対象、4大シグナル、アラート条件、通知経路、Runbookへのつながりを整理します。</span>
+            <span class="copy-mobile">監視対象、4大シグナル、アラート条件、Runbookへの流れを整理します。</span>
           </p>
         </div>
         <div class="page-summary" aria-label="Monitoring summary">
           <p>Current scope</p>
-          <strong>Synthetic Checks · Alert Rules · Issue Routing · Runbook</strong>
-          <span>Portfolio evidence / API unchanged</span>
+          <strong>Latency · Traffic · Errors · Saturation</strong>
+          <span>Alert severity / dedupe / runbook</span>
+        </div>
+      </section>
+
+      <section class="evidence" aria-labelledby="signals-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Golden Signals</p>
+            <h2 id="signals-title">4大シグナル</h2>
+          </div>
+          <p class="section-heading__count">SRE monitoring</p>
+        </div>
+
+        <div class="alert-rule-grid">
+          <article>
+            <span>LAT</span>
+            <h3>Latency</h3>
+            <p>/api/health の応答時間を見ます。p95がしきい値を超える場合は遅延調査へ進みます。</p>
+          </article>
+          <article>
+            <span>TRF</span>
+            <h3>Traffic</h3>
+            <p>リクエスト数やアクセス増加を確認します。急増時はCost Guardrailやrate limit候補と関連付けます。</p>
+          </article>
+          <article>
+            <span>ERR</span>
+            <h3>Errors</h3>
+            <p>/api/health の非200や想定外の5xxを調査対象にします。/api/error の500はデモ挙動として除外します。</p>
+          </article>
+          <article>
+            <span>SAT</span>
+            <h3>Saturation</h3>
+            <p>Worker実行時間、外部依存、リトライ増加、コスト上限接近を負荷の兆候として扱います。</p>
+          </article>
         </div>
       </section>
 
@@ -107,24 +140,24 @@
             <p class="eyebrow">Alert Rules</p>
             <h2 id="rules-title">アラート条件</h2>
           </div>
-          <p class="section-heading__count">Candidates</p>
+          <p class="section-heading__count">Human actionable</p>
         </div>
 
         <div class="alert-rule-grid">
           <article>
-            <span>FAIL</span>
+            <span>SEV2</span>
             <h3>Health failure</h3>
-            <p>/api/health が連続して非200を返した場合、可用性低下として調査対象にします。</p>
+            <p>/api/health が連続して非200を返した場合、可用性低下として調査対象にします。Runbookへ誘導します。</p>
           </article>
           <article>
-            <span>LAT</span>
+            <span>SEV3</span>
             <h3>Latency degradation</h3>
-            <p>/api/health の応答がしきい値を超えて悪化した場合、遅延調査に進みます。</p>
+            <p>/api/health の応答がしきい値を継続して超えた場合、遅延調査に進みます。</p>
           </article>
           <article>
-            <span>DEP</span>
+            <span>SEV3</span>
             <h3>Deploy workflow failure</h3>
-            <p>Worker deployやpost-deploy smoke testが失敗した場合、変更起因の影響を確認します。</p>
+            <p>Worker deployやpost-deploy production checkが失敗した場合、変更起因の影響を確認します。</p>
           </article>
         </div>
       </section>
@@ -158,8 +191,8 @@
 
         <div class="dedupe-list">
           <article>
-            <h3>Same service</h3>
-            <p>同じReliability Demo APIに対する通知は、既存の未解決Issueと関連付ける前提で扱います。</p>
+            <h3>Dedupe key</h3>
+            <p><code>service + alert_type + environment</code> を重複判定の基本単位にし、同じ未解決Issueがある場合は新規作成より追記を優先します。</p>
           </article>
           <article>
             <h3>Same alert type</h3>
@@ -167,7 +200,7 @@
           </article>
           <article>
             <h3>Same open window</h3>
-            <p>未解決の対応中Issueがある場合は、新規作成より追記・更新を優先する設計です。</p>
+            <p>未解決の対応中Issueがある場合は、対応履歴として追記・更新し、アラート疲れを避けます。</p>
           </article>
         </div>
       </section>
@@ -191,7 +224,7 @@
           <article>
             <span>RUN</span>
             <h3>Runbook</h3>
-            <p>Health failure、Latency investigation、Fallback behaviorの確認手順です。</p>
+            <p>Health failure、Latency investigation、Rollback、Escalationの確認手順です。</p>
             <a href="https://github.com/YDTNK/sre-lab/blob/main/docs/runbooks/reliability-demo-api.md">Open runbook <span aria-hidden="true">↗</span></a>
           </article>
           <article>
