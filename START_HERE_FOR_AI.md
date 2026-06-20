@@ -16,6 +16,7 @@ Private management context:
 - roadmap / issue planning
 - decision log
 - progress notes
+- weekly / monthly operation reviews
 ```
 
 公開ポートフォリオとして見せる情報と、管理者向けの内部運用コンテキストは分離します。
@@ -23,13 +24,13 @@ Private management context:
 ## Current State
 
 ```text
-Current phase: Portfolio evidence loop completed
-Current active target: Final full-site QA and optional polish
-Tracking Issue: #88
+Current phase: Ongoing operation automated and verified
+Current active target: Normal weekly/monthly operation + human review
+Construction phase: completed
 Reliability Demo API: implemented / active portfolio demonstration service
 ```
 
-Do not treat old references to Issue #74, PR #60, Phase 16, revenue-first, or Moving Prep monetization as current.
+Do not treat old references to Issue #74, Issue #88 as active, PR #60, Phase 16, revenue-first, or Moving Prep monetization as current.
 
 ## Copy-Paste Startup Prompt
 
@@ -50,9 +51,11 @@ YDTNK/engineering-career-hq
 4. private management context for SRE Lab: mandatory-context-registry.md
 5. private management context for SRE Lab: issues.md
 6. private management context for SRE Lab: progress.md
-7. sre-lab/AGENTS.md
-8. sre-lab/docs/mandatory-context-registry.md
-9. 必要に応じて sre-lab/docs/codex-workflow.md
+7. private management context for SRE Lab: operations/construction-complete-operating-policy.md
+8. private management context for SRE Lab: latest weekly/monthly review if relevant
+9. sre-lab/AGENTS.md
+10. sre-lab/docs/mandatory-context-registry.md
+11. 必要に応じて sre-lab/docs/codex-workflow.md
 
 確認後、参照したファイルと不足ファイルをリスト化してから作業してください。
 
@@ -87,6 +90,7 @@ Checked docs:
 - mandatory-context-registry.md
 - issues.md
 - progress.md
+- operations/construction-complete-operating-policy.md
 - AGENTS.md
 - sre-lab/docs/mandatory-context-registry.md
 

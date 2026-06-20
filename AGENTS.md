@@ -16,6 +16,7 @@ Private management context:
 - roadmap / issue planning
 - decision log
 - progress notes
+- weekly / monthly operation reviews
 ```
 
 Before answering, reviewing, implementing, or creating a PR for SRE Lab, check both the public implementation repository and the private management context when available.
@@ -33,7 +34,9 @@ private management context for SRE Lab:
 - project-context.md
 - issues.md
 - progress.md
-- mandatory-context-registry.md
+- operations/construction-complete-operating-policy.md
+- operations/site-operations.md
+- latest weekly/monthly review when relevant
 ```
 
 Required implementation-side context:
@@ -47,8 +50,6 @@ YDTNK/sre-lab/docs/codex-workflow.md
 YDTNK/sre-lab/docs/ai-assisted-85-90-workflow.md
 YDTNK/sre-lab/docs/sre-lab-workflow.md
 ```
-
-For Codex work, also check the Codex Prompt Efficiency Policy in the private management context when available.
 
 ## Read These First
 
@@ -81,9 +82,9 @@ Before answering or changing anything in this repository, read the following fil
 SRE Lab is SRE portfolio-first.
 
 ```text
-Current phase: Portfolio evidence loop completed
-Current active target: Final full-site QA and optional polish
-Tracking Issue: #88
+Current phase: Ongoing operation automated and verified
+Current active target: Normal weekly/monthly operation + human review
+Construction phase: completed
 Reliability Demo API: implemented / active portfolio demonstration service
 ```
 
@@ -111,7 +112,9 @@ Do not continue these as active work:
 - Issue #69 revenue research route
 - Issue #70 primary service decision route
 - Issue #74 as current active work
+- Issue #88 as current active work
 - PR #60 as current active work
+- AI Moving Assistant as active service
 - consumer AI service expansion
 - revenue-first market research route
 ```
@@ -122,7 +125,7 @@ Historical records may remain under archive paths, but they must not drive curre
 
 Minimize manual user work as much as possible.
 
-If ChatGPT, Codex, GitHub integration, or another machine-side tool can safely complete a task, it should execute the task through completion instead of stopping at instructions.
+If ChatGPT, Codex, GitHub integration, GitHub Actions, or another machine-side tool can safely complete a task, it should execute the task through completion instead of stopping at instructions.
 
 This includes, when available and safe:
 
@@ -182,7 +185,7 @@ Manual work: 10-15%
 Automated / AI-assisted work: 85-90%
 ```
 
-Target balance if private/internal Copilot automations become available:
+Target balance if private/internal Codex/Copilot automations become available:
 
 ```text
 Manual work: 5-10%
@@ -211,23 +214,10 @@ Current target service state:
 
 ```text
 Reliability Demo API: implemented / active portfolio service
-AI Moving Assistant / Moving Prep Board: historical implementation asset, not monetization target
+SRE Lab frontend: implemented / active portfolio service
+AI Moving Assistant / Moving Prep Board: historical implementation asset, not active service
 AWS Cost Simulator: removed historical service
 Digital Product LP Starter Kit: stopped / not planned
 ```
 
 Do not restore removed, stopped, or historical services just because a page, alert, or monitor references them.
-
-## Incident and Release Records
-
-For new operational records, prefer one file per record under:
-
-```text
-docs/incidents/
-```
-
-Avoid rewriting the large aggregate file:
-
-```text
-docs/incidents.md
-```

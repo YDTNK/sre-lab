@@ -1,12 +1,16 @@
 # Revenue Release Before CKA Policy
 
-## Purpose
+> Historical archive note: this policy is obsolete.
+>
+> SRE Lab has moved to SRE portfolio-first and the construction phase is complete. The revenue-first / Moving Assistant monetization route is stopped unless the management-side `status.md` explicitly reactivates it.
+
+## Original Purpose
 
 SRE Lab should complete the first AI Moving Assistant revenue release before Kubernetes / CKA becomes the main learning focus.
 
 After that revenue release, SRE Lab should move into maintenance-only operation during the CKA learning period.
 
-## Current Direction
+## Historical Direction
 
 ```text
 Phase 16 v1 checkpoint: complete
@@ -17,7 +21,19 @@ CKA learning: starts after revenue release preparation is complete
 SRE Lab during CKA: maintenance-only
 ```
 
-## Target State at CKA Start
+## Current Treatment
+
+```text
+Status: archived / historical
+Current active direction: SRE portfolio-first
+Current active service: Reliability Demo API
+Construction phase: completed
+Current phase: normal weekly/monthly operation
+```
+
+Do not use this file as active guidance.
+
+## Historical Target State at CKA Start
 
 When Kubernetes / CKA learning starts, SRE Lab should already be in the following state:
 
@@ -30,26 +46,24 @@ If user traffic arrives and converts, revenue can be generated
 SRE Lab is operated as a live customer-facing service with monitoring
 ```
 
-This does not mean the service must already have large traffic or meaningful profit before CKA starts. The required state is that the revenue path is released and technically usable.
-
-## Why This Policy Exists
+## Why This Policy Existed
 
 The project should not remain in an unfinished monetization-validation state while the main learning focus moves to Kubernetes / CKA.
 
-A small first revenue route is enough. The goal is not to build a large business before CKA. The goal is to release one simple monetization path, verify that the public service can support it, and then stop feature expansion.
+A small first revenue route was considered enough. The goal was not to build a large business before CKA. The goal was to release one simple monetization path, verify that the public service could support it, and then stop feature expansion.
 
 ## Allowed First Revenue Routes
 
-The first revenue release should use one small route:
+The first revenue release would have used one small route:
 
 - Moving checklist PDF / template
 - Moving preparation checklist product page
 - Simple paid report or downloadable template
-- Affiliate link for moving supplies or related services, only if it does not require large feature expansion
+- Affiliate link for moving supplies or related services, only if it did not require large feature expansion
 
 ## Not Required Before CKA
 
-The following are not required before CKA:
+The following were not required before CKA:
 
 - Full payment system inside SRE Lab
 - User accounts
@@ -62,7 +76,7 @@ The following are not required before CKA:
 
 ## Completion Criteria
 
-The revenue release is complete when:
+The revenue release would have been complete when:
 
 - AI Moving Assistant is publicly available as a customer-facing service
 - A free sample page or free service experience is publicly available
@@ -77,30 +91,4 @@ The revenue release is complete when:
 
 ## Maintenance-Only Mode During CKA
 
-After the revenue release, SRE Lab should avoid new feature development during Kubernetes / CKA learning.
-
-Allowed work:
-
-- Monitoring checks
-- Incident response
-- Security or dependency fixes
-- Small copy fixes
-- Revenue / cost record updates
-- Broken link fixes
-- Grafana alert maintenance
-
-Not allowed by default:
-
-- New consumer AI services
-- Major UI redesign
-- New payment system expansion
-- New data pipeline implementation
-- Reintroducing AWS Cost Simulator as an active service
-
-## Relationship to Future Services
-
-Future Consumer AI Service Ideas should be evaluated only after:
-
-1. AI Moving Assistant revenue release is complete
-2. Kubernetes / CKA learning is not delayed
-3. There is a clear reason to resume SRE Lab feature development
+After the revenue release, SRE Lab would avoid new feature development during Kubernetes / CKA learning.

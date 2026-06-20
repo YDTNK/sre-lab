@@ -6,10 +6,11 @@ This document defines the current cost management policy for SRE Lab as an SRE /
 
 ```text
 Current service: Reliability Demo API
-Current phase: Portfolio evidence loop completed
-Current active target: Final full-site QA and optional polish
+Current phase: Ongoing operation automated and verified
+Current active target: Normal weekly/monthly operation + human review
 Paid AI API usage: not active
 Revenue route: stopped / historical
+Construction phase: completed
 ```
 
 The current cost focus is not monetization or paid AI expansion.
@@ -48,6 +49,7 @@ Allowed low-cost portfolio value:
 - synthetic monitoring
 - GitHub Actions validation
 - documentation-backed SLO / runbook / incident evidence
+- Level 2 review automation in the management repository
 ```
 
 Avoid by default:
@@ -144,6 +146,7 @@ docs/cost.md
 docs/runbooks/reliability-demo-api.md
 management-side status.md
 management-side portfolio-requirements.md
+management-side operations/construction-complete-operating-policy.md
 ```
 
 Historical revenue or AI cost tracking documents under archive paths are not current sources of truth.

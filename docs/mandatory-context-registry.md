@@ -8,7 +8,7 @@ SRE Lab uses two kinds of context:
 
 ```text
 1. Public implementation context
-2. Internal planning context
+2. Internal planning / operations context
 ```
 
 The public implementation context is this repository:
@@ -17,16 +17,16 @@ The public implementation context is this repository:
 YDTNK/sre-lab
 ```
 
-The internal planning context contains project status, portfolio requirements, roadmap decisions, issue planning, and progress notes.
+The internal planning / operations context contains project status, portfolio requirements, roadmap decisions, issue planning, progress notes, and weekly/monthly review results.
 
 Do not expose internal planning notes as part of the public portfolio surface.
 
 ## Current State
 
 ```text
-Current phase: Portfolio evidence loop completed
-Current active target: Final full-site QA and optional polish
-Tracking Issue: #88
+Current phase: Ongoing operation automated and verified
+Current active target: Normal weekly/monthly operation + human review
+Construction phase: completed
 Reliability Demo API: implemented / active portfolio demonstration service
 ```
 
@@ -47,6 +47,9 @@ When available, check:
 - mandatory-context-registry.md
 - issues.md
 - progress.md
+- operations/construction-complete-operating-policy.md
+- operations/site-operations.md
+- latest weekly/monthly review when relevant
 ```
 
 Do not require or rely on removed legacy roadmap files such as `phase1-20-roadmap.md` as active context.
@@ -79,7 +82,9 @@ These are historical only unless the management-side `status.md` explicitly reac
 - Digital Product LP
 - Issue #69
 - Issue #70
+- Issue #73
 - Issue #74 as current active work
+- Issue #88 as current active work
 - PR #60 as current active work
 - Phase 16 / Phase 17 revenue validation route
 - docs/archive/legacy-revenue-route/
@@ -100,6 +105,7 @@ Checked docs:
 - project-context.md
 - issues.md
 - progress.md
+- operations/construction-complete-operating-policy.md
 - START_HERE_FOR_AI.md
 - AGENTS.md
 - docs/mandatory-context-registry.md

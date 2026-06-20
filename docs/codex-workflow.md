@@ -28,6 +28,15 @@ Grafana when relevant
 Completion report
 ```
 
+## Current Project State
+
+```text
+Current phase: Ongoing operation automated and verified
+Construction phase: completed
+Current active target: Normal weekly/monthly operation + human review
+Active service: Reliability Demo API
+```
+
 ## Role Split
 
 ### ChatGPT
@@ -69,11 +78,10 @@ Before changing files, Codex must read:
 5. `docs/sre-lab-workflow.md`
 6. `docs/codex-workflow.md`
 7. `docs/completion-report-template.md`
-8. `docs/revenue-release-before-cka.md`
-9. `docs/service-state-checklist.md`
-10. `docs/services.md`
-11. `docs/runbook.md`
-12. Latest relevant records under `docs/incidents/`
+8. `docs/service-state-checklist.md`
+9. `docs/services.md`
+10. `docs/runbook.md`
+11. Latest relevant records under `docs/incidents/`
 
 Then Codex should inspect the Issue and confirm:
 
@@ -174,7 +182,7 @@ Codex must:
 - avoid restoring removed services
 - avoid committing secrets
 - avoid changing billing, payment, or cost-impacting infrastructure without explicit approval
-- preserve the Revenue-before-CKA direction
+- preserve the SRE portfolio-first direction
 - preserve service-state decisions
 - add or update tests/checks when useful
 - document validation in the PR
@@ -267,7 +275,7 @@ Close decision:
 
 ## Current Status
 
-This workflow is now defined, but Codex is not yet automatically triggered from Issues by repository files alone.
+This workflow is defined, but Codex is not yet automatically triggered from Issues by repository files alone.
 
 Current practical state:
 
