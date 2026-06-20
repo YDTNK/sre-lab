@@ -49,13 +49,25 @@ https://sre-lab-api.daisan-tanaka.workers.dev
 
 ## 運用ドキュメント
 
-SLO、Runbook、障害記録、Postmortemテンプレートは以下に整理しています。
+SLO、Runbook、障害記録、Postmortemテンプレート、Security / Public Exposure方針は以下に整理しています。
 
 ```text
 docs/slo/reliability-demo-api.md
 docs/runbooks/reliability-demo-api.md
 docs/incidents/2026-06-19-reliability-demo-api-mvp-verification.md
 docs/postmortems/template.md
+docs/security/public-exposure.md
+```
+
+## 公開サイト上の証跡ページ
+
+```text
+Architecture: https://sre-lab.pages.dev/architecture.html
+Reliability: https://sre-lab.pages.dev/reliability.html
+Monitoring: https://sre-lab.pages.dev/monitoring.html
+CI/CD: https://sre-lab.pages.dev/cicd.html
+Incidents: https://sre-lab.pages.dev/incidents.html
+Cost Guardrails: https://sre-lab.pages.dev/cost.html
 ```
 
 ## 技術スタック
