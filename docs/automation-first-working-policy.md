@@ -4,13 +4,13 @@
 
 This document defines the working policy for SRE Lab and related AI-assisted project operations.
 
-The goal is to minimize manual user work and let ChatGPT, Codex, GitHub integrations, and other available automation tools complete all safely automatable work end-to-end.
+The goal is to minimize manual user work and let ChatGPT, Codex, GitHub integrations, GitHub Actions, and other available automation tools complete all safely automatable work end-to-end.
 
 ## Core Policy
 
 ```text
 Minimize manual work as much as possible.
-If ChatGPT, Codex, GitHub integration, or another machine-side tool can perform the task safely, the assistant should execute it through completion.
+If ChatGPT, Codex, GitHub integration, GitHub Actions, or another machine-side tool can perform the task safely, the assistant should execute it through completion.
 ```
 
 This includes, when technically available:
@@ -29,14 +29,17 @@ This includes, when technically available:
 - Release or incident record creation
 - Documentation updates
 - Runbook and policy updates
+- Weekly/monthly review generation through GitHub Actions
 
 ## Current Project Direction
 
-SRE Lab is now SRE portfolio-first.
+SRE Lab is SRE portfolio-first.
 
 ```text
-Current active target: Reliability Demo API MVP
-Tracking Issue: #74
+Current phase: Ongoing operation automated and verified
+Current active target: Normal weekly/monthly operation + human review
+Construction phase: completed
+Reliability Demo API: implemented / active portfolio demonstration service
 ```
 
 Do not prioritize revenue-first work, Digital Product LP implementation, Moving Prep Board monetization, or consumer AI service expansion unless the management-side `status.md` explicitly changes.
@@ -100,10 +103,11 @@ Report the final completed result
 The user should mainly handle:
 
 - Direction and priority decisions
-- Portfolio/business judgment
+- Portfolio judgment
 - External UI actions that the assistant cannot access
 - Credentials or secrets entry
 - Final judgment for risky or ambiguous production-impacting changes
+- Human review of generated weekly/monthly review Markdown
 
 ## Default Merge Policy
 
@@ -124,7 +128,7 @@ Small and safe changes include:
 The assistant should pause and ask for explicit confirmation before completing or merging changes that involve:
 
 - Production-impacting application code changes
-- Large diffs across many files
+- Large diffs
 - File deletion
 - Secrets, credentials, tokens, or environment variables
 - Billing, payment, settlement, or pricing configuration
@@ -140,8 +144,9 @@ Even in these cases, the assistant should still do safe preparatory work when po
 This policy supports the current project direction:
 
 ```text
-Build SRE Lab as an SRE / Platform Engineer portfolio.
-Use Reliability Demo API as the first MVP to show SLO, monitoring, alerting, CI/CD, incident response, runbooks, postmortems, API safety, and cost guardrails.
+Operate SRE Lab as an SRE / Platform Engineer portfolio.
+Use Reliability Demo API to show SLO, monitoring, alerting, CI/CD, incident response, runbooks, postmortems, API safety, and cost guardrails.
+Keep construction complete and move future changes through focused issues only.
 ```
 
 Automation-first operation should be used to reduce maintenance burden:
@@ -154,6 +159,7 @@ Automation-first operation should be used to reduce maintenance burden:
 - Runbook updates
 - CI guardrail updates
 - Service-state cleanup
+- Review Markdown generation
 
 ## Practical Rule
 
